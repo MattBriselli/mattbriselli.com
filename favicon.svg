@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <style>
+    .tile { fill: #9e3b24; }
+    .mark { fill: #faf8f5; }
+    @media (prefers-color-scheme: dark) {
+      .tile { fill: #e88264; }
+      .mark { fill: #141311; }
+    }
+  </style>
+  <rect class="tile" width="64" height="64" rx="14"/>
+  <path class="mark" fill-rule="evenodd" d="
+    M 6 45 V 19 H 10.7 L 15 29.8 L 19.3 19 H 24 V 45 H 19.5 V 28.4 L 16.3 36.2 H 13.7 L 10.5 28.4 V 45 Z
+    M 27.5 19 H 32.3 V 40.3 H 40.4 V 45 H 27.5 Z
+    M 43 19 H 51.8 C 55.4 19 57.5 21.0 57.5 24.8 C 57.5 27.5 56.1 29.5 54.0 30.5 C 56.7 31.4 58.3 33.7 58.3 37.0 C 58.3 41.5 55.6 45 51.4 45 H 43 Z
+    M 47.6 23.2 V 28.9 H 51.0 C 52.5 28.9 53.3 27.9 53.3 26.0 C 53.3 24.1 52.5 23.2 51.0 23.2 Z
+    M 47.6 32.8 V 40.8 H 51.4 C 53.1 40.8 54.0 39.6 54.0 36.8 C 54.0 34.0 53.1 32.8 51.4 32.8 Z
+  "/>
+</svg>
