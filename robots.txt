@@ -2,6 +2,6 @@ User-agent: *
 Allow: /
 
 # AI & Search Agent Feeds
-# LLM Overview: /llms.txt
-# Structured JSON Resume: /resume.json
-Sitemap: /sitemap.xml
+# LLM Overview: https://mattbriselli.com/llms.txt
+# Structured JSON Resume: https://mattbriselli.com/resume.json
+Sitemap: https://mattbriselli.com/sitemap.xml
