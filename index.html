@@ -693,11 +693,186 @@
       </div>
     </section>
 
-    <!-- 04: Atlas, Places Lived & Field Notes -->
+    <!-- 04: Atlas, World Photo Heatmap & Interactive Google Maps Slideshow -->
     <section id="atlas" class="section" aria-labelledby="atlas-heading">
-      <div class="section-header">
-        <span class="section-index" aria-hidden="true">04</span>
-        <h2 id="atlas-heading">Atlas, Places Lived &amp; Field Notes</h2>
+      <div class="section-header section-header-split">
+        <div class="section-title-group">
+          <span class="section-index" aria-hidden="true">04</span>
+          <h2 id="atlas-heading">World Photo Heatmap, Slideshow &amp; Travel Atlas</h2>
+        </div>
+        <a href="https://www.google.com/maps/contrib/104641095422852249098/photos" class="action-link" target="_blank" rel="noopener noreferrer">
+          <span>Level 10 Local Guide Profile</span>
+          <span class="arrow" aria-hidden="true">↗</span>
+        </a>
+      </div>
+
+      <!-- Live Google Maps Local Guide Level 10 Telemetry Strip -->
+      <div class="maps-telemetry-banner" aria-label="Google Maps Local Guide statistics">
+        <div class="telemetry-bio">
+          <span class="badge">Local Guide Level 10 · 385,939 pts</span>
+          <p class="telemetry-quote">
+            “world explorer. sandwich aficionado, coffee and chai guy, unique fast food obsessive and pursuer · 📍NYC”
+          </p>
+        </div>
+        <dl class="telemetry-stats">
+          <div class="telemetry-stat">
+            <dt>Total Photo Views</dt>
+            <dd id="stat-total-views">1,185,244,022</dd>
+          </div>
+          <div class="telemetry-stat">
+            <dt>Photos Uploaded</dt>
+            <dd id="stat-total-photos">66,085</dd>
+          </div>
+          <div class="telemetry-stat">
+            <dt>Written Reviews</dt>
+            <dd id="stat-total-reviews">3,591</dd>
+          </div>
+          <div class="telemetry-stat">
+            <dt>Footprint</dt>
+            <dd>50 US States · Central Asia · 8 Can. Prov.</dd>
+          </div>
+        </dl>
+      </div>
+
+      <!-- Interactive Controls: Region Camera Presets, Layer Toggles & Category Filters -->
+      <div class="atlas-toolbar" role="region" aria-label="Interactive map and slideshow controls">
+        <div class="toolbar-group" role="group" aria-label="Fly camera to region">
+          <span class="toolbar-label">Fly To:</span>
+          <button type="button" class="filter-chip" data-region-preset="world" aria-pressed="true">Whole World</button>
+          <button type="button" class="filter-chip" data-region-preset="nyc" aria-pressed="false">NYC &amp; East Coast</button>
+          <button type="button" class="filter-chip" data-region-preset="west" aria-pressed="false">SF, Seattle &amp; West</button>
+          <button type="button" class="filter-chip" data-region-preset="us50" aria-pressed="false">All 50 US States</button>
+          <button type="button" class="filter-chip" data-region-preset="central-asia" aria-pressed="false">Central Asia (5 Republics)</button>
+          <button type="button" class="filter-chip" data-region-preset="canada" aria-pressed="false">Canada (8 Provinces)</button>
+          <button type="button" class="filter-chip" data-region-preset="europe-apac" aria-pressed="false">Europe &amp; Asia-Pacific</button>
+        </div>
+
+        <div class="toolbar-group" role="group" aria-label="Filter slideshow collection">
+          <span class="toolbar-label">Slideshow:</span>
+          <button type="button" class="filter-chip" data-slide-filter="all" aria-pressed="true">All Dispatches (16)</button>
+          <button type="button" class="filter-chip" data-slide-filter="hall-of-fame" aria-pressed="false">10M+ View Hall of Fame</button>
+          <button type="button" class="filter-chip" data-slide-filter="nyc" aria-pressed="false">NYC &amp; Broadway</button>
+          <button type="button" class="filter-chip" data-slide-filter="international" aria-pressed="false">Global &amp; Borders</button>
+        </div>
+      </div>
+
+      <!-- Dual Interactive Stage: World Heatmap Canvas + Synced Photo Slideshow -->
+      <div class="atlas-workbench">
+        <!-- Left: Interactive World Heatmap & Pin Canvas -->
+        <div class="map-stage-card">
+          <div class="map-stage-header">
+            <div class="map-stage-title">
+              <h3>Global Photo Density Heatmap &amp; Pin Explorer</h3>
+              <p class="map-stage-subtitle" id="map-status-line">Drag to pan · Scroll or use buttons to zoom · Click any glowing pin to view photos</p>
+            </div>
+            <div class="map-layer-controls" role="group" aria-label="Map layers and zoom">
+              <button type="button" class="map-ctrl-btn" id="toggle-heatmap-btn" aria-pressed="true">🔥 Heatmap</button>
+              <button type="button" class="map-ctrl-btn" id="toggle-pins-btn" aria-pressed="true">📍 Pins</button>
+              <button type="button" class="map-ctrl-btn" id="toggle-arcs-btn" aria-pressed="true">✈️ Flight Arc</button>
+              <button type="button" class="map-ctrl-btn" id="map-zoom-in" aria-label="Zoom in">+</button>
+              <button type="button" class="map-ctrl-btn" id="map-zoom-out" aria-label="Zoom out">−</button>
+              <button type="button" class="map-ctrl-btn" id="map-reset-btn" aria-label="Reset world view">Reset</button>
+            </div>
+          </div>
+
+          <div class="map-canvas-wrap" id="map-canvas-wrap">
+            <canvas id="world-heatmap-canvas" width="960" height="540" aria-label="Interactive world map showing Matt Briselli's Google Maps photo heatmap and clickable location pins"></canvas>
+            <div class="map-tooltip" id="map-tooltip" hidden></div>
+          </div>
+
+          <div class="map-legend">
+            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> High Photo &amp; View Density (NYC, SF, Seattle, Philly, Pittsburgh, DC)</span>
+            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> Regional Clusters (50 States, Central Asia, Canada, Europe, China, Australia)</span>
+            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Slideshow Dispatch</span>
+          </div>
+        </div>
+
+        <!-- Right: Synced Multi-Photo Slideshow & Field Notes Card -->
+        <div class="slideshow-stage-card" aria-live="polite">
+          <div class="slideshow-top-bar">
+            <span class="slide-counter" id="slide-counter">Dispatch 1 of 16</span>
+            <div class="slideshow-nav-btns">
+              <button type="button" class="map-ctrl-btn" id="slide-prev-btn" aria-label="Previous place">← Prev</button>
+              <button type="button" class="map-ctrl-btn" id="slide-autoplay-btn" aria-pressed="false">▶ Auto-Tour</button>
+              <button type="button" class="map-ctrl-btn" id="slide-next-btn" aria-label="Next place">Next →</button>
+            </div>
+          </div>
+
+          <figure class="slide-figure">
+            <div class="slide-image-frame">
+              <img
+                id="slide-main-img"
+                src="https://lh3.googleusercontent.com/gps-cs/AAjk-COQB19ei6lNeoBX4VFT45vG-PGvFF_wRcHjsTEoxwgzU1qA4aDatrPF-5Y61bBxlkZzPFk6mynZnb9bG7zOjS4Cq8kMi7F6lBb9U3WDIWK5LyFDqWmsnIn5bhQJ1Kbf1vlTrfLu8uhzVaae=w1000-h750-p-k-no"
+                alt="Nordstrom (King of Prussia)"
+                referrerpolicy="no-referrer"
+                loading="lazy"
+                width="800"
+                height="600"
+              >
+              <span class="slide-metric-pill" id="slide-metric-pill">👁 11,879,403 views</span>
+            </div>
+
+            <!-- Multi-photo thumbnail strip for dispatches with multiple angles -->
+            <div class="slide-thumbs" id="slide-thumbs" role="group" aria-label="Photos for this place"></div>
+
+            <figcaption class="slide-caption-box">
+              <div class="slide-meta-row">
+                <span class="badge" id="slide-category">10M+ View Club · Architecture &amp; Retail</span>
+                <span class="slide-coords" id="slide-coords">40.09°N, 75.39°W</span>
+              </div>
+              <h3 id="slide-title">Nordstrom (King of Prussia)</h3>
+              <p class="slide-location" id="slide-location">King of Prussia, PA</p>
+              <p class="slide-description" id="slide-description">
+                Matt's single most-viewed Google Maps upload—over 11.87 million views on the main exterior shot alone (and another 10.2M views on a companion angle).
+              </p>
+              <div class="slide-actions-row">
+                <button type="button" class="action-btn" id="slide-fly-btn">Center on Map</button>
+                <a id="slide-maps-link" href="https://www.google.com/maps/contrib/104641095422852249098/photos" class="action-link" target="_blank" rel="noopener noreferrer">
+                  <span>View on Google Maps</span>
+                  <span class="arrow" aria-hidden="true">↗</span>
+                </a>
+              </div>
+            </figcaption>
+          </figure>
+        </div>
+      </div>
+
+      <!-- Interactive Multi-Million-View Hall of Fame & Lightweight Index Maintenance -->
+      <div class="ledger-details-grid">
+        <details class="atlas-disclosure" open>
+          <summary>🏆 Top Most-Viewed Individual Photos (97M+ Views Across Top 14 Alone — Click Any Row to Fly)</summary>
+          <div class="disclosure-body">
+            <div class="table-scroll">
+              <table class="views-table">
+                <caption>Highest-viewed individual photos uploaded by Matt Briselli on Google Maps</caption>
+                <thead>
+                  <tr>
+                    <th scope="col">Rank</th>
+                    <th scope="col">Place</th>
+                    <th scope="col">Location</th>
+                    <th scope="col">Google Maps Views</th>
+                    <th scope="col">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="top-views-tbody">
+                  <!-- Populated dynamically from data/maps-index.json -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </details>
+
+        <details class="atlas-disclosure">
+          <summary>⚡ Super-Lightweight Index Architecture (How 66,085 Photos Stay Easy to Maintain)</summary>
+          <div class="disclosure-body">
+            <p>
+              Rather than scraping or committing tens of thousands of binary images to Git, this explorer runs on a single lightweight JSON index (<a href="/data/maps-index.json"><code>data/maps-index.json</code></a>) that stores coordinates, view counts, review quotes, and direct Google CDN image hashes (<code>lh3.googleusercontent.com/...=w1000-h750-p-k-no</code>).
+            </p>
+            <p>
+              To merge new reviews or top-viewed photos in under 10 seconds, run <code>node scripts/sync-maps-index.mjs --snippet</code> (or pass a Google Takeout <code>Reviews.json</code> export to <code>node scripts/sync-maps-index.mjs</code>).
+            </p>
+          </div>
+        </details>
       </div>
 
       <dl class="stat-strip" aria-label="Travel milestones">
