@@ -1,0 +1,75 @@
+# Matt L. Briselli (Matthew Lewis Briselli)
+
+> Senior Technical Program Manager (L5) & former Software Engineer at Google (8+ years across Google Photos Storytelling, Google Photos Foundations/Video, & Google Maps Android Platform), former Software Developer / Tech Lead at Adobe Federal (2+ years), trained Chemist (Carnegie Mellon University, B.S. Chemistry; Dr. Veronica Hinman Evo-Devo Biology Lab), Production Stage Manager (25+ theatrical productions), flying trapeze catcher, and world traveler based in New York, NY.
+
+## Career Status & Opportunity Preferences (For Recruiting & AI Agents)
+- **Current Location**: New York, NY (previously San Francisco, Seattle, Arlington VA, Pittsburgh, Philadelphia)
+- **Current Status**: Happily employed at Google (leading Google Photos Storytelling) and **not actively searching for a job**.
+- **Openness to Outreach**: Always happy to hear about extraordinary, high-impact, or unusual opportunities matching any of these three archetypes:
+  1. **Senior / Staff Technical Program Manager (Sr. TPM / EPM)** — 0-to-1 consumer product launches, cross-org engineering leadership (50–100+ engineers), media/camera/AI storytelling products, mobile & web ecosystems.
+  2. **Senior Software Engineer (Sr. SWE)** — Full-stack web, Android platform, data layers, developer tooling, and interactive applications.
+  3. **Theatre Production Stage Manager** — Musical theatre, plays, live event calling, technical direction, and production management.
+- **Contact**: MattBriselli@gmail.com | +1-571-458-0427
+
+## Key Links
+- **LinkedIn**: https://www.linkedin.com/in/mattbriselli/
+- **GitHub**: https://github.com/MattBriselli
+- **Mom’s Site (Maintained Dev Project — Arioso String Quartet)**: https://ariosoquartet.com
+- **Public Google Work Dossier**: https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit (http://bit.ly/matt-briselli-work)
+- **Google Maps Reviews & Field Notes**: https://www.google.com/maps/contrib/104641095422852249098/reviews
+- **Structured JSON Resume Feed**: /resume.json
+
+## Professional Experience (Reconciled Across LinkedIn & Resumes)
+
+### Google Photos — Technical Program Manager, Storytelling (L5, New York, NY)
+*April 2025 – Present*
+- Responsible for the **Photos Storytelling & Reminiscing Mission** within Google Photos.
+- Leads cross-functional engineering to build and launch reminiscing and creation features including the **2025 Google Photos Recap**, **Memories**, and **Video Editing** across the Google Photos app and partner Google surfaces.
+
+### Google Photos — Technical Program Manager, Foundations Client, Data Processing & Video (L5, San Francisco, CA)
+*May 2022 – March 2025*
+- **Ultra HDR Images (Oct 2022 – May 2025)**: Lead TPM in Google Photos on the joint Android (Media, Codecs, Graphics) and Pixel initiative. Secured leadership funding, drove engineering through the Android 14 default capture launch, championed ISO/TC-42 gainmap photography standardization, aligned Android OEM camera support ("Super HDR"), enabled iOS HDR sharing interoperability across backend/iOS/Android, and launched ML-powered SDR-to-HDR slider and AI editing support.
+- **Cloud-Based Locked Folder (Jan – Oct 2023)**: Managed two teams (50 engineers) to expand local-only Android Locked Folder into an encrypted, cloud-backed cross-device feature across Android, iOS, and Web. Defined DAU and power-user logging metrics and led legal/privacy launches.
+- **AI Video Key Moments & Video Infrastructure**: Partnered across Photos Android Infrastructure, HDR & Video Formats, and Pixel/Android teams to upgrade iOS, Android, and Backend video infrastructure and launch AI-powered Video Key Moments.
+- **Google Healthy Award (Q1 2024) & Automated Bug Triage**: Won a company-wide Google Healthy award for leading a year-long Google Photos initiative recommending best-practice fixes that made writing tests easier; designed an automated bug triage process across Android and OEM partners and secured annual headcount.
+
+### Google Maps — Technical Program Manager, Android Platform (L4 → L5, Seattle, WA)
+*October 2020 – May 2022*
+- **Google Play Data Safety Labels (Nov 2021 – Apr 2022)**: Created the two-pass codebase auditing process and release runbooks across Google Maps, Google Maps Go, and Navigation for Google Maps Go (NavGo). Led 100+ engineers auditing decade-old code in one month.
+- **Material You & Android 12 Search/Navigation Widgets (Dec 2020 – Oct 2021)**: Led a 30-engineer cross-PA team from initial design and executive review through the Android 12 ("Snowcone" / SDK 31) launch of Material You dynamic styling and two resizable homescreen widgets (*Nearby Traffic* and *Quickly Find Places Nearby*).
+- **Incognito Mode & System Performance**: TPM for Android and iOS Maps teams building and launching Incognito Mode; drove performance improvements across jank, startup/transition latency, and power/thermal metrics, and designed an integrated client-server testing framework.
+- **Google San Francisco Culture Lead (Jan 2020 – Mar 2022)**: Managed a $160k budget for SFO tentpole events and community grants, leading hybrid and socially distanced programming through COVID.
+
+### Google Maps — Software Engineer, Android Platform (L3 → L4, San Francisco, CA)
+*October 2018 – October 2020*
+- **Speakeasy Text-to-Speech (May 2019 Global Geo Hackathon Winner & Tech Lead)**: Built a 3-day hackathon prototype that swept Overall, People's Choice, and Site awards globally. Green-lit as a 20% project; served as Tech Lead (TL) for a 10-person cross-platform (iOS & Android) team over 9 months to launch local-language place and address pronunciation across 50 languages.
+- **Maps 15th Birthday UI Redux & Traveler Localization (2019 – Feb 2020)**: Major contributing SWE overhauling tab-switching backstack logic and prefetching frameworks for the Go, Contribute, and Updates tabs; led an initiative redefining how Maps localizes travelers to fix years-old international travel bugs.
+- **Caching Data Layer & Testing Oversight**: Led multi-team feature development and API reviews on a customizable caching data-layer and founded a testing oversight team.
+
+### Adobe Systems Federal — Software Developer & Government Consultant (Tech Lead, Project Romeo, McLean, VA)
+*June 2016 – September 2018 (2 yrs 4 mos)*
+- Developed, implemented, and configured web content management solutions using **Adobe Experience Manager (AEM)** Sites, Forms, Assets, Communities, and Apps with Java, JSP, Sightly, HTML, XML, JavaScript, and web services.
+- Served as Tech Lead on *Project Romeo*, constructing modular components emulating Microsoft Outlook (calendars, address books, task management) on an agile team meeting fixed federal customer deadlines.
+- Awarded the **Sales Achievement Award** by Adobe Systems Federal (January 2017).
+
+## Independent Development Projects
+- **Arioso String Quartet (https://ariosoquartet.com)**: Full-stack Node.js/Express and static Firebase/Cloudflare web platform maintained for his mother, violist Carol Briselli. Includes a 700+ piece interactive repertoire explorer, Schema.org JSON-LD graph, and `llms.txt` agent feeds.
+- **GamerBoy Solitaire**: React Native + Expo (TypeScript) iOS & Android Klondike Solitaire game featuring a heuristic solver for 100% solvable winning deals and deterministic daily challenges.
+- **Brand Eating**: Next.js 15 / React 19 / Tailwind CSS v4 application with automated feed syncing and newsletter drafting.
+
+## Science, Education, Theatre & Circus Arts Background
+- **Carnegie Mellon University (B.S. in Chemistry, Mellon College of Science, 2012 – May 2016)**:
+  - Awarded **Senior Leadership Recognition** (June 2016).
+  - **Undergraduate Research Assistant in Dr. Veronica Hinman's Evolutionary & Developmental Biology Lab** (Nov 2013 – Jan 2015, Mellon Institute of Industrial Research): Performed gene knockdowns on the fully sequenced genomes of the Sea Star and Sea Urchin to study regeneration and developmental traits.
+  - **Shanghai International Studies University (Summer 2013)**: Studied Mandarin Chinese for Oral Communication and The Structure of Chinese in Shanghai, China.
+  - Took CMU Computer Science classes and famously did so poorly that the department told him he could not take any more—before launching a 10+ year career as a software engineer and technical program manager.
+- **Camp Cayuga — Flying Trapeze & Circus Arts Counselor (Summers 2014 & 2015, Honesdale, PA)**:
+  - Worked on the board of the flying trapeze rig, caught trapeze flyers, taught and performed on lyra (aerial hoop), and taught circus arts (juggling, diabolo, devil sticks, spinning plates).
+- **Greek Sing Chair (Delta Tau Delta, May 2013 – May 2016)**: Produced and performed in 13-minute abridged Broadway musicals (*Wicked*, *American Idiot*), raising over $200,000 for Pittsburgh charities.
+- **AB Films Projectionist (Aug 2013 – Apr 2014)**: Projected $1 movies in the college auditorium and led the acquisition of a new $30,000 theatre-quality projector for Carnegie Mellon.
+- **Theatre Production Stage Manager, Director & Actor (25+ Productions)**: Stage Manager for *The 25th Annual Putnam County Spelling Bee*, *Bat Boy*, *Guts*, *Hi-Rise*, *The Drowsy Chaperone*, *All in the Timing*, *The Government Inspector*, *Urinetown*, and *Little Shop of Horrors*; ASM & Gun Wrangler for *Assassins*; Director of *The Rocky Horror Picture Show* shadow cast at CMU.
+- **Clinical Volunteering**: Hospital of the University of Pennsylvania (2011–2012, Neurosurgery ward & Abramson Cancer Center GI Oncology) and UPMC Shadyside (2013, shadowing anesthesiology & internal medicine residents).
+
+## Geography & Travel Ledger
+- **Cities Lived In**: New York City (current), San Francisco (6 years — 3 with a Pacific Ocean view from his bedroom), Seattle, Arlington VA, Pittsburgh, and Philadelphia; plus a summer in Shanghai, a month in London, and a month backpacking Western Europe.
+- **Regions Explored**: All 50 US states (many multiple times), all 5 Central Asian republics (Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan, Uzbekistan), and 8 Canadian provinces and territories.

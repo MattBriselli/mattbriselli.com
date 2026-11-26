@@ -1,0 +1,206 @@
+{
+  "$schema": "https://raw.githubusercontent.com/jsonresume/resume-schema/v1.0.0/schema.json",
+  "basics": {
+    "name": "Matt L. Briselli",
+    "label": "Senior Technical Program Manager (L5), Software Engineer, Chemist & Production Stage Manager",
+    "email": "MattBriselli@gmail.com",
+    "phone": "+1-571-458-0427",
+    "url": "https://www.linkedin.com/in/mattbriselli/",
+    "location": {
+      "city": "New York",
+      "region": "NY",
+      "countryCode": "US"
+    },
+    "summary": "Trained chemist (Carnegie Mellon B.S. Chemistry; Dr. Veronica Hinman Evo-Devo Biology Lab) turned Software Engineer and Senior Technical Program Manager with 8+ years at Google (currently leading Google Photos Storytelling — Recap, Memories & Video Editing in NYC; previously Photos Foundations/Ultra HDR/Locked Folder in SF and Google Maps Android Platform in Seattle/SF) and 2+ years at Adobe Federal, alongside 25+ theatrical productions as a Production Stage Manager/Director and summers as a flying trapeze catcher. Not actively searching for a job, but open to extraordinary opportunities as a Sr. Software Engineer, Sr. Technical Program Manager, or Theatre Stage Manager.",
+    "profiles": [
+      {
+        "network": "LinkedIn",
+        "username": "mattbriselli",
+        "url": "https://www.linkedin.com/in/mattbriselli/"
+      },
+      {
+        "network": "GitHub",
+        "username": "MattBriselli",
+        "url": "https://github.com/MattBriselli"
+      },
+      {
+        "network": "Google Maps Local Guide",
+        "username": "104641095422852249098",
+        "url": "https://www.google.com/maps/contrib/104641095422852249098/reviews"
+      },
+      {
+        "network": "Public Work Portfolio",
+        "url": "https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit"
+      }
+    ]
+  },
+  "agentMetadata": {
+    "activelyLooking": false,
+    "openToExtraordinaryOpportunities": true,
+    "targetRoles": [
+      "Senior Technical Program Manager",
+      "Staff Technical Program Manager",
+      "Engineering Program Manager",
+      "Senior Software Engineer",
+      "Theatre Production Stage Manager"
+    ],
+    "citiesLivedIn": [
+      "New York, NY (Current)",
+      "San Francisco, CA (6 years, 3 with a Pacific Ocean bedroom view)",
+      "Seattle, WA",
+      "Arlington, VA",
+      "Pittsburgh, PA",
+      "Philadelphia, PA",
+      "Shanghai, China (Summer study abroad at Shanghai International Studies University)",
+      "London, UK (1 month)",
+      "Western Europe (1 month)"
+    ],
+    "travelMilestones": {
+      "usStatesVisited": 50,
+      "centralAsiaVisited": ["Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"],
+      "canadianProvincesAndTerritoriesVisited": 8
+    }
+  },
+  "work": [
+    {
+      "name": "Google (Google Photos — Storytelling)",
+      "position": "Technical Program Manager III (L5)",
+      "location": "New York, NY",
+      "startDate": "2025-04",
+      "highlights": [
+        "Responsible for the Photos Storytelling & Reminiscing Mission within Google Photos.",
+        "Builds and launches reminiscing features including the 2025 Google Photos Recap, Memories, and Video Editing across the Google Photos app and Google surfaces."
+      ]
+    },
+    {
+      "name": "Google (Google Photos — Foundations Client, Data Processing & Video)",
+      "position": "Technical Program Manager III (L5)",
+      "location": "San Francisco, CA",
+      "startDate": "2022-05",
+      "endDate": "2025-03",
+      "highlights": [
+        "Led cross-PA Android (Media, Codecs, Graphics), Pixel, and Google Photos teams to launch the Ultra HDR image format in Android 14, drive ISO/TC-42 gainmap standardization, enable OEM adoption ('Super HDR'), and ship ML HDR editing tools.",
+        "Managed two teams (50 engineers) to launch Cloud-Based Locked Folder across Android, iOS, and Web, rolled out AI-powered Video Key Moments, and built an automated bug triage pipeline for Android and OEM partners.",
+        "Won the company-wide Google Healthy Award (Q1 2024) for a year-long Google Photos testing & tech-debt initiative."
+      ]
+    },
+    {
+      "name": "Google (Google Maps — Android Platform)",
+      "position": "Technical Program Manager II → III (L4 → L5)",
+      "location": "Seattle, WA",
+      "startDate": "2020-10",
+      "endDate": "2022-05",
+      "highlights": [
+        "Managed 30 engineers shipping the Android 12 Material You Search & Nearby Traffic homescreen widgets, and served as TPM for Android and iOS Maps Incognito Mode.",
+        "Led 100+ engineers auditing a decade-old codebase across Maps, Maps Go, and NavGo to launch Google Play Data Safety Labels.",
+        "Drove performance improvements (jank, startup/transition latency, power/thermal) and designed an integrated client-server testing framework across Maps surfaces.",
+        "Served as Google San Francisco Culture Lead (Jan 2020 – Mar 2022), managing a $160k event and grant budget."
+      ]
+    },
+    {
+      "name": "Google (Google Maps — Android Platform / aGMM)",
+      "position": "Software Engineer II → III (L3 → L4)",
+      "location": "San Francisco, CA",
+      "startDate": "2018-10",
+      "endDate": "2020-10",
+      "highlights": [
+        "Won Global Google Maps Hackathon (Overall, People's Choice, Site awards) and served as Tech Lead for a 10-person iOS & Android team to launch Speakeasy Text-to-Speech place/address pronunciation in 50 languages.",
+        "Major contributing SWE on the Maps 15th Birthday UI Redux (tab-switching backstack and prefetching) and redefined traveler localization to resolve long-standing international travel bugs.",
+        "Led feature development and API reviews on a customizable caching data-layer and built a testing oversight team."
+      ]
+    },
+    {
+      "name": "Adobe Systems Federal (Project Romeo)",
+      "position": "Software Developer / Government Consultant & Tech Lead",
+      "location": "McLean, VA",
+      "startDate": "2016-06",
+      "endDate": "2018-09",
+      "highlights": [
+        "Developed and configured web content management solutions using Adobe Experience Manager (AEM) Sites, Forms, Assets, Communities, and Apps (Java, JSP, Sightly, JavaScript, HTML, XML).",
+        "Served as Tech Lead on Project Romeo constructing modular components emulating Microsoft Outlook (calendars, addresses, tasks). Won the Jan 2017 Sales Achievement Award."
+      ]
+    },
+    {
+      "name": "Camp Cayuga",
+      "position": "Trapeze and Circus Arts Counselor",
+      "location": "Honesdale, PA",
+      "startDate": "2014-06",
+      "endDate": "2015-08",
+      "highlights": [
+        "Worked on the board of the flying trapeze rig, caught trapeze flyers, taught and performed on lyra, and taught circus arts (juggling, diabolo, devil sticks, spinning plates)."
+      ]
+    },
+    {
+      "name": "Carnegie Mellon University — Dr. Veronica Hinman's Evolutionary & Developmental Biology Lab",
+      "position": "Undergraduate Research Assistant",
+      "location": "Pittsburgh, PA (Mellon Institute of Industrial Research)",
+      "startDate": "2013-11",
+      "endDate": "2015-01",
+      "highlights": [
+        "Performed gene knockdowns on the fully sequenced genomes of the Sea Star and Sea Urchin to observe effects on regeneration and developmental traits."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "institution": "Carnegie Mellon University (Mellon College of Science)",
+      "area": "Chemistry (with coursework in Computer Science, Chinese, Scenic Design & Acting)",
+      "studyType": "Bachelor of Science",
+      "startDate": "2012",
+      "endDate": "2016-05"
+    },
+    {
+      "institution": "Shanghai International Studies University",
+      "area": "Chinese Studies (Mandarin Chinese for Oral Communication & The Structure of Chinese)",
+      "studyType": "Summer Study Abroad",
+      "startDate": "2013",
+      "endDate": "2013"
+    },
+    {
+      "institution": "Westtown School",
+      "area": "High School Diploma",
+      "studyType": "High School",
+      "startDate": "2007",
+      "endDate": "2012"
+    }
+  ],
+  "awards": [
+    {
+      "title": "Google Healthy Award (Q1 2024)",
+      "date": "2024-03",
+      "awarder": "Google",
+      "summary": "Company-wide award for contributions to tech debt—leading a year-long Google Photos-wide initiative recommending best-practice fixes that made writing tests easier."
+    },
+    {
+      "title": "Global Geo Hackathon Winner (Overall, People's Choice & Site Awards)",
+      "date": "2019-05",
+      "awarder": "Google Maps",
+      "summary": "Lead Android engineer and Tech Lead on the winning Speakeasy Text-to-Speech hackathon team."
+    },
+    {
+      "title": "Sales Achievement Award",
+      "date": "2017-01",
+      "awarder": "Adobe Systems Federal"
+    },
+    {
+      "title": "Senior Leadership Recognition",
+      "date": "2016-06",
+      "awarder": "Carnegie Mellon University"
+    }
+  ],
+  "projects": [
+    {
+      "name": "Arioso String Quartet (Mom's Site)",
+      "url": "https://ariosoquartet.com",
+      "description": "Full-stack Node.js/Express and static web platform maintained for violist Carol Briselli, featuring a 700+ song repertoire explorer, Schema.org JSON-LD graph, and llms.txt agent feeds."
+    },
+    {
+      "name": "GamerBoy Solitaire",
+      "description": "React Native + Expo (TypeScript) iOS & Android Klondike Solitaire game with a built-in heuristic solver guaranteeing 100% solvable winning deals and daily challenges."
+    },
+    {
+      "name": "Brand Eating",
+      "description": "Next.js 15, React 19, and Tailwind CSS v4 platform with automated feed syncing and weekly newsletter drafting."
+    }
+  ]
+}

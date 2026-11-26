@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# AI & Search Agent Feeds
+# LLM Overview: /llms.txt
+# Structured JSON Resume: /resume.json
+Sitemap: /sitemap.xml
