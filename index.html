@@ -9,7 +9,7 @@
       document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem("color-scheme") ?? "light dark";
     } catch {}
   </script>
-  <title>Matt L. Briselli — Technical Program Manager, Software Engineer, Chemist &amp; Stage Manager</title>
+  <title>Matt L. Briselli — Technical Program Manager, Software Engineer, Chemist &amp; Explorer</title>
   <meta name="description" content="Personal website of Matt L. Briselli (New York, NY): Technical Program Manager on Google Photos Storytelling (Recap, Memories, Video Editing), former Foundations/Ultra HDR &amp; Google Maps TPM and Software Engineer (8+ yrs at Google), Adobe Federal Tech Lead, Carnegie Mellon Chemist &amp; Hinman Evo-Devo Biology Lab researcher, theatre stage manager, and flying trapeze catcher.">
   <meta name="keywords" content="Matt Briselli, Matt L. Briselli, Matthew Lewis Briselli, Senior Technical Program Manager, Senior Software Engineer, Engineering Program Manager, Production Stage Manager, Google Photos Storytelling, Google Photos Recap, Memories, Ultra HDR, Locked Folder, Google Maps Speakeasy, Incognito Mode, Adobe Experience Manager, Carnegie Mellon Chemistry, Veronica Hinman Lab, Arioso String Quartet">
   <meta name="author" content="Matt L. Briselli">
@@ -20,17 +20,19 @@
   <meta property="og:type" content="profile">
   <meta property="og:site_name" content="Matt L. Briselli">
   <meta property="og:locale" content="en_US">
-  <meta property="og:title" content="Matt L. Briselli — Sr. TPM, Software Engineer, Chemist &amp; Stage Manager">
-  <meta property="og:description" content="8+ years at Google (Software Engineer → Technical Program Manager across Google Maps &amp; Google Photos Storytelling/Foundations), 2+ years at Adobe, CMU Chemist, flying trapeze catcher, theatre stage manager, and 50-state / Central Asia traveler.">
+  <meta property="og:title" content="Matt L. Briselli — TPM, Software Engineer, Chemist &amp; World Explorer">
+  <meta property="og:description" content="8+ years at Google (SWE → TPM on Maps &amp; Photos), 2+ years at Adobe, CMU Chemist, flying trapeze catcher, theatre stage manager, and Level 10 Local Guide (1.18B+ photo views across 50 states &amp; Central Asia).">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="Matt L. Briselli — Sr. TPM, Software Engineer, Chemist &amp; Stage Manager">
-  <meta name="twitter:description" content="8+ years at Google (SWE → TPM on Maps &amp; Photos Storytelling/Foundations), 2+ years at Adobe, CMU Chemist, trapeze artist, stage manager, and 50-state traveler.">
+  <meta name="twitter:title" content="Matt L. Briselli — TPM, Software Engineer, Chemist &amp; World Explorer">
+  <meta name="twitter:description" content="8+ years at Google (SWE → TPM on Maps &amp; Photos), 2+ years at Adobe, CMU Chemist, trapeze artist, stage manager, and 1.18B+ views on Google Maps.">
 
   <!-- Machine-Readable Feeds for AI Search & Recruiting Agents (AEO / GEO) -->
   <link rel="alternate" type="text/markdown" title="Matt L. Briselli — LLM &amp; AI Agent Overview (llms.txt)" href="/llms.txt">
   <link rel="alternate" type="application/json" title="Matt L. Briselli — Structured JSON Resume &amp; Agent Feed" href="/resume.json">
 
+  <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="styles.css">
+  <script src="vendor/leaflet.js" defer></script>
   <script src="script.js" defer></script>
 
   <!-- Schema.org JSON-LD Structured Data for Search Engines & AI Agents -->
@@ -41,8 +43,8 @@
       {
         "@type": "ProfilePage",
         "@id": "#profile-page",
-        "name": "Matt L. Briselli — Personal Website & Stitched Curriculum Vitae",
-        "description": "Official personal website, software engineering & technical program management portfolio, scientific research background, theatrical stage management credits, and travel ledger of Matt L. Briselli.",
+        "name": "Matt L. Briselli — Personal Website & Curriculum Vitae",
+        "description": "Official personal website, interactive Google Maps photo heatmap & slideshow, software engineering & technical program management portfolio, scientific research background, and theatrical stage management credits of Matt L. Briselli.",
         "mainEntity": { "@id": "#matt-briselli" }
       },
       {
@@ -124,10 +126,9 @@
       <div class="header-controls">
         <nav aria-label="Primary">
           <ul class="nav-list">
-            <li><a href="#story">Story</a></li>
-            <li><a href="#work">Shipped &amp; Projects</a></li>
-            <li><a href="#resume">CV &amp; Theatre</a></li>
-            <li><a href="#atlas">Atlas &amp; Life</a></li>
+            <li><a href="#atlas">World Map &amp; Photos</a></li>
+            <li><a href="#work">Projects</a></li>
+            <li><a href="#resume">Resume</a></li>
             <li><a href="#contact">Contact</a></li>
           </ul>
         </nav>
@@ -159,12 +160,12 @@
   </header>
 
   <main class="site-main">
-    <!-- Hero / Editorial Intro -->
+    <!-- Compact Hero / Intro -->
     <section class="hero" aria-labelledby="main-heading">
-      <p class="eyebrow">Chemist · Software Engineer · Technical Program Manager · Stage Manager · Trapeze Catcher</p>
-      <h1 id="main-heading" tabindex="-1">From sea urchin gene knockdowns &amp; a flying trapeze rig to shipping features for billions at Google.</h1>
+      <p class="eyebrow">NYC · Google Photos Storytelling TPM · Former SWE · CMU Chemist · Trapeze Catcher · Stage Manager</p>
+      <h1 id="main-heading" tabindex="-1">Matt L. Briselli</h1>
       <p class="lead">
-        I’m <strong>Matt L. Briselli</strong>. I trained as a chemist at <strong>Carnegie Mellon University</strong> (where I did so poorly in my Computer Science classes that the department told me I couldn’t take any more), researched sea star regeneration in Dr. Veronica Hinman’s Evolutionary/Developmental Biology lab, studied Mandarin in Shanghai, caught flyers on a trapeze rig, and spent the last decade building software and leading large-scale engineering programs—first for <strong>2+ years at Adobe</strong>, and for <strong>8+ years at Google</strong> across Google Maps and Google Photos.
+        Trained as a chemist at <strong>Carnegie Mellon</strong> (where I did so poorly in CS that they told me I couldn’t take any more) and researched sea star regeneration in an Evo-Devo Biology lab before spending <strong>2+ years at Adobe</strong> and <strong>8+ years at Google</strong> (Maps &amp; Photos). Former flying trapeze catcher, 25-show theatre stage manager, and traveler across all 50 states, all of Central Asia, and 8 Canadian provinces.
       </p>
 
       <ul class="quick-links" role="list">
@@ -180,13 +181,12 @@
           </a>
         </li>
         <li>
-          <a href="https://www.linkedin.com/in/mattbriselli/" class="pill-link" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" class="pill-link" target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-              <rect x="2" y="9" width="4" height="12"></rect>
-              <circle cx="4" cy="4" r="2"></circle>
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
             </svg>
-            <span>LinkedIn (/in/mattbriselli)</span>
+            <span>Google Maps (1.18B+ Views)</span>
             <span class="arrow" aria-hidden="true">↗</span>
           </a>
         </li>
@@ -195,17 +195,18 @@
             <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
             </svg>
-            <span>GitHub (@MattBriselli)</span>
+            <span>GitHub</span>
             <span class="arrow" aria-hidden="true">↗</span>
           </a>
         </li>
         <li>
-          <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" class="pill-link" target="_blank" rel="noopener noreferrer">
+          <a href="https://www.linkedin.com/in/mattbriselli/" class="pill-link" target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-              <circle cx="12" cy="10" r="3"></circle>
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+              <rect x="2" y="9" width="4" height="12"></rect>
+              <circle cx="4" cy="4" r="2"></circle>
             </svg>
-            <span>Google Maps Reviews</span>
+            <span>LinkedIn</span>
             <span class="arrow" aria-hidden="true">↗</span>
           </a>
         </li>
@@ -221,471 +222,15 @@
             <span class="arrow" aria-hidden="true">↗</span>
           </a>
         </li>
-        <li>
-          <a href="#resume" class="pill-link pill-link-subtle">
-            <span>Stitched CV</span>
-            <span class="arrow" aria-hidden="true">↓</span>
-          </a>
-        </li>
       </ul>
     </section>
 
-    <!-- 01: The Non-Linear Story -->
-    <section id="story" class="section" aria-labelledby="story-heading">
-      <div class="section-header">
-        <span class="section-index" aria-hidden="true">01</span>
-        <h2 id="story-heading">A Non-Linear Background</h2>
-      </div>
-
-      <div class="story-grid">
-        <article class="story-card">
-          <h3>The Chemist Who Was Banned From CMU Computer Science</h3>
-          <p>
-            At <strong>Carnegie Mellon University</strong>, I earned my B.S. in Chemistry from the Mellon College of Science and spent over a year in <strong>Dr. Veronica Hinman’s Evolutionary &amp; Developmental Biology Lab</strong> knocking down genes in sea stars and sea urchins to study regeneration. When I tried taking CMU Computer Science courses, I did so poorly that the university told me I couldn’t take any more. Naturally, I became a software engineer anyway—spending over two years building enterprise systems at <strong>Adobe</strong> before joining <strong>Google</strong> as an Android Software Engineer and later transitioning into Technical Program Management.
-          </p>
-        </article>
-
-        <article class="story-card">
-          <h3>Calling Cues, Catching on the Trapeze &amp; $1 Movies</h3>
-          <p>
-            Before leading 100-engineer software launches, I lived in the theatre booth and on the flying trapeze rig. I spent summers at Camp Cayuga working the board on the <strong>flying trapeze rig</strong>, catching flyers, and performing on <strong>lyra</strong>. On campus, I served as <strong>Production Stage Manager, Director, and Actor</strong> across 25+ shows (from <em>Assassins</em> and <em>Bat Boy</em> to directing the <em>Rocky Horror</em> shadow cast), acquired a $30,000 auditorium cinema projector as an AB Films projectionist, and chaired <strong>Greek Sing</strong>—producing 13-minute abridged musicals (<em>Wicked</em>, <em>American Idiot</em>) that raised over <strong>$200,000</strong> for Pittsburgh charities.
-          </p>
-        </article>
-      </div>
-    </section>
-
-    <!-- 02: Shipped Work & Active Dev Projects -->
-    <section id="work" class="section" aria-labelledby="work-heading">
-      <div class="section-header">
-        <span class="section-index" aria-hidden="true">02</span>
-        <h2 id="work-heading">Dev Projects &amp; Shipped Google Features</h2>
-      </div>
-
-      <ul class="directory-grid" role="list">
-        <!-- Mom's Site: Arioso String Quartet -->
-        <li class="directory-card featured-card">
-          <div class="card-meta">
-            <span class="badge">Mom’s Site · Active Maintainer</span>
-            <span class="card-year">ariosoquartet.com</span>
-          </div>
-          <h3>
-            <a href="https://ariosoquartet.com" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              Arioso String Quartet
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </h3>
-          <p>
-            Full-stack &amp; static web application I built and maintain for my mom, violist Carol Briselli, and her Greater Philadelphia string ensemble. Features an interactive 700+ song repertoire explorer, automated SEO/JSON-LD graph generation, and <code>llms.txt</code> AI search feeds.
-          </p>
-          <ul class="tag-list" role="list" aria-label="Arioso String Quartet technologies">
-            <li>Node.js &amp; Express</li>
-            <li>Static Build &amp; Firebase/Heroku</li>
-            <li>Schema.org &amp; llms.txt</li>
-          </ul>
-        </li>
-
-        <!-- Google Photos Storytelling: Recap, Memories & Video Editing -->
-        <li class="directory-card">
-          <div class="card-meta">
-            <span class="badge">Google Photos Storytelling (NYC)</span>
-            <span class="card-year">2025 — Present</span>
-          </div>
-          <h3>
-            <a href="https://www.linkedin.com/in/mattbriselli/" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              Photos Recap, Memories &amp; Video Editing
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </h3>
-          <p>
-            Lead Technical Program Manager (L5) for the Photos Storytelling &amp; Reminiscing Mission within Google Photos in New York—shipping the <strong>2025 Google Photos Recap</strong>, <strong>Memories</strong>, <strong>AI Video Key Moments</strong>, and video editing experiences across Google Photos and Google surfaces.
-          </p>
-          <ul class="tag-list" role="list" aria-label="Google Photos Storytelling tags">
-            <li>Storytelling Mission TPM</li>
-            <li>2025 Photos Recap</li>
-            <li>Memories &amp; AI Video</li>
-          </ul>
-        </li>
-
-        <!-- Ultra HDR Images -->
-        <li class="directory-card">
-          <div class="card-meta">
-            <span class="badge">Google Photos &amp; Android 14</span>
-            <span class="card-year">2022 — 2025</span>
-          </div>
-          <h3>
-            <a href="https://developer.android.com/media/platform/hdr-image-format" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              Ultra HDR Image Format
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </h3>
-          <p>
-            Lead Technical Program Manager across Google Photos, Android Media/Codecs/Graphics, and Pixel. Secured initial funding, drove the Android 14 default capture launch, championed ISO/TC-42 gainmap standardization, aligned Android OEM adoption (“Super HDR”), and launched ML HDR editing tools.
-          </p>
-          <div class="press-links">
-            <span>Press:</span>
-            <a href="https://www.forbes.com/sites/paulmonckton/2023/05/14/stunning-android-14-feature-will-bring-a-massive-google-photos-upgrade/" target="_blank" rel="noopener noreferrer">Forbes</a> ·
-            <a href="https://www.androidpolice.com/android-14-ultra-hdr-hands-on/" target="_blank" rel="noopener noreferrer">Android Police</a> ·
-            <a href="https://9to5google.com/2025/06/27/google-photos-ultra-hdr/" target="_blank" rel="noopener noreferrer">9to5Google</a>
-          </div>
-          <ul class="tag-list" role="list" aria-label="Ultra HDR tags">
-            <li>Cross-PA Lead TPM</li>
-            <li>ISO/TC-42 Standard</li>
-            <li>ML HDR Editing</li>
-          </ul>
-        </li>
-
-        <!-- Cloud-Based Locked Folder -->
-        <li class="directory-card">
-          <div class="card-meta">
-            <span class="badge">Google Photos Privacy</span>
-            <span class="card-year">2023</span>
-          </div>
-          <h3>
-            <a href="https://blog.google/products/photos/locked-folder-cloud-backup/" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              Cloud-Based Locked Folder
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </h3>
-          <p>
-            Managed 50 engineers across two teams to expand local-only private media storage into encrypted, cross-device cloud backup across Android, iOS, and Web—defining telemetry for DAU and power-user cohorts and steering legal and privacy reviews.
-          </p>
-          <div class="press-links">
-            <span>Press:</span>
-            <a href="https://techcrunch.com/2023/08/29/google-photos-now-lets-you-sync-your-locked-folder-private-photos-across-devices/" target="_blank" rel="noopener noreferrer">TechCrunch</a> ·
-            <a href="https://www.pcmag.com/news/google-photos-expands-locked-folders-access-to-ios-the-web" target="_blank" rel="noopener noreferrer">PCMag</a>
-          </div>
-          <ul class="tag-list" role="list" aria-label="Locked Folder tags">
-            <li>50-Engineer Program</li>
-            <li>Android · iOS · Web</li>
-            <li>Privacy &amp; Security</li>
-          </ul>
-        </li>
-
-        <!-- Speakeasy Text-to-Speech -->
-        <li class="directory-card">
-          <div class="card-meta">
-            <span class="badge">Google Maps · Hackathon Winner &amp; TL</span>
-            <span class="card-year">2019 — 2020</span>
-          </div>
-          <h3>
-            <a href="https://blog.google/products/maps/speak-easy-while-traveling/" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              Speakeasy Text-to-Speech
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </h3>
-          <p>
-            Built a 3-day prototype that swept Overall, People’s Choice, and Site awards in a global Google Maps Hackathon. Green-lit as a 20% project where I served as Tech Lead for a 10-person iOS &amp; Android team to launch local-language place and address pronunciation in 50 languages.
-          </p>
-          <div class="press-links">
-            <span>Press:</span>
-            <a href="https://techcrunch.com/2019/11/13/google-maps-adds-a-new-translation-feature-that-speaks-place-names-out-loud/" target="_blank" rel="noopener noreferrer">TechCrunch</a> ·
-            <a href="https://arstechnica.com/gadgets/2019/11/google-maps-translate-feature-will-speak-local-place-names/" target="_blank" rel="noopener noreferrer">Ars Technica</a> ·
-            <a href="https://venturebeat.com/business/google-maps-gets-text-to-speech-translations-for-place-names-and-addresses-in-50-languages/" target="_blank" rel="noopener noreferrer">VentureBeat</a>
-          </div>
-          <ul class="tag-list" role="list" aria-label="Speakeasy tags">
-            <li>Software Engineer &amp; TL</li>
-            <li>iOS &amp; Android</li>
-            <li>50 Languages</li>
-          </ul>
-        </li>
-
-        <!-- Maps Incognito, Material You Widgets & Play Safety Labels -->
-        <li class="directory-card">
-          <div class="card-meta">
-            <span class="badge">Google Maps Android Platform</span>
-            <span class="card-year">2019 — 2022</span>
-          </div>
-          <h3>
-            <a href="https://blog.google/products/android/widgets-just-got-better-android-12/" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              Maps Incognito, Material You &amp; Safety Labels
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </h3>
-          <p>
-            Shipped Android &amp; iOS <strong>Incognito Mode</strong>, led 30 engineers building Maps’ <strong>Android 12 Material You Widgets</strong>, orchestrated 100+ engineers auditing a decade-old codebase for <strong>Google Play Data Safety Labels</strong>, and contributed to the <strong>Maps 15th Birthday UI Redux</strong>.
-          </p>
-          <div class="press-links">
-            <span>Press:</span>
-            <a href="https://www.androidpolice.com/google-maps-gets-a-widget-that-starts-you-navigating-right-from-the-home-screen/" target="_blank" rel="noopener noreferrer">Android Police</a> ·
-            <a href="https://www.forbes.com/sites/micheleherrmann/2020/02/06/google-maps-marks-15th-birthday-with-new-updates/" target="_blank" rel="noopener noreferrer">Forbes</a>
-          </div>
-          <ul class="tag-list" role="list" aria-label="Maps Platform tags">
-            <li>1B+ Users</li>
-            <li>100-Engineer Audit</li>
-            <li>Incognito &amp; Material You</li>
-          </ul>
-        </li>
-
-        <!-- Independent Lab: GamerBoy Solitaire & Brand Eating -->
-        <li class="directory-card">
-          <div class="card-meta">
-            <span class="badge">Independent Dev Lab</span>
-            <span class="card-year">2026</span>
-          </div>
-          <h3>
-            <a href="https://github.com/MattBriselli" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              GamerBoy Solitaire &amp; Brand Eating
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </h3>
-          <p>
-            Recent builds in my local workshop: <strong>GamerBoy Solitaire</strong> (an iOS/Android React Native + Expo Klondike game with a heuristic solver for 100% winnable deals) and <strong>Brand Eating</strong> (a Next.js 15 &amp; React 19 platform with automated feed syncing and newsletter drafting).
-          </p>
-          <ul class="tag-list" role="list" aria-label="Independent projects tech stack">
-            <li>React Native &amp; Expo</li>
-            <li>Next.js 15 &amp; React 19</li>
-            <li>TypeScript</li>
-          </ul>
-        </li>
-      </ul>
-    </section>
-
-    <!-- 03: Stitched Curriculum Vitae (Tech, Science & Theatre) -->
-    <section id="resume" class="section" aria-labelledby="resume-heading">
+    <!-- 01: World Photo Heatmap & Interactive Google Maps Slideshow (Right Up Top!) -->
+    <section id="atlas" class="section section-tight" aria-labelledby="atlas-heading">
       <div class="section-header section-header-split">
         <div class="section-title-group">
-          <span class="section-index" aria-hidden="true">03</span>
-          <h2 id="resume-heading">Stitched Curriculum Vitae</h2>
-        </div>
-        <div class="resume-actions">
-          <a href="https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit" class="action-link" target="_blank" rel="noopener noreferrer">
-            <span>Public Work Doc</span>
-            <span class="arrow" aria-hidden="true">↗</span>
-          </a>
-          <button type="button" class="action-btn" id="print-resume-btn">
-            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="6 9 6 2 18 2 18 9"></polyline>
-              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
-              <rect x="6" y="14" width="12" height="8"></rect>
-            </svg>
-            <span>Print / Save PDF</span>
-          </button>
-        </div>
-      </div>
-
-      <!-- Filter controls to explore different facets of Matt's stitched resumes -->
-      <div class="cv-filter-bar" role="group" aria-label="Filter resume by discipline">
-        <button type="button" class="filter-chip" data-filter="all" aria-pressed="true">All Disciplines</button>
-        <button type="button" class="filter-chip" data-filter="tech" aria-pressed="false">Software Engineering &amp; TPM (10+ yrs)</button>
-        <button type="button" class="filter-chip" data-filter="science" aria-pressed="false">Chemistry, Biology &amp; Clinical</button>
-        <button type="button" class="filter-chip" data-filter="theatre" aria-pressed="false">Theatre Stage Management &amp; Circus Arts</button>
-      </div>
-
-      <div class="resume-container">
-        <!-- Main Experience & Productions Column -->
-        <div class="resume-block">
-          <h3 class="resume-category">Chronological Experience &amp; Productions</h3>
-          <ol class="timeline-list" role="list">
-            <!-- Google Photos Storytelling TPM (NYC) -->
-            <li class="timeline-item" data-category="tech">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Technical Program Manager — Google Photos, Storytelling</h4>
-                  <p class="company-name">Google · Technical Program Manager III (L5) · New York, NY</p>
-                </div>
-                <time class="timeline-date">Apr 2025 — Present</time>
-              </div>
-              <ul class="resume-bullets">
-                <li>Lead Technical Program Manager responsible for the <strong>Photos Storytelling &amp; Reminiscing Mission</strong> within Google Photos.</li>
-                <li>Drive cross-functional execution for flagship reminiscing and creation experiences—including the <strong>2025 Google Photos Recap</strong>, <strong>Memories</strong>, and <strong>Video Editing</strong> across the Google Photos app and partner Google surfaces.</li>
-              </ul>
-            </li>
-
-            <!-- Google Photos Foundations, Data Processing & Video TPM (SF) -->
-            <li class="timeline-item" data-category="tech">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Technical Program Manager — Google Photos, Foundations Client, Data Processing &amp; Video</h4>
-                  <p class="company-name">Google · Technical Program Manager III (L5) · San Francisco, CA</p>
-                </div>
-                <time class="timeline-date">May 2022 — Mar 2025</time>
-              </div>
-              <ul class="resume-bullets">
-                <li><strong>Ultra HDR Format &amp; ML HDR Editing:</strong> Led cross-PA Android (Media, Codecs, Graphics), Pixel, and Google Photos teams to fund, standardize (ISO/TC-42), and launch the gainmap-based Ultra HDR format in Android 14, iOS HDR sharing interoperability, Android OEM camera support (“Super HDR”), and ML-powered HDR photo editing.</li>
-                <li><strong>Cloud-Based Locked Folder &amp; AI Video Key Moments:</strong> Managed two teams (50 engineers) to launch encrypted cloud backup for Locked Folder across Android, iOS, and Web, and rolled out AI-powered Video Key Moments and core iOS/Android/Backend video infrastructure upgrades.</li>
-                <li><strong>Google Healthy Award (Q1 2024) &amp; Automated Triage:</strong> Won a company-wide Google Healthy award for leading a year-long Google Photos testing &amp; tech-debt initiative; built automated bug triage across Android and OEM partners and secured annual engineering headcount.</li>
-              </ul>
-            </li>
-
-            <!-- Google Maps TPM (Seattle) -->
-            <li class="timeline-item" data-category="tech">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Technical Program Manager — Google Maps, Android Platform</h4>
-                  <p class="company-name">Google · Technical Program Manager II → III (L4 → L5) · Seattle, WA</p>
-                </div>
-                <time class="timeline-date">Oct 2020 — May 2022</time>
-              </div>
-              <ul class="resume-bullets">
-                <li><strong>Google Play Data Safety Labels:</strong> Designed and led a two-stage codebase audit across 100+ engineers to inspect decade-old code and ship initial Play Safety Labels and zero-headcount release runbooks for Google Maps, Maps Go, and Navigation for Maps Go.</li>
-                <li><strong>Material You, Android 12 Widgets &amp; Incognito Mode:</strong> Managed 30 engineers shipping Maps’ first Material You dynamic-color homescreen widgets (<em>Nearby Traffic</em> and <em>Quickly Find Places Nearby</em>) for Android 12 (SDK 31), and served as TPM for Android and iOS <strong>Incognito Mode</strong>.</li>
-                <li><strong>Performance, Quality &amp; Culture Leadership:</strong> Drove system performance improvements (jank, startup/transition latency, power/thermal), designed an integrated client-server testing framework, and served as <strong>Google San Francisco Culture Lead</strong> (Jan 2020 – Mar 2022), managing a $160k event and community grant budget.</li>
-              </ul>
-            </li>
-
-            <!-- Google Maps SWE (SF) -->
-            <li class="timeline-item" data-category="tech">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Software Engineer — Google Maps, Android Platform (aGMM)</h4>
-                  <p class="company-name">Google · Software Engineer II → III (L3 → L4) · San Francisco, CA</p>
-                </div>
-                <time class="timeline-date">Oct 2018 — Oct 2020</time>
-              </div>
-              <ul class="resume-bullets">
-                <li><strong>Speakeasy Text-to-Speech (Global Geo Hackathon Winner &amp; Tech Lead):</strong> Built a 3-day prototype that swept Overall, People’s Choice, and Site awards; green-lit as a 20% project where I served as Tech Lead for a 10-person iOS &amp; Android team to launch local-language place and address pronunciation in 50 languages.</li>
-                <li><strong>Maps 15th Birthday UI Redux &amp; Localization Overhaul:</strong> Overhauled tab-switching backstack logic and prefetching across Go, Contribute, and Updates tabs; led a project redefining how Maps localizes travelers to fix years-old international travel bugs.</li>
-                <li><strong>Caching Data Layer &amp; System Health:</strong> Led multi-team feature development and API reviews on a customizable caching data-layer and established a testing oversight team to prevent system health regressions.</li>
-              </ul>
-            </li>
-
-            <!-- Adobe Systems Federal -->
-            <li class="timeline-item" data-category="tech">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Software Developer &amp; Government Consultant (Tech Lead)</h4>
-                  <p class="company-name">Adobe Systems Federal · Project Romeo · McLean, VA</p>
-                </div>
-                <time class="timeline-date">Jun 2016 — Sep 2018 (2 yrs 4 mos)</time>
-              </div>
-              <ul class="resume-bullets">
-                <li>Developed and architected web content management and enterprise solutions using <strong>Adobe Experience Manager (AEM)</strong> Sites, Forms, Assets, Communities, and Apps with Java, JSP, Sightly, JavaScript, HTML, XML, and web services.</li>
-                <li>Served as Tech Lead on <em>Project Romeo</em>, constructing modular components emulating Microsoft Outlook (calendars, addresses, tasks) on an agile team meeting fixed federal customer deadlines. Awarded the <strong>Adobe Systems Federal Sales Achievement Award (Jan 2017)</strong>.</li>
-              </ul>
-            </li>
-
-            <!-- Camp Cayuga Trapeze & Circus Arts -->
-            <li class="timeline-item" data-category="theatre">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Flying Trapeze Catcher &amp; Circus Arts Counselor</h4>
-                  <p class="company-name">Camp Cayuga · Honesdale, PA</p>
-                </div>
-                <time class="timeline-date">Summers 2014 &amp; 2015</time>
-              </div>
-              <ul class="resume-bullets">
-                <li>Worked on the board of the flying trapeze rig, caught trapeze flyers in mid-air, taught and performed on <strong>lyra (aerial hoop)</strong>, and instructed circus arts (juggling, diabolo, devil sticks, spinning plates).</li>
-              </ul>
-            </li>
-
-            <!-- Carnegie Mellon Evo-Devo Biology Lab & Chemistry -->
-            <li class="timeline-item" data-category="science">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Undergraduate Research Assistant — Dr. Veronica Hinman’s Evo-Devo Biology Lab</h4>
-                  <p class="company-name">Carnegie Mellon University · Mellon Institute of Industrial Research · Pittsburgh, PA</p>
-                </div>
-                <time class="timeline-date">Nov 2013 — Jan 2015 (1 yr 3 mos)</time>
-              </div>
-              <ul class="resume-bullets">
-                <li>Conducted Evolutionary and Developmental Biology research performing <strong>gene knockdowns on the fully sequenced genomes of the Sea Star and Sea Urchin</strong> to investigate their effects on regeneration and developmental traits.</li>
-                <li>Earned a <strong>B.S. in Chemistry</strong> (May 2016) with <strong>Senior Leadership Recognition</strong>, plus Mandarin Chinese immersion at <strong>Shanghai International Studies University</strong> (Summer 2013).</li>
-              </ul>
-            </li>
-
-            <!-- CMU Theatre, Greek Sing Chair & AB Films -->
-            <li class="timeline-item" data-category="theatre">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Production Stage Manager, Greek Sing Chair &amp; Head Projectionist</h4>
-                  <p class="company-name">Carnegie Mellon University (Scotch’n’Soda, Turn Around, Purnell, AB Films) &amp; Westtown School</p>
-                </div>
-                <time class="timeline-date">2008 — May 2016</time>
-              </div>
-              <ul class="resume-bullets">
-                <li><strong>Delta Tau Delta Greek Sing Chair (2013–2016):</strong> Produced, abridged, and acted in 13-minute productions of full-length musicals (<em>Wicked</em>, <em>American Idiot</em>), raising over <strong>$200,000</strong> for Pittsburgh charities.</li>
-                <li><strong>Production Stage Management &amp; Directing (25+ Productions):</strong> Stage Manager for <em>The 25th Annual Putnam County Spelling Bee</em>, <em>Bat Boy</em>, <em>Guts</em>, <em>Hi-Rise</em>, <em>The Drowsy Chaperone</em>, <em>All in the Timing</em>, <em>The Government Inspector</em>, <em>Urinetown</em>, and <em>Little Shop of Horrors</em>; ASM &amp; Gun Wrangler for <em>Assassins</em>; Director of <em>The Rocky Horror Picture Show</em> shadow cast.</li>
-                <li><strong>AB Films Projectionist (2013–2014):</strong> Projected $1 films in the university auditorium and successfully led the proposal and acquisition of a new <strong>$30,000 theatre-quality projector</strong> for Carnegie Mellon.</li>
-              </ul>
-            </li>
-
-            <!-- Clinical & Medical Volunteering -->
-            <li class="timeline-item" data-category="science">
-              <div class="timeline-header">
-                <div>
-                  <h4 class="role-title">Clinical Volunteer &amp; Medical Resident Shadow</h4>
-                  <p class="company-name">Hospital of the University of Pennsylvania (Philadelphia) &amp; UPMC Shadyside (Pittsburgh)</p>
-                </div>
-                <time class="timeline-date">2011 — 2013</time>
-              </div>
-              <ul class="resume-bullets">
-                <li>Served on a neurosurgery ward and in the <strong>Abramson Cancer Center</strong> supporting gastrointestinal oncology patients at Penn Medicine (11 mos), and shadowed anesthesiology and internal medicine residents at UPMC Shadyside.</li>
-              </ul>
-            </li>
-          </ol>
-        </div>
-
-        <!-- Sidebar: Disciplines, Awards, Education -->
-        <div class="resume-sidebar">
-          <div class="resume-block">
-            <h3 class="resume-category">Core Disciplines &amp; Skills</h3>
-            <dl class="skills-dl">
-              <div class="skill-group">
-                <dt>Technical Program Management</dt>
-                <dd>Cross-PA 0→1 consumer launches (50–100+ engineers), Google Photos Storytelling/Recap/Memories, Ultra HDR &amp; ISO standardization, privacy/legal navigation, stakeholder leadership.</dd>
-              </div>
-              <div class="skill-group">
-                <dt>Software Engineering</dt>
-                <dd>Java, JavaScript / TypeScript / AppsScript, Go, Python, SQL, Swift, C, HTML &amp; Modern CSS, AEM/Sightly; Android platform architecture, data caching layers, Next.js/React, React Native, Node.js.</dd>
-              </div>
-              <div class="skill-group">
-                <dt>Stage Management &amp; Live Production</dt>
-                <dd>Calling cues for live musicals &amp; plays, technical direction, crew management, formal stage weapon safety, scenic &amp; lighting builds.</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div class="resume-block">
-            <h3 class="resume-category">Honors &amp; Awards</h3>
-            <dl class="skills-dl">
-              <div class="skill-group">
-                <dt>Google Healthy Award (Q1 2024)</dt>
-                <dd>Company-wide award for leading a year-long Google Photos testing &amp; tech-debt best-practices initiative.</dd>
-              </div>
-              <div class="skill-group">
-                <dt>Global Geo Hackathon Winner (2019)</dt>
-                <dd>Won Overall, People’s Choice &amp; Site awards for Speakeasy TTS across Google Maps globally.</dd>
-              </div>
-              <div class="skill-group">
-                <dt>Adobe Sales Achievement Award (2017)</dt>
-                <dd>Recognized at Adobe Systems Federal for customer delivery impact.</dd>
-              </div>
-              <div class="skill-group">
-                <dt>CMU Senior Leadership Recognition (2016)</dt>
-                <dd>Awarded at Carnegie Mellon graduation for campus-wide leadership.</dd>
-              </div>
-            </dl>
-          </div>
-
-          <div class="resume-block">
-            <h3 class="resume-category">Education</h3>
-            <div class="education-item">
-              <h4 class="role-title">Carnegie Mellon University</h4>
-              <p class="company-name">B.S. in Chemistry · Mellon College of Science</p>
-              <p class="timeline-date">Pittsburgh, PA · 2012 — 2016</p>
-              <p class="edu-note">Evo-Devo Biology Lab research, Scotch’n’Soda Theatre, Delta Tau Delta Greek Sing Chair, AB Films, Sexual Assault Advisor.</p>
-            </div>
-            <div class="education-item">
-              <h4 class="role-title">Shanghai International Studies University</h4>
-              <p class="company-name">Chinese Studies (Mandarin Oral Communication &amp; Structure)</p>
-              <p class="timeline-date">Shanghai, China · Summer 2013</p>
-            </div>
-            <div class="education-item">
-              <h4 class="role-title">Westtown School</h4>
-              <p class="company-name">High School Diploma</p>
-              <p class="timeline-date">West Chester, PA · 2007 — 2012</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 04: Atlas, World Photo Heatmap & Interactive Google Maps Slideshow -->
-    <section id="atlas" class="section" aria-labelledby="atlas-heading">
-      <div class="section-header section-header-split">
-        <div class="section-title-group">
-          <span class="section-index" aria-hidden="true">04</span>
-          <h2 id="atlas-heading">World Photo Heatmap, Slideshow &amp; Travel Atlas</h2>
+          <span class="section-index" aria-hidden="true">01</span>
+          <h2 id="atlas-heading">World Photo Heatmap &amp; Field Notes</h2>
         </div>
         <a href="https://www.google.com/maps/contrib/104641095422852249098/photos" class="action-link" target="_blank" rel="noopener noreferrer">
           <span>Level 10 Local Guide Profile</span>
@@ -703,15 +248,15 @@
         </div>
         <dl class="telemetry-stats">
           <div class="telemetry-stat">
-            <dt>Total Photo Views</dt>
+            <dt>Photo Views</dt>
             <dd id="stat-total-views">1,185,244,022</dd>
           </div>
           <div class="telemetry-stat">
-            <dt>Photos Uploaded</dt>
+            <dt>Photos</dt>
             <dd id="stat-total-photos">66,085</dd>
           </div>
           <div class="telemetry-stat">
-            <dt>Written Reviews</dt>
+            <dt>Reviews</dt>
             <dd id="stat-total-reviews">3,591</dd>
           </div>
           <div class="telemetry-stat">
@@ -721,7 +266,7 @@
         </dl>
       </div>
 
-      <!-- Interactive Controls: Region Camera Presets, Layer Toggles & Category Filters -->
+      <!-- Interactive Controls: Region Camera Presets & Category Filters -->
       <div class="atlas-toolbar" role="region" aria-label="Interactive map and slideshow controls">
         <div class="toolbar-group" role="group" aria-label="Fly camera to region">
           <span class="toolbar-label">Fly To:</span>
@@ -736,7 +281,7 @@
 
         <div class="toolbar-group" role="group" aria-label="Filter slideshow collection">
           <span class="toolbar-label">Slideshow:</span>
-          <button type="button" class="filter-chip" data-slide-filter="all" aria-pressed="true">All Dispatches (16)</button>
+          <button type="button" class="filter-chip" data-slide-filter="all" aria-pressed="true">All Dispatches (18)</button>
           <button type="button" class="filter-chip" data-slide-filter="hall-of-fame" aria-pressed="false">10M+ View Hall of Fame</button>
           <button type="button" class="filter-chip" data-slide-filter="nyc" aria-pressed="false">NYC &amp; Broadway</button>
           <button type="button" class="filter-chip" data-slide-filter="international" aria-pressed="false">Global &amp; Borders</button>
@@ -749,13 +294,13 @@
         <div class="map-stage-card">
           <div class="map-stage-header">
             <div class="map-stage-title">
-              <h3>Global Photo Density Heatmap &amp; Pin Explorer</h3>
+              <h3>Global Photo Heatmap &amp; Pin Explorer</h3>
               <p class="map-stage-subtitle" id="map-status-line">Drag to pan · Scroll or use buttons to zoom · Click any glowing pin to view photos</p>
             </div>
             <div class="map-layer-controls" role="group" aria-label="Map layers and zoom">
               <button type="button" class="map-ctrl-btn" id="toggle-heatmap-btn" aria-pressed="true">🔥 Heatmap</button>
               <button type="button" class="map-ctrl-btn" id="toggle-pins-btn" aria-pressed="true">📍 Pins</button>
-              <button type="button" class="map-ctrl-btn" id="toggle-arcs-btn" aria-pressed="true">✈️ Flight Arc</button>
+              <button type="button" class="map-ctrl-btn" id="toggle-arcs-btn" aria-pressed="true">✈️ Arc</button>
               <button type="button" class="map-ctrl-btn" id="map-zoom-in" aria-label="Zoom in">+</button>
               <button type="button" class="map-ctrl-btn" id="map-zoom-out" aria-label="Zoom out">−</button>
               <button type="button" class="map-ctrl-btn" id="map-reset-btn" aria-label="Reset world view">Reset</button>
@@ -763,21 +308,22 @@
           </div>
 
           <div class="map-canvas-wrap" id="map-canvas-wrap">
-            <canvas id="world-heatmap-canvas" width="960" height="540" aria-label="Interactive world map showing Matt Briselli's Google Maps photo heatmap and clickable location pins"></canvas>
+            <div id="leaflet-world-map" class="leaflet-world-map" role="application" aria-label="Interactive world map showing Matt Briselli's Google Maps photo heatmap and clickable location pins"></div>
+            <canvas id="world-heatmap-canvas" class="heatmap-overlay-canvas" width="960" height="540" aria-hidden="true"></canvas>
             <div class="map-tooltip" id="map-tooltip" hidden></div>
           </div>
 
           <div class="map-legend">
-            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> High Photo &amp; View Density (NYC, SF, Seattle, Philly, Pittsburgh, DC)</span>
-            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> Regional Clusters (50 States, Central Asia, Canada, Europe, China, Australia)</span>
-            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Slideshow Dispatch</span>
+            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> High Density (NYC, SF 6 yrs w/ Pacific Ocean view, Seattle, Philly, Pittsburgh, Arlington)</span>
+            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> Travel Footprint (50 States, Central Asia, Canada, London, Europe, Shanghai)</span>
+            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Slide</span>
           </div>
         </div>
 
         <!-- Right: Synced Multi-Photo Slideshow & Field Notes Card -->
         <div class="slideshow-stage-card" aria-live="polite">
           <div class="slideshow-top-bar">
-            <span class="slide-counter" id="slide-counter">Dispatch 1 of 16</span>
+            <span class="slide-counter" id="slide-counter">Dispatch 1 of 18</span>
             <div class="slideshow-nav-btns">
               <button type="button" class="map-ctrl-btn" id="slide-prev-btn" aria-label="Previous place">← Prev</button>
               <button type="button" class="map-ctrl-btn" id="slide-autoplay-btn" aria-pressed="false">▶ Auto-Tour</button>
@@ -792,14 +338,13 @@
                 src="https://lh3.googleusercontent.com/gps-cs/AAjk-COQB19ei6lNeoBX4VFT45vG-PGvFF_wRcHjsTEoxwgzU1qA4aDatrPF-5Y61bBxlkZzPFk6mynZnb9bG7zOjS4Cq8kMi7F6lBb9U3WDIWK5LyFDqWmsnIn5bhQJ1Kbf1vlTrfLu8uhzVaae=w1000-h750-p-k-no"
                 alt="Nordstrom (King of Prussia)"
                 referrerpolicy="no-referrer"
-                loading="lazy"
+                fetchpriority="high"
                 width="800"
                 height="600"
               >
               <span class="slide-metric-pill" id="slide-metric-pill">👁 11,879,403 views</span>
             </div>
 
-            <!-- Multi-photo thumbnail strip for dispatches with multiple angles -->
             <div class="slide-thumbs" id="slide-thumbs" role="group" aria-label="Photos for this place"></div>
 
             <figcaption class="slide-caption-box">
@@ -815,7 +360,7 @@
               <div class="slide-actions-row">
                 <button type="button" class="action-btn" id="slide-fly-btn">Center on Map</button>
                 <a id="slide-maps-link" href="https://www.google.com/maps/contrib/104641095422852249098/photos" class="action-link" target="_blank" rel="noopener noreferrer">
-                  <span>View on Google Maps</span>
+                  <span>Open in Maps</span>
                   <span class="arrow" aria-hidden="true">↗</span>
                 </a>
               </div>
@@ -824,86 +369,171 @@
         </div>
       </div>
 
-      <!-- Interactive Multi-Million-View Hall of Fame & Lightweight Index Maintenance -->
-      <div class="ledger-details-grid">
-        <details class="atlas-disclosure" open>
-          <summary>🏆 Top Most-Viewed Individual Photos (97M+ Views Across Top 14 Alone — Click Any Row to Fly)</summary>
-          <div class="disclosure-body">
-            <div class="table-scroll">
-              <table class="views-table">
-                <caption>Highest-viewed individual photos uploaded by Matt Briselli on Google Maps</caption>
-                <thead>
-                  <tr>
-                    <th scope="col">Rank</th>
-                    <th scope="col">Place</th>
-                    <th scope="col">Location</th>
-                    <th scope="col">Google Maps Views</th>
-                    <th scope="col">Action</th>
-                  </tr>
-                </thead>
-                <tbody id="top-views-tbody">
-                  <!-- Populated dynamically from data/maps-index.json -->
-                </tbody>
-              </table>
-            </div>
+      <!-- Optional collapsible Top-Viewed Leaderboard -->
+      <details class="atlas-disclosure">
+        <summary>🏆 Top 14 Most-Viewed Individual Photos (97M+ Views Combined — Click Any Row to Fly)</summary>
+        <div class="disclosure-body">
+          <div class="table-scroll">
+            <table class="views-table">
+              <caption>Highest-viewed individual photos uploaded by Matt Briselli on Google Maps</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Rank</th>
+                  <th scope="col">Place</th>
+                  <th scope="col">Location</th>
+                  <th scope="col">Google Maps Views</th>
+                  <th scope="col">Action</th>
+                </tr>
+              </thead>
+              <tbody id="top-views-tbody"></tbody>
+            </table>
           </div>
-        </details>
+        </div>
+      </details>
+    </section>
 
-        <details class="atlas-disclosure">
-          <summary>⚡ Super-Lightweight Index Architecture (How 66,085 Photos Stay Easy to Maintain)</summary>
-          <div class="disclosure-body">
-            <p>
-              Rather than scraping or committing tens of thousands of binary images to Git, this explorer runs on a single lightweight JSON index (<a href="/data/maps-index.json"><code>data/maps-index.json</code></a>) that stores coordinates, view counts, review quotes, and direct Google CDN image hashes (<code>lh3.googleusercontent.com/...=w1000-h750-p-k-no</code>).
-            </p>
-            <p>
-              To merge new reviews or top-viewed photos in under 10 seconds, run <code>node scripts/sync-maps-index.mjs --snippet</code> (or pass a Google Takeout <code>Reviews.json</code> export to <code>node scripts/sync-maps-index.mjs</code>).
-            </p>
-          </div>
-        </details>
+    <!-- 02: Dev Projects & Shipped Work (Compact) -->
+    <section id="work" class="section" aria-labelledby="work-heading">
+      <div class="section-header">
+        <span class="section-index" aria-hidden="true">02</span>
+        <h2 id="work-heading">Projects &amp; Shipped Work</h2>
       </div>
 
-      <dl class="stat-strip" aria-label="Travel milestones">
-        <div class="stat-card">
-          <dt>All 50 US States</dt>
-          <dd>Visited every state in the union—many of them multiple times.</dd>
-        </div>
-        <div class="stat-card">
-          <dt>All of Central Asia</dt>
-          <dd>Traveled across Kazakhstan, Kyrgyzstan, Tajikistan, Turkmenistan &amp; Uzbekistan.</dd>
-        </div>
-        <div class="stat-card">
-          <dt>8 Canadian Provinces &amp; Territories</dt>
-          <dd>Explored 8 provinces and territories across Canada (Whitehorse &amp; the Yukon next).</dd>
-        </div>
-      </dl>
-
-      <div class="editorial-columns">
-        <article class="note-item">
-          <h3>Places I’ve Called Home</h3>
-          <ul class="places-list">
-            <li><strong>New York City, NY</strong> — Current home (Google Photos Storytelling)</li>
-            <li><strong>San Francisco, CA</strong> — 6 years (including 3 years with a view of the Pacific Ocean from my bedroom window)</li>
-            <li><strong>Seattle, WA</strong> — Google Maps Android Platform chapter</li>
-            <li><strong>Arlington, VA</strong> — Adobe Systems Federal chapter</li>
-            <li><strong>Pittsburgh, PA</strong> — Carnegie Mellon University years</li>
-            <li><strong>Philadelphia, PA</strong> — Hometown roots &amp; Westtown School</li>
-          </ul>
-        </article>
-
-        <article class="note-item">
-          <h3>Chapters Abroad</h3>
-          <ul class="places-list">
-            <li><strong>Shanghai, China</strong> — Spent a summer studying Mandarin Chinese at Shanghai International Studies University</li>
-            <li><strong>London, UK</strong> — Lived in London for a month</li>
-            <li><strong>Western Europe</strong> — Spent a month bounding across the continent</li>
-          </ul>
-        </article>
-
-        <article class="note-item">
-          <h3>Google Maps Local Guide Log</h3>
+      <ul class="directory-grid" role="list">
+        <!-- Mom's Site: Arioso String Quartet -->
+        <li class="directory-card featured-card">
+          <div class="card-meta">
+            <span class="badge">Mom’s Site · Maintainer</span>
+            <span class="card-year">ariosoquartet.com</span>
+          </div>
+          <h3>
+            <a href="https://ariosoquartet.com" class="card-title-link" target="_blank" rel="noopener noreferrer">
+              Arioso String Quartet
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </h3>
           <p>
-            Whether I’m scouting neighborhood spots in NYC and SF or crossing Central Asia and all 50 states, I document favorite restaurants, coffee shops, parks, and hidden gems on my <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" target="_blank" rel="noopener noreferrer">Google Maps Reviews page</a>.
+            Web platform I built and maintain for my mom, violist Carol Briselli, and her Greater Philadelphia ensemble—featuring a 700+ song interactive repertoire explorer, Schema.org graph, and <code>llms.txt</code> feeds.
           </p>
+          <ul class="tag-list" role="list" aria-label="Arioso String Quartet stack">
+            <li>Node &amp; Express</li>
+            <li>Static Firebase/Heroku</li>
+            <li>SEO &amp; llms.txt</li>
+          </ul>
+        </li>
+
+        <!-- Consolidated Google Launches Card -->
+        <li class="directory-card">
+          <div class="card-meta">
+            <span class="badge">Google Photos &amp; Maps</span>
+            <span class="card-year">2018 — Present</span>
+          </div>
+          <h3>
+            <a href="https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit" class="card-title-link" target="_blank" rel="noopener noreferrer">
+              Billion-User Google Launches
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </h3>
+          <p>
+            Shipped <a href="https://developer.android.com/media/platform/hdr-image-format" target="_blank" rel="noopener noreferrer">Android 14 Ultra HDR</a>, <a href="https://blog.google/products/photos/locked-folder-cloud-backup/" target="_blank" rel="noopener noreferrer">Cloud-Based Locked Folder</a>, <strong>2025 Photos Recap &amp; Memories</strong>, <a href="https://blog.google/products/maps/speak-easy-while-traveling/" target="_blank" rel="noopener noreferrer">Speakeasy TTS</a> (Global Hackathon winner &amp; TL), <a href="https://blog.google/products/android/widgets-just-got-better-android-12/" target="_blank" rel="noopener noreferrer">Android 12 Maps Widgets</a>, <strong>Maps Incognito Mode</strong>, and <strong>Play Data Safety Labels</strong>.
+          </p>
+          <ul class="tag-list" role="list" aria-label="Google launches tags">
+            <li>Google Photos TPM</li>
+            <li>Google Maps SWE &amp; TPM</li>
+            <li>1B+ Users</li>
+          </ul>
+        </li>
+
+        <!-- Independent Lab: GamerBoy Solitaire & Brand Eating -->
+        <li class="directory-card">
+          <div class="card-meta">
+            <span class="badge">Independent Dev Lab</span>
+            <span class="card-year">github.com/MattBriselli</span>
+          </div>
+          <h3>
+            <a href="https://github.com/MattBriselli" class="card-title-link" target="_blank" rel="noopener noreferrer">
+              GamerBoy Solitaire &amp; Brand Eating
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </h3>
+          <p>
+            Side builds including <strong>GamerBoy Solitaire</strong> (iOS/Android React Native + Expo Klondike game with a 100%-solvable deal solver) and <strong>Brand Eating</strong> (Next.js 15 &amp; React 19 automated feed &amp; newsletter platform).
+          </p>
+          <ul class="tag-list" role="list" aria-label="Independent projects stack">
+            <li>React Native &amp; Expo</li>
+            <li>Next.js 15 &amp; React 19</li>
+            <li>TypeScript</li>
+          </ul>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 03: Compact Resume (Google, Adobe, CMU/Theatre/Science in tight blocks) -->
+    <section id="resume" class="section" aria-labelledby="resume-heading">
+      <div class="section-header section-header-split">
+        <div class="section-title-group">
+          <span class="section-index" aria-hidden="true">03</span>
+          <h2 id="resume-heading">Résumé Snapshot</h2>
+        </div>
+        <div class="resume-actions">
+          <a href="https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit" class="action-link" target="_blank" rel="noopener noreferrer">
+            <span>Full Public Work Dossier</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <button type="button" class="action-btn" id="print-resume-btn">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            <span>Print / PDF</span>
+          </button>
+        </div>
+      </div>
+
+      <div class="compact-resume-grid">
+        <!-- 1. Google (All 8+ years in one tight block) -->
+        <article class="compact-role-card">
+          <div class="timeline-header">
+            <div>
+              <h3 class="role-title">Google — Technical Program Manager &amp; Software Engineer</h3>
+              <p class="company-name">Google Photos (Storytelling · Foundations &amp; Video) &amp; Google Maps (Android Platform) · SF, Seattle &amp; NYC</p>
+            </div>
+            <time class="timeline-date">Oct 2018 — Present (8+ yrs)</time>
+          </div>
+          <ul class="resume-bullets">
+            <li><strong>Google Photos TPM (2022–Present):</strong> Currently lead the <strong>Photos Storytelling Mission</strong> in NYC (<em>2025 Photos Recap</em>, <em>Memories</em>, <em>Video Editing</em>). Previously led cross-PA teams in SF to ship <a href="https://developer.android.com/media/platform/hdr-image-format" target="_blank" rel="noopener noreferrer">Android 14 Ultra HDR</a> (ISO gainmap standard, OEM “Super HDR” &amp; ML editing), <a href="https://blog.google/products/photos/locked-folder-cloud-backup/" target="_blank" rel="noopener noreferrer">Cloud-Based Locked Folder</a> (50 engineers across Android/iOS/Web), AI Video Key Moments, and won the company-wide <strong>Q1 2024 Google Healthy Award</strong>.</li>
+            <li><strong>Google Maps TPM &amp; SWE (2018–2022):</strong> Started as an Android Platform SWE (L3→L4)—sweeping the Global Geo Hackathon to Tech Lead <a href="https://blog.google/products/maps/speak-easy-while-traveling/" target="_blank" rel="noopener noreferrer">Speakeasy Text-to-Speech</a> (50 languages across iOS &amp; Android) and shipping the <em>Maps 15 UI Redux</em>. Transitioned to TPM (L4→L5), leading 30 engineers on <em>Android 12 Material You Widgets</em>, 100+ engineers auditing decade-old code for <em>Google Play Data Safety Labels</em>, <em>Incognito Mode</em>, and serving as <em>SF Culture Lead</em> ($160k budget).</li>
+          </ul>
+        </article>
+
+        <!-- 2. Adobe (All 2+ years in one tight block) -->
+        <article class="compact-role-card">
+          <div class="timeline-header">
+            <div>
+              <h3 class="role-title">Adobe — Software Developer &amp; Government Consultant (Tech Lead)</h3>
+              <p class="company-name">Adobe Systems Federal · Project Romeo · McLean / Arlington, VA</p>
+            </div>
+            <time class="timeline-date">Jun 2016 — Sep 2018 (2+ yrs)</time>
+          </div>
+          <ul class="resume-bullets">
+            <li>Built enterprise web applications using <strong>Adobe Experience Manager (AEM)</strong>, Java, JavaScript, and Sightly; served as Tech Lead on <em>Project Romeo</em> building modular Outlook-style calendar, address, and task components for federal agencies (<strong>2017 Sales Achievement Award</strong>).</li>
+          </ul>
+        </article>
+
+        <!-- 3. Carnegie Mellon, Science, Theatre & Circus Arts -->
+        <article class="compact-role-card">
+          <div class="timeline-header">
+            <div>
+              <h3 class="role-title">Carnegie Mellon University — Chemistry, Evo-Devo Biology, Stage Management &amp; Trapeze</h3>
+              <p class="company-name">B.S. in Chemistry (Mellon College of Science) · Shanghai International Studies University · Camp Cayuga</p>
+            </div>
+            <time class="timeline-date">2012 — May 2016</time>
+          </div>
+          <ul class="resume-bullets">
+            <li><strong>Science &amp; Languages:</strong> Trained chemist; researched sea star &amp; sea urchin gene knockdowns in <strong>Dr. Veronica Hinman’s Evolutionary/Developmental Biology Lab</strong>; studied Mandarin in <strong>Shanghai</strong>; awarded <em>CMU Senior Leadership Recognition</em>.</li>
+            <li><strong>Theatre &amp; Flying Trapeze:</strong> Caught flyers on the flying trapeze rig and taught lyra at <strong>Camp Cayuga</strong>; <strong>Production Stage Manager, Director &amp; Actor</strong> across 25+ shows (<em>Spelling Bee</em>, <em>Bat Boy</em>, <em>Assassins</em>, <em>Rocky Horror</em> shadow cast); <strong>Greek Sing Chair</strong> raising <strong>$200,000+</strong> for Pittsburgh charities; acquired a $30k auditorium film projector with AB Films.</li>
+          </ul>
         </article>
       </div>
     </section>
@@ -914,12 +544,11 @@
       <div class="footer-contact">
         <h2>Get in Touch</h2>
         <p>
-          Reach me at <a href="mailto:MattBriselli@gmail.com">MattBriselli@gmail.com</a> · <a href="https://www.linkedin.com/in/mattbriselli/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://github.com/MattBriselli" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" target="_blank" rel="noopener noreferrer">Google Maps</a>
+          <a href="mailto:MattBriselli@gmail.com">MattBriselli@gmail.com</a> · <a href="https://www.linkedin.com/in/mattbriselli/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://github.com/MattBriselli" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href="https://ariosoquartet.com" target="_blank" rel="noopener noreferrer">Mom’s Site</a>
         </p>
       </div>
       <div class="footer-colophon">
-        <p>Handcrafted with semantic HTML, modern CSS, Schema.org JSON-LD, and <a href="/llms.txt"><code>llms.txt</code></a>.</p>
-        <p>&copy; <span id="current-year">2026</span> Matt L. Briselli.</p>
+        <p>&copy; <span id="current-year">2026</span> Matt L. Briselli · NYC, SF, Seattle, Arlington, Pittsburgh &amp; Philadelphia.</p>
       </div>
     </div>
   </footer>

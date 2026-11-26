@@ -411,29 +411,47 @@
 
   /* Hero */
   .hero {
-    padding-block: clamp(0.5rem, 2vw, 1.5rem) 0.5rem;
+    padding-block: 0.25rem 0.5rem;
 
     & .eyebrow {
       font-family: var(--font-mono);
-      font-size: 0.8125rem;
+      font-size: 0.78rem;
       letter-spacing: 0.05em;
       text-transform: uppercase;
       color: var(--color-accent);
-      margin-block-end: 1rem;
+      margin-block-end: 0.5rem;
     }
 
     & h1 {
-      font-size: clamp(2rem, 1.35rem + 2.5vw, 3.4rem);
+      font-size: clamp(1.85rem, 1.35rem + 1.8vw, 2.75rem);
       letter-spacing: -0.02em;
-      max-inline-size: 26ch;
-      margin-block-end: 1.5rem;
+      margin-block-end: 0.75rem;
     }
 
     & .lead {
-      font-size: clamp(1.0625rem, 1rem + 0.35vw, 1.225rem);
+      font-size: clamp(0.975rem, 0.94rem + 0.2vw, 1.075rem);
       color: var(--text-secondary);
-      margin-block-end: 2rem;
+      max-inline-size: 72ch;
+      margin-block-end: 1.25rem;
     }
+  }
+
+  .section-tight {
+    padding-block-start: 2rem;
+    margin-block-start: 2rem;
+  }
+
+  .compact-resume-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .compact-role-card {
+    padding: 1.25rem 1.5rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.5rem;
+    background-color: var(--bg-surface-elevated);
   }
 
   /* Quick Links (Pills) */
@@ -950,20 +968,38 @@
   .map-canvas-wrap {
     position: relative;
     inline-size: 100%;
-    aspect-ratio: 16 / 10;
+    block-size: 27rem;
     background-color: var(--bg-canvas);
     overflow: hidden;
   }
 
-  #world-heatmap-canvas {
-    display: block;
+  .leaflet-world-map {
     inline-size: 100%;
     block-size: 100%;
-    cursor: grab;
+    background-color: var(--bg-canvas);
+    z-index: 1;
+  }
 
-    &:active {
-      cursor: grabbing;
-    }
+  .heatmap-overlay-canvas {
+    position: absolute;
+    inset: 0;
+    inline-size: 100%;
+    block-size: 100%;
+    pointer-events: none;
+    z-index: 420;
+  }
+
+  .map-city-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    background-color: color-mix(in oklab, var(--bg-surface-elevated), transparent 18%);
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.25rem;
+    padding: 0.08rem 0.35rem;
+    white-space: nowrap;
+    pointer-events: none;
   }
 
   .map-tooltip {
