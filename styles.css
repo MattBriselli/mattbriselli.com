@@ -545,8 +545,9 @@
       border-color: var(--border-strong);
     }
 
-    & h3 {
-      font-size: 1.3rem;
+    & h3,
+    & h4 {
+      font-size: 1.25rem;
       margin-block-end: 0.625rem;
     }
 
@@ -555,6 +556,80 @@
       font-size: 0.9375rem;
       margin-block-end: 1rem;
       flex: 1;
+    }
+  }
+
+  .subsection-heading {
+    font-family: var(--font-mono);
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+    margin-block: 2.25rem 1.15rem;
+  }
+
+  .section-kicker {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+
+  /* Explorer + Photographer Notes Strip */
+  .explorer-notes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+    gap: 1.25rem;
+    margin-block-end: 1.5rem;
+  }
+
+  .explorer-note-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 1.25rem 1.35rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.5rem;
+    background-color: var(--bg-surface);
+
+    & h3 {
+      font-size: 1.125rem;
+    }
+
+    & p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+    }
+  }
+
+  /* Eclectic Endeavors Grid */
+  .eclectic-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19.5rem), 1fr));
+    gap: 1.25rem;
+  }
+
+  .eclectic-card {
+    display: flex;
+    flex-direction: column;
+    padding: 1.35rem 1.5rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.5rem;
+    background-color: var(--bg-surface-elevated);
+    transition: border-color 0.15s ease;
+
+    &:hover {
+      border-color: var(--border-strong);
+    }
+
+    & h3 {
+      font-size: 1.175rem;
+      margin-block-end: 0.5rem;
+    }
+
+    & p {
+      color: var(--text-secondary);
+      font-size: 0.925rem;
     }
   }
 
@@ -1388,15 +1463,14 @@
     }
   }
 
-  /* Print Stylesheet for clean Resume PDF export */
+  /* Print Stylesheet for clean Technical Resume PDF export */
   @media print {
     .site-header,
     .quick-links,
     .resume-actions,
     .cv-filter-bar,
-    #story,
-    #work,
-    #atlas,
+    #explorer,
+    #eclectic,
     .site-footer {
       display: none !important;
     }

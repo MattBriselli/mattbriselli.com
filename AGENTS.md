@@ -5,5 +5,5 @@ This repository (`/Users/M/Dev/Personal Website`) hosts **Matt L. Briselli's** p
 
 ## Keeping Recent Work Synchronized
 Whenever significant milestones, launches, or new projects are completed across `/Users/M/Dev/` (such as updates to `Mom` / Arioso String Quartet, `GamerBoy`, `Brand Eating`, or new repositories):
-1. Update the **02 · Dev Projects & Shipped Google Features (`#work`)** section in `index.html`.
+1. Update the **02 · Coder (`#coder`)** section in `index.html`.
 2. Sync the machine-readable agent feeds in `llms.txt` and `resume.json` so search engines and AI agents always have an accurate picture of Matt's latest work.
