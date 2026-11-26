@@ -122,12 +122,22 @@
     worldCopyJump: true
   });
 
-  // Optional CartoDB raster street tile layer (loads when online in user's browser; graceful vector GeoJSON underneath)
-  let tileLayer = null;
+  // Keyless Esri World Gray Canvas base + reference label tiles (zero API key required, works on any domain)
+  let baseTileLayer = null;
+  let labelTileLayer = null;
   let countriesLayer = null;
   let statesLayer = null;
   const pinsLayerGroup = L.layerGroup().addTo(map);
   const placeMarkers = [];
+
+  function shuffleArray(items) {
+    const copy = items.slice();
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
 
   function getCountryStyle(feature) {
     const dark = isDarkActive();
@@ -136,7 +146,7 @@
       fillColor: visited
         ? (dark ? "#2c251f" : "#e7ddd0")
         : (dark ? "#1d1c1a" : "#ece8e0"),
-      fillOpacity: 0.92,
+      fillOpacity: 0.78,
       color: visited
         ? (dark ? "#5e4c3e" : "#b5a490")
         : (dark ? "#33312d" : "#cfc9be"),
@@ -148,7 +158,7 @@
     const dark = isDarkActive();
     return {
       fillColor: dark ? "#2e2620" : "#e5dacb",
-      fillOpacity: 0.55,
+      fillOpacity: 0.45,
       color: dark ? "#5c4b3e" : "#b8a793",
       weight: 0.75,
       dashArray: "2,2"
@@ -157,16 +167,28 @@
 
   function updateTileLayer() {
     const dark = isDarkActive();
-    const url = dark
-      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-      : "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
-    if (tileLayer) {
-      tileLayer.setUrl(url);
+    const baseUrl = dark
+      ? "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
+      : "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}";
+    const labelUrl = dark
+      ? "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
+      : "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
+
+    if (baseTileLayer) {
+      baseTileLayer.setUrl(baseUrl);
     } else {
-      tileLayer = L.tileLayer(url, {
-        subdomains: "abcd",
-        maxZoom: 18,
-        opacity: 0.45
+      baseTileLayer = L.tileLayer(baseUrl, {
+        maxZoom: 16,
+        opacity: 0.55
+      }).addTo(map);
+    }
+
+    if (labelTileLayer) {
+      labelTileLayer.setUrl(labelUrl);
+    } else {
+      labelTileLayer = L.tileLayer(labelUrl, {
+        maxZoom: 16,
+        opacity: 0.85
       }).addTo(map);
     }
   }
@@ -438,11 +460,14 @@
     }
   }
 
-  function selectPlace(index, shouldFly = true) {
+  function selectPlace(index, shouldFly = true, randomizePhoto = false) {
     if (!filteredPlaces.length) return;
     previousPlace = filteredPlaces[activePlaceIndex] || null;
     activePlaceIndex = (index + filteredPlaces.length) % filteredPlaces.length;
-    activePhotoIndex = 0;
+    const photos = filteredPlaces[activePlaceIndex]?.photos || [];
+    activePhotoIndex = randomizePhoto && photos.length > 1
+      ? Math.floor(Math.random() * photos.length)
+      : 0;
     renderActiveSlide(shouldFly);
   }
 
@@ -512,12 +537,14 @@
       document.querySelectorAll("[data-slide-filter]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
       });
-      filteredPlaces =
+      filteredPlaces = shuffleArray(
         filter === "all"
-          ? mapsData.places.slice()
-          : mapsData.places.filter((p) => p.tag === filter);
+          ? mapsData.places
+          : mapsData.places.filter((p) => p.tag === filter)
+      );
       activePlaceIndex = 0;
-      activePhotoIndex = 0;
+      const firstPhotos = filteredPlaces[0]?.photos || [];
+      activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
       renderActiveSlide(true);
     });
   });
@@ -528,10 +555,22 @@
   const zoomInBtn = document.getElementById("map-zoom-in");
   const zoomOutBtn = document.getElementById("map-zoom-out");
   const resetBtn = document.getElementById("map-reset-btn");
+  const shuffleBtn = document.getElementById("slide-shuffle-btn");
   const prevBtn = document.getElementById("slide-prev-btn");
   const nextBtn = document.getElementById("slide-next-btn");
   const autoBtn = document.getElementById("slide-autoplay-btn");
   const flyBtn = document.getElementById("slide-fly-btn");
+
+  if (shuffleBtn) {
+    shuffleBtn.addEventListener("click", () => {
+      if (filteredPlaces.length <= 1) return;
+      let nextIdx = activePlaceIndex;
+      while (nextIdx === activePlaceIndex) {
+        nextIdx = Math.floor(Math.random() * filteredPlaces.length);
+      }
+      selectPlace(nextIdx, true, true);
+    });
+  }
 
   if (heatBtn) {
     heatBtn.addEventListener("click", () => {
@@ -597,13 +636,22 @@
     });
   }
 
-  // Load lightweight Google Maps index JSON
+  // Load lightweight Google Maps index JSON with randomized deck order on every visit
   resizeOverlayCanvas();
   fetch("data/maps-index.json")
     .then((r) => r.json())
     .then((data) => {
       mapsData = data;
-      filteredPlaces = Array.isArray(data.places) ? data.places.slice() : [];
+      const rawPlaces = Array.isArray(data.places) ? data.places : [];
+      filteredPlaces = shuffleArray(rawPlaces);
+      const firstPhotos = filteredPlaces[0]?.photos || [];
+      activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
+
+      const allFilterBtn = document.querySelector('[data-slide-filter="all"]');
+      if (allFilterBtn && rawPlaces.length) {
+        allFilterBtn.textContent = `Shuffled Mix (${rawPlaces.length})`;
+      }
+
       if (data.profile) {
         const vEl = document.getElementById("stat-total-views");
         const pEl = document.getElementById("stat-total-photos");

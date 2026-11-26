@@ -438,6 +438,29 @@
     }
   }
 
+  .hero-layout {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.25rem 2rem;
+  }
+
+  .hero-copy {
+    flex: 1 1 28rem;
+  }
+
+  .hero-portrait {
+    inline-size: clamp(6.75rem, 12vw, 8.75rem);
+    block-size: clamp(6.75rem, 12vw, 8.75rem);
+    object-fit: cover;
+    border-radius: 1.15rem;
+    corner-shape: squircle;
+    border: 2px solid var(--border-strong);
+    background-color: var(--bg-surface);
+    flex: none;
+  }
+
   .section-tight {
     padding-block-start: 2rem;
     margin-block-start: 2rem;
