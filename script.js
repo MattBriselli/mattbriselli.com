@@ -127,6 +127,7 @@
   let labelTileLayer = null;
   let countriesLayer = null;
   let statesLayer = null;
+  let radarPreviewMarker = null;
   const pinsLayerGroup = L.layerGroup().addTo(map);
   const placeMarkers = [];
 
@@ -661,7 +662,51 @@
         if (rEl) rEl.textContent = formatNumber(data.profile.totalReviews);
       }
       populateTopViewsTable(data.topViewedLedger || []);
+      populateNextTravelChips(data.nextDestinations || []);
       renderActiveSlide(false);
       resizeOverlayCanvas();
     });
+
+  function populateNextTravelChips(destinations) {
+    const wrap = document.getElementById("next-travel-chips");
+    if (!wrap || !Array.isArray(destinations)) return;
+    wrap.innerHTML = "";
+    destinations.forEach((dest) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "filter-chip";
+      btn.setAttribute("aria-pressed", "false");
+      btn.textContent = `🧭 ${dest.name}`;
+      btn.addEventListener("click", () => {
+        wrap.querySelectorAll(".filter-chip").forEach((b) => {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+        if (radarPreviewMarker) {
+          map.removeLayer(radarPreviewMarker);
+        }
+        const dark = isDarkActive();
+        radarPreviewMarker = L.circleMarker([dest.lat, dest.lng], {
+          radius: 10,
+          color: dark ? "#5ec28f" : "#1f6b45",
+          weight: 2.5,
+          dashArray: "4,3",
+          fillColor: dark ? "#5ec28f" : "#1f6b45",
+          fillOpacity: 0.22
+        })
+          .addTo(map)
+          .bindTooltip(`<strong>Next Up? ${dest.name}</strong><br>${dest.note}`, {
+            direction: "top",
+            permanent: true
+          })
+          .openTooltip();
+
+        map.flyTo([dest.lat, dest.lng], dest.zoom || 5, { duration: 1.1 });
+        if (statusLineEl) {
+          statusLineEl.textContent = `Scouting Next Stop: ${dest.name} — ${dest.note}`;
+        }
+        mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+      wrap.appendChild(btn);
+    });
+  }
 })();

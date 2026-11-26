@@ -183,10 +183,10 @@
       <div class="header-controls">
         <nav aria-label="Primary">
           <ul class="nav-list">
-            <li><a href="#explorer">01 · Explorer + Photographer</a></li>
-            <li><a href="#coder">02 · SWE + TPM</a></li>
-            <li><a href="#eclectic">03 · Eclectic</a></li>
-            <li><a href="#contact">Contact</a></li>
+            <li><a href="#explorer"><span class="nav-num" aria-hidden="true">01 · </span>Explorer<span class="nav-desktop-extra"> + Photographer</span></a></li>
+            <li><a href="#coder"><span class="nav-num" aria-hidden="true">02 · </span>SWE + TPM</a></li>
+            <li><a href="#eclectic"><span class="nav-num" aria-hidden="true">03 · </span>Eclectic</a></li>
+            <li class="nav-contact-item"><a href="#contact">Contact</a></li>
           </ul>
         </nav>
 
@@ -464,6 +464,24 @@
           </p>
         </li>
       </ul>
+
+      <!-- "Where Will Matt Travel Next?" Interactive Radar Strip -->
+      <div class="next-travel-card">
+        <div class="next-travel-header">
+          <div>
+            <span class="badge">Expedition Radar</span>
+            <h3>Where Will Matt Travel Next?</h3>
+          </div>
+          <a href="mailto:shout@mattbriselli.com?subject=Where%20Matt%20Should%20Travel%20Next!" class="action-link">
+            <span>Pitch a Place or Sandwich</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <p class="next-travel-copy">
+          Click a contender to scout it on the map—or send a tip on where (and what) to eat next:
+        </p>
+        <div class="next-travel-chips" id="next-travel-chips" role="group" aria-label="Candidate next travel destinations"></div>
+      </div>
 
       <!-- Collapsible Top-Viewed Leaderboard -->
       <details class="atlas-disclosure">
