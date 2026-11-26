@@ -409,27 +409,6 @@
     justify-content: center;
   }
 
-  /* Availability Status Banner */
-  .availability-banner {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 0.625rem;
-    padding: 0.65rem 1rem;
-    margin-block-end: 1.75rem;
-    border: 1px solid var(--border-strong);
-    border-radius: 0.5rem;
-    background-color: var(--bg-surface);
-    font-size: 0.875rem;
-    color: var(--text-secondary);
-    max-inline-size: 65ch;
-  }
-
-  .status-dot {
-    color: var(--color-status-ok);
-    font-size: 0.75rem;
-    flex-shrink: 0;
-  }
-
   /* Hero */
   .hero {
     padding-block: clamp(0.5rem, 2vw, 1.5rem) 0.5rem;
