@@ -394,11 +394,11 @@
     font-family: var(--font-mono);
     font-size: 0.8em;
     color: var(--text-muted);
-    margin-inline-end: 0.45em;
+    margin-inline-end: 0.25em;
 
     &::after {
       content: "·" / "";
-      margin-inline-start: 0.45em;
+      margin-inline-start: 0.25em;
     }
   }
 
