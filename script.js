@@ -457,8 +457,186 @@
     maxZoom: 17,
     zoomControl: false,
     attributionControl: false,
-    worldCopyJump: true
+    worldCopyJump: true,
+    touchZoom: true,
+    doubleClickZoom: true,
+    bounceAtZoomLimits: false,
+    zoomSnap: 0.5,
+    zoomDelta: 1,
+    inertia: true,
+    inertiaDeceleration: 2400
   });
+
+  // Mobile touch gestures (iOS Safari / Android Chrome suppress dblclick under touch-action: none):
+  // 1. Double-tap to zoom in at the tapped point
+  // 2. Two-finger tap to zoom out at the midpoint
+  // 3. Double-tap-and-drag (one-handed zoom: slide down to zoom in, up to zoom out)
+  let suppressMapClickUntil = 0;
+  (() => {
+    let lastTapTime = 0;
+    let lastTapPt = null;
+    let singleStart = null;
+    let twoFingerStart = null;
+    let oneHandZoom = null;
+
+    const isControlTarget = (target) =>
+      target instanceof Element &&
+      Boolean(target.closest(".leaflet-popup, .leaflet-control, .map-floating-controls, button, a"));
+
+    const pointFromTouch = (touch) => {
+      const rect = mapContainer.getBoundingClientRect();
+      return L.point(touch.clientX - rect.left, touch.clientY - rect.top);
+    };
+
+    mapContainer.addEventListener(
+      "touchstart",
+      (ev) => {
+        if (isControlTarget(ev.target)) {
+          singleStart = null;
+          twoFingerStart = null;
+          oneHandZoom = null;
+          return;
+        }
+        const now = performance.now();
+        if (ev.touches.length === 1) {
+          twoFingerStart = null;
+          const pt = pointFromTouch(ev.touches[0]);
+          const isSecondTap =
+            lastTapPt && now - lastTapTime <= 320 && Math.hypot(pt.x - lastTapPt.x, pt.y - lastTapPt.y) <= 38;
+          singleStart = { pt, time: now, moved: false, isSecondTap };
+          if (isSecondTap) {
+            oneHandZoom = {
+              startY: pt.y,
+              startZoom: map.getZoom(),
+              anchorLatLng: map.containerPointToLatLng(pt),
+              active: false
+            };
+          } else {
+            oneHandZoom = null;
+          }
+        } else if (ev.touches.length === 2) {
+          singleStart = null;
+          if (oneHandZoom?.active) {
+            map.dragging.enable();
+          }
+          oneHandZoom = null;
+          lastTapTime = 0;
+          lastTapPt = null;
+          const p0 = pointFromTouch(ev.touches[0]);
+          const p1 = pointFromTouch(ev.touches[1]);
+          twoFingerStart = { p0, p1, time: now, moved: false };
+        } else {
+          singleStart = null;
+          twoFingerStart = null;
+        }
+      },
+      { passive: true }
+    );
+
+    mapContainer.addEventListener(
+      "touchmove",
+      (ev) => {
+        if (ev.touches.length === 1 && singleStart) {
+          const pt = pointFromTouch(ev.touches[0]);
+          const dist = Math.hypot(pt.x - singleStart.pt.x, pt.y - singleStart.pt.y);
+          if (dist > 14) singleStart.moved = true;
+
+          if (oneHandZoom) {
+            const dy = pt.y - oneHandZoom.startY;
+            if (!oneHandZoom.active && Math.abs(dy) >= 12) {
+              oneHandZoom.active = true;
+              map.dragging.disable();
+              map.closePopup();
+            }
+            if (oneHandZoom.active) {
+              if (ev.cancelable) ev.preventDefault();
+              const targetZoom = Math.max(
+                map.getMinZoom(),
+                Math.min(map.getMaxZoom(), oneHandZoom.startZoom + dy / 95)
+              );
+              map.setZoomAround(oneHandZoom.anchorLatLng, targetZoom, { animate: false });
+            }
+          }
+        } else if (ev.touches.length === 2 && twoFingerStart) {
+          const p0 = pointFromTouch(ev.touches[0]);
+          const p1 = pointFromTouch(ev.touches[1]);
+          if (
+            Math.hypot(p0.x - twoFingerStart.p0.x, p0.y - twoFingerStart.p0.y) > 18 ||
+            Math.hypot(p1.x - twoFingerStart.p1.x, p1.y - twoFingerStart.p1.y) > 18
+          ) {
+            twoFingerStart.moved = true;
+          }
+        }
+      },
+      { passive: false }
+    );
+
+    const endTouch = (ev) => {
+      const now = performance.now();
+
+      if (oneHandZoom?.active) {
+        map.dragging.enable();
+        suppressMapClickUntil = now + 380;
+        oneHandZoom = null;
+        singleStart = null;
+        lastTapTime = 0;
+        lastTapPt = null;
+        return;
+      }
+
+      if (twoFingerStart && ev.touches.length === 0) {
+        const dt = now - twoFingerStart.time;
+        if (!twoFingerStart.moved && dt <= 260) {
+          const midPt = L.point(
+            (twoFingerStart.p0.x + twoFingerStart.p1.x) / 2,
+            (twoFingerStart.p0.y + twoFingerStart.p1.y) / 2
+          );
+          const midLatLng = map.containerPointToLatLng(midPt);
+          const nextZoom = Math.max(map.getMinZoom(), map.getZoom() - 1.5);
+          suppressMapClickUntil = now + 380;
+          map.closePopup();
+          map.setZoomAround(midLatLng, nextZoom, { animate: true });
+        }
+        twoFingerStart = null;
+        return;
+      }
+
+      if (singleStart && ev.touches.length === 0) {
+        const dt = now - singleStart.time;
+        if (!singleStart.moved && dt <= 280) {
+          if (singleStart.isSecondTap) {
+            const tapLatLng = map.containerPointToLatLng(singleStart.pt);
+            const nextZoom = Math.min(map.getMaxZoom(), map.getZoom() + 1.5);
+            suppressMapClickUntil = now + 380;
+            map.closePopup();
+            map.setZoomAround(tapLatLng, nextZoom, { animate: true });
+            lastTapTime = 0;
+            lastTapPt = null;
+          } else {
+            lastTapTime = now;
+            lastTapPt = singleStart.pt;
+          }
+        } else {
+          lastTapTime = 0;
+          lastTapPt = null;
+        }
+        singleStart = null;
+        oneHandZoom = null;
+      }
+    };
+
+    mapContainer.addEventListener("touchend", endTouch, { passive: true });
+    mapContainer.addEventListener(
+      "touchcancel",
+      () => {
+        if (oneHandZoom?.active) map.dragging.enable();
+        singleStart = null;
+        twoFingerStart = null;
+        oneHandZoom = null;
+      },
+      { passive: true }
+    );
+  })();
 
   // Explicit Leaflet z-index panes so SVG country/state polygons never block Canvas dot clicks!
   const choroplethPane = map.createPane("choroplethPane");
@@ -1248,6 +1426,7 @@
   }
 
   function activateClosestPinAt(containerPoint, origEvent = null) {
+    if (performance.now() < suppressMapClickUntil) return true;
     if (!lensShowsPhotos() || !mapsData || !containerPoint) return false;
     if (origEvent && origEvent._mlbPinHandled) return true;
     const maxHitPx = isCoarseMapPointer ? 22 : 14;

@@ -1667,6 +1667,9 @@
     background-color: var(--bg-canvas);
     z-index: 1;
     font-family: var(--font-sans);
+    touch-action: none;
+    -webkit-user-select: none;
+    user-select: none;
 
     & path.leaflet-interactive:focus,
     & path.leaflet-interactive:focus-visible {
