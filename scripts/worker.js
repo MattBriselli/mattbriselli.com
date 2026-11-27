@@ -253,6 +253,69 @@ async function handleLbPoster(url) {
   );
 }
 
+function arrayBufferToBase64Url(buffer) {
+  const bytes = new Uint8Array(buffer);
+  const chunkSize = 0x8000;
+  const chunks = [];
+  for (let i = 0; i < bytes.length; i += chunkSize) {
+    chunks.push(String.fromCharCode(...bytes.subarray(i, i + chunkSize)));
+  }
+  return btoa(chunks.join(""))
+    .replace(/\+/g, "-")
+    .replace(/\//g, "_")
+    .replace(/=+$/g, "");
+}
+
+async function handleInboundSpamEmail(message, env) {
+  const fallbackDest = "mattbriselli@gmail.com";
+  const maxWebhookBytes = 18 * 1024 * 1024;
+
+  if (!env.SPAM_WEBHOOK_URL || !env.SPAM_WEBHOOK_SECRET || message.rawSize > maxWebhookBytes) {
+    await message.forward(
+      fallbackDest,
+      new Headers({ "X-Spam-Sink": "spam@mattbriselli.com" })
+    );
+    return;
+  }
+
+  const rawBuf = await new Response(message.raw).arrayBuffer();
+  try {
+    const res = await fetch(env.SPAM_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      redirect: "follow",
+      body: JSON.stringify({
+        secret: env.SPAM_WEBHOOK_SECRET,
+        from: message.from,
+        to: message.to,
+        subject: message.headers.get("subject") || "",
+        raw: arrayBufferToBase64Url(rawBuf)
+      })
+    });
+    const data = await res.json().catch(() => null);
+    if (res.ok && data?.ok) {
+      return;
+    }
+    throw new Error(data?.error || `Spam webhook HTTP ${res.status}`);
+  } catch (err) {
+    try {
+      await message.forward(
+        fallbackDest,
+        new Headers({ "X-Spam-Sink": "spam@mattbriselli.com" })
+      );
+    } catch {
+      const subj = message.headers.get("subject") || "(no subject)";
+      const rawPreview = new TextDecoder("utf-8", { fatal: false }).decode(rawBuf.slice(0, 32768));
+      await env.EMAIL.send({
+        from: { email: "shout@mattbriselli.com", name: "spam@mattbriselli.com Fallback" },
+        to: fallbackDest,
+        subject: `[spam@mattbriselli.com] ${subj}`,
+        text: `Fallback delivery from ${message.from} to ${message.to} (${err?.message || "webhook error"}):\n\n${rawPreview}`
+      });
+    }
+  }
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -287,5 +350,9 @@ export default {
     }
 
     return env.ASSETS.fetch(request);
+  },
+
+  async email(message, env) {
+    return handleInboundSpamEmail(message, env);
   }
 };
