@@ -98,10 +98,10 @@ const server = http.createServer(async (req, res) => {
         "<p>Saved encrypted <code>SWARM_OAUTH_TOKEN</code> to GitHub Actions secrets. You can close this tab.</p></body>"
     );
 
-    console.log("\n✓ Saved SWARM_OAUTH_TOKEN to GitHub Actions secrets! Running initial 7-day-delayed sync...");
+    console.log("\n✓ Saved SWARM_OAUTH_TOKEN to GitHub Actions secrets! Running full (>7d) Swarm backfill...");
     server.close(() => {
       try {
-        execFileSync("node", ["scripts/sync-swarm-api.mjs"], {
+        execFileSync("node", ["scripts/sync-swarm-api.mjs", "--backfill"], {
           stdio: "inherit",
           env: { ...process.env, SWARM_OAUTH_TOKEN: accessToken }
         });
@@ -118,7 +118,7 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, "127.0.0.1", () => {
+server.listen(PORT, () => {
   console.log(`\nListening on ${REDIRECT_URI}`);
   console.log(`Authorize Swarm in your browser:\n\n  ${authUrl}\n`);
   if (process.platform === "darwin") {

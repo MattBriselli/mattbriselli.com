@@ -19,7 +19,38 @@ import path from "node:path";
 export const DEFAULT_EMBARGO_DAYS = 7;
 
 export const PRIVATE_VENUE_RE =
-  /\b(home|residential|apartment|condo|housing|dorm|fraternity|sorority|office|coworking|tech startup|conference room|doctor|dentist|medical|hospital|urgent care|clinic|pharmacy|walgreens|cvs|duane reade|rite aid|therapy|bank|credit union|atm|gym|fitness|equinox|planet fitness|yoga|post office|usps|ups store|fedex|laundromat|cleaners|dry clean|tailor|supermarket|grocery|key food|gristedes|morton williams|acme|giant|wawa|target|whole foods|trader joe|hardware|parking|garage|liquor|beverage|pet supplies|wine shop|dispensary|cannabis)\b/i;
+  /\b(home|residential|apartments?|apts?|condos?|condominiums?|townhomes?|housing|dorm|dormitory|residence hall|fraternity|sorority|leasing|self storage|u-haul|public storage|extra space storage|office|coworking|tech startup|conference room|shuttle stop|google shuttle|google bus|rental car shuttle|shuttle transfer to|doctor|dentist|dermatolog|orthodon|chiropract|physical therapy|medical|hospital|urgent care|clinic|veterinar|pharmacy|walgreens|cvs|duane reade|rite aid|therapy|bank|credit union|atm|gym|fitness|equinox|planet fitness|yoga|post office|usps|ups store|fedex|laundromat|cleaners|dry clean|tailor|supermarket|grocery|key food|gristedes|morton williams|acme|giant|wawa|target|whole foods|trader joe|lowe's|home depot|hardware|parking|garage|liquor|beverage|pet supplies|mud bay|wine shop|dispensary|cannabis)\b/i;
+
+export function isNoisyOrPrivateVenueName(rawName = "") {
+  const name = String(rawName || "").trim();
+  if (!name) return true;
+  // Internal corporate offices / microkitchens / commuter stops (keep Google Store / Googleplex)
+  if (
+    /\b(google|googler|youtube office|adobe systems|121 spear|345 spear|hills plaza)\b/i.test(name) &&
+    !/\b(google store|googleplex|google visitor)\b/i.test(name)
+  ) {
+    return true;
+  }
+  // Individual airport boarding gates & TSA lines (keep real landmarks like Golden Gate, Gate of Dawn, Sather Gate)
+  if (
+    /^([A-Z]{3}\s*[-–]\s*)?Gate\s+[A-Z]?\d+[A-Z]?(\b|\s*\()/i.test(name) ||
+    /\bTSA\s*(Pre-?Check|Security|Checkpoint)\b/i.test(name)
+  ) {
+    return true;
+  }
+  // Bare residential/office street address used as venue name (preserve scenic drives)
+  if (
+    /^\d+\s+[A-Za-z0-9.\s]+(Street|St|Avenue|Ave|Road|Rd|Boulevard|Blvd|Way|Place|Pl|Drive|Dr|Lane|Ln|Court|Ct|Terrace|Ter)\.?$/i.test(name) &&
+    !/^(17 Mile Drive|49-Mile Scenic Drive)$/i.test(name)
+  ) {
+    return true;
+  }
+  // Friend's apartment / private pad naming pattern
+  if (/^[A-Z][a-z]+(\s+&\s+[A-Z][a-z]+)?[’']s\s+(Apt|Apartment|House|Home|Condo|Roof|Room|Pad|Basement|Backyard|Couch)\b/i.test(name)) {
+    return true;
+  }
+  return false;
+}
 
 export function loadPrivacyConfig() {
   let parsed = null;
@@ -134,6 +165,9 @@ export function filterAndBlurPlace(item, config) {
   }
 
   const textBlob = `${item.name || ""} ${item.category || ""}`;
+  if (isNoisyOrPrivateVenueName(item.name)) {
+    return null;
+  }
   if (item.source === "swarm" && PRIVATE_VENUE_RE.test(textBlob)) {
     return null;
   }

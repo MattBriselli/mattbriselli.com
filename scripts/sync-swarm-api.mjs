@@ -27,16 +27,19 @@ if (!privacyConfig.zones.length) {
   process.exit(1);
 }
 
+const isBackfill = process.argv.includes("--backfill");
 const beforeUnix = Math.floor(getEmbargoCutoffMs(privacyConfig.embargoDays) / 1000);
 const mapsIndexPath = path.resolve("data/maps-index.json");
 const mapsPinsPath = path.resolve("data/maps-pins.json");
 const htmlPath = path.resolve("index.html");
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
-async function main() {
+async function fetchCheckinPage(offset = 0) {
   const apiUrl = new URL("https://api.foursquare.com/v2/users/self/checkins");
   apiUrl.searchParams.set("oauth_token", token);
   apiUrl.searchParams.set("v", "20231010");
   apiUrl.searchParams.set("limit", "250");
+  apiUrl.searchParams.set("offset", String(offset));
   apiUrl.searchParams.set("beforeTimestamp", String(beforeUnix));
 
   const res = await fetch(apiUrl);
@@ -44,7 +47,27 @@ async function main() {
     throw new Error(`Foursquare API returned HTTP ${res.status}`);
   }
   const payload = await res.json();
-  const items = payload?.response?.checkins?.items || [];
+  return {
+    totalCount: Number(payload?.response?.checkins?.count || 0),
+    items: payload?.response?.checkins?.items || []
+  };
+}
+
+async function main() {
+  const maxPages = isBackfill ? 80 : 1; // up to 20,000 historical check-ins on backfill!
+  const items = [];
+  let offset = 0;
+  for (let page = 0; page < maxPages; page++) {
+    const batch = await fetchCheckinPage(offset);
+    if (!batch.items.length) break;
+    items.push(...batch.items);
+    console.log(
+      `  [Swarm API] page ${page + 1}: fetched ${batch.items.length} check-ins (running total: ${items.length}/${batch.totalCount || "?"})`
+    );
+    if (batch.items.length < 250) break;
+    offset += 250;
+    await sleep(220);
+  }
 
   const mapsIndex = JSON.parse(fs.readFileSync(mapsIndexPath, "utf8"));
   const mapsPins = JSON.parse(fs.readFileSync(mapsPinsPath, "utf8"));
