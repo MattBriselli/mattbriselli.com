@@ -1,0 +1,1239 @@
+{
+  "summary": {
+    "totalFlights": 173,
+    "totalMiles": 314804,
+    "earthOrbits": 12.6,
+    "uniqueAirports": 83,
+    "uniqueRoutes": 107,
+    "uniqueAirlines": 35,
+    "uniqueAircraft": 34,
+    "yearRange": "2013–2026"
+  },
+  "airports": [
+    {
+      "code": "SFO",
+      "city": "San Francisco, CA",
+      "lat": 37.6213,
+      "lng": -122.379,
+      "visits": 62
+    },
+    {
+      "code": "SEA",
+      "city": "Seattle, WA",
+      "lat": 47.4502,
+      "lng": -122.3088,
+      "visits": 16
+    },
+    {
+      "code": "JFK",
+      "city": "New York (JFK), NY",
+      "lat": 40.6413,
+      "lng": -73.7781,
+      "visits": 15
+    },
+    {
+      "code": "PHL",
+      "city": "Philadelphia, PA",
+      "lat": 39.8744,
+      "lng": -75.2424,
+      "visits": 12
+    },
+    {
+      "code": "LAX",
+      "city": "Los Angeles, CA",
+      "lat": 33.9416,
+      "lng": -118.4085,
+      "visits": 11
+    },
+    {
+      "code": "DEN",
+      "city": "Denver, CO",
+      "lat": 39.8561,
+      "lng": -104.6737,
+      "visits": 10
+    },
+    {
+      "code": "IST",
+      "city": "İstanbul, Türkiye",
+      "lat": 41.2753,
+      "lng": 28.7519,
+      "visits": 10
+    },
+    {
+      "code": "ORD",
+      "city": "Chicago (O'Hare), IL",
+      "lat": 41.9742,
+      "lng": -87.9073,
+      "visits": 9
+    },
+    {
+      "code": "DCA",
+      "city": "Washington National (Reagan), VA",
+      "lat": 38.8512,
+      "lng": -77.0402,
+      "visits": 8
+    },
+    {
+      "code": "IAD",
+      "city": "Washington Dulles, VA",
+      "lat": 38.9531,
+      "lng": -77.4565,
+      "visits": 7
+    },
+    {
+      "code": "LGA",
+      "city": "New York (LaGuardia), NY",
+      "lat": 40.7769,
+      "lng": -73.874,
+      "visits": 6
+    },
+    {
+      "code": "NRT",
+      "city": "Tokyo (Narita), Japan",
+      "lat": 35.772,
+      "lng": 140.3929,
+      "visits": 6
+    },
+    {
+      "code": "TAS",
+      "city": "Tashkent, Uzbekistan",
+      "lat": 41.2579,
+      "lng": 69.2812,
+      "visits": 6
+    },
+    {
+      "code": "PIT",
+      "city": "Pittsburgh, PA",
+      "lat": 40.4915,
+      "lng": -80.2329,
+      "visits": 5
+    },
+    {
+      "code": "PHX",
+      "city": "Phoenix, AZ",
+      "lat": 33.4373,
+      "lng": -112.0078,
+      "visits": 5
+    },
+    {
+      "code": "SYD",
+      "city": "Sydney, Australia",
+      "lat": -33.9399,
+      "lng": 151.1753,
+      "visits": 5
+    },
+    {
+      "code": "ASB",
+      "city": "Ashgabat, Turkmenistan",
+      "lat": 37.9868,
+      "lng": 58.361,
+      "visits": 5
+    },
+    {
+      "code": "MEX",
+      "city": "Mexico City, Mexico",
+      "lat": 19.4363,
+      "lng": -99.0721,
+      "visits": 4
+    },
+    {
+      "code": "BWI",
+      "city": "Baltimore/Washington, MD",
+      "lat": 39.1754,
+      "lng": -76.6684,
+      "visits": 4
+    },
+    {
+      "code": "SJC",
+      "city": "San Jose, CA",
+      "lat": 37.3639,
+      "lng": -121.9289,
+      "visits": 4
+    },
+    {
+      "code": "MSP",
+      "city": "Minneapolis/St. Paul, MN",
+      "lat": 44.8848,
+      "lng": -93.2223,
+      "visits": 4
+    },
+    {
+      "code": "ICN",
+      "city": "Seoul (Incheon), South Korea",
+      "lat": 37.4602,
+      "lng": 126.4407,
+      "visits": 4
+    },
+    {
+      "code": "HKG",
+      "city": "Hong Kong",
+      "lat": 22.308,
+      "lng": 113.9185,
+      "visits": 4
+    },
+    {
+      "code": "MUC",
+      "city": "Munich, Germany",
+      "lat": 48.3537,
+      "lng": 11.775,
+      "visits": 4
+    },
+    {
+      "code": "CLT",
+      "city": "Charlotte, NC",
+      "lat": 35.214,
+      "lng": -80.9431,
+      "visits": 4
+    },
+    {
+      "code": "TPE",
+      "city": "Taipei (Taoyuan), Taiwan",
+      "lat": 25.0797,
+      "lng": 121.2342,
+      "visits": 4
+    },
+    {
+      "code": "DOH",
+      "city": "Doha, Qatar",
+      "lat": 25.2731,
+      "lng": 51.6081,
+      "visits": 4
+    },
+    {
+      "code": "DYU",
+      "city": "Dushanbe, Tajikistan",
+      "lat": 38.5433,
+      "lng": 68.825,
+      "visits": 4
+    },
+    {
+      "code": "FLL",
+      "city": "Fort Lauderdale, FL",
+      "lat": 26.0742,
+      "lng": -80.1506,
+      "visits": 4
+    },
+    {
+      "code": "YYZ",
+      "city": "Toronto, ON, Canada",
+      "lat": 43.6777,
+      "lng": -79.6248,
+      "visits": 4
+    },
+    {
+      "code": "OSL",
+      "city": "Oslo, Norway",
+      "lat": 60.1976,
+      "lng": 11.1004,
+      "visits": 4
+    },
+    {
+      "code": "EWR",
+      "city": "Newark / NYC, NJ",
+      "lat": 40.6895,
+      "lng": -74.1745,
+      "visits": 3
+    },
+    {
+      "code": "DFW",
+      "city": "Dallas/Fort Worth, TX",
+      "lat": 32.8998,
+      "lng": -97.0403,
+      "visits": 3
+    },
+    {
+      "code": "PDX",
+      "city": "Portland, OR",
+      "lat": 45.5898,
+      "lng": -122.5951,
+      "visits": 3
+    },
+    {
+      "code": "HNL",
+      "city": "Honolulu, HI",
+      "lat": 21.3187,
+      "lng": -157.9224,
+      "visits": 3
+    },
+    {
+      "code": "NAP",
+      "city": "Naples, Italy",
+      "lat": 40.886,
+      "lng": 14.2908,
+      "visits": 3
+    },
+    {
+      "code": "EVN",
+      "city": "Yerevan, Armenia",
+      "lat": 40.1473,
+      "lng": 44.3959,
+      "visits": 3
+    },
+    {
+      "code": "TBS",
+      "city": "Tbilisi, Georgia",
+      "lat": 41.6692,
+      "lng": 44.9547,
+      "visits": 3
+    },
+    {
+      "code": "BOS",
+      "city": "Boston, MA",
+      "lat": 42.3656,
+      "lng": -71.0096,
+      "visits": 2
+    },
+    {
+      "code": "ATL",
+      "city": "Atlanta, GA",
+      "lat": 33.6407,
+      "lng": -84.4277,
+      "visits": 2
+    },
+    {
+      "code": "SJD",
+      "city": "San José del Cabo, Mexico",
+      "lat": 23.1518,
+      "lng": -109.721,
+      "visits": 2
+    },
+    {
+      "code": "DUB",
+      "city": "Dublin, Ireland",
+      "lat": 53.4264,
+      "lng": -6.2499,
+      "visits": 2
+    },
+    {
+      "code": "CMH",
+      "city": "Columbus, OH",
+      "lat": 39.998,
+      "lng": -82.8919,
+      "visits": 2
+    },
+    {
+      "code": "AGP",
+      "city": "Málaga, Spain",
+      "lat": 36.6749,
+      "lng": -4.4991,
+      "visits": 2
+    },
+    {
+      "code": "BLQ",
+      "city": "Bologna, Italy",
+      "lat": 44.5354,
+      "lng": 11.2887,
+      "visits": 2
+    },
+    {
+      "code": "STN",
+      "city": "London (Stansted), UK",
+      "lat": 51.886,
+      "lng": 0.2389,
+      "visits": 2
+    },
+    {
+      "code": "MIA",
+      "city": "Miami, FL",
+      "lat": 25.7959,
+      "lng": -80.287,
+      "visits": 2
+    },
+    {
+      "code": "BUR",
+      "city": "Burbank, CA",
+      "lat": 34.2007,
+      "lng": -118.3587,
+      "visits": 2
+    },
+    {
+      "code": "MSO",
+      "city": "Missoula, MT",
+      "lat": 46.9163,
+      "lng": -114.0906,
+      "visits": 2
+    },
+    {
+      "code": "ANC",
+      "city": "Anchorage, AK",
+      "lat": 61.1743,
+      "lng": -149.9962,
+      "visits": 2
+    },
+    {
+      "code": "YVR",
+      "city": "Vancouver, BC, Canada",
+      "lat": 49.1967,
+      "lng": -123.1815,
+      "visits": 2
+    },
+    {
+      "code": "YYC",
+      "city": "Calgary, AB, Canada",
+      "lat": 51.1215,
+      "lng": -114.0076,
+      "visits": 2
+    },
+    {
+      "code": "SYR",
+      "city": "Syracuse, NY",
+      "lat": 43.1112,
+      "lng": -76.1063,
+      "visits": 2
+    },
+    {
+      "code": "LHR",
+      "city": "London (Heathrow), UK",
+      "lat": 51.47,
+      "lng": -0.4543,
+      "visits": 2
+    },
+    {
+      "code": "AUS",
+      "city": "Austin, TX",
+      "lat": 30.1975,
+      "lng": -97.6664,
+      "visits": 2
+    },
+    {
+      "code": "GYD",
+      "city": "Baku, Azerbaijan",
+      "lat": 40.4675,
+      "lng": 50.0467,
+      "visits": 2
+    },
+    {
+      "code": "NQZ",
+      "city": "Astana, Kazakhstan",
+      "lat": 51.0222,
+      "lng": 71.4669,
+      "visits": 2
+    },
+    {
+      "code": "MYP",
+      "city": "Mary, Turkmenistan",
+      "lat": 37.6068,
+      "lng": 61.8967,
+      "visits": 2
+    },
+    {
+      "code": "NCU",
+      "city": "Nukus, Uzbekistan",
+      "lat": 42.4884,
+      "lng": 59.6233,
+      "visits": 2
+    },
+    {
+      "code": "LBD",
+      "city": "Khujand, Tajikistan",
+      "lat": 40.2154,
+      "lng": 69.6947,
+      "visits": 2
+    },
+    {
+      "code": "YZF",
+      "city": "Yellowknife, NWT, Canada",
+      "lat": 62.4628,
+      "lng": -114.4403,
+      "visits": 2
+    },
+    {
+      "code": "BGO",
+      "city": "Bergen, Norway",
+      "lat": 60.2934,
+      "lng": 5.2181,
+      "visits": 2
+    },
+    {
+      "code": "ARN",
+      "city": "Stockholm, Sweden",
+      "lat": 59.6519,
+      "lng": 17.9186,
+      "visits": 2
+    },
+    {
+      "code": "HEL",
+      "city": "Helsinki, Finland",
+      "lat": 60.3172,
+      "lng": 24.9633,
+      "visits": 2
+    },
+    {
+      "code": "TPA",
+      "city": "Tampa, FL",
+      "lat": 27.9755,
+      "lng": -82.5332,
+      "visits": 1
+    },
+    {
+      "code": "SLC",
+      "city": "Salt Lake City, UT",
+      "lat": 40.7899,
+      "lng": -111.9791,
+      "visits": 1
+    },
+    {
+      "code": "MSY",
+      "city": "New Orleans, LA",
+      "lat": 29.9934,
+      "lng": -90.258,
+      "visits": 1
+    },
+    {
+      "code": "MAN",
+      "city": "Manchester, UK",
+      "lat": 53.3537,
+      "lng": -2.275,
+      "visits": 1
+    },
+    {
+      "code": "BFS",
+      "city": "Belfast, Northern Ireland",
+      "lat": 54.6575,
+      "lng": -6.2158,
+      "visits": 1
+    },
+    {
+      "code": "EIN",
+      "city": "Eindhoven, Netherlands",
+      "lat": 51.4501,
+      "lng": 5.3745,
+      "visits": 1
+    },
+    {
+      "code": "BUD",
+      "city": "Budapest, Hungary",
+      "lat": 47.4369,
+      "lng": 19.2556,
+      "visits": 1
+    },
+    {
+      "code": "CRL",
+      "city": "Brussels South Charleroi, Belgium",
+      "lat": 50.4592,
+      "lng": 4.4538,
+      "visits": 1
+    },
+    {
+      "code": "CNX",
+      "city": "Chiang Mai, Thailand",
+      "lat": 18.7668,
+      "lng": 98.9626,
+      "visits": 1
+    },
+    {
+      "code": "DMK",
+      "city": "Bangkok (Don Mueang), Thailand",
+      "lat": 13.9126,
+      "lng": 100.6068,
+      "visits": 1
+    },
+    {
+      "code": "BKK",
+      "city": "Bangkok (Suvarnabhumi), Thailand",
+      "lat": 13.69,
+      "lng": 100.7501,
+      "visits": 1
+    },
+    {
+      "code": "MEL",
+      "city": "Melbourne, Australia",
+      "lat": -37.669,
+      "lng": 144.841,
+      "visits": 1
+    },
+    {
+      "code": "ATH",
+      "city": "Athens, Greece",
+      "lat": 37.9364,
+      "lng": 23.9445,
+      "visits": 1
+    },
+    {
+      "code": "VNO",
+      "city": "Vilnius, Lithuania",
+      "lat": 54.6341,
+      "lng": 25.2858,
+      "visits": 1
+    },
+    {
+      "code": "TLL",
+      "city": "Tallinn, Estonia",
+      "lat": 59.4133,
+      "lng": 24.8328,
+      "visits": 1
+    },
+    {
+      "code": "LTN",
+      "city": "London (Luton), UK",
+      "lat": 51.8747,
+      "lng": -0.3683,
+      "visits": 1
+    },
+    {
+      "code": "ALA",
+      "city": "Almaty, Kazakhstan",
+      "lat": 43.3521,
+      "lng": 77.0405,
+      "visits": 1
+    },
+    {
+      "code": "TAZ",
+      "city": "Daşoguz, Turkmenistan",
+      "lat": 41.7617,
+      "lng": 59.8333,
+      "visits": 1
+    },
+    {
+      "code": "BSZ",
+      "city": "Bishkek (Manas), Kyrgyzstan",
+      "lat": 43.0613,
+      "lng": 74.4776,
+      "visits": 1
+    }
+  ],
+  "routes": [
+    {
+      "from": "PHL",
+      "to": "SFO",
+      "count": 8,
+      "miles": 2515
+    },
+    {
+      "from": "JFK",
+      "to": "SFO",
+      "count": 6,
+      "miles": 2580
+    },
+    {
+      "from": "SEA",
+      "to": "SFO",
+      "count": 6,
+      "miles": 679
+    },
+    {
+      "from": "LAX",
+      "to": "SFO",
+      "count": 6,
+      "miles": 338
+    },
+    {
+      "from": "ORD",
+      "to": "SFO",
+      "count": 5,
+      "miles": 1842
+    },
+    {
+      "from": "DOH",
+      "to": "SFO",
+      "count": 2,
+      "miles": 8074
+    },
+    {
+      "from": "SYD",
+      "to": "YVR",
+      "count": 2,
+      "miles": 7768
+    },
+    {
+      "from": "LAX",
+      "to": "SYD",
+      "count": 2,
+      "miles": 7494
+    },
+    {
+      "from": "HKG",
+      "to": "SFO",
+      "count": 2,
+      "miles": 6914
+    },
+    {
+      "from": "SFO",
+      "to": "TPE",
+      "count": 2,
+      "miles": 6456
+    },
+    {
+      "from": "MUC",
+      "to": "SFO",
+      "count": 2,
+      "miles": 5864
+    },
+    {
+      "from": "LHR",
+      "to": "SFO",
+      "count": 2,
+      "miles": 5354
+    },
+    {
+      "from": "NRT",
+      "to": "SFO",
+      "count": 2,
+      "miles": 5111
+    },
+    {
+      "from": "IST",
+      "to": "JFK",
+      "count": 2,
+      "miles": 4988
+    },
+    {
+      "from": "JFK",
+      "to": "OSL",
+      "count": 2,
+      "miles": 3677
+    },
+    {
+      "from": "EWR",
+      "to": "SFO",
+      "count": 2,
+      "miles": 2559
+    },
+    {
+      "from": "JFK",
+      "to": "LAX",
+      "count": 2,
+      "miles": 2470
+    },
+    {
+      "from": "HNL",
+      "to": "SFO",
+      "count": 2,
+      "miles": 2396
+    },
+    {
+      "from": "PIT",
+      "to": "SFO",
+      "count": 2,
+      "miles": 2248
+    },
+    {
+      "from": "IST",
+      "to": "NQZ",
+      "count": 2,
+      "miles": 2119
+    },
+    {
+      "from": "YYZ",
+      "to": "YZF",
+      "count": 2,
+      "miles": 1901
+    },
+    {
+      "from": "HKG",
+      "to": "NRT",
+      "count": 2,
+      "miles": 1841
+    },
+    {
+      "from": "ORD",
+      "to": "SJC",
+      "count": 2,
+      "miles": 1825
+    },
+    {
+      "from": "ASB",
+      "to": "IST",
+      "count": 2,
+      "miles": 1584
+    },
+    {
+      "from": "AUS",
+      "to": "SFO",
+      "count": 2,
+      "miles": 1502
+    },
+    {
+      "from": "BWI",
+      "to": "DEN",
+      "count": 2,
+      "miles": 1487
+    },
+    {
+      "from": "DEN",
+      "to": "IAD",
+      "count": 2,
+      "miles": 1449
+    },
+    {
+      "from": "ANC",
+      "to": "SEA",
+      "count": 2,
+      "miles": 1445
+    },
+    {
+      "from": "DOH",
+      "to": "EVN",
+      "count": 2,
+      "miles": 1109
+    },
+    {
+      "from": "DEN",
+      "to": "SEA",
+      "count": 2,
+      "miles": 1022
+    },
+    {
+      "from": "SFO",
+      "to": "YYC",
+      "count": 2,
+      "miles": 1019
+    },
+    {
+      "from": "FLL",
+      "to": "PHL",
+      "count": 2,
+      "miles": 995
+    },
+    {
+      "from": "DCA",
+      "to": "MSP",
+      "count": 2,
+      "miles": 929
+    },
+    {
+      "from": "MEX",
+      "to": "SJD",
+      "count": 2,
+      "miles": 732
+    },
+    {
+      "from": "CLT",
+      "to": "SYR",
+      "count": 2,
+      "miles": 604
+    },
+    {
+      "from": "MUC",
+      "to": "NAP",
+      "count": 2,
+      "miles": 531
+    },
+    {
+      "from": "NCU",
+      "to": "TAS",
+      "count": 2,
+      "miles": 504
+    },
+    {
+      "from": "MSO",
+      "to": "SEA",
+      "count": 2,
+      "miles": 387
+    },
+    {
+      "from": "LGA",
+      "to": "YYZ",
+      "count": 2,
+      "miles": 356
+    },
+    {
+      "from": "BUR",
+      "to": "SFO",
+      "count": 2,
+      "miles": 326
+    },
+    {
+      "from": "GYD",
+      "to": "TBS",
+      "count": 2,
+      "miles": 278
+    },
+    {
+      "from": "DCA",
+      "to": "LGA",
+      "count": 2,
+      "miles": 214
+    },
+    {
+      "from": "ASB",
+      "to": "MYP",
+      "count": 2,
+      "miles": 195
+    },
+    {
+      "from": "DYU",
+      "to": "TAS",
+      "count": 2,
+      "miles": 189
+    },
+    {
+      "from": "DYU",
+      "to": "LBD",
+      "count": 2,
+      "miles": 125
+    },
+    {
+      "from": "ICN",
+      "to": "SFO",
+      "count": 1,
+      "miles": 5646
+    },
+    {
+      "from": "HNL",
+      "to": "SEA",
+      "count": 1,
+      "miles": 2677
+    },
+    {
+      "from": "MIA",
+      "to": "SFO",
+      "count": 1,
+      "miles": 2581
+    },
+    {
+      "from": "FLL",
+      "to": "SFO",
+      "count": 1,
+      "miles": 2580
+    },
+    {
+      "from": "ALA",
+      "to": "IST",
+      "count": 1,
+      "miles": 2437
+    },
+    {
+      "from": "JFK",
+      "to": "SEA",
+      "count": 1,
+      "miles": 2415
+    },
+    {
+      "from": "PHL",
+      "to": "SEA",
+      "count": 1,
+      "miles": 2372
+    },
+    {
+      "from": "CLT",
+      "to": "SFO",
+      "count": 1,
+      "miles": 2291
+    },
+    {
+      "from": "IAD",
+      "to": "LAX",
+      "count": 1,
+      "miles": 2283
+    },
+    {
+      "from": "BKK",
+      "to": "ICN",
+      "count": 1,
+      "miles": 2278
+    },
+    {
+      "from": "JFK",
+      "to": "MEX",
+      "count": 1,
+      "miles": 2091
+    },
+    {
+      "from": "IST",
+      "to": "TAS",
+      "count": 1,
+      "miles": 2085
+    },
+    {
+      "from": "DCA",
+      "to": "PHX",
+      "count": 1,
+      "miles": 1974
+    },
+    {
+      "from": "BWI",
+      "to": "SLC",
+      "count": 1,
+      "miles": 1860
+    },
+    {
+      "from": "CLT",
+      "to": "PHX",
+      "count": 1,
+      "miles": 1770
+    },
+    {
+      "from": "CMH",
+      "to": "PHX",
+      "count": 1,
+      "miles": 1667
+    },
+    {
+      "from": "DFW",
+      "to": "SEA",
+      "count": 1,
+      "miles": 1658
+    },
+    {
+      "from": "MSP",
+      "to": "PDX",
+      "count": 1,
+      "miles": 1422
+    },
+    {
+      "from": "NRT",
+      "to": "TPE",
+      "count": 1,
+      "miles": 1356
+    },
+    {
+      "from": "ATL",
+      "to": "MEX",
+      "count": 1,
+      "miles": 1332
+    },
+    {
+      "from": "DFW",
+      "to": "PHL",
+      "count": 1,
+      "miles": 1300
+    },
+    {
+      "from": "AGP",
+      "to": "BFS",
+      "count": 1,
+      "miles": 1245
+    },
+    {
+      "from": "DFW",
+      "to": "IAD",
+      "count": 1,
+      "miles": 1170
+    },
+    {
+      "from": "LTN",
+      "to": "TLL",
+      "count": 1,
+      "miles": 1103
+    },
+    {
+      "from": "FLL",
+      "to": "LGA",
+      "count": 1,
+      "miles": 1078
+    },
+    {
+      "from": "DEN",
+      "to": "MSY",
+      "count": 1,
+      "miles": 1061
+    },
+    {
+      "from": "STN",
+      "to": "VNO",
+      "count": 1,
+      "miles": 1047
+    },
+    {
+      "from": "DEN",
+      "to": "PDX",
+      "count": 1,
+      "miles": 989
+    },
+    {
+      "from": "AGP",
+      "to": "BLQ",
+      "count": 1,
+      "miles": 988
+    },
+    {
+      "from": "DEN",
+      "to": "SFO",
+      "count": 1,
+      "miles": 965
+    },
+    {
+      "from": "DEN",
+      "to": "SJC",
+      "count": 1,
+      "miles": 946
+    },
+    {
+      "from": "BWI",
+      "to": "MSP",
+      "count": 1,
+      "miles": 934
+    },
+    {
+      "from": "DCA",
+      "to": "MIA",
+      "count": 1,
+      "miles": 922
+    },
+    {
+      "from": "ICN",
+      "to": "TPE",
+      "count": 1,
+      "miles": 909
+    },
+    {
+      "from": "IAD",
+      "to": "TPA",
+      "count": 1,
+      "miles": 813
+    },
+    {
+      "from": "ICN",
+      "to": "NRT",
+      "count": 1,
+      "miles": 782
+    },
+    {
+      "from": "IST",
+      "to": "NAP",
+      "count": 1,
+      "miles": 753
+    },
+    {
+      "from": "LGA",
+      "to": "ORD",
+      "count": 1,
+      "miles": 731
+    },
+    {
+      "from": "BUD",
+      "to": "CRL",
+      "count": 1,
+      "miles": 702
+    },
+    {
+      "from": "PHX",
+      "to": "SFO",
+      "count": 1,
+      "miles": 650
+    },
+    {
+      "from": "PHX",
+      "to": "SJC",
+      "count": 1,
+      "miles": 621
+    },
+    {
+      "from": "DCA",
+      "to": "ORD",
+      "count": 1,
+      "miles": 611
+    },
+    {
+      "from": "PDX",
+      "to": "SFO",
+      "count": 1,
+      "miles": 551
+    },
+    {
+      "from": "BLQ",
+      "to": "EIN",
+      "count": 1,
+      "miles": 550
+    },
+    {
+      "from": "ATL",
+      "to": "PIT",
+      "count": 1,
+      "miles": 527
+    },
+    {
+      "from": "HEL",
+      "to": "OSL",
+      "count": 1,
+      "miles": 474
+    },
+    {
+      "from": "ARN",
+      "to": "BGO",
+      "count": 1,
+      "miles": 441
+    },
+    {
+      "from": "MEL",
+      "to": "SYD",
+      "count": 1,
+      "miles": 438
+    },
+    {
+      "from": "BOS",
+      "to": "IAD",
+      "count": 1,
+      "miles": 412
+    },
+    {
+      "from": "CNX",
+      "to": "DMK",
+      "count": 1,
+      "miles": 353
+    },
+    {
+      "from": "ATH",
+      "to": "IST",
+      "count": 1,
+      "miles": 344
+    },
+    {
+      "from": "JFK",
+      "to": "PIT",
+      "count": 1,
+      "miles": 339
+    },
+    {
+      "from": "CMH",
+      "to": "DCA",
+      "count": 1,
+      "miles": 322
+    },
+    {
+      "from": "BSZ",
+      "to": "TAS",
+      "count": 1,
+      "miles": 294
+    },
+    {
+      "from": "DUB",
+      "to": "STN",
+      "count": 1,
+      "miles": 292
+    },
+    {
+      "from": "ASB",
+      "to": "TAZ",
+      "count": 1,
+      "miles": 272
+    },
+    {
+      "from": "ARN",
+      "to": "HEL",
+      "count": 1,
+      "miles": 248
+    },
+    {
+      "from": "BGO",
+      "to": "OSL",
+      "count": 1,
+      "miles": 202
+    },
+    {
+      "from": "BOS",
+      "to": "EWR",
+      "count": 1,
+      "miles": 201
+    },
+    {
+      "from": "IAD",
+      "to": "PIT",
+      "count": 1,
+      "miles": 182
+    },
+    {
+      "from": "DUB",
+      "to": "MAN",
+      "count": 1,
+      "miles": 164
+    },
+    {
+      "from": "EVN",
+      "to": "TBS",
+      "count": 1,
+      "miles": 109
+    }
+  ]
+}

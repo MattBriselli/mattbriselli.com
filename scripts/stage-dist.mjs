@@ -34,6 +34,7 @@ for (const file of rootFiles) {
 
 for (const file of [
   "data/maps-index.json",
+  "data/flighty-routes.json",
   "data/world-countries.json",
   "data/us-states.json",
   "vendor/leaflet.js",

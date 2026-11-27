@@ -60,6 +60,9 @@
       "countriesVisited": 39,
       "usStatesVisited": 50,
       "canadianProvincesAndTerritoriesVisited": 8,
+      "flightsLogged": 173,
+      "milesFlown": 314804,
+      "uniqueAirports": 83,
       "centralAsiaVisited": ["Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"]
     }
   },

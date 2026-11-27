@@ -101,6 +101,7 @@
   };
 
   let mapsData = null;
+  let flightyData = null;
   let filteredPlaces = [];
   let activePlaceIndex = 0;
   let activePhotoIndex = 0;
@@ -128,8 +129,108 @@
   let countriesLayer = null;
   let statesLayer = null;
   let radarPreviewMarker = null;
+  const flightArcsLayerGroup = L.layerGroup().addTo(map);
   const pinsLayerGroup = L.layerGroup().addTo(map);
   const placeMarkers = [];
+
+  // Compute spherical 3D great-circle points between two (lat, lng) pairs, splitting cleanly across the ±180° antimeridian
+  function buildGreatCircleSegments(lat1, lng1, lat2, lng2, steps = 36) {
+    const toRad = (d) => (d * Math.PI) / 180;
+    const toDeg = (r) => (r * 180) / Math.PI;
+    const p1 = toRad(lat1), l1 = toRad(lng1);
+    const p2 = toRad(lat2), l2 = toRad(lng2);
+
+    const v1 = [Math.cos(p1) * Math.cos(l1), Math.cos(p1) * Math.sin(l1), Math.sin(p1)];
+    const v2 = [Math.cos(p2) * Math.cos(l2), Math.cos(p2) * Math.sin(l2), Math.sin(p2)];
+    const dot = Math.max(-1, Math.min(1, v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2]));
+    const omega = Math.acos(dot);
+    if (omega < 1e-5) return [[[lat1, lng1], [lat2, lng2]]];
+
+    const sinOmega = Math.sin(omega);
+    const rawPts = [];
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const a = Math.sin((1 - t) * omega) / sinOmega;
+      const b = Math.sin(t * omega) / sinOmega;
+      const x = a * v1[0] + b * v2[0];
+      const y = a * v1[1] + b * v2[1];
+      const z = a * v1[2] + b * v2[2];
+      const lat = toDeg(Math.atan2(z, Math.hypot(x, y)));
+      const lng = toDeg(Math.atan2(y, x));
+      rawPts.push([lat, lng]);
+    }
+
+    const segments = [[]];
+    for (let i = 0; i < rawPts.length; i++) {
+      const cur = rawPts[i];
+      const seg = segments[segments.length - 1];
+      if (seg.length > 0) {
+        const prev = seg[seg.length - 1];
+        if (Math.abs(cur[1] - prev[1]) > 180) {
+          // Interpolate exact crossing latitude at ±180° meridian
+          const prevLng = prev[1];
+          const curLng = cur[1] + (cur[1] < prevLng ? 360 : -360);
+          const boundary = prevLng > 0 ? 180 : -180;
+          const frac = (boundary - prevLng) / (curLng - prevLng);
+          const crossLat = prev[0] + frac * (cur[0] - prev[0]);
+          seg.push([crossLat, boundary]);
+          segments.push([[crossLat, -boundary], cur]);
+          continue;
+        }
+      }
+      seg.push(cur);
+    }
+    return segments.filter((s) => s.length >= 2);
+  }
+
+  function rebuildFlightArcs() {
+    flightArcsLayerGroup.clearLayers();
+    if (!showArcs || !flightyData) return;
+
+    const dark = isDarkActive();
+    const airportByCode = new Map(
+      (flightyData.airports || []).map((a) => [a.code, a])
+    );
+
+    // 1. Great-circle Flighty routes (thickness & opacity scaled by flight frequency)
+    for (const r of flightyData.routes || []) {
+      const a1 = airportByCode.get(r.from);
+      const a2 = airportByCode.get(r.to);
+      if (!a1 || !a2) continue;
+      const segments = buildGreatCircleSegments(a1.lat, a1.lng, a2.lat, a2.lng, 34);
+      const weight = Math.min(3.4, 1.15 + Math.log2(r.count) * 0.65);
+      const opacity = Math.min(0.82, 0.34 + Math.log2(r.count) * 0.16);
+      const stroke = dark ? "#5ec28f" : "#1f6b45";
+      const label = `<strong>✈️ ${r.from} ↔ ${r.to}</strong><br>${a1.city} ↔ ${a2.city}<br>${r.count} ${r.count === 1 ? "flight" : "flights"} · ${formatNumber(r.miles)} mi`;
+
+      for (const seg of segments) {
+        const line = L.polyline(seg, {
+          color: stroke,
+          weight,
+          opacity,
+          smoothFactor: 1.2
+        });
+        line.bindTooltip(label, { sticky: true, direction: "top" });
+        line.addTo(flightArcsLayerGroup);
+      }
+    }
+
+    // 2. Subtle airport hub nodes across all 83 airports
+    for (const ap of flightyData.airports || []) {
+      const dot = L.circleMarker([ap.lat, ap.lng], {
+        radius: Math.min(5.5, 2.2 + Math.log2(ap.visits + 1) * 0.55),
+        color: dark ? "#111110" : "#faf8f5",
+        weight: 0.9,
+        fillColor: dark ? "#5ec28f" : "#1f6b45",
+        fillOpacity: 0.85
+      });
+      dot.bindTooltip(
+        `<strong>${ap.code}</strong> · ${ap.city}<br>${ap.visits} ${ap.visits === 1 ? "flight leg" : "flight legs"}`,
+        { direction: "top" }
+      );
+      dot.addTo(flightArcsLayerGroup);
+    }
+  }
 
   function shuffleArray(items) {
     const copy = items.slice();
@@ -230,6 +331,7 @@
     if (countriesLayer) countriesLayer.setStyle(getCountryStyle);
     if (statesLayer) statesLayer.setStyle(getStateStyle);
     updateTileLayer();
+    rebuildFlightArcs();
     rebuildMarkers();
     drawHeatmapOverlay();
   }
@@ -268,6 +370,7 @@
       }).addTo(map);
     }
     updateTileLayer();
+    rebuildFlightArcs();
     rebuildMarkers();
     drawHeatmapOverlay();
   });
@@ -317,27 +420,6 @@
         ctx.fill();
       }
       ctx.restore();
-    }
-
-    // 2. Draw Geodesic Flight Arc between previous place and active slideshow place
-    const activePlace = filteredPlaces[activePlaceIndex];
-    if (showArcs && activePlace && previousPlace && previousPlace.id !== activePlace.id) {
-      const pStart = map.latLngToContainerPoint([previousPlace.lat, previousPlace.lng]);
-      const pEnd = map.latLngToContainerPoint([activePlace.lat, activePlace.lng]);
-      const dist = Math.hypot(pEnd.x - pStart.x, pEnd.y - pStart.y);
-      if (dist > 10 && dist < width * 1.6) {
-        const midX = (pStart.x + pEnd.x) / 2;
-        const midY = (pStart.y + pEnd.y) / 2 - Math.min(110, dist * 0.28);
-        ctx.save();
-        ctx.strokeStyle = dark ? "rgba(94, 194, 143, 0.85)" : "rgba(31, 107, 69, 0.8)";
-        ctx.lineWidth = 2.2;
-        ctx.setLineDash([6, 4]);
-        ctx.beginPath();
-        ctx.moveTo(pStart.x, pStart.y);
-        ctx.quadraticCurveTo(midX, midY, pEnd.x, pEnd.y);
-        ctx.stroke();
-        ctx.restore();
-      }
     }
   }
 
@@ -802,7 +884,7 @@
     arcsBtn.addEventListener("click", () => {
       showArcs = !showArcs;
       arcsBtn.setAttribute("aria-pressed", String(showArcs));
-      drawHeatmapOverlay();
+      rebuildFlightArcs();
     });
   }
   if (zoomInBtn) {
@@ -863,6 +945,25 @@
       }
     });
   }
+
+  // Load privacy-safe Flighty great-circle flight history
+  fetch("data/flighty-routes.json")
+    .then((r) => r.json())
+    .then((fData) => {
+      flightyData = fData;
+      if (fData?.summary) {
+        const s = fData.summary;
+        const flEl = document.getElementById("stat-flighty-summary");
+        if (flEl) {
+          flEl.textContent = `${formatNumber(s.totalFlights)} · ${Math.round(s.totalMiles / 1000)}k mi (${s.earthOrbits}× 🌍)`;
+        }
+        if (arcsBtn) {
+          arcsBtn.textContent = `✈️ Flights (${s.totalFlights})`;
+        }
+      }
+      rebuildFlightArcs();
+    })
+    .catch(() => {});
 
   // Load lightweight Google Maps index JSON with randomized deck order on every visit
   resizeOverlayCanvas();
