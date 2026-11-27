@@ -329,7 +329,7 @@
           <h2 id="explorer-heading">Explorer + Photographer</h2>
         </div>
         <a href="https://www.google.com/maps/contrib/104641095422852249098/photos" class="action-link" target="_blank" rel="noopener noreferrer">
-          <span>Level 10 Local Guide Profile</span>
+          <span>Google Maps Photos</span>
           <span class="arrow" aria-hidden="true">↗</span>
         </a>
       </div>
@@ -338,9 +338,6 @@
       <div class="maps-telemetry-banner">
         <div class="telemetry-bio">
           <span class="badge">Local Guide Level 10 · 385,939 pts</span>
-          <p class="telemetry-quote">
-            “world explorer. sandwich aficionado, coffee and chai guy, unique fast food obsessive and pursuer · 📍NYC”
-          </p>
         </div>
         <dl class="telemetry-stats">
           <div class="telemetry-stat">
@@ -382,15 +379,15 @@
         <div class="toolbar-group" role="group" aria-label="Filter slideshow collection">
           <span class="toolbar-label">Slideshow:</span>
           <button type="button" class="filter-chip" data-slide-filter="all" aria-pressed="true">Shuffled Mix (348)</button>
-          <button type="button" class="filter-chip" data-slide-filter="hall-of-fame" aria-pressed="false">Top Views (58)</button>
-          <button type="button" class="filter-chip" data-slide-filter="international" aria-pressed="false">Global &amp; Canada (137)</button>
-          <button type="button" class="filter-chip" data-slide-filter="us-50" aria-pressed="false">50 US States (112)</button>
-          <button type="button" class="filter-chip" data-slide-filter="nyc" aria-pressed="false">NYC &amp; Broadway (32)</button>
+          <button type="button" class="filter-chip" data-slide-filter="hall-of-fame" aria-pressed="false">Top Views (59)</button>
+          <button type="button" class="filter-chip" data-slide-filter="international" aria-pressed="false">Global &amp; Canada (145)</button>
+          <button type="button" class="filter-chip" data-slide-filter="us-50" aria-pressed="false">50 US States (104)</button>
+          <button type="button" class="filter-chip" data-slide-filter="nyc" aria-pressed="false">NYC &amp; Broadway (40)</button>
         </div>
       </div>
 
       <!-- Dual Interactive Stage: World Heatmap Canvas + Synced Photo Slideshow -->
-      <div class="atlas-workbench">
+      <div id="atlas" class="atlas-workbench">
         <!-- Left: Interactive World Heatmap & Pin Canvas + 39-Country Static Map Switcher -->
         <div class="map-stage-card">
           <div class="map-stage-header">
@@ -606,7 +603,7 @@
 
       <!-- Collapsible Hosted Google Maps Written Reviews Explorer -->
       <details class="atlas-disclosure maps-reviews-disclosure" id="maps-reviews-drawer">
-        <summary>📍 Hosted Google Maps Field Reviews (<span id="gmap-rev-summary-count">416</span> Written Dispatches · Searchable + Weekly Sync)</summary>
+        <summary>📍 Hosted Google Maps Field Reviews (<span id="gmap-rev-summary-count">428</span> Written Dispatches · Searchable + Weekly Sync)</summary>
         <div class="disclosure-body">
           <div class="letterboxd-controls">
             <div class="toolbar-group" role="group" aria-label="Filter Google Maps reviews">
@@ -770,12 +767,28 @@
             </a>
           </h4>
           <p>
-            Fast-food &amp; limited-edition snack tracker covering 87+ brands with original taste-test reviews, built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API—with automated feed syncing and the Weekly Bite newsletter.
+            Fast-food &amp; limited-edition snack tracker covering 101+ brands across 16 live feeds with original taste-test reviews, built with Next.js 15, React 19, and Tailwind CSS v4 on Cloudflare Workers + D1 + Workers AI—paired with live Bluesky, Instagram &amp; Threads channels and <em>The Weekly Bite</em> newsletter.
           </p>
           <ul class="tag-list" role="list" aria-label="Eat Brand Bite stack">
             <li>Next.js 15 &amp; React 19</li>
             <li>Cloudflare D1 &amp; AI</li>
-            <li>Automated Feeds</li>
+            <li>16 Automated Feeds</li>
+          </ul>
+        </li>
+
+        <li class="directory-card">
+          <div class="card-meta">
+            <span class="badge">Fleet Control Plane</span>
+            <span class="card-year">Cloudflare Edge · D1</span>
+          </div>
+          <h4>God Mode</h4>
+          <p>
+            Private, mobile-first observability, synthetic uptime, and finance P&amp;L control plane monitoring all maintained sites—with 5-minute cron probes, Cloudflare GraphQL RUM &amp; Core Web Vitals, AI bot &amp; 404 telemetry, Search Console/AdSense OAuth, email/push alerting, and direct edge review publishing.
+          </p>
+          <ul class="tag-list" role="list" aria-label="God Mode stack">
+            <li>Cloudflare Workers &amp; D1</li>
+            <li>Synthetic Probes &amp; RUM</li>
+            <li>Strict CSP PWA</li>
           </ul>
         </li>
       </ul>

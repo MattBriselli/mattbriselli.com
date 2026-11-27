@@ -216,7 +216,11 @@
     {
       "name": "Eat Brand Bite",
       "url": "https://eatbrandbite.com",
-      "description": "Fast-food & limited-edition snack tracker covering 87+ brands with original taste-test reviews, built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API, with automated feed syncing and the Weekly Bite newsletter."
+      "description": "Fast-food & limited-edition snack tracker covering 101+ brands across 16 automated live feeds with original taste-test reviews, built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API, paired with live Bluesky/Instagram/Threads channels and The Weekly Bite newsletter."
+    },
+    {
+      "name": "God Mode — Fleet Observability & Control Plane",
+      "description": "Private, mobile-first fleet health, synthetic uptime, and finance P&L control plane on Cloudflare Workers, D1, and 5-minute Cron Triggers—combining synthetic probes, Cloudflare GraphQL RUM & Core Web Vitals, AI bot & 404 telemetry, SSL/domain expiry monitoring, Google Search Console & AdSense/AdMob OAuth, email/push alerting, strict per-request CSP nonces, and direct edge review publishing."
     }
   ]
 }

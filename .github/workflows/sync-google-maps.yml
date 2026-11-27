@@ -38,7 +38,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/maps-index.json index.html llms.txt
+            git add data/maps-index.json data/maps-reviews.json index.html llms.txt
             git commit -m "chore(maps): weekly Google Maps contributor & telemetry sync"
             git pull --rebase origin main
             git push origin main

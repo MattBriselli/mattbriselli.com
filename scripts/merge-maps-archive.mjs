@@ -14,6 +14,7 @@ if (!rawPath || !fs.existsSync(rawPath)) {
 }
 
 const mapsPath = path.resolve("data/maps-index.json");
+const mapsReviewsPath = path.resolve("data/maps-reviews.json");
 const htmlPath = path.resolve("index.html");
 
 const rawWrapper = JSON.parse(fs.readFileSync(rawPath, "utf8"));
@@ -249,11 +250,41 @@ async function main() {
       photo: r.photos?.[0] || ""
     }));
 
-  mapsData.lastUpdated = new Date().toISOString().slice(0, 10);
+  const todayIso = new Date().toISOString().slice(0, 10);
+  const mediaKeysByPlace = {};
+  for (const p of validPlaces) {
+    if (p.mediaKeys?.length) {
+      mediaKeysByPlace[p.id] = p.mediaKeys;
+      delete p.mediaKeys;
+    }
+    p.photos = (p.photos || []).slice(0, p.tag === "hall-of-fame" ? 3 : 1);
+  }
+  delete mapsData.hostedReviews;
+  delete mapsData.profile?.bio;
+  mapsData.lastUpdated = todayIso;
+  mapsData.profile = {
+    ...mapsData.profile,
+    countriesCount: 39,
+    usStatesCount: 50,
+    canadianProvincesCount: 8
+  };
   mapsData.places = validPlaces;
-  mapsData.hostedReviews = writtenReviews;
 
-  fs.writeFileSync(mapsPath, JSON.stringify(mapsData, null, 2) + "\n", "utf8");
+  fs.writeFileSync(mapsPath, JSON.stringify(mapsData) + "\n", "utf8");
+  fs.writeFileSync(
+    mapsReviewsPath,
+    JSON.stringify(
+      {
+        lastUpdated: todayIso,
+        count: writtenReviews.length,
+        reviews: writtenReviews,
+        mediaKeysByPlace
+      },
+      null,
+      2
+    ) + "\n",
+    "utf8"
+  );
 
   if (fs.existsSync(htmlPath)) {
     let html = fs.readFileSync(htmlPath, "utf8");

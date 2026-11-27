@@ -25,6 +25,7 @@ const REVIEWS_URL = `https://www.google.com/maps/contrib/${CONTRIB_ID}/reviews?h
 const PHOTOS_URL = `https://www.google.com/maps/contrib/${CONTRIB_ID}/photos?hl=en&gl=us`;
 
 const mapsJsonPath = path.resolve("data/maps-index.json");
+const mapsReviewsPath = path.resolve("data/maps-reviews.json");
 const htmlPath = path.resolve("index.html");
 const llmsPath = path.resolve("llms.txt");
 
@@ -490,6 +491,15 @@ async function scrollContributorFeed(cdp, label, scrollCount, getBatchCounter) {
 
 async function main() {
   const existingData = JSON.parse(fs.readFileSync(mapsJsonPath, "utf8"));
+  const existingReviewsPayload = fs.existsSync(mapsReviewsPath)
+    ? JSON.parse(fs.readFileSync(mapsReviewsPath, "utf8"))
+    : { lastUpdated: existingData.lastUpdated || "", mediaKeysByPlace: {}, reviews: existingData.hostedReviews || [] };
+  const hostedReviewsList = Array.isArray(existingReviewsPayload.reviews)
+    ? existingReviewsPayload.reviews
+    : Array.isArray(existingReviewsPayload)
+      ? existingReviewsPayload
+      : [];
+  const mediaKeysByPlace = existingReviewsPayload.mediaKeysByPlace || {};
   const store = {
     telemetry: {
       points: existingData.profile?.points || 385939,
@@ -519,7 +529,7 @@ async function main() {
       tag: p.tag,
       caption: p.caption || "",
       photos: [...(p.photos || [])],
-      mediaKeys: [...(p.mediaKeys || [])]
+      mediaKeys: [...(p.mediaKeys || mediaKeysByPlace[p.id] || [])]
     });
   }
 
@@ -699,17 +709,22 @@ async function main() {
       if (nycCount >= 40) continue;
       nycCount++;
     }
-    if (finalPlaces.length >= 420) break;
+    if (finalPlaces.length >= 348) break;
+    if (entry.mediaKeys?.length) {
+      mediaKeysByPlace[entry.id] = entry.mediaKeys;
+      delete entry.mediaKeys;
+    }
+    entry.photos = (entry.photos || []).slice(0, entry.tag === "hall-of-fame" ? 3 : 1);
     finalPlaces.push(entry);
 
-    // Also keep hostedReviews array fresh with any newly crawled written reviews
-    if (hadReview && entry.caption && Array.isArray(existingData.hostedReviews)) {
+    // Also keep data/maps-reviews.json fresh with any newly crawled written reviews
+    if (hadReview && entry.caption) {
       const cleanTxt = entry.caption.replace(/^[“"]|[”"]$/g, "").trim();
-      const alreadyHosted = existingData.hostedReviews.some(
+      const alreadyHosted = hostedReviewsList.some(
         (r) => r.id === entry.id || (r.name.toLowerCase() === entry.name.toLowerCase() && r.text.slice(0, 30) === cleanTxt.slice(0, 30))
       );
       if (!alreadyHosted && cleanTxt.length >= 8) {
-        existingData.hostedReviews.unshift({
+        hostedReviewsList.unshift({
           id: entry.id,
           name: entry.name,
           location: entry.location,
@@ -724,18 +739,39 @@ async function main() {
     }
   }
 
-  existingData.lastUpdated = new Date().toISOString().slice(0, 10);
+  const todayIso = new Date().toISOString().slice(0, 10);
+  delete existingData.hostedReviews;
+  delete existingData.profile?.bio;
+  existingData.lastUpdated = todayIso;
   existingData.profile = {
     ...existingData.profile,
     points: store.telemetry.points,
     totalPhotos: store.telemetry.totalPhotos,
     totalPhotoViews: store.telemetry.totalPhotoViews,
     totalReviews: store.telemetry.totalReviews,
-    totalRatings: store.telemetry.totalRatings
+    totalRatings: store.telemetry.totalRatings,
+    countriesCount: 39,
+    usStatesCount: 50,
+    canadianProvincesCount: 8
   };
   existingData.places = finalPlaces;
 
-  fs.writeFileSync(mapsJsonPath, JSON.stringify(existingData, null, 2) + "\n", "utf8");
+  // Compact serialization keeps maps-index.json < 256 KB for God Mode synthetic probes
+  fs.writeFileSync(mapsJsonPath, JSON.stringify(existingData) + "\n", "utf8");
+  fs.writeFileSync(
+    mapsReviewsPath,
+    JSON.stringify(
+      {
+        lastUpdated: todayIso,
+        count: hostedReviewsList.length,
+        reviews: hostedReviewsList,
+        mediaKeysByPlace
+      },
+      null,
+      2
+    ) + "\n",
+    "utf8"
+  );
 
   // Sync static telemetry counters in index.html & llms.txt
   if (fs.existsSync(htmlPath)) {

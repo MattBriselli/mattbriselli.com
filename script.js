@@ -1133,9 +1133,16 @@
       const firstPhotos = filteredPlaces[0]?.photos || [];
       activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
 
-      const allFilterBtn = document.querySelector('[data-slide-filter="all"]');
-      if (allFilterBtn && rawPlaces.length) {
-        allFilterBtn.textContent = `Shuffled Mix (${rawPlaces.length})`;
+      const filterLabels = {
+        all: ["Shuffled Mix", rawPlaces.length],
+        "hall-of-fame": ["Top Views", rawPlaces.filter((p) => p.tag === "hall-of-fame").length],
+        international: ["Global & Canada", rawPlaces.filter((p) => p.tag === "international").length],
+        "us-50": ["50 US States", rawPlaces.filter((p) => p.tag === "us-50").length],
+        nyc: ["NYC & Broadway", rawPlaces.filter((p) => p.tag === "nyc").length]
+      };
+      for (const [tagKey, [labelTxt, cnt]] of Object.entries(filterLabels)) {
+        const btn = document.querySelector(`[data-slide-filter="${tagKey}"]`);
+        if (btn && cnt > 0) btn.textContent = `${labelTxt} (${cnt})`;
       }
 
       if (data.profile) {
@@ -1147,7 +1154,17 @@
         if (rEl) rEl.textContent = formatNumber(data.profile.totalReviews);
       }
       populateTopViewsTable(data.topViewedLedger || []);
-      initHostedMapsReviews(data.hostedReviews || []);
+      if (Array.isArray(data.hostedReviews) && data.hostedReviews.length) {
+        initHostedMapsReviews(data.hostedReviews);
+      } else {
+        fetch("data/maps-reviews.json")
+          .then((r) => r.json())
+          .then((revPayload) => {
+            const list = Array.isArray(revPayload) ? revPayload : revPayload.reviews || [];
+            initHostedMapsReviews(list);
+          })
+          .catch(() => {});
+      }
       renderActiveSlide(false);
       resizeOverlayCanvas();
     });
