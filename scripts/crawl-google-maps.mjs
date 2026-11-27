@@ -179,10 +179,7 @@ function upgradePhotoUrl(rawUrl) {
   return url.replace(/=[^=/]+$/, "=w1000-h750-p-k-no");
 }
 
-function classifyPlace({ address = "", countryIso = "", lat = 0, lng = 0, views = 0 }) {
-  if (views >= 2000000) {
-    return { region: lat > 45 && lng < -118 ? "west-coast" : "east-coast", tag: "hall-of-fame" };
-  }
+function classifyPlace({ address = "", countryIso = "", lat = 0, lng = 0 }) {
   const addr = address.toLowerCase();
   const iso = (countryIso || "").toUpperCase();
 
@@ -646,19 +643,16 @@ async function main() {
   const allCandidates = [];
   for (const p of store.places.values()) {
     if (!p.photos?.length || typeof p.lat !== "number" || typeof p.lng !== "number") continue;
-    const { region, tag } = p.tag && p.tag === "hall-of-fame"
-      ? { region: p.region || "west-coast", tag: "hall-of-fame" }
-      : classifyPlace({
-          address: p.location,
-          countryIso: p.countryIso,
-          lat: p.lat,
-          lng: p.lng,
-          views: p.views
-        });
+    const { region, tag } = classifyPlace({
+      address: p.location,
+      countryIso: p.countryIso,
+      lat: p.lat,
+      lng: p.lng
+    });
 
     const yearStr = p.date ? p.date.slice(0, 4) : "";
     let catLabel = p.category || "Field Dispatch";
-    if (yearStr && !catLabel.includes(yearStr) && !catLabel.includes("10M+")) {
+    if (yearStr && !catLabel.includes(yearStr)) {
       catLabel = `${catLabel} · ${yearStr}`;
     }
 
@@ -683,8 +677,6 @@ async function main() {
       photos: p.photos,
       _hasWrittenReview: hasWrittenReview
     };
-    if (p.views) entry.views = p.views;
-    if (p.secondaryViews) entry.secondaryViews = p.secondaryViews;
     if (p.rating) entry.rating = p.rating;
     if (p.date) entry.date = p.date;
     if (p.countryIso) entry.countryIso = p.countryIso;
@@ -693,9 +685,7 @@ async function main() {
     allCandidates.push(entry);
   }
 
-  // Prioritize Hall of Fame, International/Canada, non-NYC US states, and reviewed NYC places; cap NYC at 80 so shuffle stays global
   allCandidates.sort((a, b) => {
-    if ((b.views || 0) !== (a.views || 0)) return (b.views || 0) - (a.views || 0);
     if (a._hasWrittenReview !== b._hasWrittenReview) return a._hasWrittenReview ? -1 : 1;
     return String(b.date || "").localeCompare(String(a.date || ""));
   });
@@ -706,7 +696,7 @@ async function main() {
     const hadReview = entry._hasWrittenReview;
     delete entry._hasWrittenReview;
     if (entry.tag === "nyc") {
-      if (nycCount >= 40) continue;
+      if (nycCount >= 45) continue;
       nycCount++;
     }
     if (finalPlaces.length >= 348) break;
@@ -714,7 +704,7 @@ async function main() {
       mediaKeysByPlace[entry.id] = entry.mediaKeys;
       delete entry.mediaKeys;
     }
-    entry.photos = (entry.photos || []).slice(0, entry.tag === "hall-of-fame" ? 3 : 1);
+    entry.photos = (entry.photos || []).slice(0, 2);
     finalPlaces.push(entry);
 
     // Also keep data/maps-reviews.json fresh with any newly crawled written reviews
@@ -741,13 +731,15 @@ async function main() {
 
   const todayIso = new Date().toISOString().slice(0, 10);
   delete existingData.hostedReviews;
+  delete existingData.topViewedLedger;
   delete existingData.profile?.bio;
+  delete existingData.profile?.level;
+  delete existingData.profile?.points;
+  delete existingData.profile?.totalPhotoViews;
   existingData.lastUpdated = todayIso;
   existingData.profile = {
     ...existingData.profile,
-    points: store.telemetry.points,
     totalPhotos: store.telemetry.totalPhotos,
-    totalPhotoViews: store.telemetry.totalPhotoViews,
     totalReviews: store.telemetry.totalReviews,
     totalRatings: store.telemetry.totalRatings,
     countriesCount: 39,
@@ -776,15 +768,11 @@ async function main() {
   // Sync static telemetry counters in index.html & llms.txt
   if (fs.existsSync(htmlPath)) {
     let html = fs.readFileSync(htmlPath, "utf8");
-    const vFmt = store.telemetry.totalPhotoViews.toLocaleString("en-US");
     const pFmt = store.telemetry.totalPhotos.toLocaleString("en-US");
     const rFmt = store.telemetry.totalReviews.toLocaleString("en-US");
-    const ptsFmt = store.telemetry.points.toLocaleString("en-US");
     const placesFmt = finalPlaces.length.toLocaleString("en-US");
 
     html = html
-      .replace(/Local Guide Level 10 · [\d,]+ pts/, `Local Guide Level 10 · ${ptsFmt} pts`)
-      .replace(/(id="stat-total-views">)[\d,]+(<\/dd>)/, `$1${vFmt}$2`)
       .replace(/(id="stat-total-photos">)[\d,]+(<\/dd>)/, `$1${pFmt}$2`)
       .replace(/(id="stat-total-reviews">)[\d,]+(<\/dd>)/, `$1${rFmt}$2`)
       .replace(/(data-slide-filter="all"[^>]*>)Shuffled Mix \([\d,]+\)(<\/button>)/, `$1Shuffled Mix (${placesFmt})$2`);
@@ -793,16 +781,11 @@ async function main() {
 
   if (fs.existsSync(llmsPath)) {
     let llms = fs.readFileSync(llmsPath, "utf8");
-    const vFmt = store.telemetry.totalPhotoViews.toLocaleString("en-US");
     const pFmt = store.telemetry.totalPhotos.toLocaleString("en-US");
     const rFmt = store.telemetry.totalReviews.toLocaleString("en-US");
-    const ptsFmt = store.telemetry.points.toLocaleString("en-US");
     llms = llms.replace(
-      /\*\*Google Maps Local Guide Level 10\*\*: [\d,]+ points · \*\*[\d,]+ uploaded photos\*\* · \*\*[\d,]+\+ total photo views/,
-      `**Google Maps Local Guide Level 10**: ${ptsFmt} points · **${pFmt} uploaded photos** · **${vFmt}+ total photo views`
-    ).replace(
-      /\*\*[\d,]+ written reviews\*\* \(https:\/\/www\.google\.com\/maps/,
-      `**${rFmt} written reviews** (https://www.google.com/maps`
+      /\*\*Google Maps Photography & Field Notes\*\*: \*\*[\d,]+ uploaded photos\*\* · \*\*[\d,]+ written reviews\*\*/,
+      `**Google Maps Photography & Field Notes**: **${pFmt} uploaded photos** · **${rFmt} written reviews**`
     );
     fs.writeFileSync(llmsPath, llms, "utf8");
   }

@@ -684,17 +684,15 @@
     for (const item of items) {
       const year = item.date ? item.date.slice(0, 4) : "classic";
       const geo =
-        item.tag === "hall-of-fame"
-          ? "hof"
-          : item.region === "international" || item.region === "central-asia"
-            ? "intl"
-            : item.region === "canada"
-              ? "canada"
-              : item.region === "west-coast"
-                ? "west"
-                : item.tag === "nyc"
-                  ? `nyc-${year >= "2026" ? "recent" : "archive"}`
-                  : "us";
+        item.region === "international" || item.region === "central-asia"
+          ? "intl"
+          : item.region === "canada"
+            ? "canada"
+            : item.region === "west-coast"
+              ? "west"
+              : item.tag === "nyc"
+                ? `nyc-${year >= "2026" ? "recent" : "archive"}`
+                : "us";
       const key = `${geo}|${year >= "2025" ? "recent" : "archive"}`;
       if (!buckets.has(key)) buckets.set(key, []);
       buckets.get(key).push(item);
@@ -986,21 +984,14 @@
         activeEntry = { pl, idx };
         return;
       }
-      const isHof = pl.tag === "hall-of-fame";
       const marker = L.circleMarker([pl.lat, pl.lng], {
-        radius: zoom >= 7 ? (isHof ? 6.6 : 5.8) : isHof ? 5.6 : 4.8,
+        radius: zoom >= 7 ? 5.8 : 4.9,
         color: dark ? "#141312" : "#ffffff",
         weight: 1.4,
-        fillColor: isHof
-          ? (dark ? "#ff9b6a" : "#c2410c")
-          : (dark ? "#e88264" : "#9e3b24"),
+        fillColor: dark ? "#e88264" : "#9e3b24",
         fillOpacity: 0.96
       });
-      const metric = pl.views
-        ? ` · ${formatNumber(pl.views)} views`
-        : pl.rating
-          ? ` · ${"★".repeat(pl.rating)}`
-          : "";
+      const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
       marker.bindTooltip(
         `<strong>${escMapHtml(pl.name)}</strong><br>${escMapHtml(pl.location)}${escMapHtml(metric)}`,
         { direction: "top" }
@@ -1032,11 +1023,7 @@
         fillColor: dark ? "#46e5a0" : "#15803d",
         fillOpacity: 1
       });
-      const metric = pl.views
-        ? ` · ${formatNumber(pl.views)} views`
-        : pl.rating
-          ? ` · ${"★".repeat(pl.rating)}`
-          : "";
+      const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
       hero.bindTooltip(
         `<strong>📍 ${escMapHtml(pl.name)}</strong><br>${escMapHtml(pl.location)}${escMapHtml(metric)}`,
         { direction: "top" }
@@ -1090,9 +1077,7 @@
       imgEl.alt = `${place.name} — ${place.location}`;
     }
     if (metricEl) {
-      if (place.views) {
-        metricEl.textContent = `👁 ${formatNumber(place.views)} views`;
-      } else if (place.rating) {
+      if (place.rating) {
         metricEl.textContent = `${"★".repeat(place.rating)} · Google Maps Review`;
       } else {
         metricEl.textContent = "📍 Google Maps Dispatch";
@@ -1156,54 +1141,6 @@
       ? Math.floor(Math.random() * photos.length)
       : 0;
     renderActiveSlide(shouldFly);
-  }
-
-  function populateTopViewsTable(ledger) {
-    const tbody = document.getElementById("top-views-tbody");
-    if (!tbody || !Array.isArray(ledger)) return;
-    tbody.innerHTML = "";
-    ledger.forEach((item, idx) => {
-      const tr = document.createElement("tr");
-
-      const tdRank = document.createElement("td");
-      tdRank.textContent = `#${idx + 1}`;
-
-      const tdName = document.createElement("td");
-      const strong = document.createElement("strong");
-      strong.textContent = item.name;
-      tdName.appendChild(strong);
-
-      const tdLoc = document.createElement("td");
-      tdLoc.textContent = item.location;
-
-      const tdViews = document.createElement("td");
-      tdViews.textContent = `${formatNumber(item.views)} views`;
-
-      const tdAction = document.createElement("td");
-      const flyBtn = document.createElement("button");
-      flyBtn.type = "button";
-      flyBtn.className = "table-fly-btn";
-      flyBtn.textContent = "Fly to Pin";
-      flyBtn.addEventListener("click", () => {
-        stopAutoPlay();
-        if (!lensShowsPhotos()) setMapLens("photos");
-        const matchIdx = filteredPlaces.findIndex(
-          (p) => p.name.toLowerCase().includes(item.name.split(" ")[0].toLowerCase())
-        );
-        if (matchIdx !== -1) {
-          selectPlace(matchIdx, false);
-        }
-        map.flyTo([item.lat, item.lng], 12, { duration: 1.0 });
-        if (statusLineEl) {
-          statusLineEl.textContent = `Centered on ${item.name} (${item.location}) — ${formatNumber(item.views)} views`;
-        }
-        mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      });
-      tdAction.appendChild(flyBtn);
-
-      tr.append(tdRank, tdName, tdLoc, tdViews, tdAction);
-      tbody.appendChild(tr);
-    });
   }
 
   // Wire toolbar buttons (works on both Interactive Leaflet Map and 39-Country Static Map!)
@@ -1587,7 +1524,6 @@
 
       const filterLabels = {
         all: ["Shuffled Mix", rawPlaces.length],
-        "hall-of-fame": ["Top Views", rawPlaces.filter((p) => p.tag === "hall-of-fame").length],
         international: ["Global & Canada", rawPlaces.filter((p) => p.tag === "international").length],
         "us-50": ["50 US States", rawPlaces.filter((p) => p.tag === "us-50").length],
         nyc: ["NYC & Broadway", rawPlaces.filter((p) => p.tag === "nyc").length]
@@ -1598,14 +1534,11 @@
       }
 
       if (data.profile) {
-        const vEl = document.getElementById("stat-total-views");
         const pEl = document.getElementById("stat-total-photos");
         const rEl = document.getElementById("stat-total-reviews");
-        if (vEl) vEl.textContent = formatNumber(data.profile.totalPhotoViews);
         if (pEl) pEl.textContent = formatNumber(data.profile.totalPhotos);
         if (rEl) rEl.textContent = formatNumber(data.profile.totalReviews);
       }
-      populateTopViewsTable(data.topViewedLedger || []);
       if (Array.isArray(data.hostedReviews) && data.hostedReviews.length) {
         initHostedMapsReviews(data.hostedReviews);
       } else {

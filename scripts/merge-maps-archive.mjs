@@ -38,12 +38,8 @@ function normalizeCityBucket(address = "", countryIso = "") {
   return `${iso || "INTL"}:${address.slice(0, 24)}`;
 }
 
-function classifyTagAndRegion({ address = "", countryIso = "", views = 0 }) {
+function classifyTagAndRegion({ address = "", countryIso = "" }) {
   const iso = (countryIso || "").toUpperCase();
-  if (views >= 2000000) {
-    const isWest = /,\s*(wa|ca|or)\b/i.test(address);
-    return { region: isWest ? "west-coast" : "east-coast", tag: "hall-of-fame" };
-  }
   if (iso === "CA" || /,\s*(bc|ab|on|qc|ns|nb|pe|nt)\b|canada/i.test(address)) {
     return { region: "canada", tag: "international" };
   }
@@ -153,8 +149,7 @@ for (const c of photoCandidates) {
 
   const countryLabel = c.countryName && c.countryIso !== "US" ? c.countryName : "";
   const catParts = [];
-  if ((c.views || 0) >= 2000000) catParts.push("Multi-Million View Club");
-  else if (countryLabel) catParts.push(`${countryLabel} Dispatch`);
+  if (countryLabel) catParts.push(`${countryLabel} Dispatch`);
   else if (region === "west-coast") catParts.push("West Coast Dispatch");
   else if (tag === "nyc") catParts.push("NYC Dispatch");
   else catParts.push("US 50-State Dispatch");
@@ -162,9 +157,7 @@ for (const c of photoCandidates) {
 
   const caption = c.reviewText
     ? `“${c.reviewText.trim()}”`
-    : c.views >= 100000
-      ? `${c.views.toLocaleString("en-US")} views on Google Maps · ${c.address}.`
-      : `Photographed on Google Maps · ${c.address}.`;
+    : `Photographed on Google Maps · ${c.address}.`;
 
   const entry = {
     id: c.placeId || c.reviewId || `maps-${selected.length + 1}`,
@@ -179,7 +172,6 @@ for (const c of photoCandidates) {
     photos: c.photos.slice(0, 5),
     _needsGeo: true
   };
-  if (c.views) entry.views = c.views;
   if (c.rating) entry.rating = c.rating;
   if (c.date) entry.date = c.date;
   if (c.countryIso) entry.countryIso = c.countryIso;
@@ -257,7 +249,7 @@ async function main() {
       mediaKeysByPlace[p.id] = p.mediaKeys;
       delete p.mediaKeys;
     }
-    p.photos = (p.photos || []).slice(0, p.tag === "hall-of-fame" ? 3 : 1);
+    p.photos = (p.photos || []).slice(0, 2);
   }
   delete mapsData.hostedReviews;
   delete mapsData.profile?.bio;
