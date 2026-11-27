@@ -1303,7 +1303,8 @@
     cursor: pointer;
 
     @media (pointer: coarse) {
-      min-block-size: 2.5rem;
+      min-block-size: 2.75rem;
+      min-inline-size: 2.75rem;
     }
 
     @media (prefers-reduced-motion: no-preference) {
@@ -1311,10 +1312,23 @@
     }
 
     @media (hover: hover) {
-      &:hover:not(:disabled) {
+      &:hover:not(:disabled, [aria-disabled="true"]) {
         border-color: var(--border-strong);
         color: var(--text-primary);
       }
+    }
+
+    &[aria-disabled="true"] {
+      opacity: 0.48;
+      cursor: not-allowed;
+    }
+
+    & .autoplay-icon::before {
+      content: "▶\00a0";
+    }
+
+    &[aria-pressed="true"] .autoplay-icon::before {
+      content: "⏸\00a0";
     }
 
     &[aria-pressed="true"] {
@@ -1365,8 +1379,8 @@
     cursor: pointer;
 
     @media (pointer: coarse) {
-      min-inline-size: 2.65rem;
-      min-block-size: 2.65rem;
+      min-inline-size: 2.75rem;
+      min-block-size: 2.75rem;
     }
 
     @media (hover: hover) {
@@ -1545,6 +1559,48 @@
     border-top-color: var(--border-strong);
   }
 
+  .leaflet-popup-content-wrapper,
+  .leaflet-popup-tip {
+    background-color: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.26);
+  }
+
+  .leaflet-popup-content {
+    margin: 0.65rem 0.85rem;
+    font-family: var(--font-sans);
+    font-size: 0.8rem;
+    line-height: 1.4;
+  }
+
+  .pin-popup-loc {
+    color: var(--text-muted);
+    font-size: 0.74rem;
+    margin-block: 0.15rem 0.35rem;
+  }
+
+  .pin-popup-quote {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.76rem;
+    margin-block-end: 0.4rem;
+  }
+
+  .pin-popup-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .map-legend {
     display: flex;
     flex-wrap: wrap;
@@ -1588,6 +1644,153 @@
 
   .swatch-drive {
     background-color: #2c6bed;
+  }
+
+  /* Local Map Viewport Photo Filmstrip */
+  .viewport-strip-wrap {
+    border-block-start: 1px solid var(--border-subtle);
+    background-color: var(--bg-surface);
+    padding: 0.65rem 1.15rem 0.8rem;
+
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  .viewport-strip-head {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 0.35rem 0.75rem;
+    margin-block-end: 0.5rem;
+  }
+
+  .viewport-strip-title {
+    font-family: var(--font-mono);
+    font-size: 0.74rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-primary);
+  }
+
+  .viewport-strip-hint {
+    font-size: 0.74rem;
+    color: var(--text-muted);
+  }
+
+  .viewport-photo-strip {
+    display: flex;
+    align-items: stretch;
+    gap: 0.5rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: thin;
+    padding-block-end: 0.25rem;
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-radius: 0.35rem;
+    }
+  }
+
+  .viewport-chip-btn {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.48rem;
+    inline-size: 11.25rem;
+    min-block-size: 2.85rem;
+    padding: 0.25rem 0.5rem 0.25rem 0.25rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.45rem;
+    background-color: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    text-align: start;
+    cursor: pointer;
+
+    @media (pointer: coarse) {
+      min-block-size: 3rem;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: var(--border-strong);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+    }
+
+    &[aria-current="true"] {
+      border-color: var(--color-status-ok);
+      box-shadow: inset 0 0 0 1px var(--color-status-ok);
+      background-color: color-mix(in oklab, var(--color-status-ok) 12%, var(--bg-surface-elevated));
+    }
+  }
+
+  .viewport-chip-thumb {
+    flex: 0 0 2.5rem;
+    inline-size: 2.5rem;
+    block-size: 2.25rem;
+    border-radius: 0.3rem;
+    object-fit: cover;
+    background-color: var(--bg-surface);
+    display: block;
+  }
+
+  .viewport-chip-thumb-fallback {
+    flex: 0 0 2.5rem;
+    inline-size: 2.5rem;
+    block-size: 2.25rem;
+    border-radius: 0.3rem;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+  }
+
+  .viewport-chip-text {
+    min-inline-size: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.08rem;
+  }
+
+  .viewport-chip-name {
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: var(--text-primary);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .viewport-chip-loc {
+    font-size: 0.68rem;
+    line-height: 1.2;
+    color: var(--text-muted);
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .viewport-strip-empty {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    padding-block: 0.35rem;
   }
 
   /* Three Travel Goals Block */

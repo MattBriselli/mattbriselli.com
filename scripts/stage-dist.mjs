@@ -34,6 +34,7 @@ for (const file of rootFiles) {
 
 for (const file of [
   "data/maps-index.json",
+  "data/maps-pins.json",
   "data/maps-reviews.json",
   "data/flighty-routes.json",
   "data/letterboxd-reviews.json",
@@ -43,7 +44,10 @@ for (const file of [
   "vendor/leaflet.js",
   "vendor/leaflet.css"
 ]) {
-  fs.copyFileSync(path.join(root, file), path.join(dist, file));
+  const src = path.join(root, file);
+  if (fs.existsSync(src)) {
+    fs.copyFileSync(src, path.join(dist, file));
+  }
 }
 
 const headers = `/

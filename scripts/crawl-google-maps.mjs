@@ -25,18 +25,22 @@ const REVIEWS_URL = `https://www.google.com/maps/contrib/${CONTRIB_ID}/reviews?h
 const PHOTOS_URL = `https://www.google.com/maps/contrib/${CONTRIB_ID}/photos?hl=en&gl=us`;
 
 const mapsJsonPath = path.resolve("data/maps-index.json");
+const mapsPinsPath = path.resolve("data/maps-pins.json");
 const mapsReviewsPath = path.resolve("data/maps-reviews.json");
 const htmlPath = path.resolve("index.html");
 const llmsPath = path.resolve("llms.txt");
 
 const args = process.argv.slice(2);
 const isWeekly = args.includes("--weekly");
+const skipHtml = args.includes("--no-html");
 const maxScrollsArg = args.find((a) => a.startsWith("--max-scrolls="));
 const maxScrolls = maxScrollsArg
   ? Number(maxScrollsArg.split("=")[1])
   : isWeekly
     ? 6
-    : 55;
+    : 125;
+const maxPinsArg = args.find((a) => a.startsWith("--max-pins="));
+const maxPins = maxPinsArg ? Number(maxPinsArg.split("=")[1]) : 1400;
 
 function findChromeBinary() {
   const candidates = [
@@ -292,12 +296,18 @@ function parseMasPayload(rawText, store) {
       const pInfo = item?.[1]?.[0];
       const rev = item?.[2];
       if (!Array.isArray(pInfo)) continue;
-      const placeId = pInfo[1] || pInfo[13] || "";
+      const rawPlaceId =
+        (typeof pInfo[13] === "string" && pInfo[13]) ||
+        (typeof pInfo[9]?.[0]?.[0] === "string" && pInfo[9][0][0].startsWith("ChIJ") ? pInfo[9][0][0] : "") ||
+        (Array.isArray(pInfo[1]) ? pInfo[1][0] : pInfo[1]) ||
+        "";
+      const placeId = String(rawPlaceId || "").trim();
       const lat = pInfo[3]?.[2];
       const lng = pInfo[3]?.[3];
       const name = pInfo[4] || "";
       const address = pInfo[5] || "";
-      const category = pInfo[9]?.[0]?.[0] || "";
+      const rawCat = pInfo[9]?.[0]?.[0] || "";
+      const category = typeof rawCat === "string" && !rawCat.startsWith("ChIJ") ? rawCat : "";
 
       const rating = rev?.[2]?.[0]?.[0] || null;
       const reviewText = rev?.[2]?.[15]?.[0]?.[0] || "";
@@ -362,12 +372,14 @@ function parseMasPayload(rawText, store) {
         phMeta?.[21]?.[3]?.[7]?.[0] ||
         "";
       const address = plMeta?.[3] || "";
-      const placeId =
+      const rawPid =
         plMeta?.[17] ||
         phMeta?.[21]?.[5]?.[0]?.[9]?.[1]?.[0]?.[0]?.[0] ||
         deepPlaceBlock?.[0]?.[3] ||
         `${name}|${Number(lat || 0).toFixed(3)}`;
-      const category = plMeta?.[18] || deepPlaceBlock?.[3]?.[0] || "";
+      const placeId = String(Array.isArray(rawPid) ? rawPid[0] : rawPid).trim();
+      const rawCat = plMeta?.[18] || deepPlaceBlock?.[3]?.[0] || "";
+      const category = typeof rawCat === "string" && !rawCat.startsWith("ChIJ") ? rawCat : "";
       const countryIso = plMeta?.[28] || "";
       const countryName = plMeta?.[26] || "";
       const city = plMeta?.[25] || "";
@@ -424,12 +436,13 @@ async function cdpClickSelector(cdp, selectorOrFnExpr) {
   return pt;
 }
 
-async function scrollContributorFeed(cdp, label, scrollCount, getBatchCounter) {
+async function scrollContributorFeed(cdp, label, scrollCount, getBatchCounter, getPhotoPlaceCount) {
   let stagnant = 0;
   let prevBatches = getBatchCounter();
   let prevScrollH = 0;
 
   for (let i = 0; i < scrollCount; i++) {
+    const beforeBatch = getBatchCounter();
     const stateRes = await cdp.send("Runtime.evaluate", {
       expression: `(() => {
         const all = [...document.querySelectorAll('div')];
@@ -462,10 +475,16 @@ async function scrollContributorFeed(cdp, label, scrollCount, getBatchCounter) {
       x: val.x || 220,
       y: val.y || 480,
       deltaX: 0,
-      deltaY: 3200
+      deltaY: 3600
     });
 
-    await sleep(1750);
+    // Dynamic wait: advance quickly once a new batch arrives, up to 1850ms max
+    let waited = 0;
+    while (waited < 1850) {
+      await sleep(150);
+      waited += 150;
+      if (getBatchCounter() > beforeBatch && waited >= 450) break;
+    }
 
     const curBatches = getBatchCounter();
     if (curBatches === prevBatches && val.scrollH === prevScrollH) {
@@ -476,10 +495,11 @@ async function scrollContributorFeed(cdp, label, scrollCount, getBatchCounter) {
       prevScrollH = val.scrollH;
     }
 
-    if ((i + 1) % 5 === 0 || i === scrollCount - 1) {
-      console.log(`  [${label}] scroll ${i + 1}/${scrollCount} -> scrollH: ${val.scrollH}, masBatches: ${curBatches}`);
+    if ((i + 1) % 10 === 0 || i === scrollCount - 1) {
+      const pp = getPhotoPlaceCount ? getPhotoPlaceCount() : 0;
+      console.log(`  [${label}] scroll ${i + 1}/${scrollCount} -> scrollH: ${val.scrollH}, masBatches: ${curBatches}, photoPlaces: ${pp}`);
     }
-    if (stagnant >= 5) {
+    if (stagnant >= 6) {
       console.log(`  [${label}] stabilized after ${i + 1} scrolls (scrollH=${val.scrollH}, masBatches=${curBatches}).`);
       break;
     }
@@ -508,25 +528,34 @@ async function main() {
     places: new Map()
   };
 
-  // Seed with existing curated places so Hall-of-Fame view counts & captions stay intact
-  for (const p of existingData.places || []) {
-    store.places.set(p.id, {
-      id: p.id,
+  const existingPinsPayload = fs.existsSync(mapsPinsPath)
+    ? JSON.parse(fs.readFileSync(mapsPinsPath, "utf8"))
+    : { extraPins: [] };
+  const existingExtraPins = Array.isArray(existingPinsPayload.extraPins) ? existingPinsPayload.extraPins : [];
+
+  // Seed with existing curated & extended places so captions stay intact across weekly syncs
+  for (const p of [...(existingData.places || []), ...existingExtraPins]) {
+    const cleanId = String(Array.isArray(p.id) ? p.id[0] : p.id || "").trim();
+    if (!cleanId) continue;
+    const cleanCat = typeof p.category === "string" ? p.category.replace(/^ChIJ\S+\s*·?\s*/, "").trim() : "";
+    const cleanCaption = String(p.caption || "").replace(/ that has helped nearly [\d]+ million people find the right door/i, "");
+    store.places.set(cleanId, {
+      id: cleanId,
       name: p.name,
       location: p.location,
       region: p.region,
-      category: p.category,
+      category: cleanCat,
       lat: p.lat,
       lng: p.lng,
-      views: p.views || 0,
-      secondaryViews: p.secondaryViews || 0,
+      views: 0,
+      secondaryViews: 0,
       rating: p.rating || null,
       date: p.date || "",
       countryIso: p.countryIso || "",
       tag: p.tag,
-      caption: p.caption || "",
+      caption: cleanCaption,
       photos: [...(p.photos || [])],
-      mediaKeys: [...(p.mediaKeys || mediaKeysByPlace[p.id] || [])]
+      mediaKeys: [...(p.mediaKeys || mediaKeysByPlace[cleanId] || [])]
     });
   }
 
@@ -597,25 +626,22 @@ async function main() {
       if (pts > store.telemetry.points) store.telemetry.points = pts;
     }
 
-    await scrollContributorFeed(cdp, "Reviews", isWeekly ? 5 : maxScrolls, () => totalMasBatches);
+    const countPhotoPlaces = () => {
+      let c = 0;
+      for (const p of store.places.values()) {
+        if (p.photos?.length && typeof p.lat === "number" && typeof p.lng === "number") c++;
+      }
+      return c;
+    };
+
+    await scrollContributorFeed(cdp, "Reviews", isWeekly ? 5 : maxScrolls, () => totalMasBatches, countPhotoPlaces);
 
     // Pass 2: Crawl Photos Feed (Sorted by Date)
     console.log("Pass 2: Crawling Google Maps Photos (by Date) ->", PHOTOS_URL);
     await cdp.send("Page.navigate", { url: PHOTOS_URL });
     await sleep(5500);
 
-    const viewsCheck = await cdp.send("Runtime.evaluate", {
-      expression: `document.body.innerText.slice(0, 1200)`,
-      returnByValue: true
-    });
-    const viewsTxt = viewsCheck.result?.value || "";
-    const viewsMatch = viewsTxt.match(/([\d,]{9,})\s*views/i);
-    if (viewsMatch) {
-      const v = Number(viewsMatch[1].replace(/,/g, ""));
-      if (v > store.telemetry.totalPhotoViews) store.telemetry.totalPhotoViews = v;
-    }
-
-    await scrollContributorFeed(cdp, "Photos-ByDate", isWeekly ? 3 : 12, () => totalMasBatches);
+    await scrollContributorFeed(cdp, "Photos-ByDate", isWeekly ? 4 : 175, () => totalMasBatches, countPhotoPlaces);
 
     // Pass 3 (Deep Crawl Only): Real CDP click on Date -> Sort by views
     if (!isWeekly) {
@@ -631,7 +657,7 @@ async function main() {
       );
       console.log("  Sort menu clicked:", Boolean(openMenu), "-> Sort by views clicked:", Boolean(pickedViews));
       await sleep(3500);
-      await scrollContributorFeed(cdp, "Photos-ByViews", 24, () => totalMasBatches);
+      await scrollContributorFeed(cdp, "Photos-ByViews", 85, () => totalMasBatches, countPhotoPlaces);
     }
 
     await sleep(1500);
@@ -639,10 +665,21 @@ async function main() {
     cleanup();
   }
 
-  // Finalize places that have at least 1 valid photo & coordinates, capping unreviewed NYC overflow so global/US-50 shine
+  // Finalize places with coordinates:
+  // - Core 348 places in data/maps-index.json (< 256 KB ceiling, globally balanced NYC cap <= 45)
+  // - Extended archive in data/maps-pins.json (up to maxPins total across all cities/countries!)
   const allCandidates = [];
+  const seenDedupe = new Set();
   for (const p of store.places.values()) {
-    if (!p.photos?.length || typeof p.lat !== "number" || typeof p.lng !== "number") continue;
+    if (typeof p.lat !== "number" || typeof p.lng !== "number" || !p.name) continue;
+    const hasPhoto = Boolean(p.photos?.length);
+    const hasWrittenReview = Boolean(p.caption && p.caption.startsWith("“"));
+    if (!hasPhoto && !hasWrittenReview && !p.rating) continue;
+
+    const dedupeKey = `${p.name.toLowerCase().trim()}|${p.lat.toFixed(3)}|${p.lng.toFixed(3)}`;
+    if (seenDedupe.has(dedupeKey)) continue;
+    seenDedupe.add(dedupeKey);
+
     const { region, tag } = classifyPlace({
       address: p.location,
       countryIso: p.countryIso,
@@ -651,12 +688,12 @@ async function main() {
     });
 
     const yearStr = p.date ? p.date.slice(0, 4) : "";
-    let catLabel = p.category || "Field Dispatch";
+    let rawCat = typeof p.category === "string" ? p.category.replace(/^ChIJ\S+\s*·?\s*/, "").trim() : "";
+    let catLabel = rawCat || "Field Dispatch";
     if (yearStr && !catLabel.includes(yearStr)) {
       catLabel = `${catLabel} · ${yearStr}`;
     }
 
-    const hasWrittenReview = Boolean(p.caption && p.caption.startsWith("“"));
     let caption = p.caption;
     if (!caption) {
       caption = p.date
@@ -665,7 +702,7 @@ async function main() {
     }
 
     const entry = {
-      id: p.id,
+      id: String(Array.isArray(p.id) ? p.id[0] : p.id),
       name: p.name,
       location: p.location || p.name,
       region,
@@ -674,7 +711,8 @@ async function main() {
       lng: p.lng,
       tag,
       caption,
-      photos: p.photos,
+      photos: (p.photos || []).slice(0, 2),
+      _hasPhoto: hasPhoto,
       _hasWrittenReview: hasWrittenReview
     };
     if (p.rating) entry.rating = p.rating;
@@ -685,29 +723,29 @@ async function main() {
     allCandidates.push(entry);
   }
 
+  // Prioritize places with photos first, then written reviews, then newest date
   allCandidates.sort((a, b) => {
+    if (a._hasPhoto !== b._hasPhoto) return a._hasPhoto ? -1 : 1;
     if (a._hasWrittenReview !== b._hasWrittenReview) return a._hasWrittenReview ? -1 : 1;
     return String(b.date || "").localeCompare(String(a.date || ""));
   });
 
   const finalPlaces = [];
-  let nycCount = 0;
+  const extraPins = [];
+  let nycCoreCount = 0;
+
   for (const entry of allCandidates) {
+    const hadPhoto = entry._hasPhoto;
     const hadReview = entry._hasWrittenReview;
+    delete entry._hasPhoto;
     delete entry._hasWrittenReview;
-    if (entry.tag === "nyc") {
-      if (nycCount >= 45) continue;
-      nycCount++;
-    }
-    if (finalPlaces.length >= 348) break;
+
     if (entry.mediaKeys?.length) {
       mediaKeysByPlace[entry.id] = entry.mediaKeys;
       delete entry.mediaKeys;
     }
-    entry.photos = (entry.photos || []).slice(0, 2);
-    finalPlaces.push(entry);
 
-    // Also keep data/maps-reviews.json fresh with any newly crawled written reviews
+    // Keep written reviews fresh in data/maps-reviews.json
     if (hadReview && entry.caption) {
       const cleanTxt = entry.caption.replace(/^[“"]|[”"]$/g, "").trim();
       const alreadyHosted = hostedReviewsList.some(
@@ -726,6 +764,18 @@ async function main() {
           photo: entry.photos?.[0] || ""
         });
       }
+    }
+
+    const canJoinCore =
+      hadPhoto &&
+      finalPlaces.length < 348 &&
+      (entry.tag !== "nyc" || nycCoreCount < 45);
+
+    if (canJoinCore) {
+      if (entry.tag === "nyc") nycCoreCount++;
+      finalPlaces.push(entry);
+    } else if (finalPlaces.length + extraPins.length < maxPins) {
+      extraPins.push(entry);
     }
   }
 
@@ -748,8 +798,20 @@ async function main() {
   };
   existingData.places = finalPlaces;
 
+  const totalPinCount = finalPlaces.length + extraPins.length;
+
   // Compact serialization keeps maps-index.json < 256 KB for fast initial load
   fs.writeFileSync(mapsJsonPath, JSON.stringify(existingData) + "\n", "utf8");
+  fs.writeFileSync(
+    mapsPinsPath,
+    JSON.stringify({
+      lastUpdated: todayIso,
+      totalPins: totalPinCount,
+      extraCount: extraPins.length,
+      extraPins
+    }) + "\n",
+    "utf8"
+  );
   fs.writeFileSync(
     mapsReviewsPath,
     JSON.stringify(
@@ -766,11 +828,11 @@ async function main() {
   );
 
   // Sync static telemetry counters in index.html & llms.txt
-  if (fs.existsSync(htmlPath)) {
+  if (!skipHtml && fs.existsSync(htmlPath)) {
     let html = fs.readFileSync(htmlPath, "utf8");
     const pFmt = store.telemetry.totalPhotos.toLocaleString("en-US");
     const rFmt = store.telemetry.totalReviews.toLocaleString("en-US");
-    const placesFmt = finalPlaces.length.toLocaleString("en-US");
+    const placesFmt = totalPinCount.toLocaleString("en-US");
 
     html = html
       .replace(/(id="stat-total-photos">)[\d,]+(<\/dd>)/, `$1${pFmt}$2`)
@@ -779,7 +841,7 @@ async function main() {
     fs.writeFileSync(htmlPath, html, "utf8");
   }
 
-  if (fs.existsSync(llmsPath)) {
+  if (!skipHtml && fs.existsSync(llmsPath)) {
     let llms = fs.readFileSync(llmsPath, "utf8");
     const pFmt = store.telemetry.totalPhotos.toLocaleString("en-US");
     const rFmt = store.telemetry.totalReviews.toLocaleString("en-US");
@@ -790,15 +852,18 @@ async function main() {
     fs.writeFileSync(llmsPath, llms, "utf8");
   }
 
+  const allCombined = [...finalPlaces, ...extraPins];
   const byTag = {};
   const years = new Set();
-  for (const p of finalPlaces) {
+  let withPhotoCount = 0;
+  for (const p of allCombined) {
     byTag[p.tag] = (byTag[p.tag] || 0) + 1;
     if (p.date) years.add(p.date.slice(0, 4));
+    if (p.photos?.length) withPhotoCount++;
   }
 
   console.log(
-    `Crawl complete! Batches=${totalMasBatches}, Total Places=${finalPlaces.length}, Tags=${JSON.stringify(byTag)}, Years=${[...years].sort().join(",")}`
+    `Crawl complete! Batches=${totalMasBatches}, Core=${finalPlaces.length}, ExtraPins=${extraPins.length}, Total=${allCombined.length} (withPhotos=${withPhotoCount}), IndexKB=${(fs.statSync(mapsJsonPath).size / 1024).toFixed(1)}, PinsKB=${(fs.statSync(mapsPinsPath).size / 1024).toFixed(1)}, Tags=${JSON.stringify(byTag)}, Years=${[...years].sort().join(",")}`
   );
 }
 

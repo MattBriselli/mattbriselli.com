@@ -378,11 +378,15 @@
   };
 
   let mapsData = null;
+  let allRawPlaces = [];
+  let mapOnlyPins = [];
+  let currentSlideFilter = "all";
   let flightyData = null;
   let filteredPlaces = [];
   let activePlaceIndex = 0;
   let activePhotoIndex = 0;
   let autoPlayTimer = null;
+  let viewportSyncTimer = null;
 
   // Focused Map Lenses: "photos" | "flights" | "atlas" | "all" | "static"
   let activeLens = "photos";
@@ -396,6 +400,7 @@
     attributionControl: false,
     worldCopyJump: true
   });
+  const pinsCanvasRenderer = L.canvas({ padding: 0.5 });
 
   let baseTileLayer = null;
   let labelTileLayer = null;
@@ -837,13 +842,20 @@
 
   function updateLegendForLens() {
     const legendEl = document.getElementById("map-legend");
+    const vpWrapEl = document.getElementById("viewport-strip-wrap");
+    if (vpWrapEl) {
+      vpWrapEl.hidden = !lensShowsPhotos();
+    }
     if (!legendEl) return;
     legendEl.hidden = activeLens === "static";
+    const totalDispatches = allRawPlaces.length || 348;
+    const extraReviewedDots = mapOnlyPins.length + (mapsData?.heatmapClusters?.length || 0);
+    const totalDots = totalDispatches + extraReviewedDots;
     if (activeLens === "photos") {
       legendEl.innerHTML = [
         `<span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Slideshow Pin</span>`,
-        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> 348 Photo Dispatches</span>`,
-        `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> Regional Footprint Dots</span>`
+        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> ${formatNumber(totalDispatches)} Photo Pins</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> ${formatNumber(extraReviewedDots)} Additional Place Pins (${formatNumber(totalDots)} Total)</span>`
       ].join("");
     } else if (activeLens === "flights") {
       legendEl.innerHTML = [
@@ -858,7 +870,7 @@
       ].join("");
     } else {
       legendEl.innerHTML = [
-        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> 420+ Photo &amp; Region Dots</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> ${formatNumber(totalDots)} Photo &amp; Region Dots</span>`,
         `<span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> 173 Flights (315k mi)</span>`,
         `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 39 Countries · 50 States · 8/13 Canada</span>`,
         `<span class="legend-item"><span class="legend-swatch swatch-drive" aria-hidden="true"></span> Canada Drive</span>`
@@ -942,12 +954,168 @@
     const btn = document.getElementById("slide-autoplay-btn");
     if (btn) {
       btn.setAttribute("aria-pressed", "false");
-      btn.textContent = "▶ Auto-Tour";
     }
   }
 
   map.on("dragstart", stopAutoPlay);
   mapContainer.addEventListener("wheel", stopAutoPlay, { passive: true });
+
+  function getPlacesInCurrentViewport() {
+    if (!filteredPlaces.length) return [];
+    const bounds = map.getBounds();
+    const center = map.getCenter();
+    const sw = bounds.getSouthWest();
+    const ne = bounds.getNorthEast();
+    const lngSpan = ne.lng - sw.lng;
+    const cosLat = Math.cos((center.lat * Math.PI) / 180);
+
+    const matches = [];
+    for (let idx = 0; idx < filteredPlaces.length; idx++) {
+      const pl = filteredPlaces[idx];
+      if (typeof pl.lat !== "number" || typeof pl.lng !== "number") continue;
+      if (pl.lat < sw.lat || pl.lat > ne.lat) continue;
+
+      let inLng = false;
+      if (lngSpan >= 359) {
+        inLng = true;
+      } else {
+        const normLng = ((((pl.lng - sw.lng) % 360) + 360) % 360) + sw.lng;
+        inLng = normLng <= ne.lng;
+      }
+      if (!inLng) continue;
+
+      let dLng = pl.lng - center.lng;
+      if (dLng > 180) dLng -= 360;
+      else if (dLng < -180) dLng += 360;
+      const dLat = pl.lat - center.lat;
+      const distSq = dLat * dLat + (dLng * cosLat) * (dLng * cosLat);
+      matches.push({ idx, pl, distSq });
+    }
+
+    matches.sort((a, b) => a.distSq - b.distSq || String(a.pl.id).localeCompare(String(b.pl.id)));
+    return matches;
+  }
+
+  function updateViewportControls() {
+    const vpNextBtn = document.getElementById("slide-viewport-next-btn");
+    const vpLabelEl = document.getElementById("viewport-strip-label");
+    const vpHintEl = document.getElementById("viewport-strip-hint");
+    const stripEl = document.getElementById("viewport-photo-strip");
+    if (!filteredPlaces.length) return;
+
+    const inView = getPlacesInCurrentViewport();
+    const count = inView.length;
+
+    if (vpNextBtn) {
+      vpNextBtn.textContent = `📍 Next in View (${formatNumber(count)})`;
+      if (count === 0) {
+        vpNextBtn.setAttribute("aria-disabled", "true");
+      } else {
+        vpNextBtn.removeAttribute("aria-disabled");
+      }
+    }
+
+    if (vpLabelEl) {
+      vpLabelEl.textContent = `In This Map View (${formatNumber(count)})`;
+    }
+    if (vpHintEl) {
+      vpHintEl.textContent =
+        count > 24
+          ? `Showing 24 closest to center of ${formatNumber(count)} in view · Zoom in or scroll →`
+          : count > 0
+            ? "Click any card or press 📍 Next in View to browse locally"
+            : "Zoom out or pan toward glowing dots to see local photos";
+    }
+
+    if (!stripEl || !lensShowsPhotos()) return;
+
+    stripEl.innerHTML = "";
+    if (count === 0) {
+      const empty = document.createElement("span");
+      empty.className = "viewport-strip-empty";
+      empty.textContent = "No photo pins inside this map frame — zoom out or pan to a visited region.";
+      stripEl.appendChild(empty);
+      return;
+    }
+
+    const slice = inView.slice(0, 24);
+    // Always include activePlaceIndex in the strip if it is inside the current viewport
+    if (!slice.some((m) => m.idx === activePlaceIndex)) {
+      const activeMatch = inView.find((m) => m.idx === activePlaceIndex);
+      if (activeMatch) {
+        slice[slice.length - 1] = activeMatch;
+      }
+    }
+
+    let activeChipBtn = null;
+    for (const { idx, pl } of slice) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "viewport-chip-btn";
+      const isActive = idx === activePlaceIndex;
+      if (isActive) {
+        btn.setAttribute("aria-current", "true");
+        activeChipBtn = btn;
+      }
+      btn.setAttribute("aria-label", `${pl.name}, ${pl.location}`);
+
+      const photoUrl = pl.photos?.[0] || "";
+      if (photoUrl) {
+        const img = document.createElement("img");
+        img.className = "viewport-chip-thumb";
+        img.src = photoUrl.replace(/=w\d+-h\d+-p-k-no$/, "=w160-h120-p-k-no");
+        img.alt = "";
+        img.width = 80;
+        img.height = 72;
+        img.loading = "lazy";
+        img.fetchPriority = "low";
+        img.referrerPolicy = "no-referrer";
+        btn.appendChild(img);
+      } else {
+        const fb = document.createElement("span");
+        fb.className = "viewport-chip-thumb-fallback";
+        fb.setAttribute("aria-hidden", "true");
+        fb.textContent = "📍";
+        btn.appendChild(fb);
+      }
+
+      const txtWrap = document.createElement("span");
+      txtWrap.className = "viewport-chip-text";
+      const nameSpan = document.createElement("span");
+      nameSpan.className = "viewport-chip-name";
+      nameSpan.textContent = pl.name;
+      const locSpan = document.createElement("span");
+      locSpan.className = "viewport-chip-loc";
+      locSpan.textContent = pl.location;
+      txtWrap.append(nameSpan, locSpan);
+      btn.appendChild(txtWrap);
+
+      btn.addEventListener("click", () => {
+        stopAutoPlay();
+        const pos = inView.findIndex((m) => m.idx === idx);
+        selectPlace(idx, false, false, pos >= 0 ? { pos: pos + 1, total: count } : null);
+      });
+
+      stripEl.appendChild(btn);
+    }
+
+    if (activeChipBtn) {
+      const targetLeft = Math.max(
+        0,
+        activeChipBtn.offsetLeft - stripEl.clientWidth / 2 + activeChipBtn.offsetWidth / 2
+      );
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      stripEl.scrollTo({ left: targetLeft, behavior: reduced ? "instant" : "smooth" });
+    }
+  }
+
+  function scheduleViewportSync() {
+    if (viewportSyncTimer) clearTimeout(viewportSyncTimer);
+    viewportSyncTimer = setTimeout(() => {
+      viewportSyncTimer = null;
+      updateViewportControls();
+    }, 120);
+  }
 
   function rebuildMarkers() {
     pinsLayerGroup.clearLayers();
@@ -961,11 +1129,12 @@
       for (const c of mapsData.heatmapClusters) {
         const label = c.label || c.name || "Visited Cluster";
         const cm = L.circleMarker([c.lat, c.lng], {
-          radius: zoom >= 6 ? 4.4 : 3.6,
+          renderer: pinsCanvasRenderer,
+          radius: zoom >= 6 ? 4.2 : 3.4,
           color: dark ? "#141312" : "#ffffff",
-          weight: 1.1,
+          weight: 1.0,
           fillColor: dark ? "#f0ad4e" : "#d97724",
-          fillOpacity: 0.85
+          fillOpacity: 0.82
         });
         cm.bindTooltip(`<strong>${escMapHtml(label)}</strong>`, { direction: "top" });
         cm.on("click", () => {
@@ -977,19 +1146,60 @@
       }
     }
 
-    // 2. All 348 individual photo dispatch dots (with active dispatch rendered last on top with a luminous halo)
+    // 1b. Additional geocoded Google Maps reviewed/photographed place pins (bringing map past 1,200+ pins)
+    if (currentSlideFilter === "all" && mapOnlyPins.length) {
+      const subRadius = zoom >= 11 ? 4.8 : zoom >= 7 ? 4.0 : zoom >= 4 ? 3.4 : 2.9;
+      for (const item of mapOnlyPins) {
+        const [lat, lng, name, loc, rating, snippet] = item;
+        const stars = rating ? ` · ${"★".repeat(rating)}` : "";
+        const mPin = L.circleMarker([lat, lng], {
+          renderer: pinsCanvasRenderer,
+          radius: subRadius,
+          color: dark ? "#141312" : "#ffffff",
+          weight: 0.9,
+          fillColor: dark ? "#f0ad4e" : "#d97724",
+          fillOpacity: 0.84
+        });
+        mPin.bindTooltip(
+          `<strong>${escMapHtml(name)}</strong><br>${escMapHtml(loc)}${escMapHtml(stars)}`,
+          { direction: "top" }
+        );
+        mPin.on("click", () => {
+          stopAutoPlay();
+          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} ${loc}`)}`;
+          const quoteHtml = snippet
+            ? `<div class="pin-popup-quote">“${escMapHtml(snippet)}${snippet.length >= 158 ? "…" : ""}”</div>`
+            : "";
+          L.popup({ closeButton: true, maxWidth: 260 })
+            .setLatLng([lat, lng])
+            .setContent(
+              `<strong>${escMapHtml(name)}</strong>${escMapHtml(stars)}` +
+                `<div class="pin-popup-loc">${escMapHtml(loc)}</div>` +
+                quoteHtml +
+                `<a class="pin-popup-link" href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Open on Google Maps ↗</a>`
+            )
+            .openOn(map);
+          if (statusLineEl) statusLineEl.textContent = `${name} · ${loc}`;
+        });
+        mPin.addTo(pinsLayerGroup);
+      }
+    }
+
+    // 2. All 1,000+ individual photo dispatch dots on shared HTML5 Canvas
     let activeEntry = null;
+    const pinRadius = zoom >= 11 ? 6.0 : zoom >= 7 ? 5.1 : zoom >= 4 ? 4.4 : 3.9;
     filteredPlaces.forEach((pl, idx) => {
       if (idx === activePlaceIndex) {
         activeEntry = { pl, idx };
         return;
       }
       const marker = L.circleMarker([pl.lat, pl.lng], {
-        radius: zoom >= 7 ? 5.8 : 4.9,
+        renderer: pinsCanvasRenderer,
+        radius: pinRadius,
         color: dark ? "#141312" : "#ffffff",
-        weight: 1.4,
+        weight: zoom >= 6 ? 1.25 : 1.0,
         fillColor: dark ? "#e88264" : "#9e3b24",
-        fillOpacity: 0.96
+        fillOpacity: 0.94
       });
       const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
       marker.bindTooltip(
@@ -998,25 +1208,29 @@
       );
       marker.on("click", () => {
         stopAutoPlay();
-        selectPlace(idx, true);
+        // Keep current neighborhood viewport if already zoomed in; gently zoom in only from world view
+        const shouldZoomIn = map.getZoom() < 5;
+        selectPlace(idx, shouldZoomIn);
       });
       marker.addTo(pinsLayerGroup);
     });
 
-    // 3. Active slideshow hero beacon (glowing outer ring + emerald core dot on top)
+    // 3. Active slideshow hero beacon (glowing outer ring + emerald core dot painted last on top)
     if (activeEntry) {
       const { pl, idx } = activeEntry;
       L.circleMarker([pl.lat, pl.lng], {
+        renderer: pinsCanvasRenderer,
         radius: 14,
         color: dark ? "#46e5a0" : "#15803d",
         weight: 1.5,
         opacity: 0.45,
         fillColor: dark ? "#46e5a0" : "#15803d",
-        fillOpacity: 0.2,
+        fillOpacity: 0.22,
         interactive: false
       }).addTo(pinsLayerGroup);
 
       const hero = L.circleMarker([pl.lat, pl.lng], {
+        renderer: pinsCanvasRenderer,
         radius: 8.2,
         color: dark ? "#111110" : "#ffffff",
         weight: 2.2,
@@ -1040,6 +1254,10 @@
   map.on("zoomend", () => {
     rebuildMarkers();
     if (lensShowsFlights()) rebuildFlightArcs();
+    scheduleViewportSync();
+  });
+  map.on("moveend", () => {
+    scheduleViewportSync();
   });
 
   function formatNumber(n) {
@@ -1052,7 +1270,7 @@
     return `${Math.abs(lat).toFixed(2)}°${ns}, ${Math.abs(lng).toFixed(2)}°${ew}`;
   }
 
-  function renderActiveSlide(shouldFly = false) {
+  function renderActiveSlide(shouldFly = false, localContext = null) {
     if (!filteredPlaces.length) return;
     const place = filteredPlaces[activePlaceIndex];
     const photos = place.photos || [];
@@ -1060,6 +1278,7 @@
 
     const counterEl = document.getElementById("slide-counter");
     const imgEl = document.getElementById("slide-main-img");
+    const frameEl = imgEl ? imgEl.closest(".slide-image-frame") : null;
     const metricEl = document.getElementById("slide-metric-pill");
     const thumbsEl = document.getElementById("slide-thumbs");
     const catEl = document.getElementById("slide-category");
@@ -1070,11 +1289,19 @@
     const mapsLinkEl = document.getElementById("slide-maps-link");
 
     if (counterEl) {
-      counterEl.textContent = `Dispatch ${activePlaceIndex + 1} of ${filteredPlaces.length}`;
+      counterEl.textContent = localContext
+        ? `In View ${formatNumber(localContext.pos)} of ${formatNumber(localContext.total)} · #${activePlaceIndex + 1}`
+        : `Dispatch ${formatNumber(activePlaceIndex + 1)} of ${formatNumber(filteredPlaces.length)}`;
     }
-    if (imgEl && mainPhoto) {
-      imgEl.src = mainPhoto;
-      imgEl.alt = `${place.name} — ${place.location}`;
+    if (imgEl) {
+      if (mainPhoto) {
+        imgEl.hidden = false;
+        if (frameEl) frameEl.hidden = false;
+        imgEl.src = mainPhoto;
+        imgEl.alt = `${place.name} — ${place.location}`;
+      } else if (frameEl) {
+        frameEl.hidden = true;
+      }
     }
     if (metricEl) {
       if (place.rating) {
@@ -1106,14 +1333,17 @@
           const thumbImg = document.createElement("img");
           thumbImg.src = url.replace("=w1000-h750-p-k-no", "=w240-h180-p-k-no");
           thumbImg.alt = "";
+          thumbImg.width = 80;
+          thumbImg.height = 60;
           thumbImg.referrerPolicy = "no-referrer";
           thumbImg.loading = "lazy";
+          thumbImg.fetchPriority = "low";
           btn.appendChild(thumbImg);
 
           btn.addEventListener("click", () => {
             stopAutoPlay();
             activePhotoIndex = idx;
-            renderActiveSlide(false);
+            renderActiveSlide(false, localContext);
           });
           thumbsEl.appendChild(btn);
         });
@@ -1129,18 +1359,21 @@
       if (statusLineEl) {
         statusLineEl.textContent = `${place.name} · ${place.location}`;
       }
+    } else if (localContext && statusLineEl) {
+      statusLineEl.textContent = `In View (${localContext.pos}/${localContext.total}): ${place.name} · ${place.location}`;
     }
     rebuildMarkers();
+    updateViewportControls();
   }
 
-  function selectPlace(index, shouldFly = true, randomizePhoto = false) {
+  function selectPlace(index, shouldFly = true, randomizePhoto = false, localContext = null) {
     if (!filteredPlaces.length) return;
     activePlaceIndex = (index + filteredPlaces.length) % filteredPlaces.length;
     const photos = filteredPlaces[activePlaceIndex]?.photos || [];
     activePhotoIndex = randomizePhoto && photos.length > 1
       ? Math.floor(Math.random() * photos.length)
       : 0;
-    renderActiveSlide(shouldFly);
+    renderActiveSlide(shouldFly, localContext);
   }
 
   // Wire toolbar buttons (works on both Interactive Leaflet Map and 39-Country Static Map!)
@@ -1178,19 +1411,33 @@
     });
   });
 
+  function updateFilterButtonCounts() {
+    const filterLabels = {
+      all: ["Shuffled Mix", allRawPlaces.length],
+      international: ["Global & Canada", allRawPlaces.filter((p) => p.tag === "international").length],
+      "us-50": ["50 US States", allRawPlaces.filter((p) => p.tag === "us-50").length],
+      nyc: ["NYC & Broadway", allRawPlaces.filter((p) => p.tag === "nyc").length]
+    };
+    for (const [tagKey, [labelTxt, cnt]] of Object.entries(filterLabels)) {
+      const btn = document.querySelector(`[data-slide-filter="${tagKey}"]`);
+      if (btn && cnt > 0) btn.textContent = `${labelTxt} (${formatNumber(cnt)})`;
+    }
+  }
+
   document.querySelectorAll("[data-slide-filter]").forEach((btn) => {
     btn.addEventListener("click", () => {
-      if (!mapsData) return;
+      if (!allRawPlaces.length) return;
       stopAutoPlay();
       const filter = btn.getAttribute("data-slide-filter") || "all";
+      currentSlideFilter = filter;
       document.querySelectorAll("[data-slide-filter]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
       });
       if (!lensShowsPhotos()) setMapLens("photos");
       filteredPlaces =
         filter === "all"
-          ? buildBalancedDeck(mapsData.places)
-          : shuffleArray(mapsData.places.filter((p) => p.tag === filter));
+          ? buildBalancedDeck(allRawPlaces)
+          : shuffleArray(allRawPlaces.filter((p) => p.tag === filter));
       activePlaceIndex = 0;
       const firstPhotos = filteredPlaces[0]?.photos || [];
       activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
@@ -1334,10 +1581,10 @@
   }
 
   const LENS_DESCRIPTIONS = {
-    photos: "Drag to pan · Scroll or use + / − to zoom · Click any glowing dot to view photos",
+    photos: "Drag to pan · Scroll or + / − to zoom · Use 📍 Next in View or click any dot to explore locally",
     flights: "Flighty log: 173 completed flights · 314,804 miles (12.6× Earth) across 83 airports",
     atlas: "Visited Atlas: 39/199 countries · 50/50 US states · 8/13 Canadian provinces + overland drive",
-    all: "All layers active: 420+ photo dots, 173 Flighty routes, visited choropleth & Trans-Canada drive",
+    all: "All layers active: 1,000+ photo dots, 173 Flighty routes, visited choropleth & Trans-Canada drive",
     static: "MapChart reference export · Scroll or use + / − to zoom, drag to pan"
   };
 
@@ -1370,6 +1617,7 @@
   });
 
   const shuffleBtn = document.getElementById("slide-shuffle-btn");
+  const viewportNextBtn = document.getElementById("slide-viewport-next-btn");
   const prevBtn = document.getElementById("slide-prev-btn");
   const nextBtn = document.getElementById("slide-next-btn");
   const autoBtn = document.getElementById("slide-autoplay-btn");
@@ -1385,6 +1633,37 @@
         nextIdx = Math.floor(Math.random() * filteredPlaces.length);
       }
       selectPlace(nextIdx, true, true);
+    });
+  }
+
+  if (viewportNextBtn) {
+    viewportNextBtn.addEventListener("click", () => {
+      stopAutoPlay();
+      if (!lensShowsPhotos()) {
+        setMapLens("photos");
+      }
+      const inView = getPlacesInCurrentViewport();
+      if (!inView.length) {
+        if (statusLineEl) {
+          statusLineEl.textContent = "No photo pins in this map area — zoom out or pan toward glowing dots";
+        }
+        return;
+      }
+      if (inView.length === 1 && inView[0].idx === activePlaceIndex) {
+        const curPhotos = filteredPlaces[activePlaceIndex]?.photos || [];
+        if (curPhotos.length > 1) {
+          activePhotoIndex = (activePhotoIndex + 1) % curPhotos.length;
+          renderActiveSlide(false, { pos: 1, total: 1 });
+          return;
+        }
+        if (statusLineEl) {
+          statusLineEl.textContent = `Only 1 pin in this zoomed area (${inView[0].pl.name}) — zoom out slightly for nearby spots`;
+        }
+        return;
+      }
+      const curPos = inView.findIndex((m) => m.idx === activePlaceIndex);
+      const nextPos = curPos >= 0 ? (curPos + 1) % inView.length : 0;
+      selectPlace(inView[nextPos].idx, false, false, { pos: nextPos + 1, total: inView.length });
     });
   }
 
@@ -1484,7 +1763,6 @@
       } else {
         if (!lensShowsPhotos()) setMapLens("photos");
         autoBtn.setAttribute("aria-pressed", "true");
-        autoBtn.textContent = "⏸ Pause Tour";
         selectPlace(activePlaceIndex + 1, true);
         autoPlayTimer = setInterval(() => {
           selectPlace(activePlaceIndex + 1, true);
@@ -1512,26 +1790,18 @@
     })
     .catch(() => {});
 
-  // Load lightweight Google Maps index JSON with randomized deck order on every visit
+  // Load lightweight Google Maps index JSON (<256 KB) first, then stream 1,000+ extended pins
   fetch("data/maps-index.json")
     .then((r) => r.json())
     .then((data) => {
       mapsData = data;
-      const rawPlaces = Array.isArray(data.places) ? data.places : [];
-      filteredPlaces = buildBalancedDeck(rawPlaces);
+      allRawPlaces = Array.isArray(data.places) ? data.places.slice() : [];
+      filteredPlaces = buildBalancedDeck(allRawPlaces);
       const firstPhotos = filteredPlaces[0]?.photos || [];
       activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
 
-      const filterLabels = {
-        all: ["Shuffled Mix", rawPlaces.length],
-        international: ["Global & Canada", rawPlaces.filter((p) => p.tag === "international").length],
-        "us-50": ["50 US States", rawPlaces.filter((p) => p.tag === "us-50").length],
-        nyc: ["NYC & Broadway", rawPlaces.filter((p) => p.tag === "nyc").length]
-      };
-      for (const [tagKey, [labelTxt, cnt]] of Object.entries(filterLabels)) {
-        const btn = document.querySelector(`[data-slide-filter="${tagKey}"]`);
-        if (btn && cnt > 0) btn.textContent = `${labelTxt} (${cnt})`;
-      }
+      updateFilterButtonCounts();
+      updateLegendForLens();
 
       if (data.profile) {
         const pEl = document.getElementById("stat-total-photos");
@@ -1551,6 +1821,46 @@
           .catch(() => {});
       }
       renderActiveSlide(false);
+
+      // Stream extended 1,000+ pin archive without disturbing the currently displayed slide
+      fetch("data/maps-pins.json")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((pinsPayload) => {
+          if (!pinsPayload) return;
+          const extra = Array.isArray(pinsPayload.extraPins) ? pinsPayload.extraPins : [];
+          if (Array.isArray(pinsPayload.mapOnlyPins)) {
+            mapOnlyPins = pinsPayload.mapOnlyPins;
+          }
+          const seenIds = new Set(allRawPlaces.map((p) => p.id));
+          const uniqueExtra = [];
+          for (const p of extra) {
+            if (p && p.id && !seenIds.has(p.id)) {
+              seenIds.add(p.id);
+              uniqueExtra.push(p);
+            }
+          }
+          if (uniqueExtra.length) {
+            allRawPlaces = allRawPlaces.concat(uniqueExtra);
+            const matchingExtra =
+              currentSlideFilter === "all"
+                ? buildBalancedDeck(uniqueExtra)
+                : shuffleArray(uniqueExtra.filter((p) => p.tag === currentSlideFilter));
+
+            if (matchingExtra.length) {
+              filteredPlaces = filteredPlaces.concat(matchingExtra);
+            }
+          }
+
+          updateFilterButtonCounts();
+          updateLegendForLens();
+          const counterEl = document.getElementById("slide-counter");
+          if (counterEl && !counterEl.textContent.startsWith("In View")) {
+            counterEl.textContent = `Dispatch ${formatNumber(activePlaceIndex + 1)} of ${formatNumber(filteredPlaces.length)}`;
+          }
+          rebuildMarkers();
+          updateViewportControls();
+        })
+        .catch(() => {});
     });
 
   function initHostedMapsReviews(reviewsList) {
