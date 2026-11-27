@@ -12,13 +12,17 @@
  * ratings, written review quotes, and capture dates into data/maps-index.json.
  *
  * Usage:
- *   node scripts/crawl-google-maps.mjs --max-scrolls=50
- *   node scripts/crawl-google-maps.mjs --weekly
+ *   node scripts/crawl-google-maps.mjs --login                    # Sign into Google once in .maps-chrome-profile/
+ *   node scripts/crawl-google-maps.mjs --batches=50 --max-pins=3000  # Resume from last cursor & crawl 50 older batches
+ *   node scripts/crawl-google-maps.mjs --mode=views --batches=40  # Crawl Sort-by-Views progressively
+ *   node scripts/crawl-google-maps.mjs --reset-cursor             # Reset saved cursor and start from top
+ *   node scripts/crawl-google-maps.mjs --weekly                   # Lightweight weekly CI sync
  */
 import { spawn } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import readline from "node:readline";
 import { filterAndBlurPlace, loadPrivacyConfig } from "./privacy-geofence.mjs";
 
 const CONTRIB_ID = "104641095422852249098";
@@ -30,18 +34,29 @@ const mapsPinsPath = path.resolve("data/maps-pins.json");
 const mapsReviewsPath = path.resolve("data/maps-reviews.json");
 const htmlPath = path.resolve("index.html");
 const llmsPath = path.resolve("llms.txt");
+const defaultProfileDir = path.resolve(".maps-chrome-profile");
+const defaultCursorPath = path.resolve(".maps-crawl-cursor.json");
 
 const args = process.argv.slice(2);
 const isWeekly = args.includes("--weekly");
+const isLoginMode = args.includes("--login");
+const resetCursor = args.includes("--reset-cursor");
 const skipHtml = args.includes("--no-html");
-const maxScrollsArg = args.find((a) => a.startsWith("--max-scrolls="));
-const maxScrolls = maxScrollsArg
-  ? Number(maxScrollsArg.split("=")[1])
-  : isWeekly
-    ? 6
-    : 125;
-const maxPinsArg = args.find((a) => a.startsWith("--max-pins="));
-const maxPins = maxPinsArg ? Number(maxPinsArg.split("=")[1]) : 1400;
+const getArgVal = (prefix) => {
+  const hit = args.find((a) => a.startsWith(prefix));
+  return hit ? hit.slice(prefix.length) : "";
+};
+const maxScrolls = Number(getArgVal("--max-scrolls=")) || (isWeekly ? 5 : 40);
+const maxBatches = Number(getArgVal("--batches=")) || (isWeekly ? 3 : 60);
+const maxPins = Number(getArgVal("--max-pins=")) || 3000;
+const crawlMode = (getArgVal("--mode=") || (isWeekly ? "weekly" : "both")).toLowerCase();
+const cursorPath = path.resolve(getArgVal("--cursor-file=") || defaultCursorPath);
+const explicitProfileDir = getArgVal("--profile-dir=");
+const persistentProfileDir = explicitProfileDir
+  ? path.resolve(explicitProfileDir)
+  : fs.existsSync(defaultProfileDir) || isLoginMode
+    ? defaultProfileDir
+    : "";
 
 function findChromeBinary() {
   const candidates = [
@@ -109,30 +124,77 @@ class CdpSession {
   }
 }
 
-async function launchChrome(port = 9241) {
-  const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "maps-cdp-"));
+function loadCursorState() {
+  if (resetCursor || !fs.existsSync(cursorPath)) {
+    return { date: { cursor: "", batches: 0, oldestDate: "" }, views: { cursor: "", batches: 0, oldestDate: "" } };
+  }
+  try {
+    const raw = JSON.parse(fs.readFileSync(cursorPath, "utf8"));
+    return {
+      date: { cursor: "", batches: 0, oldestDate: "", ...(raw.date || {}) },
+      views: { cursor: "", batches: 0, oldestDate: "", ...(raw.views || {}) }
+    };
+  } catch {
+    return { date: { cursor: "", batches: 0, oldestDate: "" }, views: { cursor: "", batches: 0, oldestDate: "" } };
+  }
+}
+
+function saveCursorState(state) {
+  try {
+    fs.writeFileSync(cursorPath, JSON.stringify({ ...state, updatedAt: new Date().toISOString() }, null, 2) + "\n", "utf8");
+  } catch {
+    // ignore
+  }
+}
+
+/**
+ * Rewrites the photo pagination cursor token inside Google Maps' `pb` query param
+ * while keeping Maps' own freshly generated `x-maps-bgkey` and session `ei` intact.
+ * Matches `!4m2!2s<OLD_TOKEN>!3i<N>` or injects `!2s<TOKEN>` into `!4m1!3i<N>` -> `!4m2!2s<TOKEN>!3i<N>`.
+ */
+function rewriteMasPhotoCursor(rawUrl, targetCursor) {
+  if (!targetCursor || !rawUrl.includes("/locationhistory/preview/mas")) return null;
+  try {
+    const u = new URL(rawUrl);
+    const pb = u.searchParams.get("pb");
+    if (!pb) return null;
+    let nextPb = pb;
+    if (/!4m2!2s[^!]+!3i\d+/.test(pb)) {
+      nextPb = pb.replace(/(!4m2!2s)[^!]+(!3i\d+)/, `$1${targetCursor}$2`);
+    } else {
+      return null;
+    }
+    if (nextPb === pb) return null;
+    u.searchParams.set("pb", nextPb);
+    return u.toString();
+  } catch {
+    return null;
+  }
+}
+
+async function launchChrome(port = 9241, { headless = true, profileDir = "" } = {}) {
+  const isTemp = !profileDir;
+  const userDataDir = profileDir || fs.mkdtempSync(path.join(os.tmpdir(), "maps-cdp-"));
+  if (profileDir) fs.mkdirSync(profileDir, { recursive: true });
   const chromeBin = findChromeBinary();
   let stderrBuf = "";
-  const proc = spawn(
-    chromeBin,
-    [
-      "--headless=new",
-      "--no-sandbox",
-      "--disable-setuid-sandbox",
-      "--disable-gpu",
-      "--disable-software-rasterizer",
-      "--disable-dev-shm-usage",
-      "--no-first-run",
-      "--no-default-browser-check",
-      "--window-size=1440,960",
-      "--lang=en-US",
-      "--remote-debugging-address=127.0.0.1",
-      `--remote-debugging-port=${port}`,
-      `--user-data-dir=${userDataDir}`,
-      "about:blank"
-    ],
-    { stdio: ["ignore", "ignore", "pipe"] }
-  );
+  const chromeArgs = [
+    ...(headless ? ["--headless=new"] : []),
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    "--disable-gpu",
+    "--disable-software-rasterizer",
+    "--disable-dev-shm-usage",
+    "--no-first-run",
+    "--no-default-browser-check",
+    "--window-size=1440,960",
+    "--lang=en-US",
+    "--remote-debugging-address=127.0.0.1",
+    `--remote-debugging-port=${port}`,
+    `--user-data-dir=${userDataDir}`,
+    isLoginMode ? PHOTOS_URL : "about:blank"
+  ];
+  const proc = spawn(chromeBin, chromeArgs, { stdio: ["ignore", "ignore", "pipe"] });
   proc.stderr?.on("data", (chunk) => {
     if (stderrBuf.length < 2000) stderrBuf += String(chunk);
   });
@@ -162,14 +224,16 @@ async function launchChrome(port = 9241) {
   const cleanup = () => {
     cdp.close();
     try {
-      proc.kill("SIGKILL");
+      proc.kill(isTemp ? "SIGKILL" : "SIGTERM");
     } catch {
       // ignore
     }
-    try {
-      fs.rmSync(userDataDir, { recursive: true, force: true });
-    } catch {
-      // ignore
+    if (isTemp) {
+      try {
+        fs.rmSync(userDataDir, { recursive: true, force: true });
+      } catch {
+        // ignore
+      }
     }
   };
 
@@ -246,6 +310,8 @@ function parseMasPayload(rawText, store) {
 
   let reviewsFound = 0;
   let photosFound = 0;
+  let oldestPhotoDate = "";
+  const nextPhotoCursor = typeof parsed?.[22]?.[0] === "string" && parsed[22][0].length >= 8 ? parsed[22][0] : "";
 
   const upsertPlace = (id, patch) => {
     if (!id) return null;
@@ -398,6 +464,7 @@ function parseMasPayload(rawText, store) {
       }
 
       if (name && typeof lat === "number" && typeof lng === "number" && photoUrl) {
+        if (date && (!oldestPhotoDate || date < oldestPhotoDate)) oldestPhotoDate = date;
         upsertPlace(placeId, {
           name,
           location,
@@ -415,7 +482,7 @@ function parseMasPayload(rawText, store) {
     }
   }
 
-  return { reviewsFound, photosFound };
+  return { reviewsFound, photosFound, nextPhotoCursor, oldestPhotoDate };
 }
 
 async function cdpClickSelector(cdp, selectorOrFnExpr) {
@@ -508,6 +575,24 @@ async function scrollContributorFeed(cdp, label, scrollCount, getBatchCounter, g
 }
 
 async function main() {
+  if (isLoginMode) {
+    console.log("Launching visible Chrome with persistent profile:", persistentProfileDir);
+    console.log("Sign into Google in the browser window, confirm your Photos feed scrolls past 10 items, then press Enter here.");
+    const { cleanup } = await launchChrome(9243, { headless: false, profileDir: persistentProfileDir });
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    await new Promise((resolve) => rl.question("Press Enter once signed in to save session & close Chrome... ", resolve));
+    rl.close();
+    cleanup();
+    console.log("Saved Google session in", persistentProfileDir);
+    return;
+  }
+
+  const cursorState = loadCursorState();
+  if (resetCursor && fs.existsSync(cursorPath)) {
+    fs.rmSync(cursorPath, { force: true });
+    console.log("Cleared saved cursor:", cursorPath);
+  }
+
   const existingData = JSON.parse(fs.readFileSync(mapsJsonPath, "utf8"));
   const existingReviewsPayload = fs.existsSync(mapsReviewsPath)
     ? JSON.parse(fs.readFileSync(mapsReviewsPath, "utf8"))
@@ -531,10 +616,11 @@ async function main() {
 
   const existingPinsPayload = fs.existsSync(mapsPinsPath)
     ? JSON.parse(fs.readFileSync(mapsPinsPath, "utf8"))
-    : { extraPins: [] };
+    : { extraPins: [], mapOnlyPins: [] };
   const existingExtraPins = Array.isArray(existingPinsPayload.extraPins) ? existingPinsPayload.extraPins : [];
+  const preservedMapOnlyPins = Array.isArray(existingPinsPayload.mapOnlyPins) ? existingPinsPayload.mapOnlyPins : [];
 
-  // Seed with existing curated & extended places so captions stay intact across weekly syncs
+  // Seed with existing curated & extended places so captions, visitCount, and firstDate stay intact across syncs
   for (const p of [...(existingData.places || []), ...existingExtraPins]) {
     const cleanId = String(Array.isArray(p.id) ? p.id[0] : p.id || "").trim();
     if (!cleanId) continue;
@@ -552,6 +638,8 @@ async function main() {
       secondaryViews: 0,
       rating: p.rating || null,
       date: p.date || "",
+      firstDate: p.firstDate || "",
+      visitCount: Number(p.visitCount) > 1 ? Number(p.visitCount) : 1,
       countryIso: p.countryIso || "",
       tag: p.tag,
       caption: cleanCaption,
@@ -560,8 +648,27 @@ async function main() {
     });
   }
 
-  const { cdp, cleanup } = await launchChrome(9242);
+  console.log(
+    persistentProfileDir
+      ? `Using persistent Chrome profile: ${persistentProfileDir}`
+      : "No .maps-chrome-profile/ found — running signed-out (Google caps pagination at 10 items; run with --login once for full resumable pagination)."
+  );
+
+  const { cdp, cleanup } = await launchChrome(9242, { headless: true, profileDir: persistentProfileDir });
   let totalMasBatches = 0;
+  let activePhotoMode = "";
+  let feedBatchCount = 0;
+  let pendingResumeCursor = "";
+  let sawAnyCursor = false;
+
+  async function armResumeCursor(cursor) {
+    pendingResumeCursor = cursor || "";
+    if (!pendingResumeCursor) return;
+    await cdp.send("Fetch.enable", {
+      patterns: [{ urlPattern: "*locationhistory/preview/mas*", requestStage: "Request" }]
+    });
+    console.log(`  [Resume] Armed cursor injection (${pendingResumeCursor.slice(0, 20)}…)`);
+  }
 
   try {
     await cdp.send("Page.enable");
@@ -573,6 +680,31 @@ async function main() {
     });
     await cdp.send("Network.enable", { maxPostDataSize: 65536 });
     await cdp.send("Runtime.enable");
+
+    cdp.on("Fetch.requestPaused", async (params) => {
+      const reqUrl = params.request?.url || "";
+      let nextUrl = null;
+      // Inject saved cursor on the first paginated photo scroll request (!4m2!2s<TOKEN> preserves exact protobuf field counts & fresh x-maps-bgkey!)
+      if (pendingResumeCursor && reqUrl.includes("/locationhistory/preview/mas") && /!4m2!2s[^!]+!3i\d+/.test(decodeURIComponent(reqUrl))) {
+        nextUrl = rewriteMasPhotoCursor(reqUrl, pendingResumeCursor);
+        if (nextUrl) {
+          console.log(`  [Resume] Injected saved ${activePhotoMode} cursor into Maps pagination request.`);
+          pendingResumeCursor = "";
+        }
+      }
+      try {
+        await cdp.send("Fetch.continueRequest", nextUrl ? { requestId: params.requestId, url: nextUrl } : { requestId: params.requestId });
+      } catch {
+        // ignore
+      }
+      if (!pendingResumeCursor) {
+        try {
+          await cdp.send("Fetch.disable");
+        } catch {
+          // ignore
+        }
+      }
+    });
 
     const masRequests = new Map();
 
@@ -594,38 +726,24 @@ async function main() {
         const res = parseMasPayload(text, store);
         if (res.reviewsFound || res.photosFound) {
           totalMasBatches++;
+          if (activePhotoMode && res.photosFound) {
+            feedBatchCount++;
+            if (res.nextPhotoCursor) {
+              sawAnyCursor = true;
+              const slot = cursorState[activePhotoMode];
+              slot.cursor = res.nextPhotoCursor;
+              slot.batches = (slot.batches || 0) + 1;
+              if (res.oldestPhotoDate && (!slot.oldestDate || res.oldestPhotoDate < slot.oldestDate)) {
+                slot.oldestDate = res.oldestPhotoDate;
+              }
+              saveCursorState(cursorState);
+            }
+          }
         }
       } catch {
         // ignore evicted buffer
       }
     });
-
-    // Pass 1: Crawl Reviews Feed
-    console.log("Pass 1: Crawling Google Maps Reviews ->", REVIEWS_URL);
-    await cdp.send("Page.navigate", { url: REVIEWS_URL });
-    await sleep(5500);
-
-    // Dismiss consent banner if shown
-    await cdp.send("Runtime.evaluate", {
-      expression: `(() => {
-        const btn = [...document.querySelectorAll('button')].find(b => /accept all|reject all|i agree/i.test(b.textContent || ''));
-        if (btn) btn.click();
-      })()`,
-      returnByValue: true
-    });
-    await sleep(1200);
-
-    // Extract Local Guide points from header text
-    const headerCheck = await cdp.send("Runtime.evaluate", {
-      expression: `document.body.innerText.slice(0, 1200)`,
-      returnByValue: true
-    });
-    const headerTxt = headerCheck.result?.value || "";
-    const ptsMatch = headerTxt.match(/([\d,]+)\s*points/i);
-    if (ptsMatch) {
-      const pts = Number(ptsMatch[1].replace(/,/g, ""));
-      if (pts > store.telemetry.points) store.telemetry.points = pts;
-    }
 
     const countPhotoPlaces = () => {
       let c = 0;
@@ -635,17 +753,62 @@ async function main() {
       return c;
     };
 
-    await scrollContributorFeed(cdp, "Reviews", isWeekly ? 5 : maxScrolls, () => totalMasBatches, countPhotoPlaces);
+    // Pass 1: Crawl Reviews Feed (only in weekly or reviews/both mode)
+    if (crawlMode === "weekly" || crawlMode === "reviews" || crawlMode === "both") {
+      console.log("Pass 1: Crawling Google Maps Reviews ->", REVIEWS_URL);
+      await cdp.send("Page.navigate", { url: REVIEWS_URL });
+      await sleep(5000);
 
-    // Pass 2: Crawl Photos Feed (Sorted by Date)
-    console.log("Pass 2: Crawling Google Maps Photos (by Date) ->", PHOTOS_URL);
-    await cdp.send("Page.navigate", { url: PHOTOS_URL });
-    await sleep(5500);
+      await cdp.send("Runtime.evaluate", {
+        expression: `(() => {
+          const btn = [...document.querySelectorAll('button')].find(b => /accept all|reject all|i agree/i.test(b.textContent || ''));
+          if (btn) btn.click();
+        })()`,
+        returnByValue: true
+      });
+      await sleep(1000);
 
-    await scrollContributorFeed(cdp, "Photos-ByDate", isWeekly ? 4 : 175, () => totalMasBatches, countPhotoPlaces);
+      const headerCheck = await cdp.send("Runtime.evaluate", {
+        expression: `document.body.innerText.slice(0, 1200)`,
+        returnByValue: true
+      });
+      const headerTxt = headerCheck.result?.value || "";
+      const ptsMatch = headerTxt.match(/([\d,]+)\s*points/i);
+      if (ptsMatch) {
+        const pts = Number(ptsMatch[1].replace(/,/g, ""));
+        if (pts > store.telemetry.points) store.telemetry.points = pts;
+      }
 
-    // Pass 3 (Deep Crawl Only): Real CDP click on Date -> Sort by views
-    if (!isWeekly) {
+      await scrollContributorFeed(cdp, "Reviews", isWeekly ? 5 : maxScrolls, () => totalMasBatches, countPhotoPlaces);
+    }
+
+    // Pass 2: Crawl Photos Feed (Sorted by Date) — resumable via cursorState.date
+    if (crawlMode === "weekly" || crawlMode === "date" || crawlMode === "both") {
+      activePhotoMode = "date";
+      feedBatchCount = 0;
+      console.log("Pass 2: Crawling Google Maps Photos (by Date) ->", PHOTOS_URL);
+      await cdp.send("Page.navigate", { url: PHOTOS_URL });
+      await sleep(5000);
+      if (!isWeekly && cursorState.date.cursor) {
+        await armResumeCursor(cursorState.date.cursor);
+      }
+      await scrollContributorFeed(
+        cdp,
+        "Photos-ByDate",
+        isWeekly ? 4 : maxBatches,
+        () => feedBatchCount,
+        countPhotoPlaces
+      );
+    }
+
+    // Pass 3: Crawl Photos Feed (Sorted by Views) — resumable via cursorState.views
+    if (!isWeekly && (crawlMode === "views" || crawlMode === "both")) {
+      activePhotoMode = "views";
+      feedBatchCount = 0;
+      if (crawlMode === "views") {
+        await cdp.send("Page.navigate", { url: PHOTOS_URL });
+        await sleep(5000);
+      }
       console.log("Pass 3: Switching Photos to Sort by Views...");
       const openMenu = await cdpClickSelector(
         cdp,
@@ -654,14 +817,23 @@ async function main() {
       await sleep(1100);
       const pickedViews = await cdpClickSelector(
         cdp,
-        `() => [...document.querySelectorAll('[role="menuitemradio"], [role="menuitem"]')].find(el => /sort by views/i.test((el.textContent || '').trim()))`
+        `() => [...document.querySelectorAll('[role="menuitemradio"], [role="menuitem"]')].find(el => /views/i.test((el.textContent || '').trim()))`
       );
       console.log("  Sort menu clicked:", Boolean(openMenu), "-> Sort by views clicked:", Boolean(pickedViews));
-      await sleep(3500);
-      await scrollContributorFeed(cdp, "Photos-ByViews", 85, () => totalMasBatches, countPhotoPlaces);
+      await sleep(3000);
+      if (cursorState.views.cursor) {
+        await armResumeCursor(cursorState.views.cursor);
+      }
+      await scrollContributorFeed(cdp, "Photos-ByViews", maxBatches, () => feedBatchCount, countPhotoPlaces);
     }
 
-    await sleep(1500);
+    if (!isWeekly && !sawAnyCursor) {
+      console.warn(
+        "  [Notice] Google Maps returned no pagination cursor (signed-out 10-item cap). Run `node scripts/crawl-google-maps.mjs --login` once, then re-run to paginate progressively."
+      );
+    }
+
+    await sleep(1200);
   } finally {
     cleanup();
   }
@@ -741,6 +913,8 @@ async function main() {
     };
     if (p.rating) entry.rating = p.rating;
     if (p.date) entry.date = p.date;
+    if (p.firstDate && p.firstDate !== p.date) entry.firstDate = p.firstDate;
+    if (Number(p.visitCount) > 1) entry.visitCount = Number(p.visitCount);
     if (p.countryIso) entry.countryIso = p.countryIso;
     if (p.mediaKeys?.length) entry.mediaKeys = p.mediaKeys;
 
@@ -822,17 +996,27 @@ async function main() {
   };
   existingData.places = finalPlaces;
 
-  const totalPinCount = finalPlaces.length + extraPins.length;
+  // Enforce < 252 KB ceiling on maps-index.json by spilling overflow places into extraPins
+  let indexJsonStr = JSON.stringify(existingData) + "\n";
+  while (Buffer.byteLength(indexJsonStr, "utf8") > 252000 && existingData.places.length > 100) {
+    extraPins.unshift(existingData.places.pop());
+    indexJsonStr = JSON.stringify(existingData) + "\n";
+  }
 
-  // Compact serialization keeps maps-index.json < 256 KB for fast initial load
-  fs.writeFileSync(mapsJsonPath, JSON.stringify(existingData) + "\n", "utf8");
+  const photoPinCount = existingData.places.length + extraPins.length;
+  const placesVisitedCount = preservedMapOnlyPins.length + (existingData.heatmapClusters?.length || 0);
+  const totalPinCount = photoPinCount + placesVisitedCount;
+
+  // Compact serialization keeps maps-index.json < 256 KB for fast initial load and preserves all Swarm mapOnlyPins!
+  fs.writeFileSync(mapsJsonPath, indexJsonStr, "utf8");
   fs.writeFileSync(
     mapsPinsPath,
     JSON.stringify({
       lastUpdated: todayIso,
       totalPins: totalPinCount,
       extraCount: extraPins.length,
-      extraPins
+      extraPins,
+      mapOnlyPins: preservedMapOnlyPins
     }) + "\n",
     "utf8"
   );
@@ -856,12 +1040,19 @@ async function main() {
     let html = fs.readFileSync(htmlPath, "utf8");
     const pFmt = store.telemetry.totalPhotos.toLocaleString("en-US");
     const rFmt = store.telemetry.totalReviews.toLocaleString("en-US");
-    const placesFmt = totalPinCount.toLocaleString("en-US");
+    const photoPinsFmt = photoPinCount.toLocaleString("en-US");
+    const placesVisitedFmt = placesVisitedCount.toLocaleString("en-US");
+    const totalPinsFmt = totalPinCount.toLocaleString("en-US");
 
     html = html
       .replace(/(id="stat-total-photos">)[\d,]+(<\/dd>)/, `$1${pFmt}$2`)
       .replace(/(id="stat-total-reviews">)[\d,]+(<\/dd>)/, `$1${rFmt}$2`)
-      .replace(/(data-slide-filter="all"[^>]*>)Shuffled Mix \([\d,]+\)(<\/button>)/, `$1Shuffled Mix (${placesFmt})$2`);
+      .replace(/(data-slide-filter="all"[^>]*>)Shuffled Mix \([\d,]+\)(<\/button>)/, `$1Shuffled Mix (${photoPinsFmt})$2`)
+      .replace(/[\d,]+ Photo Pins/, `${photoPinsFmt} Photo Pins`)
+      .replace(
+        /[\d,]+ (?:Additional Place Pins|Places Matt Visited) \([\d,]+ Total\)/,
+        `${placesVisitedFmt} Places Matt Visited (${totalPinsFmt} Total)`
+      );
     fs.writeFileSync(htmlPath, html, "utf8");
   }
 
