@@ -756,7 +756,7 @@ async function main() {
   };
   existingData.places = finalPlaces;
 
-  // Compact serialization keeps maps-index.json < 256 KB for God Mode synthetic probes
+  // Compact serialization keeps maps-index.json < 256 KB for fast initial load
   fs.writeFileSync(mapsJsonPath, JSON.stringify(existingData) + "\n", "utf8");
   fs.writeFileSync(
     mapsReviewsPath,
