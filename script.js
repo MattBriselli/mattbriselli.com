@@ -937,6 +937,20 @@
     syncMapTheme();
   });
 
+  function stopAutoPlay() {
+    if (!autoPlayTimer) return;
+    clearInterval(autoPlayTimer);
+    autoPlayTimer = null;
+    const btn = document.getElementById("slide-autoplay-btn");
+    if (btn) {
+      btn.setAttribute("aria-pressed", "false");
+      btn.textContent = "▶ Auto-Tour";
+    }
+  }
+
+  map.on("dragstart", stopAutoPlay);
+  mapContainer.addEventListener("wheel", stopAutoPlay, { passive: true });
+
   function rebuildMarkers() {
     pinsLayerGroup.clearLayers();
     if (!lensShowsPhotos() || !mapsData) return;
@@ -957,6 +971,7 @@
         });
         cm.bindTooltip(`<strong>${escMapHtml(label)}</strong>`, { direction: "top" });
         cm.on("click", () => {
+          stopAutoPlay();
           map.flyTo([c.lat, c.lng], Math.max(map.getZoom(), 6), { duration: 0.85 });
           if (statusLineEl) statusLineEl.textContent = `Exploring: ${label}`;
         });
@@ -991,6 +1006,7 @@
         { direction: "top" }
       );
       marker.on("click", () => {
+        stopAutoPlay();
         selectPlace(idx, true);
       });
       marker.addTo(pinsLayerGroup);
@@ -1026,6 +1042,7 @@
         { direction: "top" }
       );
       hero.on("click", () => {
+        stopAutoPlay();
         selectPlace(idx, true);
       });
       hero.addTo(pinsLayerGroup);
@@ -1109,6 +1126,7 @@
           btn.appendChild(thumbImg);
 
           btn.addEventListener("click", () => {
+            stopAutoPlay();
             activePhotoIndex = idx;
             renderActiveSlide(false);
           });
@@ -1167,6 +1185,7 @@
       flyBtn.className = "table-fly-btn";
       flyBtn.textContent = "Fly to Pin";
       flyBtn.addEventListener("click", () => {
+        stopAutoPlay();
         if (!lensShowsPhotos()) setMapLens("photos");
         const matchIdx = filteredPlaces.findIndex(
           (p) => p.name.toLowerCase().includes(item.name.split(" ")[0].toLowerCase())
@@ -1204,6 +1223,7 @@
 
   document.querySelectorAll("[data-region-preset]").forEach((btn) => {
     btn.addEventListener("click", () => {
+      stopAutoPlay();
       const key = btn.getAttribute("data-region-preset") || "world";
       const preset = REGION_PRESETS[key] || REGION_PRESETS.world;
       document.querySelectorAll("[data-region-preset]").forEach((other) => {
@@ -1224,6 +1244,7 @@
   document.querySelectorAll("[data-slide-filter]").forEach((btn) => {
     btn.addEventListener("click", () => {
       if (!mapsData) return;
+      stopAutoPlay();
       const filter = btn.getAttribute("data-slide-filter") || "all";
       document.querySelectorAll("[data-slide-filter]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
@@ -1405,6 +1426,7 @@
 
   document.querySelectorAll("[data-map-lens]").forEach((btn) => {
     btn.addEventListener("click", () => {
+      stopAutoPlay();
       const nextLens = btn.getAttribute("data-map-lens") || "photos";
       setMapLens(nextLens);
     });
@@ -1419,6 +1441,7 @@
   if (shuffleBtn) {
     shuffleBtn.addEventListener("click", () => {
       if (filteredPlaces.length <= 1) return;
+      stopAutoPlay();
       if (!lensShowsPhotos()) setMapLens("photos");
       let nextIdx = activePlaceIndex;
       while (nextIdx === activePlaceIndex) {
@@ -1431,6 +1454,7 @@
   const goalCountriesBtn = document.getElementById("goal-countries-btn");
   if (goalCountriesBtn) {
     goalCountriesBtn.addEventListener("click", () => {
+      stopAutoPlay();
       setMapLens("atlas");
       const p = REGION_PRESETS.world;
       map.flyTo([p.lat, p.lng], p.zoom, { duration: 0.95 });
@@ -1443,6 +1467,7 @@
   const goalStatesBtn = document.getElementById("goal-states-btn");
   if (goalStatesBtn) {
     goalStatesBtn.addEventListener("click", () => {
+      stopAutoPlay();
       setMapLens("atlas");
       const p = REGION_PRESETS.us50;
       map.flyTo([p.lat, p.lng], p.zoom, { duration: 1.0 });
@@ -1453,6 +1478,7 @@
   const goalCanadaDriveBtn = document.getElementById("goal-canada-drive-btn");
   if (goalCanadaDriveBtn) {
     goalCanadaDriveBtn.addEventListener("click", () => {
+      stopAutoPlay();
       setMapLens("atlas");
       map.flyTo([53.5, -96.5], 4, { duration: 1.05 });
       if (statusLineEl) {
@@ -1464,6 +1490,7 @@
   }
   if (zoomInBtn) {
     zoomInBtn.addEventListener("click", () => {
+      stopAutoPlay();
       if (activeLens === "static" && staticViewport) {
         zoomStaticAt(1.45, staticViewport.clientWidth / 2, staticViewport.clientHeight / 2, true);
       } else {
@@ -1473,6 +1500,7 @@
   }
   if (zoomOutBtn) {
     zoomOutBtn.addEventListener("click", () => {
+      stopAutoPlay();
       if (activeLens === "static" && staticViewport) {
         zoomStaticAt(1 / 1.45, staticViewport.clientWidth / 2, staticViewport.clientHeight / 2, true);
       } else {
@@ -1482,6 +1510,7 @@
   }
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
+      stopAutoPlay();
       const p = REGION_PRESETS.world;
       if (activeLens === "static") {
         focusStaticPreset("world");
@@ -1492,13 +1521,20 @@
     });
   }
   if (prevBtn) {
-    prevBtn.addEventListener("click", () => selectPlace(activePlaceIndex - 1, true));
+    prevBtn.addEventListener("click", () => {
+      stopAutoPlay();
+      selectPlace(activePlaceIndex - 1, true);
+    });
   }
   if (nextBtn) {
-    nextBtn.addEventListener("click", () => selectPlace(activePlaceIndex + 1, true));
+    nextBtn.addEventListener("click", () => {
+      stopAutoPlay();
+      selectPlace(activePlaceIndex + 1, true);
+    });
   }
   if (flyBtn) {
     flyBtn.addEventListener("click", () => {
+      stopAutoPlay();
       if (!lensShowsPhotos()) setMapLens("photos");
       const place = filteredPlaces[activePlaceIndex];
       if (place) map.flyTo([place.lat, place.lng], 12, { duration: 0.9 });
@@ -1507,11 +1543,9 @@
   if (autoBtn) {
     autoBtn.addEventListener("click", () => {
       if (autoPlayTimer) {
-        clearInterval(autoPlayTimer);
-        autoPlayTimer = null;
-        autoBtn.setAttribute("aria-pressed", "false");
-        autoBtn.textContent = "▶ Auto-Tour";
+        stopAutoPlay();
       } else {
+        if (!lensShowsPhotos()) setMapLens("photos");
         autoBtn.setAttribute("aria-pressed", "true");
         autoBtn.textContent = "⏸ Pause Tour";
         selectPlace(activePlaceIndex + 1, true);
