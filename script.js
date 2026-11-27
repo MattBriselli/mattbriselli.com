@@ -369,7 +369,7 @@
 
   const REGION_PRESETS = {
     world: { lat: 25, lng: -12, zoom: 2, label: "Whole World (39 Countries · All 50 US States · 66,085 Photos)" },
-    nyc: { lat: 40.73, lng: -73.98, zoom: 11, label: "New York City & Tri-State Dispatches" },
+    nyc: { lat: 40.758, lng: -73.98, zoom: 12, label: "New York City, Broadway & Five-Borough Dispatches" },
     west: { lat: 41.8, lng: -122.3, zoom: 5, label: "San Francisco (6 yrs), Seattle & West Coast" },
     us50: { lat: 39.5, lng: -98.5, zoom: 4, label: "All 50 US States Visited" },
     "central-asia": { lat: 42.2, lng: 67.5, zoom: 5, label: "Central Asia (Kazakhstan · Kyrgyzstan · Uzbekistan · Tajikistan · Turkmenistan)" },
@@ -1354,7 +1354,9 @@
       if (!lensShowsPhotos()) {
         setMapLens("photos");
       }
-      const targetZoom = Math.max(map.getZoom(), 6);
+      const minTargetZoom =
+        currentSlideFilter === "nyc" ? 13 : place.tag === "nyc" ? 12 : 6;
+      const targetZoom = Math.max(map.getZoom(), minTargetZoom);
       map.flyTo([place.lat, place.lng], targetZoom, { duration: 0.85 });
       if (statusLineEl) {
         statusLineEl.textContent = `${place.name} · ${place.location}`;
@@ -1428,6 +1430,7 @@
     btn.addEventListener("click", () => {
       if (!allRawPlaces.length) return;
       stopAutoPlay();
+      const prevFilter = currentSlideFilter;
       const filter = btn.getAttribute("data-slide-filter") || "all";
       currentSlideFilter = filter;
       document.querySelectorAll("[data-slide-filter]").forEach((other) => {
@@ -1439,9 +1442,20 @@
           ? buildBalancedDeck(allRawPlaces)
           : shuffleArray(allRawPlaces.filter((p) => p.tag === filter));
       activePlaceIndex = 0;
-      const firstPhotos = filteredPlaces[0]?.photos || [];
+      const firstPlace = filteredPlaces[0];
+      const firstPhotos = firstPlace?.photos || [];
       activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
-      renderActiveSlide(true);
+      if (filter === "nyc" && firstPlace) {
+        renderActiveSlide(false);
+        map.flyTo([firstPlace.lat, firstPlace.lng], Math.max(map.getZoom(), 13), { duration: 0.9 });
+        if (statusLineEl) statusLineEl.textContent = `${firstPlace.name} · ${firstPlace.location}`;
+      } else if (prevFilter === "nyc" && firstPlace && map.getZoom() > 8) {
+        renderActiveSlide(false);
+        map.flyTo([firstPlace.lat, firstPlace.lng], 7, { duration: 0.9 });
+        if (statusLineEl) statusLineEl.textContent = `${firstPlace.name} · ${firstPlace.location}`;
+      } else {
+        renderActiveSlide(true);
+      }
     });
   });
 
@@ -2169,11 +2183,18 @@
     img.className = "lb-poster";
     img.src = posterUrl;
     img.alt = `${rev.filmTitle} (${rev.filmYear}) poster`;
-    img.width = 150;
-    img.height = 225;
+    img.width = 200;
+    img.height = 300;
     img.loading = "lazy";
     img.referrerPolicy = "no-referrer";
-    img.addEventListener("error", () => img.remove());
+    img.addEventListener("load", () => {
+      frameEl.classList.add("has-poster");
+    });
+    img.addEventListener("error", () => {
+      frameEl.classList.remove("has-poster");
+      img.remove();
+    });
+    frameEl.classList.add("has-poster");
     frameEl.appendChild(img);
   }
 
@@ -2194,8 +2215,8 @@
         img.className = "lb-fav-poster";
         img.src = fav.poster;
         img.alt = `${fav.filmTitle} (${fav.filmYear})`;
-        img.width = 76;
-        img.height = 114;
+        img.width = 104;
+        img.height = 156;
         img.loading = "lazy";
         img.referrerPolicy = "no-referrer";
         a.appendChild(img);
