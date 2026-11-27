@@ -156,17 +156,26 @@
           },
           {
             "@type": "Dataset",
+            "@id": "https://mattbriselli.com/resume.json",
             "name": "Matt L. Briselli — Structured JSON Resume & Agent Feed",
             "description": "Machine-readable JSON Resume and AI agent feed covering Matt L. Briselli's software engineering and technical program management career at Google and Adobe, education at Carnegie Mellon University, global travel and photography across 39 countries and all 50 US states, and theatre stage management credits.",
             "url": "https://mattbriselli.com/resume.json",
             "encodingFormat": "application/json",
             "license": "https://creativecommons.org/licenses/by/4.0/",
-            "creator": { "@id": "https://mattbriselli.com/#matt-briselli" },
-            "distribution": {
-              "@type": "DataDownload",
-              "encodingFormat": "application/json",
-              "contentUrl": "https://mattbriselli.com/resume.json"
-            }
+            "isAccessibleForFree": true,
+            "creator": {
+              "@type": "Person",
+              "@id": "https://mattbriselli.com/#matt-briselli",
+              "name": "Matt L. Briselli",
+              "url": "https://mattbriselli.com/"
+            },
+            "distribution": [
+              {
+                "@type": "DataDownload",
+                "encodingFormat": "application/json",
+                "contentUrl": "https://mattbriselli.com/resume.json"
+              }
+            ]
           }
         ],
         "sameAs": [
@@ -403,13 +412,13 @@
         <div class="map-stage-card">
           <div class="map-stage-header">
             <div class="map-lens-toolbar" id="map-lens-toolbar" role="toolbar" focusgroup="toolbar wrap" aria-label="Map display lens">
-              <button type="button" class="map-ctrl-btn" data-map-lens="photos" id="lens-photos-btn" aria-pressed="true">📸 Photos</button>
+              <button type="button" class="map-ctrl-btn" data-map-lens="photos" id="lens-photos-btn" aria-pressed="true">📍 Photo Pins</button>
               <button type="button" class="map-ctrl-btn" data-map-lens="flights" id="lens-flights-btn" aria-pressed="false">✈️ Flights (173)</button>
               <button type="button" class="map-ctrl-btn" data-map-lens="atlas" id="lens-atlas-btn" aria-pressed="false">🌍 Visited Atlas</button>
               <button type="button" class="map-ctrl-btn" data-map-lens="all" id="lens-all-btn" aria-pressed="false">✨ All Layers</button>
               <button type="button" class="map-ctrl-btn" data-map-lens="static" id="lens-static-btn" aria-pressed="false">🗺️ MapChart</button>
             </div>
-            <p class="map-stage-subtitle" id="map-status-line" role="status" aria-live="polite">Click any photo stack to zoom in, or click a photo pin to open its dispatch</p>
+            <p class="map-stage-subtitle" id="map-status-line" role="status" aria-live="polite">Drag to pan · Scroll or use + / − to zoom · Click any glowing dot to view photos</p>
           </div>
 
           <div class="map-stage-body">
@@ -449,9 +458,9 @@
           </div>
 
           <div class="map-legend" id="map-legend">
-            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Dispatch</span>
-            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> Photo Stacks (Click to Zoom)</span>
-            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 39 Countries · 50 States · 8/13 Canada</span>
+            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Slideshow Pin</span>
+            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> 348 Photo Dispatches</span>
+            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> Regional Footprint Clusters</span>
           </div>
         </div>
 
