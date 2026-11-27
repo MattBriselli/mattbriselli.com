@@ -1625,6 +1625,10 @@
     font-size: 1.05rem;
     font-weight: 600;
     cursor: pointer;
+    touch-action: manipulation;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
     @media (pointer: coarse) {
       min-inline-size: 2.75rem;
@@ -1655,6 +1659,9 @@
     block-size: 30.5rem;
     background-color: var(--bg-canvas);
     overflow: hidden;
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
 
     @media (max-width: 46rem) {
       block-size: 22.5rem;
