@@ -548,7 +548,22 @@
     });
   }
 
-  // Wire toolbar buttons
+  // Wire toolbar buttons (works on both Interactive Leaflet Map and 39-Country Static Map!)
+  const STATIC_PRESETS = {
+    world: { fx: 0.5, fy: 0.5, scale: 1 },
+    nyc: { fx: 0.275, fy: 0.355, scale: 3.4 },
+    west: { fx: 0.165, fy: 0.34, scale: 3.1 },
+    us50: { fx: 0.215, fy: 0.355, scale: 2.3 },
+    "central-asia": { fx: 0.675, fy: 0.35, scale: 3.2 },
+    canada: { fx: 0.215, fy: 0.235, scale: 2.3 },
+    "europe-apac": { fx: 0.64, fy: 0.36, scale: 1.85 }
+  };
+
+  let mapViewMode = "interactive";
+  let smScale = 1;
+  let smTx = 0;
+  let smTy = 0;
+
   document.querySelectorAll("[data-region-preset]").forEach((btn) => {
     btn.addEventListener("click", () => {
       const key = btn.getAttribute("data-region-preset") || "world";
@@ -556,7 +571,11 @@
       document.querySelectorAll("[data-region-preset]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
       });
-      map.flyTo([preset.lat, preset.lng], preset.zoom, { duration: 1.0 });
+      if (mapViewMode === "static") {
+        focusStaticPreset(key);
+      } else {
+        map.flyTo([preset.lat, preset.lng], preset.zoom, { duration: 1.0 });
+      }
       if (statusLineEl) statusLineEl.textContent = preset.label;
     });
   });
@@ -589,22 +608,155 @@
   const viewStaticBtn = document.getElementById("view-static-map-btn");
   const mapCanvasWrap = document.getElementById("map-canvas-wrap");
   const staticMapWrap = document.getElementById("static-countries-map-wrap");
-  const interactiveCtrls = document.getElementById("map-interactive-controls");
+  const staticViewport = document.getElementById("static-map-viewport");
+  const staticImg = document.getElementById("static-countries-img");
+  const mapDataToggles = document.getElementById("map-data-toggles");
+  const mapLegend = document.querySelector(".map-legend");
+
+  function clampStaticTransform() {
+    if (!staticViewport) return;
+    const vw = staticViewport.clientWidth || 600;
+    const vh = staticViewport.clientHeight || 432;
+    if (smScale <= 1.01) {
+      smScale = 1;
+      smTx = 0;
+      smTy = 0;
+      return;
+    }
+    const minTx = vw * (1 - smScale);
+    const minTy = vh * (1 - smScale);
+    smTx = Math.min(0, Math.max(minTx, smTx));
+    smTy = Math.min(0, Math.max(minTy, smTy));
+  }
+
+  function applyStaticTransform(animate = false) {
+    if (!staticImg) return;
+    clampStaticTransform();
+    staticImg.style.transition = animate ? "transform 0.35s cubic-bezier(0.22, 1, 0.36, 1)" : "none";
+    staticImg.style.transform = `translate(${smTx}px, ${smTy}px) scale(${smScale})`;
+  }
+
+  function zoomStaticAt(factor, cx, cy, animate = true) {
+    if (!staticViewport) return;
+    const nextScale = Math.min(7, Math.max(1, smScale * factor));
+    const ratio = nextScale / smScale;
+    smTx = cx - (cx - smTx) * ratio;
+    smTy = cy - (cy - smTy) * ratio;
+    smScale = nextScale;
+    applyStaticTransform(animate);
+  }
+
+  function focusStaticPreset(key) {
+    if (!staticViewport) return;
+    const p = STATIC_PRESETS[key] || STATIC_PRESETS.world;
+    const vw = staticViewport.clientWidth || 600;
+    const vh = staticViewport.clientHeight || 432;
+    smScale = p.scale;
+    smTx = vw / 2 - p.fx * vw * smScale;
+    smTy = vh / 2 - p.fy * vh * smScale;
+    applyStaticTransform(true);
+  }
+
+  if (staticViewport) {
+    staticViewport.addEventListener(
+      "wheel",
+      (e) => {
+        e.preventDefault();
+        const rect = staticViewport.getBoundingClientRect();
+        const cx = e.clientX - rect.left;
+        const cy = e.clientY - rect.top;
+        const factor = e.deltaY < 0 ? 1.22 : 1 / 1.22;
+        zoomStaticAt(factor, cx, cy, false);
+      },
+      { passive: false }
+    );
+
+    staticViewport.addEventListener("dblclick", (e) => {
+      const rect = staticViewport.getBoundingClientRect();
+      const cx = e.clientX - rect.left;
+      const cy = e.clientY - rect.top;
+      if (smScale >= 4) {
+        smScale = 1;
+        smTx = 0;
+        smTy = 0;
+        applyStaticTransform(true);
+      } else {
+        zoomStaticAt(1.8, cx, cy, true);
+      }
+    });
+
+    let dragging = false;
+    let startX = 0;
+    let startY = 0;
+    let originTx = 0;
+    let originTy = 0;
+
+    staticViewport.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      startX = e.clientX;
+      startY = e.clientY;
+      originTx = smTx;
+      originTy = smTy;
+      staticViewport.setPointerCapture(e.pointerId);
+    });
+
+    staticViewport.addEventListener("pointermove", (e) => {
+      if (!dragging) return;
+      smTx = originTx + (e.clientX - startX);
+      smTy = originTy + (e.clientY - startY);
+      applyStaticTransform(false);
+    });
+
+    const endDrag = (e) => {
+      if (!dragging) return;
+      dragging = false;
+      try {
+        staticViewport.releasePointerCapture(e.pointerId);
+      } catch {}
+    };
+    staticViewport.addEventListener("pointerup", endDrag);
+    staticViewport.addEventListener("pointercancel", endDrag);
+
+    staticViewport.addEventListener("keydown", (e) => {
+      const step = 48;
+      if (e.key === "+" || e.key === "=") {
+        e.preventDefault();
+        zoomStaticAt(1.35, staticViewport.clientWidth / 2, staticViewport.clientHeight / 2, true);
+      } else if (e.key === "-" || e.key === "_") {
+        e.preventDefault();
+        zoomStaticAt(1 / 1.35, staticViewport.clientWidth / 2, staticViewport.clientHeight / 2, true);
+      } else if (e.key === "0") {
+        e.preventDefault();
+        focusStaticPreset("world");
+      } else if (smScale > 1 && ["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
+        e.preventDefault();
+        if (e.key === "ArrowLeft") smTx += step;
+        if (e.key === "ArrowRight") smTx -= step;
+        if (e.key === "ArrowUp") smTy += step;
+        if (e.key === "ArrowDown") smTy -= step;
+        applyStaticTransform(false);
+      }
+    });
+  }
 
   function setMapViewMode(mode) {
+    mapViewMode = mode;
     const isStatic = mode === "static";
     if (viewInteractiveBtn) viewInteractiveBtn.setAttribute("aria-pressed", String(!isStatic));
     if (viewStaticBtn) viewStaticBtn.setAttribute("aria-pressed", String(isStatic));
     if (mapCanvasWrap) mapCanvasWrap.hidden = isStatic;
     if (staticMapWrap) staticMapWrap.hidden = !isStatic;
-    if (interactiveCtrls) interactiveCtrls.hidden = isStatic;
-    if (!isStatic) {
+    if (mapDataToggles) mapDataToggles.hidden = isStatic;
+    if (mapLegend) mapLegend.hidden = isStatic;
+    if (isStatic) {
+      applyStaticTransform(false);
+    } else {
       map.invalidateSize();
       resizeOverlayCanvas();
     }
     if (statusLineEl) {
       statusLineEl.textContent = isStatic
-        ? "Static 39-Country & 50-State MapChart · Click image for full resolution"
+        ? "39-Country & 50-State Map · Scroll or use + / − to zoom, drag to pan, or click Fly To presets"
         : "Drag to pan · Scroll or use buttons to zoom · Click any glowing pin to view photos";
     }
   }
@@ -654,15 +806,31 @@
     });
   }
   if (zoomInBtn) {
-    zoomInBtn.addEventListener("click", () => map.zoomIn());
+    zoomInBtn.addEventListener("click", () => {
+      if (mapViewMode === "static" && staticViewport) {
+        zoomStaticAt(1.45, staticViewport.clientWidth / 2, staticViewport.clientHeight / 2, true);
+      } else {
+        map.zoomIn();
+      }
+    });
   }
   if (zoomOutBtn) {
-    zoomOutBtn.addEventListener("click", () => map.zoomOut());
+    zoomOutBtn.addEventListener("click", () => {
+      if (mapViewMode === "static" && staticViewport) {
+        zoomStaticAt(1 / 1.45, staticViewport.clientWidth / 2, staticViewport.clientHeight / 2, true);
+      } else {
+        map.zoomOut();
+      }
+    });
   }
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       const p = REGION_PRESETS.world;
-      map.flyTo([p.lat, p.lng], p.zoom, { duration: 0.9 });
+      if (mapViewMode === "static") {
+        focusStaticPreset("world");
+      } else {
+        map.flyTo([p.lat, p.lng], p.zoom, { duration: 0.9 });
+      }
       if (statusLineEl) statusLineEl.textContent = p.label;
     });
   }

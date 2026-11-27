@@ -1218,6 +1218,21 @@
     margin-block-end: 0.35rem;
   }
 
+  .map-Data-toggles {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.35rem;
+
+    &[hidden] {
+      display: none !important;
+    }
+  }
+
+  .map-canvas-wrap[hidden] {
+    display: none !important;
+  }
+
   .static-countries-map-wrap {
     margin: 0;
     background-color: #b7c0c7;
@@ -1225,19 +1240,33 @@
     &[hidden] {
       display: none !important;
     }
+  }
+
+  .static-map-viewport {
+    position: relative;
+    inline-size: 100%;
+    block-size: 27rem;
+    overflow: hidden;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:active {
+      cursor: grabbing;
+    }
 
     & img {
       display: block;
       inline-size: 100%;
-      block-size: auto;
-      max-block-size: 27rem;
+      block-size: 100%;
       object-fit: contain;
-      margin-inline: auto;
+      transform-origin: 0 0;
+      will-change: transform;
+      pointer-events: none;
     }
-  }
-
-  .static-map-link {
-    display: block;
   }
 
   .static-map-caption {
@@ -1353,6 +1382,10 @@
     background-color: var(--bg-surface);
     font-size: 0.78rem;
     color: var(--text-secondary);
+
+    &[hidden] {
+      display: none !important;
+    }
   }
 
   .legend-item {

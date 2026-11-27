@@ -384,9 +384,11 @@
               <p class="map-stage-subtitle" id="map-status-line">Drag to pan · Scroll or use buttons to zoom · Click any glowing pin to view photos</p>
             </div>
             <div class="map-layer-controls" id="map-interactive-controls" role="group" aria-label="Map layers and zoom">
-              <button type="button" class="map-ctrl-btn" id="toggle-heatmap-btn" aria-pressed="true">🔥 Heatmap</button>
-              <button type="button" class="map-ctrl-btn" id="toggle-pins-btn" aria-pressed="true">📍 Pins</button>
-              <button type="button" class="map-ctrl-btn" id="toggle-arcs-btn" aria-pressed="true">✈️ Arc</button>
+              <span class="map-Data-toggles" id="map-data-toggles">
+                <button type="button" class="map-ctrl-btn" id="toggle-heatmap-btn" aria-pressed="true">🔥 Heatmap</button>
+                <button type="button" class="map-ctrl-btn" id="toggle-pins-btn" aria-pressed="true">📍 Pins</button>
+                <button type="button" class="map-ctrl-btn" id="toggle-arcs-btn" aria-pressed="true">✈️ Arc</button>
+              </span>
               <button type="button" class="map-ctrl-btn" id="map-zoom-in" aria-label="Zoom in">+</button>
               <button type="button" class="map-ctrl-btn" id="map-zoom-out" aria-label="Zoom out">−</button>
               <button type="button" class="map-ctrl-btn" id="map-reset-btn" aria-label="Reset world view">Reset</button>
@@ -400,17 +402,25 @@
           </div>
 
           <figure class="static-countries-map-wrap" id="static-countries-map-wrap" hidden>
-            <a href="countries-visited-map.png" target="_blank" rel="noopener noreferrer" class="static-map-link">
+            <div
+              class="static-map-viewport"
+              id="static-map-viewport"
+              tabindex="0"
+              role="application"
+              aria-label="Zoomable and pannable map of all 39 countries and 50 US states visited. Drag or use arrow keys to pan, scroll or use plus and minus buttons to zoom."
+            >
               <img
+                id="static-countries-img"
                 src="countries-visited-map.png"
                 alt="World map highlighting all 39 countries, 8 Canadian provinces and territories, and all 50 US states visited by Matt Briselli"
                 width="2400"
                 height="1264"
+                draggable="false"
                 loading="lazy"
               >
-            </a>
+            </div>
             <figcaption class="static-map-caption">
-              All 39 countries, all 50 US states, and 8 Canadian provinces/territories visited · Click image to view full resolution ↗
+              All 39 countries, all 50 US states &amp; 8 Canadian provinces/territories · Scroll, double-click, or use + / − to zoom; drag to pan
             </figcaption>
           </figure>
 
