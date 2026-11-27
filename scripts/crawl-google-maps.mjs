@@ -258,8 +258,8 @@ function upgradePhotoUrl(rawUrl) {
 }
 
 function classifyPlace({ address = "", countryIso = "", lat = 0, lng = 0 }) {
-  const addr = address.toLowerCase();
-  const iso = (countryIso || "").toUpperCase();
+  const addr = typeof address === "string" ? address.toLowerCase() : "";
+  const iso = typeof countryIso === "string" ? countryIso.toUpperCase() : "";
 
   if (iso === "CA" || /,\s*(bc|ab|on|qc|ns|nb|pe|nt)\b|canada/i.test(address)) {
     return { region: "canada", tag: "international" };
@@ -461,9 +461,9 @@ function parseMasPayload(rawText, store) {
       const placeId = String(Array.isArray(rawPid) ? rawPid[0] : rawPid).trim();
       const rawCat = plMeta?.[18] || deepPlaceBlock?.[3]?.[0] || "";
       const category = typeof rawCat === "string" && !rawCat.startsWith("ChIJ") ? rawCat : "";
-      const countryIso = plMeta?.[28] || "";
-      const countryName = plMeta?.[26] || "";
-      const city = plMeta?.[25] || "";
+      const countryIso = typeof plMeta?.[28] === "string" ? plMeta[28] : "";
+      const countryName = typeof plMeta?.[26] === "string" ? plMeta[26] : "";
+      const city = typeof plMeta?.[25] === "string" ? plMeta[25] : "";
 
       // Extract view count if present in photo entry (e.g. Sort by views)
       let views = 0;
