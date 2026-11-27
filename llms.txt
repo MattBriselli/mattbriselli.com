@@ -16,6 +16,7 @@
 - **LinkedIn**: https://www.linkedin.com/in/mattbriselli/
 - **GitHub**: https://github.com/MattBriselli
 - **Mom’s Site (Maintained Dev Project — Arioso String Quartet)**: https://ariosoquartet.com
+- **Eat Brand Bite (Fast-Food & Limited-Edition Snack Tracker)**: https://eatbrandbite.com (https://github.com/MattBriselli/Brand-Bite)
 - **Public Google Work Dossier**: https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit (http://bit.ly/matt-briselli-work)
 - **Google Maps Reviews & Field Notes**: https://www.google.com/maps/contrib/104641095422852249098/reviews
 - **Structured JSON Resume Feed**: https://mattbriselli.com/resume.json
@@ -56,7 +57,7 @@
 ## Independent Development Projects
 - **Arioso String Quartet (https://ariosoquartet.com)**: Full-stack Node.js/Express and static Firebase/Cloudflare web platform maintained for his mother, violist Carol Briselli. Includes a 700+ piece interactive repertoire explorer, Schema.org JSON-LD graph, and `llms.txt` agent feeds.
 - **GamerBoy Solitaire**: React Native + Expo (TypeScript) iOS & Android Klondike Solitaire game featuring a heuristic solver for 100% solvable winning deals and deterministic daily challenges.
-- **Brand Eating**: Next.js 15 / React 19 / Tailwind CSS v4 application with automated feed syncing and newsletter drafting.
+- **Eat Brand Bite (https://eatbrandbite.com)**: Next.js 15 / React 19 / Tailwind CSS v4 platform and Cloudflare Workers + D1 + Workers AI sightings API with automated feed syncing and newsletter drafting.
 
 ## Science, Education, Theatre & Circus Arts Background
 - **Carnegie Mellon University (B.S. in Chemistry, Mellon College of Science, 2012 – May 2016)**:

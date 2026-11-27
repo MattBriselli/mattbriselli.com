@@ -21,7 +21,8 @@ const rootFiles = [
   "favicon-32.png",
   "apple-touch-icon.png",
   "og-image.png",
-  "matt-briselli.jpg"
+  "matt-briselli.jpg",
+  "countries-visited-map.png"
 ];
 
 for (const file of rootFiles) {

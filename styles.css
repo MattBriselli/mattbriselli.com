@@ -1199,6 +1199,44 @@
     font-size: 1.1rem;
   }
 
+  .map-view-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-block-end: 0.35rem;
+  }
+
+  .static-countries-map-wrap {
+    margin: 0;
+    background-color: #b7c0c7;
+
+    &[hidden] {
+      display: none !important;
+    }
+
+    & img {
+      display: block;
+      inline-size: 100%;
+      block-size: auto;
+      max-block-size: 27rem;
+      object-fit: contain;
+      margin-inline: auto;
+    }
+  }
+
+  .static-map-link {
+    display: block;
+  }
+
+  .static-map-caption {
+    padding: 0.55rem 1.25rem;
+    background-color: var(--bg-surface);
+    border-block-start: 1px solid var(--border-subtle);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
   .map-stage-subtitle {
     font-size: 0.8rem;
     color: var(--text-muted);

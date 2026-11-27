@@ -585,6 +585,36 @@
   const zoomInBtn = document.getElementById("map-zoom-in");
   const zoomOutBtn = document.getElementById("map-zoom-out");
   const resetBtn = document.getElementById("map-reset-btn");
+  const viewInteractiveBtn = document.getElementById("view-interactive-map-btn");
+  const viewStaticBtn = document.getElementById("view-static-map-btn");
+  const mapCanvasWrap = document.getElementById("map-canvas-wrap");
+  const staticMapWrap = document.getElementById("static-countries-map-wrap");
+  const interactiveCtrls = document.getElementById("map-interactive-controls");
+
+  function setMapViewMode(mode) {
+    const isStatic = mode === "static";
+    if (viewInteractiveBtn) viewInteractiveBtn.setAttribute("aria-pressed", String(!isStatic));
+    if (viewStaticBtn) viewStaticBtn.setAttribute("aria-pressed", String(isStatic));
+    if (mapCanvasWrap) mapCanvasWrap.hidden = isStatic;
+    if (staticMapWrap) staticMapWrap.hidden = !isStatic;
+    if (interactiveCtrls) interactiveCtrls.hidden = isStatic;
+    if (!isStatic) {
+      map.invalidateSize();
+      resizeOverlayCanvas();
+    }
+    if (statusLineEl) {
+      statusLineEl.textContent = isStatic
+        ? "Static 39-Country & 50-State MapChart · Click image for full resolution"
+        : "Drag to pan · Scroll or use buttons to zoom · Click any glowing pin to view photos";
+    }
+  }
+
+  if (viewInteractiveBtn) {
+    viewInteractiveBtn.addEventListener("click", () => setMapViewMode("interactive"));
+  }
+  if (viewStaticBtn) {
+    viewStaticBtn.addEventListener("click", () => setMapViewMode("static"));
+  }
   const shuffleBtn = document.getElementById("slide-shuffle-btn");
   const prevBtn = document.getElementById("slide-prev-btn");
   const nextBtn = document.getElementById("slide-next-btn");

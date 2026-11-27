@@ -206,8 +206,9 @@
       "description": "React Native + Expo (TypeScript) iOS & Android Klondike Solitaire game with a built-in heuristic solver guaranteeing 100% solvable winning deals and daily challenges."
     },
     {
-      "name": "Brand Eating",
-      "description": "Next.js 15, React 19, and Tailwind CSS v4 platform with automated feed syncing and weekly newsletter drafting."
+      "name": "Eat Brand Bite",
+      "url": "https://eatbrandbite.com",
+      "description": "Fast-food & limited-edition snack tracker built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API, with automated feed syncing and weekly newsletter drafting."
     }
   ]
 }

@@ -332,12 +332,12 @@
     }
   ],
   "nextDestinations": [
-    { "name": "Japan (Hokkaido → Kyushu)", "lat": 36.2048, "lng": 138.2529, "zoom": 5, "note": "Konbini egg-salad sandwiches, bullet trains & Hokkaido ramen" },
-    { "name": "Georgia, Armenia & Azerbaijan", "lat": 41.7151, "lng": 44.8271, "zoom": 6, "note": "Caucasus mountains, khachapuri & Silk Road crossroads" },
-    { "name": "Patagonia (Chile & Argentina)", "lat": -50.9423, "lng": -73.4068, "zoom": 5, "note": "Torres del Paine, Perito Moreno & end-of-the-world trekking" },
+    { "name": "Patagonia (Chile & Argentina)", "lat": -50.9423, "lng": -73.4068, "zoom": 5, "note": "Torres del Paine, Perito Moreno & South American trekking" },
     { "name": "Morocco & the Atlas Mountains", "lat": 31.6295, "lng": -7.9811, "zoom": 6, "note": "Marrakech souks, mint tea & High Atlas passes" },
     { "name": "New Zealand (South Island)", "lat": -44.69, "lng": 169.13, "zoom": 6, "note": "Fiordland, Southern Alps & roadside meat pies" },
-    { "name": "Canadian Territories (Yukon / NWT)", "lat": 60.7212, "lng": -135.0568, "zoom": 5, "note": "Adding provinces & territories #9 and #10 up north" }
+    { "name": "South Korea & Vietnam", "lat": 21.0285, "lng": 105.8542, "zoom": 4, "note": "Seoul street markets, Hanoi bánh mì & egg coffee" },
+    { "name": "Peru (Cusco & Lima)", "lat": -13.1631, "lng": -72.5450, "zoom": 5, "note": "Andean trails, ceviche & Sacred Valley" },
+    { "name": "Yukon & Nunavut, Canada", "lat": 60.7212, "lng": -135.0568, "zoom": 4, "note": "Adding Canadian territories #9 and #10 up north" }
   ],
   "topViewedLedger": [
     { "name": "Nordstrom (Exterior #1)", "location": "King of Prussia, PA", "views": 11879403, "lat": 40.0868, "lng": -75.3921 },

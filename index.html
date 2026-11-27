@@ -164,7 +164,8 @@
           "https://github.com/MattBriselli/mattbriselli.com",
           "https://www.google.com/maps/contrib/104641095422852249098/reviews",
           "https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit",
-          "https://ariosoquartet.com"
+          "https://ariosoquartet.com",
+          "https://eatbrandbite.com"
         ]
       }
     ]
@@ -246,6 +247,17 @@
               <circle cx="18" cy="16" r="3"></circle>
             </svg>
             <span>Mom’s Site (Arioso Quartet)</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://eatbrandbite.com" class="pill-link" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"></path>
+              <path d="M7 2v20"></path>
+              <path d="M21 15V2v0a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"></path>
+            </svg>
+            <span>Eat Brand Bite</span>
             <span class="arrow" aria-hidden="true">↗</span>
           </a>
         </li>
@@ -361,14 +373,17 @@
 
       <!-- Dual Interactive Stage: World Heatmap Canvas + Synced Photo Slideshow -->
       <div class="atlas-workbench">
-        <!-- Left: Interactive World Heatmap & Pin Canvas -->
+        <!-- Left: Interactive World Heatmap & Pin Canvas + 39-Country Static Map Switcher -->
         <div class="map-stage-card">
           <div class="map-stage-header">
             <div class="map-stage-title">
-              <h3>Global Photo Heatmap &amp; Pin Explorer</h3>
+              <div class="map-view-tabs" role="group" aria-label="Choose map display">
+                <button type="button" class="map-ctrl-btn" id="view-interactive-map-btn" aria-pressed="true">🌐 Interactive Pin Map</button>
+                <button type="button" class="map-ctrl-btn" id="view-static-map-btn" aria-pressed="false">🗺️ 39-Country Map</button>
+              </div>
               <p class="map-stage-subtitle" id="map-status-line">Drag to pan · Scroll or use buttons to zoom · Click any glowing pin to view photos</p>
             </div>
-            <div class="map-layer-controls" role="group" aria-label="Map layers and zoom">
+            <div class="map-layer-controls" id="map-interactive-controls" role="group" aria-label="Map layers and zoom">
               <button type="button" class="map-ctrl-btn" id="toggle-heatmap-btn" aria-pressed="true">🔥 Heatmap</button>
               <button type="button" class="map-ctrl-btn" id="toggle-pins-btn" aria-pressed="true">📍 Pins</button>
               <button type="button" class="map-ctrl-btn" id="toggle-arcs-btn" aria-pressed="true">✈️ Arc</button>
@@ -383,6 +398,21 @@
             <canvas id="world-heatmap-canvas" class="heatmap-overlay-canvas" width="960" height="540" aria-hidden="true"></canvas>
             <div class="map-tooltip" id="map-tooltip" hidden></div>
           </div>
+
+          <figure class="static-countries-map-wrap" id="static-countries-map-wrap" hidden>
+            <a href="countries-visited-map.png" target="_blank" rel="noopener noreferrer" class="static-map-link">
+              <img
+                src="countries-visited-map.png"
+                alt="World map highlighting all 39 countries, 8 Canadian provinces and territories, and all 50 US states visited by Matt Briselli"
+                width="2400"
+                height="1264"
+                loading="lazy"
+              >
+            </a>
+            <figcaption class="static-map-caption">
+              All 39 countries, all 50 US states, and 8 Canadian provinces/territories visited · Click image to view full resolution ↗
+            </figcaption>
+          </figure>
 
           <div class="map-legend">
             <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> High Density (NYC, SF, Seattle, Philly, Pittsburgh, Arlington)</span>
@@ -682,21 +712,21 @@
 
         <li class="directory-card">
           <div class="card-meta">
-            <span class="badge">Web App &amp; Automation</span>
-            <span class="card-year">Next.js 15 · React 19</span>
+            <span class="badge">Live Site &amp; Edge API</span>
+            <span class="card-year">eatbrandbite.com</span>
           </div>
           <h4>
-            <a href="https://github.com/MattBriselli/Brand-Bite" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              Brand Eating
+            <a href="https://eatbrandbite.com" class="card-title-link" target="_blank" rel="noopener noreferrer">
+              Eat Brand Bite
               <span class="arrow" aria-hidden="true">↗</span>
             </a>
           </h4>
           <p>
-            Modern editorial web app and automated content pipeline built with Next.js 15, React 19, and Tailwind CSS v4—powering feed synchronization and weekly newsletter drafting.
+            Fast-food &amp; limited-edition snack tracker built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API—with automated feed syncing and weekly newsletter drafting.
           </p>
-          <ul class="tag-list" role="list" aria-label="Brand Eating stack">
-            <li>Next.js 15</li>
-            <li>React 19</li>
+          <ul class="tag-list" role="list" aria-label="Eat Brand Bite stack">
+            <li>Next.js 15 &amp; React 19</li>
+            <li>Cloudflare D1 &amp; AI</li>
             <li>Automated Feeds</li>
           </ul>
         </li>
@@ -790,7 +820,7 @@
       <div class="footer-contact">
         <h2>Get in Touch</h2>
         <p>
-          <a href="mailto:shout@mattbriselli.com">shout@mattbriselli.com</a> · <a href="https://www.linkedin.com/in/mattbriselli/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://github.com/MattBriselli" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href="https://ariosoquartet.com" target="_blank" rel="noopener noreferrer">Mom’s Site</a>
+          <a href="mailto:shout@mattbriselli.com">shout@mattbriselli.com</a> · <a href="https://www.linkedin.com/in/mattbriselli/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://github.com/MattBriselli" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href="https://eatbrandbite.com" target="_blank" rel="noopener noreferrer">Eat Brand Bite</a> · <a href="https://ariosoquartet.com" target="_blank" rel="noopener noreferrer">Mom’s Site</a>
         </p>
       </div>
       <div class="footer-colophon">
