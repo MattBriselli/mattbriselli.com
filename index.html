@@ -844,8 +844,9 @@
       <div id="letterboxd" class="letterboxd-section">
         <div class="letterboxd-header">
           <div>
-            <span class="badge">Hosted Film Reviews · Auto-Synced RSS</span>
+            <span class="badge">Hosted Film Archive · 1,422 Reviews + Auto-Synced RSS</span>
             <h3 id="letterboxd-heading">Screening Log &amp; Reviews</h3>
+            <p class="lb-subtitle">“a movie a day or so i say” — full Letterboxd review archive hosted here, with new logs synced automatically.</p>
           </div>
           <a href="https://letterboxd.com/brslli/" class="action-link" target="_blank" rel="noopener noreferrer">
             <span>@brslli on Letterboxd</span>
@@ -853,21 +854,49 @@
           </a>
         </div>
 
+        <div class="lb-overview-bar">
+          <dl class="lb-stats-strip" aria-label="Letterboxd lifetime statistics">
+            <div class="lb-stat-pill">
+              <dt>Watched</dt>
+              <dd id="lb-stat-watched">2,919</dd>
+            </div>
+            <div class="lb-stat-pill">
+              <dt>Hosted Reviews</dt>
+              <dd id="lb-stat-reviews">1,422</dd>
+            </div>
+            <div class="lb-stat-pill">
+              <dt>In Theatres</dt>
+              <dd id="lb-stat-theatres">599</dd>
+            </div>
+            <div class="lb-stat-pill">
+              <dt>♥ Liked</dt>
+              <dd id="lb-stat-liked">496</dd>
+            </div>
+          </dl>
+
+          <div class="lb-favorites-shelf" id="lb-favorites-shelf" hidden>
+            <span class="lb-fav-label">Four Favorites</span>
+            <ul class="lb-favorites-list" id="lb-favorites-list" role="list"></ul>
+          </div>
+        </div>
+
         <div class="letterboxd-controls">
           <div class="toolbar-group" role="group" aria-label="Filter film reviews">
-            <button type="button" class="filter-chip" data-lb-filter="latest" aria-pressed="true">Latest Reviews</button>
-            <button type="button" class="filter-chip" data-lb-filter="favorites" aria-pressed="false">★★★★+ Favorites</button>
-            <button type="button" class="filter-chip" data-lb-filter="liked" aria-pressed="false">♥ Liked</button>
+            <button type="button" class="filter-chip" data-lb-filter="latest" aria-pressed="true">Latest (1,422)</button>
+            <button type="button" class="filter-chip" data-lb-filter="five" aria-pressed="false">★★★★★ (16)</button>
+            <button type="button" class="filter-chip" data-lb-filter="favorites" aria-pressed="false">★★★★+ (255)</button>
+            <button type="button" class="filter-chip" data-lb-filter="liked" aria-pressed="false">♥ Liked (212)</button>
+            <button type="button" class="filter-chip" data-lb-filter="theatres" aria-pressed="false">🎟️ In Theatres (331)</button>
             <button type="button" class="filter-chip" id="lb-shuffle-btn">🎲 Shuffle</button>
           </div>
           <search class="lb-search-wrap">
-            <label for="lb-search-input" class="visually-hidden">Search film reviews</label>
+            <label for="lb-search-input" class="visually-hidden">Search 1,422 film reviews</label>
             <input
               type="search"
               id="lb-search-input"
               name="q"
               class="lb-search-input"
-              placeholder="Search films or reviews…"
+              placeholder="Search 1,422 reviews, films, or years…"
               autocorrect="off"
               autocapitalize="none"
               spellcheck="false"

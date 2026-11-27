@@ -238,6 +238,98 @@ async function handleLiveLetterboxd() {
   }
 }
 
+async function handleLbPoster(url) {
+  const id = (url.searchParams.get("id") || "").trim();
+  const title = (url.searchParams.get("title") || "").trim();
+  const year = (url.searchParams.get("year") || "").trim();
+
+  if (id && !/^[A-Za-z0-9]{2,12}$/.test(id)) {
+    return Response.json({ ok: false }, { status: 400 });
+  }
+  if (!id && !title) {
+    return Response.json({ ok: false }, { status: 400 });
+  }
+
+  let poster = "";
+
+  // 1. Try canonical Letterboxd boxd.it film JSON-LD poster
+  if (id) {
+    try {
+      const lbRes = await fetch(`https://boxd.it/${encodeURIComponent(id)}`, {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          Accept: "text/html,application/xhtml+xml"
+        },
+        cf: { cacheTtl: 2592000, cacheEverything: true }
+      });
+      if (lbRes.ok) {
+        const html = await lbRes.text();
+        const imgMatch = html.match(/"image"\s*:\s*"(https:\/\/a\.ltrbxd\.com\/[^"]+)"/);
+        if (imgMatch) poster = imgMatch[1];
+      }
+    } catch {
+      // Fall through to Apple iTunes catalog fallback
+    }
+  }
+
+  // 2. Fallback to Apple iTunes Movie / TV catalog high-res 2:3 artwork
+  if (!poster && title) {
+    const norm = (s) => s.toLowerCase().replace(/[^a-z0-9]+/g, "");
+    const targetNorm = norm(title);
+    const targetYear = Number(year) || 0;
+
+    for (const queryUrl of [
+      `https://itunes.apple.com/search?term=${encodeURIComponent(`${title} ${year}`.trim())}&media=movie&entity=movie&limit=6`,
+      `https://itunes.apple.com/search?term=${encodeURIComponent(title)}&media=tvShow&entity=tvSeason&limit=4`
+    ]) {
+      if (poster) break;
+      try {
+        const itRes = await fetch(queryUrl, { cf: { cacheTtl: 2592000, cacheEverything: true } });
+        if (!itRes.ok) continue;
+        const data = await itRes.json();
+        const results = Array.isArray(data.results) ? data.results : [];
+        let best = null;
+        let bestScore = -1;
+        for (const item of results) {
+          const itemTitle = item.trackName || item.collectionName || "";
+          const itemNorm = norm(itemTitle.replace(/\s*\(.*?\)\s*$/, ""));
+          const relYear = item.releaseDate ? Number(item.releaseDate.slice(0, 4)) : 0;
+          let score = 0;
+          if (itemNorm === targetNorm) score += 10;
+          else if (itemNorm.includes(targetNorm) || targetNorm.includes(itemNorm)) score += 5;
+          if (targetYear && relYear) {
+            const diff = Math.abs(targetYear - relYear);
+            if (diff === 0) score += 6;
+            else if (diff === 1) score += 4;
+            else if (diff <= 2) score += 1;
+          }
+          if (score > bestScore && item.artworkUrl100) {
+            bestScore = score;
+            best = item;
+          }
+        }
+        if (best && bestScore >= 6) {
+          poster = best.artworkUrl100.replace(/100x100bb\.jpg$/, "600x900bb.jpg");
+        }
+      } catch {
+        // ignore
+      }
+    }
+  }
+
+  return Response.json(
+    { ok: Boolean(poster), poster },
+    {
+      headers: {
+        "Cache-Control": poster
+          ? "public, max-age=2592000, s-maxage=2592000, immutable"
+          : "public, max-age=3600, s-maxage=3600"
+      }
+    }
+  );
+}
+
 export default {
   async fetch(request, env) {
     const url = new URL(request.url);
@@ -256,6 +348,10 @@ export default {
 
     if (url.pathname === "/api/letterboxd" && request.method === "GET") {
       return handleLiveLetterboxd();
+    }
+
+    if (url.pathname === "/api/lb-poster" && request.method === "GET") {
+      return handleLbPoster(url);
     }
 
     // Agent content negotiation on root URL

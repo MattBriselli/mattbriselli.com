@@ -1244,12 +1244,108 @@
   const lbCountLabel = document.getElementById("lb-count-label");
   const lbSearchInput = document.getElementById("lb-search-input");
   const lbShuffleBtn = document.getElementById("lb-shuffle-btn");
+  const lbFavShelf = document.getElementById("lb-favorites-shelf");
+  const lbFavList = document.getElementById("lb-favorites-list");
 
   let allLbReviews = [];
   let activeLbFilter = "latest";
   let lbSearchQuery = "";
   let lbVisibleCount = 6;
   let lbShuffledOrder = null;
+
+  const posterCache = new Map();
+  try {
+    const cachedRaw = localStorage.getItem("mlb_lb_posters_v1");
+    if (cachedRaw) {
+      const parsed = JSON.parse(cachedRaw);
+      for (const [k, v] of Object.entries(parsed)) {
+        if (v) posterCache.set(k, v);
+      }
+    }
+  } catch {
+    // ignore storage limits
+  }
+
+  function savePosterCache() {
+    try {
+      if (posterCache.size > 400) return;
+      localStorage.setItem("mlb_lb_posters_v1", JSON.stringify(Object.fromEntries(posterCache)));
+    } catch {
+      // ignore
+    }
+  }
+
+  async function resolvePosterForReview(rev, frameEl) {
+    const cacheKey = rev.filmBoxdId || `${rev.filmTitle}|${rev.filmYear}`;
+    if (posterCache.has(cacheKey)) {
+      const url = posterCache.get(cacheKey);
+      if (url) attachPosterImg(frameEl, url, rev);
+      return;
+    }
+    const params = new URLSearchParams();
+    if (rev.filmBoxdId) params.set("id", rev.filmBoxdId);
+    params.set("title", rev.filmTitle);
+    if (rev.filmYear) params.set("year", String(rev.filmYear));
+
+    try {
+      const res = await fetch(`/api/lb-poster?${params.toString()}`);
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data?.ok && data.poster) {
+        rev.poster = data.poster;
+        posterCache.set(cacheKey, data.poster);
+        savePosterCache();
+        if (frameEl.isConnected) attachPosterImg(frameEl, data.poster, rev);
+      }
+    } catch {
+      // keep clean cinema-slate fallback
+    }
+  }
+
+  function attachPosterImg(frameEl, posterUrl, rev) {
+    if (!posterUrl || frameEl.querySelector("img.lb-poster")) return;
+    const img = document.createElement("img");
+    img.className = "lb-poster";
+    img.src = posterUrl;
+    img.alt = `${rev.filmTitle} (${rev.filmYear}) poster`;
+    img.width = 150;
+    img.height = 225;
+    img.loading = "lazy";
+    img.referrerPolicy = "no-referrer";
+    img.addEventListener("error", () => img.remove());
+    frameEl.appendChild(img);
+  }
+
+  function renderLbFavorites(favorites) {
+    if (!lbFavShelf || !lbFavList || !Array.isArray(favorites) || !favorites.length) return;
+    lbFavList.innerHTML = "";
+    for (const fav of favorites) {
+      const li = document.createElement("li");
+      li.className = "lb-fav-item";
+      const a = document.createElement("a");
+      a.href = fav.link || "https://letterboxd.com/brslli/";
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.setAttribute("aria-label", `${fav.filmTitle} (${fav.filmYear}) — Favorite film on Letterboxd`);
+
+      if (fav.poster) {
+        const img = document.createElement("img");
+        img.className = "lb-fav-poster";
+        img.src = fav.poster;
+        img.alt = `${fav.filmTitle} (${fav.filmYear})`;
+        img.width = 76;
+        img.height = 114;
+        img.loading = "lazy";
+        img.referrerPolicy = "no-referrer";
+        a.appendChild(img);
+      } else {
+        a.textContent = fav.filmTitle;
+      }
+      li.appendChild(a);
+      lbFavList.appendChild(li);
+    }
+    lbFavShelf.hidden = false;
+  }
 
   function formatStars(rating) {
     if (typeof rating !== "number" || rating <= 0) return "";
@@ -1260,10 +1356,14 @@
 
   function getFilteredLbReviews() {
     let list = lbShuffledOrder ? lbShuffledOrder.slice() : allLbReviews.slice();
-    if (activeLbFilter === "favorites") {
+    if (activeLbFilter === "five") {
+      list = list.filter((r) => r.rating === 5);
+    } else if (activeLbFilter === "favorites") {
       list = list.filter((r) => (r.rating || 0) >= 4);
     } else if (activeLbFilter === "liked") {
       list = list.filter((r) => r.liked);
+    } else if (activeLbFilter === "theatres") {
+      list = list.filter((r) => r.inTheatres);
     }
     if (lbSearchQuery) {
       const q = lbSearchQuery.toLowerCase();
@@ -1271,7 +1371,8 @@
         (r) =>
           r.filmTitle.toLowerCase().includes(q) ||
           String(r.filmYear || "").includes(q) ||
-          (r.paragraphs || []).some((p) => p.toLowerCase().includes(q))
+          (r.paragraphs || []).some((p) => p.toLowerCase().includes(q)) ||
+          (r.spoilerParagraphs || []).some((p) => p.toLowerCase().includes(q))
       );
     }
     return list;
@@ -1287,14 +1388,23 @@
       const li = document.createElement("li");
       li.className = "lb-card";
 
-      const img = document.createElement("img");
-      img.className = "lb-poster";
-      img.src = rev.poster || "";
-      img.alt = rev.poster ? `${rev.filmTitle} (${rev.filmYear}) poster` : "";
-      img.width = 150;
-      img.height = 225;
-      img.loading = "lazy";
-      img.referrerPolicy = "no-referrer";
+      const posterFrame = document.createElement("div");
+      posterFrame.className = "lb-poster-frame";
+      const fbTitle = document.createElement("span");
+      fbTitle.className = "lb-poster-fallback-title";
+      fbTitle.setAttribute("aria-hidden", "true");
+      fbTitle.textContent = rev.filmTitle;
+      const fbYear = document.createElement("span");
+      fbYear.className = "lb-poster-fallback-year";
+      fbYear.setAttribute("aria-hidden", "true");
+      fbYear.textContent = rev.filmYear || "";
+      posterFrame.append(fbTitle, fbYear);
+
+      if (rev.poster) {
+        attachPosterImg(posterFrame, rev.poster, rev);
+      } else {
+        resolvePosterForReview(rev, posterFrame);
+      }
 
       const body = document.createElement("div");
       body.className = "lb-body";
@@ -1325,6 +1435,12 @@
         heart.textContent = "♥";
         metaRow.appendChild(heart);
       }
+      if (rev.inTheatres) {
+        const th = document.createElement("span");
+        th.className = "lb-date";
+        th.textContent = "🎟️ Theatre";
+        metaRow.appendChild(th);
+      }
       if (rev.rewatch) {
         const rw = document.createElement("span");
         rw.className = "lb-date";
@@ -1341,10 +1457,39 @@
 
       const textWrap = document.createElement("div");
       textWrap.className = "lb-review-text";
-      for (const pText of (rev.paragraphs || []).slice(0, 3)) {
+      const paras = rev.paragraphs || [];
+      for (const pText of paras.slice(0, 3)) {
         const p = document.createElement("p");
         p.textContent = pText;
         textWrap.appendChild(p);
+      }
+
+      if (paras.length > 3) {
+        const moreDetails = document.createElement("details");
+        moreDetails.className = "lb-disclosure";
+        const moreSummary = document.createElement("summary");
+        moreSummary.textContent = `Read full review (+${paras.length - 3} more)`;
+        moreDetails.appendChild(moreSummary);
+        for (const pText of paras.slice(3)) {
+          const p = document.createElement("p");
+          p.textContent = pText;
+          moreDetails.appendChild(p);
+        }
+        textWrap.appendChild(moreDetails);
+      }
+
+      if (Array.isArray(rev.spoilerParagraphs) && rev.spoilerParagraphs.length) {
+        const spDetails = document.createElement("details");
+        spDetails.className = "lb-disclosure lb-spoiler";
+        const spSummary = document.createElement("summary");
+        spSummary.textContent = "Spoilers — click to reveal";
+        spDetails.appendChild(spSummary);
+        for (const pText of rev.spoilerParagraphs) {
+          const p = document.createElement("p");
+          p.textContent = pText;
+          spDetails.appendChild(p);
+        }
+        textWrap.appendChild(spDetails);
       }
 
       const link = document.createElement("a");
@@ -1352,34 +1497,57 @@
       link.href = rev.link || "https://letterboxd.com/brslli/";
       link.target = "_blank";
       link.rel = "noopener noreferrer";
-      link.textContent = "Read on Letterboxd ↗";
+      link.textContent = "View on Letterboxd ↗";
 
       body.append(titleRow, metaRow, textWrap, link);
-      li.append(img, body);
+      li.append(posterFrame, body);
       lbGrid.appendChild(li);
     }
 
     if (lbMoreBtn) {
       lbMoreBtn.hidden = matches.length <= lbVisibleCount;
       if (!lbMoreBtn.hidden) {
-        lbMoreBtn.textContent = `Show More Reviews (${matches.length - lbVisibleCount} remaining)`;
+        lbMoreBtn.textContent = `Show More Reviews (${(matches.length - lbVisibleCount).toLocaleString()} remaining)`;
       }
     }
     if (lbCountLabel) {
       lbCountLabel.textContent = matches.length
-        ? `Showing ${visible.length} of ${matches.length} hosted reviews`
+        ? `Showing ${visible.length.toLocaleString()} of ${matches.length.toLocaleString()} hosted reviews`
         : "No matching reviews found.";
     }
   }
 
   function mergeLbReviews(freshList) {
     if (!Array.isArray(freshList) || !freshList.length) return;
-    const byId = new Map();
-    for (const r of freshList) byId.set(r.id, r);
+    const existingByMatchKey = new Map();
     for (const r of allLbReviews) {
-      if (!byId.has(r.id)) byId.set(r.id, r);
+      const k = `${String(r.filmTitle).toLowerCase()}|${r.filmYear}|${r.watchedDate}`;
+      existingByMatchKey.set(k, r);
     }
-    allLbReviews = [...byId.values()];
+
+    const brandNew = [];
+    for (const fresh of freshList) {
+      const k = `${String(fresh.filmTitle).toLowerCase()}|${fresh.filmYear}|${fresh.watchedDate}`;
+      const match = existingByMatchKey.get(k);
+      if (match) {
+        if (!match.poster && fresh.poster) match.poster = fresh.poster;
+        if (fresh.link) match.link = fresh.link;
+      } else {
+        brandNew.push(fresh);
+      }
+    }
+
+    if (brandNew.length) {
+      allLbReviews = [...brandNew, ...allLbReviews];
+      const latestChip = document.querySelector('[data-lb-filter="latest"]');
+      if (latestChip) {
+        latestChip.textContent = `Latest (${allLbReviews.length.toLocaleString()})`;
+      }
+      const statReviews = document.getElementById("lb-stat-reviews");
+      if (statReviews) {
+        statReviews.textContent = allLbReviews.length.toLocaleString();
+      }
+    }
     renderLbReviews();
   }
 
@@ -1423,6 +1591,17 @@
       .then((r) => r.json())
       .then((data) => {
         allLbReviews = Array.isArray(data.reviews) ? data.reviews : [];
+        if (data.stats) {
+          const setStat = (id, val) => {
+            const el = document.getElementById(id);
+            if (el && typeof val === "number") el.textContent = val.toLocaleString();
+          };
+          setStat("lb-stat-watched", data.stats.watchedCount);
+          setStat("lb-stat-reviews", data.stats.reviewCount);
+          setStat("lb-stat-theatres", data.stats.theatreCount);
+          setStat("lb-stat-liked", data.stats.likedCount);
+        }
+        renderLbFavorites(data.favorites);
         renderLbReviews();
         // Refresh from live Cloudflare edge RSS endpoint so new Letterboxd logs appear automatically
         return fetch("/api/letterboxd").then((r) => (r.ok ? r.json() : null));
