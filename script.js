@@ -140,6 +140,36 @@
     return copy;
   }
 
+  // Region-stratified interleave so consecutive slides rotate globally instead of clustering on NYC
+  function buildBalancedDeck(items) {
+    const buckets = new Map();
+    for (const item of items) {
+      const key =
+        item.tag === "nyc"
+          ? "nyc"
+          : item.region === "international" || item.region === "canada"
+            ? "global"
+            : item.region === "west-coast"
+              ? "west"
+              : "other";
+      if (!buckets.has(key)) buckets.set(key, []);
+      buckets.get(key).push(item);
+    }
+    const queues = shuffleArray([...buckets.values()]).map((group) => shuffleArray(group));
+    const result = [];
+    let added = true;
+    while (added) {
+      added = false;
+      for (const q of queues) {
+        if (q.length) {
+          result.push(q.shift());
+          added = true;
+        }
+      }
+    }
+    return result;
+  }
+
   function getCountryStyle(feature) {
     const dark = isDarkActive();
     const visited = feature?.properties?.visited;
@@ -538,11 +568,10 @@
       document.querySelectorAll("[data-slide-filter]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
       });
-      filteredPlaces = shuffleArray(
+      filteredPlaces =
         filter === "all"
-          ? mapsData.places
-          : mapsData.places.filter((p) => p.tag === filter)
-      );
+          ? buildBalancedDeck(mapsData.places)
+          : shuffleArray(mapsData.places.filter((p) => p.tag === filter));
       activePlaceIndex = 0;
       const firstPhotos = filteredPlaces[0]?.photos || [];
       activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
@@ -644,7 +673,7 @@
     .then((data) => {
       mapsData = data;
       const rawPlaces = Array.isArray(data.places) ? data.places : [];
-      filteredPlaces = shuffleArray(rawPlaces);
+      filteredPlaces = buildBalancedDeck(rawPlaces);
       const firstPhotos = filteredPlaces[0]?.photos || [];
       activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
 
@@ -707,6 +736,104 @@
         mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
       });
       wrap.appendChild(btn);
+    });
+  }
+
+  // Wire "Where Will Matt Travel Next?" direct email submission form
+  const pitchForm = document.getElementById("travel-pitch-form");
+  const destInput = document.getElementById("pitch-destination");
+  const emailInput = document.getElementById("pitch-email");
+  const destErr = document.getElementById("pitch-dest-error");
+  const emailErr = document.getElementById("pitch-email-error");
+  const pitchSubmitBtn = document.getElementById("pitch-submit-btn");
+  const pitchStatus = document.getElementById("pitch-status");
+
+  function validateDestField() {
+    if (!destInput) return true;
+    const valid = destInput.value.trim().length >= 2;
+    destInput.setAttribute("aria-invalid", String(!valid));
+    if (destErr) destErr.hidden = valid;
+    return valid;
+  }
+
+  function validateEmailField() {
+    if (!emailInput) return true;
+    const val = emailInput.value.trim();
+    const valid = !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    emailInput.setAttribute("aria-invalid", String(!valid));
+    if (emailErr) emailErr.hidden = valid;
+    return valid;
+  }
+
+  if (destInput) {
+    let destTouched = false;
+    destInput.addEventListener("blur", () => {
+      if (destInput.value.length > 0 || destTouched) {
+        destTouched = true;
+        validateDestField();
+      }
+    });
+    destInput.addEventListener("input", () => {
+      if (destInput.getAttribute("aria-invalid") === "true") validateDestField();
+    });
+  }
+
+  if (emailInput) {
+    emailInput.addEventListener("blur", () => {
+      if (emailInput.value.length > 0) validateEmailField();
+    });
+    emailInput.addEventListener("input", () => {
+      if (emailInput.getAttribute("aria-invalid") === "true") validateEmailField();
+    });
+  }
+
+  if (pitchForm) {
+    pitchForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const destOk = validateDestField();
+      const emailOk = validateEmailField();
+      if (!destOk) {
+        destInput?.focus();
+        return;
+      }
+      if (!emailOk) {
+        emailInput?.focus();
+        return;
+      }
+
+      if (pitchSubmitBtn) pitchSubmitBtn.disabled = true;
+      if (pitchStatus) pitchStatus.textContent = "Sending suggestion…";
+
+      const payload = {
+        destination: destInput?.value.trim() || "",
+        name: document.getElementById("pitch-name")?.value.trim() || "",
+        email: emailInput?.value.trim() || "",
+        website: document.getElementById("pitch-website")?.value || ""
+      };
+
+      try {
+        const res = await fetch("/api/travel-pitch", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Could not send suggestion right now.");
+        }
+        pitchForm.reset();
+        destInput?.removeAttribute("aria-invalid");
+        emailInput?.removeAttribute("aria-invalid");
+        if (pitchStatus) {
+          pitchStatus.textContent = "✓ Sent to Matt! Thanks for the tip.";
+        }
+      } catch (err) {
+        if (pitchStatus) {
+          pitchStatus.textContent = err.message || "Could not send right now—email shout@mattbriselli.com directly.";
+        }
+      } finally {
+        if (pitchSubmitBtn) pitchSubmitBtn.disabled = false;
+      }
     });
   }
 })();

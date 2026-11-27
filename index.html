@@ -465,22 +465,79 @@
         </li>
       </ul>
 
-      <!-- "Where Will Matt Travel Next?" Interactive Radar Strip -->
+      <!-- "Where Will Matt Travel Next?" Interactive Radar + Direct Email Form -->
       <div class="next-travel-card">
         <div class="next-travel-header">
           <div>
             <span class="badge">Expedition Radar</span>
-            <h3>Where Will Matt Travel Next?</h3>
+            <h3 id="next-travel-heading">Where Will Matt Travel Next?</h3>
           </div>
-          <a href="mailto:shout@mattbriselli.com?subject=Where%20Matt%20Should%20Travel%20Next!" class="action-link">
-            <span>Pitch a Place or Sandwich</span>
-            <span class="arrow" aria-hidden="true">↗</span>
-          </a>
+          <span class="section-kicker">39 countries &amp; 50 states down—what’s next?</span>
         </div>
         <p class="next-travel-copy">
-          Click a contender to scout it on the map—or send a tip on where (and what) to eat next:
+          Click a contender on my shortlist to scout it on the map, or pitch a destination, sandwich, coffee shop, or weird regional fast-food spot directly to my inbox:
         </p>
         <div class="next-travel-chips" id="next-travel-chips" role="group" aria-label="Candidate next travel destinations"></div>
+
+        <form id="travel-pitch-form" class="travel-pitch-form" action="/api/travel-pitch" method="POST" aria-labelledby="next-travel-heading" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="pitch-website">Website</label>
+            <input type="text" id="pitch-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="pitch-fields-grid">
+            <div class="pitch-field pitch-field-wide">
+              <label for="pitch-destination">Where should I go (or eat) next? <span aria-hidden="true">*</span></label>
+              <input
+                type="text"
+                id="pitch-destination"
+                name="destination"
+                required
+                minlength="2"
+                maxlength="300"
+                enterkeyhint="next"
+                aria-describedby="pitch-dest-error"
+              >
+              <span id="pitch-dest-error" class="field-error" hidden>Please enter a destination, city, or food spot.</span>
+            </div>
+
+            <div class="pitch-field">
+              <label for="pitch-name">Your name <span class="optional-tag">(optional)</span></label>
+              <input
+                type="text"
+                id="pitch-name"
+                name="name"
+                autocomplete="name"
+                maxlength="100"
+                enterkeyhint="next"
+              >
+            </div>
+
+            <div class="pitch-field">
+              <label for="pitch-email">Your email <span class="optional-tag">(optional)</span></label>
+              <input
+                type="email"
+                id="pitch-email"
+                name="email"
+                autocomplete="email"
+                autocorrect="off"
+                autocapitalize="none"
+                spellcheck="false"
+                maxlength="120"
+                enterkeyhint="send"
+                aria-describedby="pitch-email-error"
+              >
+              <span id="pitch-email-error" class="field-error" hidden>Please enter a valid email address or leave it blank.</span>
+            </div>
+          </div>
+
+          <div class="pitch-submit-row">
+            <button type="submit" class="action-btn pitch-submit-btn" id="pitch-submit-btn">
+              Send Suggestion
+            </button>
+            <p id="pitch-status" class="pitch-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
       </div>
 
       <!-- Collapsible Top-Viewed Leaderboard -->
