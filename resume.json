@@ -57,9 +57,10 @@
       "Western Europe (1 month)"
     ],
     "travelMilestones": {
+      "countriesVisited": 39,
       "usStatesVisited": 50,
-      "centralAsiaVisited": ["Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"],
-      "canadianProvincesAndTerritoriesVisited": 8
+      "canadianProvincesAndTerritoriesVisited": 8,
+      "centralAsiaVisited": ["Kazakhstan", "Kyrgyzstan", "Tajikistan", "Turkmenistan", "Uzbekistan"]
     }
   },
   "work": [

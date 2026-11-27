@@ -91,13 +91,13 @@
   const statusLineEl = document.getElementById("map-status-line");
 
   const REGION_PRESETS = {
-    world: { lat: 28, lng: -15, zoom: 2, label: "Whole World (66,085 Photos · 1.18B+ Views · 50 States & Central Asia)" },
+    world: { lat: 28, lng: -15, zoom: 2, label: "Whole World (39 Countries · All 50 US States · 66,085 Photos)" },
     nyc: { lat: 40.55, lng: -75.2, zoom: 6, label: "NYC, Philadelphia, Pittsburgh & East Coast" },
     west: { lat: 42.5, lng: -122.2, zoom: 5, label: "San Francisco (6 yrs), Seattle & West Coast" },
     us50: { lat: 39.5, lng: -98.5, zoom: 4, label: "All 50 US States Visited" },
-    "central-asia": { lat: 42.2, lng: 67.5, zoom: 5, label: "All 5 Central Asian Republics (Kazakhstan · Kyrgyzstan · Uzbekistan · Tajikistan · Turkmenistan)" },
+    "central-asia": { lat: 42.2, lng: 67.5, zoom: 5, label: "Central Asia (Kazakhstan · Kyrgyzstan · Uzbekistan · Tajikistan · Turkmenistan)" },
     canada: { lat: 52.0, lng: -97.0, zoom: 4, label: "8 Canadian Provinces & Territories Explored" },
-    "europe-apac": { lat: 34.0, lng: 55.0, zoom: 3, label: "London, Western Europe, Istanbul, Shanghai, Taipei & Australia" }
+    "europe-apac": { lat: 34.0, lng: 55.0, zoom: 3, label: "Europe & Asia-Pacific Across 39 Countries Visited" }
   };
 
   let mapsData = null;
