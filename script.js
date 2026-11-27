@@ -878,6 +878,67 @@
     }
   }
 
+  let selectedGeoEntry = null;
+
+  function clearSelectedGeoShape() {
+    if (!selectedGeoEntry) return;
+    const { layer, group } = selectedGeoEntry;
+    selectedGeoEntry = null;
+    if (group && layer) {
+      group.resetStyle(layer);
+    }
+  }
+
+  function applyGeoShapeHighlight(layer, visited = true) {
+    const dark = isDarkActive();
+    layer.setStyle({
+      weight: 2.6,
+      color: visited
+        ? (dark ? "#ffd48a" : "#7c2d12")
+        : (dark ? "#e2dcd0" : "#3f3c36"),
+      fillColor: visited
+        ? (dark ? "#f29d82" : "#cf5636")
+        : (dark ? "#57534c" : "#cfc8bc"),
+      fillOpacity: visited ? 0.52 : 0.34,
+      dashArray: null
+    });
+    if (typeof layer.bringToFront === "function") {
+      layer.bringToFront();
+    }
+  }
+
+  function wireGeoShapeHighlight(layer, getGroup, isVisited, labelName) {
+    layer.on("mouseover", () => {
+      applyGeoShapeHighlight(layer, isVisited);
+    });
+    layer.on("mouseout", () => {
+      if (selectedGeoEntry?.layer === layer) {
+        applyGeoShapeHighlight(layer, isVisited);
+        return;
+      }
+      const grp = getGroup();
+      if (grp) grp.resetStyle(layer);
+    });
+    layer.on("click", (ev) => {
+      L.DomEvent.stopPropagation(ev);
+      stopAutoPlay();
+      if (selectedGeoEntry?.layer === layer) {
+        clearSelectedGeoShape();
+        return;
+      }
+      clearSelectedGeoShape();
+      selectedGeoEntry = { layer, group: getGroup(), isVisited };
+      applyGeoShapeHighlight(layer, isVisited);
+      if (statusLineEl && labelName) {
+        statusLineEl.textContent = labelName;
+      }
+    });
+  }
+
+  map.on("click", () => {
+    clearSelectedGeoShape();
+  });
+
   function syncMapTheme() {
     const dark = isDarkActive();
     mapContainer.style.backgroundColor = dark ? "#121211" : "#eae6df";
@@ -885,6 +946,9 @@
     if (countriesLayer) countriesLayer.setStyle(getCountryStyle);
     if (statesLayer) statesLayer.setStyle(getStateStyle);
     if (canadaProvincesLayer) canadaProvincesLayer.setStyle(getCanadaProvinceStyle);
+    if (selectedGeoEntry?.layer) {
+      applyGeoShapeHighlight(selectedGeoEntry.layer, selectedGeoEntry.isVisited);
+    }
     rebuildFlightArcs();
     rebuildCanadaDrive();
     rebuildMarkers();
@@ -902,14 +966,26 @@
         style: getCountryStyle,
         onEachFeature: (feature, layer) => {
           const nm = feature.properties?.name;
-          if (nm && nm !== "United States of America" && nm !== "Canada") {
-            const status = feature.properties.visited
+          if (nm === "United States of America" || nm === "United States" || nm === "Canada") {
+            // Sub-national layers (50 US states & 13 Canadian provinces) handle interaction directly
+            if (layer.options) layer.options.interactive = false;
+            return;
+          }
+          if (nm) {
+            const visited = Boolean(feature.properties.visited);
+            const status = visited
               ? "✓ Visited &amp; Photographed (39/199 Quest)"
               : "Not yet visited";
             layer.bindTooltip(`<strong>${escMapHtml(nm)}</strong><br>${status}`, {
               sticky: true,
               direction: "top"
             });
+            wireGeoShapeHighlight(
+              layer,
+              () => countriesLayer,
+              visited,
+              `${nm} — ${visited ? "Visited (39/199 Countries)" : "Remaining Quest Target"}`
+            );
           }
         }
       }).addTo(map);
@@ -918,10 +994,17 @@
       statesLayer = L.geoJSON(statesGeo, {
         style: getStateStyle,
         onEachFeature: (feature, layer) => {
-          if (feature.properties?.name) {
+          const nm = feature.properties?.name;
+          if (nm) {
             layer.bindTooltip(
-              `<strong>${escMapHtml(feature.properties.name)}</strong><br>✓ All 50 US States Visited`,
+              `<strong>${escMapHtml(nm)}</strong><br>✓ All 50 US States Visited`,
               { sticky: true, direction: "top" }
+            );
+            wireGeoShapeHighlight(
+              layer,
+              () => statesLayer,
+              true,
+              `${nm} — ✓ All 50 US States Visited`
             );
           }
         }
@@ -931,14 +1014,22 @@
       canadaProvincesLayer = L.geoJSON(canadaGeo, {
         style: getCanadaProvinceStyle,
         onEachFeature: (feature, layer) => {
-          if (feature.properties?.name) {
+          const nm = feature.properties?.name;
+          if (nm) {
+            const visited = Boolean(feature.properties.visited);
             const code = feature.properties.code ? ` (${feature.properties.code})` : "";
-            const status = feature.properties.visited
+            const status = visited
               ? "✓ Visited (8/13 Canadian Provinces &amp; Territories)"
               : "○ Remaining Quest Target (5 left for 13/13)";
             layer.bindTooltip(
-              `<strong>${escMapHtml(feature.properties.name + code)}</strong><br>${status}`,
+              `<strong>${escMapHtml(nm + code)}</strong><br>${status}`,
               { sticky: true, direction: "top" }
+            );
+            wireGeoShapeHighlight(
+              layer,
+              () => canadaProvincesLayer,
+              visited,
+              `${nm}${code} — ${visited ? "✓ Visited (8/13 Canada)" : "○ Remaining Quest Target"}`
             );
           }
         }

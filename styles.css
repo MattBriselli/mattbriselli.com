@@ -1457,6 +1457,11 @@
     background-color: var(--bg-canvas);
     z-index: 1;
     font-family: var(--font-sans);
+
+    & path.leaflet-interactive:focus,
+    & path.leaflet-interactive:focus-visible {
+      outline: none;
+    }
   }
 
   /* Apple/Google Photos–Style Thumbnail Markers & Clusters */
