@@ -12,6 +12,15 @@
   initial-value: 0px;
 }
 
+@media (prefers-reduced-motion: no-preference) {
+  @starting-style {
+    .site-toast:is(:popover-open, .\:popover-open, .is-open) {
+      opacity: 0;
+      transform: translateY(0.45rem);
+    }
+  }
+}
+
 @layer theme {
   :root {
     /* Tier 1: Raw Light & Dark Palette Tokens (Warm Editorial Paper & Deep Ink) */
@@ -245,7 +254,7 @@
     outline-offset: 3px;
   }
 
-  :where(section, footer, #letterboxd, #film-reviews, #film-lists)[tabindex="-1"]:focus {
+  :where(section, footer, #travel-goals, #projects, #letterboxd, #film-reviews, #film-lists)[tabindex="-1"]:focus {
     outline: none;
   }
 
@@ -2495,6 +2504,7 @@
   .section-anchor-link {
     text-decoration: none;
     color: inherit;
+    cursor: pointer;
 
     @media (hover: hover) {
       &:hover {
@@ -2503,72 +2513,102 @@
 
       &:hover::after {
         content: "\00a0#";
+        content: "\00a0#" / "";
         font-family: var(--font-mono);
-        font-size: 0.8em;
+        font-size: 0.78em;
+        font-weight: 400;
         color: var(--text-muted);
       }
     }
   }
 
-  .letterboxd-header-actions {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.55rem;
-  }
-
-  .copy-link-wrap {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-  }
-
-  .copy-link-btn {
-    & .copy-icon-check {
+  /* Subtle Top-Layer Toast Notification */
+  @supports not selector(:popover-open) {
+    [popover].site-toast:not(.\:popover-open, .is-open) {
       display: none;
     }
-
-    &[data-copied] {
-      border-color: var(--color-status-ok);
-      color: var(--color-status-ok);
-    }
-
-    &[data-copied] .copy-icon-link {
-      display: none;
-    }
-
-    &[data-copied] .copy-icon-check {
-      display: inline-block;
-    }
   }
 
-  .copy-link-tip {
-    position: absolute;
-    inset-block-end: calc(100% + 0.38rem);
-    inset-inline-start: 50%;
-    transform: translateX(-50%);
-    padding: 0.22rem 0.58rem;
-    border-radius: 0.35rem;
+  .site-toast {
+    box-sizing: border-box;
+    position: fixed;
+    inset-block-start: auto;
+    inset-block-end: max(1.15rem, env(safe-area-inset-bottom, 0px));
+    inset-inline: 0;
+    margin-block: 0;
+    margin-inline: auto;
+    inline-size: fit-content;
+    max-inline-size: calc(100vw - 1.5rem);
+    padding: 0.42rem 0.5rem 0.42rem 0.85rem;
     border: 1px solid var(--border-strong);
+    border-radius: 999px;
     background-color: var(--bg-surface-elevated);
     color: var(--text-primary);
-    font-family: var(--font-mono);
-    font-size: 0.72rem;
-    font-weight: 600;
-    white-space: nowrap;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-    pointer-events: none;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+    font-family: var(--font-sans);
+    font-size: 0.84rem;
+    font-weight: 500;
+    line-height: 1.35;
+    align-items: center;
+    gap: 0.48rem;
+    z-index: 950;
     opacity: 0;
-    z-index: 20;
+    transform: translateY(0.45rem);
 
     @media (prefers-reduced-motion: no-preference) {
-      transition: opacity 0.16s ease;
+      transition: opacity 0.18s ease, transform 0.18s ease, overlay 0.18s ease, display 0.18s ease;
+      transition-behavior: allow-discrete;
     }
   }
 
-  .copy-link-btn[data-copied] + .copy-link-tip,
-  .copy-link-btn[data-failed] + .copy-link-tip {
+  .site-toast:is(:popover-open, .\:popover-open, .is-open) {
+    display: inline-flex;
     opacity: 1;
+    transform: translateY(0);
+  }
+
+  .site-toast-icon {
+    color: var(--color-status-ok);
+    font-weight: 700;
+    flex: none;
+  }
+
+  .site-toast-text {
+    overflow-wrap: anywhere;
+  }
+
+  .site-toast-close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: 24px;
+    min-block-size: 24px;
+    padding: 0 0.25rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 0.76rem;
+    line-height: 1;
+    cursor: pointer;
+    flex: none;
+
+    @media (pointer: coarse) {
+      min-inline-size: 44px;
+      min-block-size: 44px;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--text-primary);
+        background-color: var(--bg-surface);
+      }
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 1px;
+    }
   }
 
   .lb-subtitle {

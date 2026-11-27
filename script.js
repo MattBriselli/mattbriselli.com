@@ -158,15 +158,14 @@
         current = id;
       }
     }
-    if (current === "letterboxd") {
-      const listsEl = document.getElementById("film-lists");
-      if (
-        listsEl &&
-        window.location.hash === "#film-lists" &&
-        listsEl.getBoundingClientRect().top <= window.innerHeight * 0.65 &&
-        listsEl.getBoundingClientRect().bottom > getHeaderOffset()
-      ) {
-        return "film-lists";
+    const activeHashId = window.location.hash.replace(/^#/, "");
+    if (activeHashId && activeHashId !== current) {
+      const subEl = document.getElementById(activeHashId);
+      if (subEl) {
+        const subRect = subEl.getBoundingClientRect();
+        if (subRect.top <= window.innerHeight * 0.72 && subRect.bottom > getHeaderOffset()) {
+          return activeHashId;
+        }
       }
     }
     return current;
@@ -187,9 +186,16 @@
     } catch {}
   }
 
+  function resolveNavParentId(sectionId) {
+    if (!sectionId) return "";
+    if (["explorer", "coder", "eclectic", "contact"].includes(sectionId)) return sectionId;
+    const el = document.getElementById(sectionId);
+    const parentSec = el?.closest("section[id], footer[id]");
+    return parentSec?.id || sectionId;
+  }
+
   function syncNavAndHash(sectionId, updateHistoryHash) {
-    const navTargetId =
-      sectionId === "letterboxd" || sectionId === "film-lists" ? "eclectic" : sectionId;
+    const navTargetId = resolveNavParentId(sectionId);
     const nativeCurrentLink = supportsScrollTargetGroup
       ? document.querySelector(".site-header .nav-list a:target-current")
       : null;
@@ -2631,28 +2637,24 @@
     });
   }
 
-  function buildShareableMoviesUrl() {
+  function buildShareableMoviesUrl(targetHash = "letterboxd") {
     const url = new URL(window.location.href);
     url.searchParams.delete("movie");
-    if (lbSearchQuery) {
+    if (targetHash === "letterboxd" && lbSearchQuery) {
       url.searchParams.set("film", lbSearchQuery);
     } else {
       url.searchParams.delete("film");
     }
-    if (activeLbFilter && activeLbFilter !== "latest") {
+    if (targetHash === "letterboxd" && activeLbFilter && activeLbFilter !== "latest") {
       url.searchParams.set("filter", activeLbFilter);
     } else {
       url.searchParams.delete("filter");
     }
-    url.hash = "letterboxd";
+    url.hash = targetHash;
     return url.toString();
   }
 
   function syncMovieUrlParams() {
-    const copyLabelEl = document.getElementById("copy-movies-link-label");
-    if (copyLabelEl) {
-      copyLabelEl.textContent = lbSearchQuery ? "Copy Search Link" : "Copy Direct Link";
-    }
     const url = new URL(window.location.href);
     url.searchParams.delete("movie");
     if (lbSearchQuery) {
@@ -2673,64 +2675,193 @@
     } catch {}
   }
 
-  if (lbSearchQuery) {
-    const copyLabelEl = document.getElementById("copy-movies-link-label");
-    if (copyLabelEl) copyLabelEl.textContent = "Copy Search Link";
-  }
+  /* ==========================================================================
+     Universal Click-Any-Header Link Copy + Top-Layer Toast Notification
+     ========================================================================== */
+  const copyToast = document.getElementById("copy-toast");
+  const copyToastText = document.getElementById("copy-toast-text");
+  const copyToastClose = document.getElementById("copy-toast-close");
+  const toastAnnouncer = document.getElementById("toast-live-announcer");
+  let toastDismissTimer = null;
+  let toastPriorTrigger = null;
+  let lastToastAnnouncement = "";
 
-  // Copy Direct Link button (Invoker Commands + click fallback + VoiceOver repeat-announcement fix)
-  const copyTimers = new WeakMap();
-  let lastCopyAnnouncement = "";
-
-  function reportCopyStatus(button, ok) {
-    const tip = button.nextElementSibling;
-    clearTimeout(copyTimers.get(button));
-    button.removeAttribute("data-copied");
-    button.removeAttribute("data-failed");
-    let message = ok ? "Link copied!" : "Copy failed";
-    if (message === lastCopyAnnouncement) message += "\u00A0";
-    lastCopyAnnouncement = message;
-    if (tip) tip.textContent = "";
-    void button.offsetWidth;
-    button.setAttribute(ok ? "data-copied" : "data-failed", "");
-    if (tip) requestAnimationFrame(() => (tip.textContent = message));
-    copyTimers.set(
-      button,
-      setTimeout(() => {
-        button.removeAttribute("data-copied");
-        button.removeAttribute("data-failed");
-        if (tip) tip.textContent = "";
-      }, 2200)
-    );
-  }
-
-  async function copyMoviesShareLink(button) {
-    const shareUrl = buildShareableMoviesUrl();
-    try {
-      await navigator.clipboard.writeText(shareUrl);
-      reportCopyStatus(button, true);
-    } catch {
-      reportCopyStatus(button, false);
+  function hideSiteToast(restoreFocus = false) {
+    clearTimeout(toastDismissTimer);
+    toastDismissTimer = null;
+    if (!copyToast) return;
+    if (typeof copyToast.hidePopover === "function") {
+      try {
+        if (copyToast.matches(":popover-open")) copyToast.hidePopover();
+      } catch {}
+    }
+    copyToast.classList.remove("is-open");
+    if (restoreFocus && toastPriorTrigger && typeof toastPriorTrigger.focus === "function") {
+      toastPriorTrigger.focus({ preventScroll: true });
     }
   }
 
-  if ("CommandEvent" in window) {
-    document.addEventListener(
-      "command",
-      (ev) => {
-        if (ev.command === "--copy-movies-link" && ev.source) {
-          copyMoviesShareLink(ev.source);
-        }
-      },
-      true
-    );
-  } else {
-    document.addEventListener("click", (ev) => {
-      if (ev.defaultPrevented) return;
-      const btn = ev.target instanceof Element ? ev.target.closest('button[command="--copy-movies-link"]') : null;
-      if (btn) copyMoviesShareLink(btn);
+  function scheduleToastAutoDismiss() {
+    clearTimeout(toastDismissTimer);
+    toastDismissTimer = setTimeout(() => {
+      if (copyToast && copyToast.contains(document.activeElement)) {
+        return;
+      }
+      hideSiteToast(false);
+    }, 2300);
+  }
+
+  if (copyToast) {
+    copyToast.addEventListener("focusout", (ev) => {
+      if (!copyToast.contains(ev.relatedTarget)) {
+        scheduleToastAutoDismiss();
+      }
     });
   }
+
+  if (copyToastClose) {
+    copyToastClose.addEventListener("click", (ev) => {
+      ev.preventDefault();
+      const hadFocusInside = Boolean(copyToast && copyToast.contains(document.activeElement));
+      hideSiteToast(hadFocusInside);
+    });
+  }
+
+  function showSiteToast(message, triggerEl = null) {
+    const dialogEl = document.getElementById("lb-list-dialog");
+    if (dialogEl?.open || !copyToast || !copyToastText) return;
+    toastPriorTrigger = triggerEl;
+    copyToastText.textContent = message;
+
+    if (typeof copyToast.showPopover === "function") {
+      try {
+        if (!copyToast.matches(":popover-open")) copyToast.showPopover();
+      } catch {}
+    } else {
+      copyToast.classList.add("is-open");
+    }
+
+    if (typeof document.ariaNotify === "function") {
+      document.ariaNotify(message);
+    } else if (toastAnnouncer) {
+      let announced = message;
+      if (announced === lastToastAnnouncement) announced += "\u00A0";
+      lastToastAnnouncement = announced;
+      toastAnnouncer.textContent = "";
+      requestAnimationFrame(() => {
+        toastAnnouncer.textContent = announced;
+      });
+    }
+
+    scheduleToastAutoDismiss();
+  }
+
+  function slugifyHeading(text) {
+    return String(text || "")
+      .toLowerCase()
+      .replace(/&/g, "and")
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 48);
+  }
+
+  // Upgrade static section, role, goal, and side-quest headings so ANY header is clickable to copy its link
+  const usedHeadingIds = new Set(
+    Array.from(document.querySelectorAll("[id]")).map((el) => el.id)
+  );
+
+  document.querySelectorAll("main :is(h1, h2, h3, h4), footer :is(h2, h3)").forEach((heading) => {
+    if (heading.id === "slide-title" || heading.closest("dialog")) return;
+    if (heading.querySelector("a[href]")) return;
+    let targetId = heading.id;
+    const parentCard = heading.closest("section[id], footer[id], div[id]");
+    if (!targetId) {
+      if (parentCard && parentCard.firstElementChild?.contains(heading)) {
+        targetId = parentCard.id;
+      } else {
+        const baseSlug = slugifyHeading(heading.textContent) || "section";
+        let candidate = baseSlug;
+        let n = 2;
+        while (usedHeadingIds.has(candidate)) {
+          candidate = `${baseSlug}-${n++}`;
+        }
+        heading.id = candidate;
+        usedHeadingIds.add(candidate);
+        targetId = candidate;
+      }
+    }
+    const anchor = document.createElement("a");
+    anchor.href = `#${targetId}`;
+    anchor.className = "section-anchor-link";
+    while (heading.firstChild) {
+      anchor.appendChild(heading.firstChild);
+    }
+    heading.appendChild(anchor);
+  });
+
+  // Expand collapsed side quests automatically if initial URL points directly to one of them
+  if (initialRawHash && eclecticExtraPanel) {
+    const rawTarget = document.getElementById(initialRawHash.replace(/^#/, ""));
+    if (rawTarget && eclecticExtraPanel.contains(rawTarget)) {
+      eclecticExtraPanel.removeAttribute("hidden");
+      eclecticMoreBtn?.setAttribute("aria-expanded", "true");
+      if (eclecticMoreBtn) eclecticMoreBtn.textContent = "Show Fewer Side Quests";
+      requestAnimationFrame(() => {
+        rawTarget.scrollIntoView({ behavior: "instant", block: "start" });
+      });
+    }
+  }
+
+  document.addEventListener("click", async (ev) => {
+    const link = ev.target instanceof Element ? ev.target.closest("a.section-anchor-link") : null;
+    if (!link || ev.metaKey || ev.ctrlKey || ev.shiftKey || ev.altKey) return;
+    ev.preventDefault();
+
+    const isRoot = link.hasAttribute("data-copy-root");
+    const rawHref = link.getAttribute("href") || "";
+    const labelTxt = link.textContent.trim().slice(0, 36);
+
+    let shareUrl;
+    let targetId = "";
+    if (isRoot) {
+      const u = new URL(window.location.href);
+      u.search = "";
+      u.hash = "";
+      shareUrl = u.toString();
+    } else if (rawHref.startsWith("?")) {
+      const u = new URL(rawHref, `${window.location.origin}${window.location.pathname}`);
+      shareUrl = u.toString();
+      targetId = u.hash.replace(/^#/, "") || "letterboxd";
+    } else {
+      targetId = rawHref.replace(/^#/, "");
+      if (targetId === "letterboxd") {
+        shareUrl = buildShareableMoviesUrl("letterboxd");
+      } else {
+        const u = new URL(window.location.href);
+        u.searchParams.delete("film");
+        u.searchParams.delete("movie");
+        u.searchParams.delete("filter");
+        u.searchParams.delete("list");
+        u.hash = targetId;
+        shareUrl = u.toString();
+      }
+    }
+
+    navScrollLockUntil = performance.now() + 900;
+    activeTrackedSection = targetId;
+    try {
+      const parsed = new URL(shareUrl);
+      history.replaceState(null, "", `${parsed.pathname}${parsed.search}${parsed.hash}`);
+    } catch {}
+    syncNavAndHash(targetId, false);
+
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      showSiteToast(labelTxt ? `Copied link to “${labelTxt}”` : "Link copied to clipboard", link);
+    } catch {
+      showSiteToast("Updated link in address bar", link);
+    }
+  });
 
   const posterCache = new Map();
   try {
@@ -2898,7 +3029,11 @@
       const titleRow = document.createElement("div");
       titleRow.className = "lb-title-row";
       const h4 = document.createElement("h4");
-      h4.textContent = rev.filmTitle;
+      const revTitleLink = document.createElement("a");
+      revTitleLink.className = "section-anchor-link";
+      revTitleLink.href = `?film=${encodeURIComponent(rev.filmTitle)}#letterboxd`;
+      revTitleLink.textContent = rev.filmTitle;
+      h4.appendChild(revTitleLink);
       const yearSpan = document.createElement("span");
       yearSpan.className = "lb-year";
       yearSpan.textContent = rev.filmYear || "";
@@ -3412,7 +3547,11 @@
 
         const h4 = document.createElement("h4");
         h4.className = "lb-list-title";
-        h4.textContent = listObj.title;
+        const listTitleLink = document.createElement("a");
+        listTitleLink.className = "section-anchor-link";
+        listTitleLink.href = `?list=${encodeURIComponent(listObj.slug || listObj.title)}#film-lists`;
+        listTitleLink.textContent = listObj.title;
+        h4.appendChild(listTitleLink);
 
         const desc = document.createElement("p");
         desc.className = "lb-list-desc";
