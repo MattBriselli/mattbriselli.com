@@ -390,6 +390,18 @@
     }
   }
 
+  .nav-num {
+    font-family: var(--font-mono);
+    font-size: 0.8em;
+    color: var(--text-muted);
+    margin-inline-end: 0.45em;
+
+    &::after {
+      content: "·" / "";
+      margin-inline-start: 0.45em;
+    }
+  }
+
   @media (max-width: 46rem) {
     .nav-num,
     .nav-desktop-extra,

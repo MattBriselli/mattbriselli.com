@@ -335,7 +335,7 @@
     { "name": "Patagonia (Chile & Argentina)", "lat": -50.9423, "lng": -73.4068, "zoom": 5, "note": "Torres del Paine, Perito Moreno & South American trekking" },
     { "name": "Morocco & the Atlas Mountains", "lat": 31.6295, "lng": -7.9811, "zoom": 6, "note": "Marrakech souks, mint tea & High Atlas passes" },
     { "name": "New Zealand (South Island)", "lat": -44.69, "lng": 169.13, "zoom": 6, "note": "Fiordland, Southern Alps & roadside meat pies" },
-    { "name": "South Korea & Vietnam", "lat": 21.0285, "lng": 105.8542, "zoom": 4, "note": "Seoul street markets, Hanoi bánh mì & egg coffee" },
+    { "name": "Vietnam (Hanoi & Saigon)", "lat": 21.0285, "lng": 105.8542, "zoom": 5, "note": "Old Quarter street stalls, bánh mì & Hanoi egg coffee" },
     { "name": "Peru (Cusco & Lima)", "lat": -13.1631, "lng": -72.5450, "zoom": 5, "note": "Andean trails, ceviche & Sacred Valley" },
     { "name": "Yukon & Nunavut, Canada", "lat": 60.7212, "lng": -135.0568, "zoom": 4, "note": "Adding Canadian territories #9 and #10 up north" }
   ],
@@ -394,6 +394,7 @@
     { "label": "Charlottetown, PEI / New Brunswick, Canada", "lat": 46.2382, "lng": -63.1311, "weight": 0.68, "region": "canada" },
 
     { "label": "Shanghai, China (SISU Summer Study Abroad)", "lat": 31.2304, "lng": 121.4737, "weight": 0.92, "region": "international" },
+    { "label": "Seoul, South Korea", "lat": 37.5665, "lng": 126.9780, "weight": 0.84, "region": "international" },
     { "label": "Beijing, China", "lat": 39.9042, "lng": 116.4074, "weight": 0.80, "region": "international" },
     { "label": "Taipei (Google Taipei 101), Taiwan", "lat": 25.0330, "lng": 121.5654, "weight": 0.84, "region": "international" },
     { "label": "London (Covent Garden · Month Living in London), UK", "lat": 51.5074, "lng": -0.1278, "weight": 0.92, "region": "international" },
