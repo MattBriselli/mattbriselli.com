@@ -300,8 +300,21 @@
   }
 
   if (siteBrandLink) {
-    siteBrandLink.addEventListener("click", (e) => {
+    siteBrandLink.addEventListener("click", async (e) => {
+      if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
       e.preventDefault();
+      // Already at the very top: the name copies the site URL instead of scrolling nowhere
+      if (window.scrollY <= 2) {
+        const homeUrl = `${window.location.origin}/`;
+        const prettyUrl = window.location.host.replace(/^www\./, "");
+        try {
+          await navigator.clipboard.writeText(homeUrl);
+          showSiteToast(`Copied ${prettyUrl} to clipboard`, siteBrandLink);
+        } catch {
+          showSiteToast("Couldn’t copy the link", siteBrandLink);
+        }
+        return;
+      }
       userInteractedSinceLoad = true;
       initialRestoreWindowUntil = 0;
       navScrollLockUntil = performance.now() + 900;
@@ -1073,20 +1086,72 @@
     return fallback;
   }
 
-  function formatVisitSpan(lastDate, firstDate, visitCount = 1) {
+  // Returns { count, dates[] } so labels can wrap between phrases instead of mid-date
+  function visitSpanParts(lastDate, firstDate, visitCount = 1) {
     const count = Number(visitCount) > 1 ? Number(visitCount) : 1;
     const latestFmt = formatVisitDate(lastDate);
     const firstFmt = formatVisitDate(firstDate);
-    const parts = [];
-    if (count > 1) parts.push(`${formatNumber(count)}×`);
+    const dates = [];
     if (firstFmt && latestFmt && firstDate !== lastDate) {
-      parts.push(`First ${firstFmt} · Latest ${latestFmt}`);
-    } else if (latestFmt) {
-      parts.push(`Visited ${latestFmt}`);
-    } else if (firstFmt) {
-      parts.push(`Visited ${firstFmt}`);
+      dates.push(`First ${firstFmt}`, `Latest ${latestFmt}`);
+    } else if (latestFmt || firstFmt) {
+      dates.push(`Visited ${latestFmt || firstFmt}`);
     }
+    return { count, dates };
+  }
+
+  function formatVisitSpan(lastDate, firstDate, visitCount = 1) {
+    const { count, dates } = visitSpanParts(lastDate, firstDate, visitCount);
+    const parts = count > 1 ? [`${formatNumber(count)} visits`, ...dates] : dates;
     return parts.join(" · ");
+  }
+
+  // Shared, wrap-friendly label markup for hover tooltips and click popups
+  function buildPinLabelHtml({ icon = "", name = "", rating = 0, loc = "", category = "", lastDate, firstDate, visitCount }) {
+    const stars = rating ? ` <span class="pin-tip-stars">${"★".repeat(rating)}</span>` : "";
+    const { count, dates } = visitSpanParts(lastDate, firstDate, visitCount);
+    const whereBits = [loc, category].filter(Boolean).map((t) => `<span class="pin-tip-chunk">${escMapHtml(t)}</span>`);
+    const whenBits = dates.map((t) => `<span class="pin-tip-chunk">${escMapHtml(t)}</span>`);
+    const countHtml = count > 1 ? `<span class="pin-tip-count">${formatNumber(count)} visits</span>` : "";
+    return (
+      `<span class="pin-tip-title">${icon ? `${escMapHtml(icon)} ` : ""}${escMapHtml(name)}${stars}</span>` +
+      (whereBits.length ? `<span class="pin-tip-line pin-tip-where">${whereBits.join('<span class="pin-tip-sep" aria-hidden="true"> · </span>')}</span>` : "") +
+      (countHtml || whenBits.length
+        ? `<span class="pin-tip-line pin-tip-when">${countHtml}${whenBits.join('<span class="pin-tip-sep" aria-hidden="true"> · </span>')}</span>`
+        : "")
+    );
+  }
+
+  // Canvas circle that paints its category emoji inside once zoomed in close (no DOM, no network, no JSON)
+  const GLYPH_MIN_ZOOM = 13;
+  const GlyphCircleMarker = L.CircleMarker.extend({
+    _updatePath() {
+      L.CircleMarker.prototype._updatePath.call(this);
+      const glyph = this.options.glyph;
+      const renderer = this._renderer;
+      if (!glyph || !renderer?._drawing || this._empty()) return;
+      const r = this._radius;
+      if (r < 7) return;
+      const p = this._point;
+      if (renderer._bounds && !renderer._bounds.contains(p)) return;
+      const ctx = renderer._ctx;
+      ctx.save();
+      ctx.globalAlpha = 1;
+      ctx.font = `${Math.round(r * 1.15)}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.fillText(glyph, p.x, p.y + r * 0.08);
+      ctx.restore();
+    }
+  });
+
+  function glyphPinStyle(dark, isFrequent) {
+    return {
+      color: isFrequent ? (dark ? "#ffbe5c" : "#c96214") : (dark ? "#f0ad4e" : "#d97724"),
+      weight: isFrequent ? 2.4 : 1.6,
+      fillColor: dark ? "#24211d" : "#fffaf2",
+      fillOpacity: 0.96
+    };
   }
 
   function getVisitRadiusBoost(visitCount, zoom) {
@@ -1099,24 +1164,24 @@
   function openPlaceOnlyPopup(item) {
     const [lat, lng, name, loc, rating, snippet, lastDate, category, visitCount, firstDate] = item;
     const icon = getCategoryIcon(category, "📍");
-    const stars = rating ? ` · ${"★".repeat(rating)}` : "";
     const spanStr = formatVisitSpan(lastDate, firstDate, visitCount);
-    const metaParts = [];
-    if (category) metaParts.push(`${icon} ${category}`);
-    if (spanStr) metaParts.push(spanStr);
-    const metaHtml = metaParts.length
-      ? `<div class="pin-popup-meta">${escMapHtml(metaParts.join(" · "))}</div>`
-      : "";
     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} ${loc || ""}`)}`;
     const quoteHtml = snippet
       ? `<div class="pin-popup-quote">“${escMapHtml(snippet)}${snippet.length >= 158 ? "…" : ""}”</div>`
       : "";
-    L.popup({ closeButton: true, maxWidth: 280 })
+    L.popup({ closeButton: true, maxWidth: 260, className: "pin-popup", offset: [0, -6] })
       .setLatLng([lat, lng])
       .setContent(
-        `<strong>${escMapHtml(icon)} ${escMapHtml(name)}</strong>${escMapHtml(stars)}` +
-          `<div class="pin-popup-loc">${escMapHtml(loc || "Place Matt Visited")}</div>` +
-          metaHtml +
+        `<div class="pin-label">${buildPinLabelHtml({
+          icon,
+          name,
+          rating,
+          loc: loc || "Place Matt Visited",
+          category,
+          lastDate,
+          firstDate,
+          visitCount
+        })}</div>` +
           quoteHtml +
           `<a class="pin-popup-link" href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Open on Google Maps ↗</a>`
       )
@@ -1148,20 +1213,22 @@
     }
     if (stackedLayout) {
       const thumbUrl = (pl.photos?.[0] || "").replace(/=w\d+-h\d+-p-k-no$/, "=w320-h240-p-k-no");
-      const stars = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
       const thumbHtml = thumbUrl
         ? `<img class="pin-popup-thumb" src="${escMapHtml(thumbUrl)}" alt="${escMapHtml(pl.name)}" width="220" height="165" referrerpolicy="no-referrer">`
         : "";
-      const dateHtml = spanStr
-        ? `<div class="pin-popup-meta">${escMapHtml(spanStr)}</div>`
-        : "";
-      const pop = L.popup({ closeButton: true, maxWidth: 255 })
+      const pop = L.popup({ closeButton: true, maxWidth: 255, className: "pin-popup", offset: [0, -6] })
         .setLatLng([pl.lat, pl.lng])
         .setContent(
           thumbHtml +
-            `<strong>${escMapHtml(pl.name)}</strong>${escMapHtml(stars)}` +
-            `<div class="pin-popup-loc">${escMapHtml(pl.location)}</div>` +
-            dateHtml +
+            `<div class="pin-label">${buildPinLabelHtml({
+              icon: getCategoryIcon(pl.category, ""),
+              name: pl.name,
+              rating: pl.rating,
+              loc: pl.location,
+              lastDate: pl.date,
+              firstDate: pl.firstDate,
+              visitCount: pl.visitCount
+            })}</div>` +
             `<button type="button" class="pin-popup-jump-btn" data-jump-slideshow="1">View Full Photo Below ↓</button>`
         )
         .openOn(map);
@@ -1245,6 +1312,31 @@
       return;
     }
     clearSelectedGeoShape();
+  });
+
+  // One label at a time: a hover tooltip never stacks on top of the pin whose popup is open,
+  // and opening a popup dismisses whatever hover tooltip was showing.
+  let openHoverTooltip = null;
+  function popupCoversLatLng(latlng) {
+    const pop = map._popup;
+    if (!pop || !map.hasLayer(pop) || !latlng) return false;
+    const a = map.latLngToContainerPoint(pop.getLatLng());
+    const b = map.latLngToContainerPoint(latlng);
+    return Math.hypot(a.x - b.x, a.y - b.y) < 10;
+  }
+  map.on("tooltipopen", (ev) => {
+    if (popupCoversLatLng(ev.tooltip.getLatLng())) {
+      map.closeTooltip(ev.tooltip);
+      return;
+    }
+    openHoverTooltip = ev.tooltip;
+  });
+  map.on("tooltipclose", (ev) => {
+    if (openHoverTooltip === ev.tooltip) openHoverTooltip = null;
+  });
+  map.on("popupopen", () => {
+    if (openHoverTooltip) map.closeTooltip(openHoverTooltip);
+    openHoverTooltip = null;
   });
 
   function syncMapTheme() {
@@ -1551,6 +1643,8 @@
     }
 
     // 1b. Places Matt Visited (sized logarithmically by repeat visitCount; 1x drawn first, favorites on top)
+    const showGlyphs = zoom >= GLYPH_MIN_ZOOM;
+    const glyphBaseRadius = zoom >= 15 ? 9.5 : 8.2;
     if (currentSlideFilter === "all" && mapOnlyPins.length) {
       const baseSubRadius = zoom >= 12 ? 4.3 : zoom >= 8 ? 3.5 : zoom >= 5 ? 2.9 : 2.4;
       const orderedPins = mapOnlyPins
@@ -1560,25 +1654,38 @@
       for (const item of orderedPins) {
         const [lat, lng, name, loc, rating, , lastDate, category, visitCount, firstDate] = item;
         const count = Number(visitCount) || 1;
-        const radius = baseSubRadius + getVisitRadiusBoost(count, zoom);
-        const icon = getCategoryIcon(category, "📍");
-        const stars = rating ? ` · ${"★".repeat(rating)}` : "";
-        const spanStr = formatVisitSpan(lastDate, firstDate, count);
-        const subMeta = [loc, category, spanStr].filter(Boolean).join(" · ");
         const isFrequent = count >= 5;
-        const mPin = L.circleMarker([lat, lng], {
-          renderer: pinsCanvasRenderer,
-          radius,
-          color: dark ? "#141312" : "#ffffff",
-          weight: isFrequent ? 1.25 : 0.85,
-          fillColor: isFrequent
-            ? (dark ? "#ffbe5c" : "#c96214")
-            : (dark ? "#f0ad4e" : "#d97724"),
-          fillOpacity: count >= 3 ? 0.92 : 0.8
-        });
+        const glyph = showGlyphs ? getCategoryIcon(category, "") : "";
+        const boost = getVisitRadiusBoost(count, zoom);
+        const mPin = glyph
+          ? new GlyphCircleMarker([lat, lng], {
+              renderer: pinsCanvasRenderer,
+              radius: glyphBaseRadius + boost * 0.6,
+              glyph,
+              ...glyphPinStyle(dark, isFrequent)
+            })
+          : L.circleMarker([lat, lng], {
+              renderer: pinsCanvasRenderer,
+              radius: baseSubRadius + boost,
+              color: dark ? "#141312" : "#ffffff",
+              weight: isFrequent ? 1.25 : 0.85,
+              fillColor: isFrequent
+                ? (dark ? "#ffbe5c" : "#c96214")
+                : (dark ? "#f0ad4e" : "#d97724"),
+              fillOpacity: count >= 3 ? 0.92 : 0.8
+            });
         mPin.bindTooltip(
-          `<strong>${escMapHtml(icon)} ${escMapHtml(name)}</strong>${escMapHtml(stars)}<br>${escMapHtml(subMeta)}`,
-          { direction: "top" }
+          buildPinLabelHtml({
+            icon: getCategoryIcon(category, "📍"),
+            name,
+            rating,
+            loc,
+            category,
+            lastDate,
+            firstDate,
+            visitCount: count
+          }),
+          { direction: "top", className: "pin-tip", offset: [0, -4] }
         );
         mPin.on("click", (ev) => {
           if (activateClosestPinAt(ev.containerPoint, ev.originalEvent)) return;
@@ -1598,21 +1705,36 @@
         return;
       }
       const pRadius = basePinRadius + getVisitRadiusBoost(pl.visitCount || 1, zoom) * 0.7;
-      const marker = L.circleMarker([pl.lat, pl.lng], {
-        renderer: pinsCanvasRenderer,
-        radius: pRadius,
-        color: dark ? "#141312" : "#ffffff",
-        weight: zoom >= 6 ? 1.25 : 1.0,
-        fillColor: dark ? "#e88264" : "#9e3b24",
-        fillOpacity: 0.94
-      });
-      const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
-      const plIcon = getCategoryIcon(pl.category, "📸");
-      const plSpan = formatVisitSpan(pl.date, pl.firstDate, pl.visitCount);
-      const plSub = [pl.location, plSpan].filter(Boolean).join(" · ");
+      const photoGlyph = showGlyphs ? getCategoryIcon(pl.category, "") : "";
+      const marker = photoGlyph
+        ? new GlyphCircleMarker([pl.lat, pl.lng], {
+            renderer: pinsCanvasRenderer,
+            radius: glyphBaseRadius + 1 + getVisitRadiusBoost(pl.visitCount || 1, zoom) * 0.4,
+            glyph: photoGlyph,
+            color: dark ? "#e88264" : "#9e3b24",
+            weight: 2.4,
+            fillColor: dark ? "#24211d" : "#fffaf2",
+            fillOpacity: 0.97
+          })
+        : L.circleMarker([pl.lat, pl.lng], {
+            renderer: pinsCanvasRenderer,
+            radius: pRadius,
+            color: dark ? "#141312" : "#ffffff",
+            weight: zoom >= 6 ? 1.25 : 1.0,
+            fillColor: dark ? "#e88264" : "#9e3b24",
+            fillOpacity: 0.94
+          });
       marker.bindTooltip(
-        `<strong>${escMapHtml(plIcon)} ${escMapHtml(pl.name)}</strong>${escMapHtml(metric)}<br>${escMapHtml(plSub)}`,
-        { direction: "top" }
+        buildPinLabelHtml({
+          icon: getCategoryIcon(pl.category, "📸"),
+          name: pl.name,
+          rating: pl.rating,
+          loc: pl.location,
+          lastDate: pl.date,
+          firstDate: pl.firstDate,
+          visitCount: pl.visitCount
+        }),
+        { direction: "top", className: "pin-tip", offset: [0, -4] }
       );
       marker.on("click", (ev) => {
         if (activateClosestPinAt(ev.containerPoint, ev.originalEvent)) return;
@@ -1643,12 +1765,17 @@
         fillColor: dark ? "#46e5a0" : "#15803d",
         fillOpacity: 1
       });
-      const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
-      const heroSpan = formatVisitSpan(pl.date, pl.firstDate, pl.visitCount);
-      const heroSub = [pl.location, heroSpan].filter(Boolean).join(" · ");
       hero.bindTooltip(
-        `<strong>📍 ${escMapHtml(pl.name)}</strong>${escMapHtml(metric)}<br>${escMapHtml(heroSub)}`,
-        { direction: "top" }
+        buildPinLabelHtml({
+          icon: getCategoryIcon(pl.category, "📍"),
+          name: pl.name,
+          rating: pl.rating,
+          loc: pl.location,
+          lastDate: pl.date,
+          firstDate: pl.firstDate,
+          visitCount: pl.visitCount
+        }),
+        { direction: "top", className: "pin-tip", offset: [0, -6] }
       );
       hero.on("click", (ev) => {
         if (ev.originalEvent) ev.originalEvent._mlbPinHandled = true;
