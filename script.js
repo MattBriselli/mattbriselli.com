@@ -1135,4 +1135,303 @@
       }
     });
   }
+
+  /* ==========================================================================
+     Direct "Get in Touch" Contact Form (/api/contact)
+     ========================================================================== */
+  const contactForm = document.getElementById("direct-contact-form");
+  const contactMsg = document.getElementById("contact-message");
+  const contactEmail = document.getElementById("contact-email");
+  const contactMsgErr = document.getElementById("contact-msg-error");
+  const contactEmailErr = document.getElementById("contact-email-error");
+  const contactSubmitBtn = document.getElementById("contact-submit-btn");
+  const contactStatus = document.getElementById("contact-status");
+
+  function validateContactMsg() {
+    if (!contactMsg) return true;
+    const valid = contactMsg.value.trim().length >= 2;
+    contactMsg.setAttribute("aria-invalid", String(!valid));
+    if (contactMsgErr) contactMsgErr.hidden = valid;
+    return valid;
+  }
+
+  function validateContactEmail() {
+    if (!contactEmail) return true;
+    const val = contactEmail.value.trim();
+    const valid = !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
+    contactEmail.setAttribute("aria-invalid", String(!valid));
+    if (contactEmailErr) contactEmailErr.hidden = valid;
+    return valid;
+  }
+
+  if (contactMsg) {
+    let touched = false;
+    contactMsg.addEventListener("blur", () => {
+      if (contactMsg.value.length > 0 || touched) {
+        touched = true;
+        validateContactMsg();
+      }
+    });
+    contactMsg.addEventListener("input", () => {
+      if (contactMsg.getAttribute("aria-invalid") === "true") validateContactMsg();
+    });
+  }
+
+  if (contactEmail) {
+    contactEmail.addEventListener("blur", () => {
+      if (contactEmail.value.length > 0) validateContactEmail();
+    });
+    contactEmail.addEventListener("input", () => {
+      if (contactEmail.getAttribute("aria-invalid") === "true") validateContactEmail();
+    });
+  }
+
+  if (contactForm) {
+    contactForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const msgOk = validateContactMsg();
+      const emailOk = validateContactEmail();
+      if (!msgOk) {
+        contactMsg?.focus();
+        return;
+      }
+      if (!emailOk) {
+        contactEmail?.focus();
+        return;
+      }
+
+      if (contactSubmitBtn) contactSubmitBtn.disabled = true;
+      if (contactStatus) contactStatus.textContent = "Sending message…";
+
+      const payload = {
+        message: contactMsg?.value.trim() || "",
+        name: document.getElementById("contact-name")?.value.trim() || "",
+        email: contactEmail?.value.trim() || "",
+        website: document.getElementById("contact-website")?.value || ""
+      };
+
+      try {
+        const res = await fetch("/api/contact", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          throw new Error(data.error || "Could not send message right now.");
+        }
+        contactForm.reset();
+        contactMsg?.removeAttribute("aria-invalid");
+        contactEmail?.removeAttribute("aria-invalid");
+        if (contactStatus) {
+          contactStatus.textContent = "✓ Message sent! Matt received your email.";
+        }
+      } catch (err) {
+        if (contactStatus) {
+          contactStatus.textContent = err.message || "Could not send right now—email shout@mattbriselli.com directly.";
+        }
+      } finally {
+        if (contactSubmitBtn) contactSubmitBtn.disabled = false;
+      }
+    });
+  }
+
+  /* ==========================================================================
+     Hosted Letterboxd Reviews (@brslli) + Auto-Updating Edge RSS Sync
+     ========================================================================== */
+  const lbGrid = document.getElementById("letterboxd-grid");
+  const lbMoreBtn = document.getElementById("lb-more-btn");
+  const lbCountLabel = document.getElementById("lb-count-label");
+  const lbSearchInput = document.getElementById("lb-search-input");
+  const lbShuffleBtn = document.getElementById("lb-shuffle-btn");
+
+  let allLbReviews = [];
+  let activeLbFilter = "latest";
+  let lbSearchQuery = "";
+  let lbVisibleCount = 6;
+  let lbShuffledOrder = null;
+
+  function formatStars(rating) {
+    if (typeof rating !== "number" || rating <= 0) return "";
+    const full = Math.floor(rating);
+    const half = rating - full >= 0.5 ? "½" : "";
+    return "★".repeat(full) + half;
+  }
+
+  function getFilteredLbReviews() {
+    let list = lbShuffledOrder ? lbShuffledOrder.slice() : allLbReviews.slice();
+    if (activeLbFilter === "favorites") {
+      list = list.filter((r) => (r.rating || 0) >= 4);
+    } else if (activeLbFilter === "liked") {
+      list = list.filter((r) => r.liked);
+    }
+    if (lbSearchQuery) {
+      const q = lbSearchQuery.toLowerCase();
+      list = list.filter(
+        (r) =>
+          r.filmTitle.toLowerCase().includes(q) ||
+          String(r.filmYear || "").includes(q) ||
+          (r.paragraphs || []).some((p) => p.toLowerCase().includes(q))
+      );
+    }
+    return list;
+  }
+
+  function renderLbReviews() {
+    if (!lbGrid) return;
+    const matches = getFilteredLbReviews();
+    const visible = matches.slice(0, lbVisibleCount);
+    lbGrid.innerHTML = "";
+
+    for (const rev of visible) {
+      const li = document.createElement("li");
+      li.className = "lb-card";
+
+      const img = document.createElement("img");
+      img.className = "lb-poster";
+      img.src = rev.poster || "";
+      img.alt = rev.poster ? `${rev.filmTitle} (${rev.filmYear}) poster` : "";
+      img.width = 150;
+      img.height = 225;
+      img.loading = "lazy";
+      img.referrerPolicy = "no-referrer";
+
+      const body = document.createElement("div");
+      body.className = "lb-body";
+
+      const titleRow = document.createElement("div");
+      titleRow.className = "lb-title-row";
+      const h4 = document.createElement("h4");
+      h4.textContent = rev.filmTitle;
+      const yearSpan = document.createElement("span");
+      yearSpan.className = "lb-year";
+      yearSpan.textContent = rev.filmYear || "";
+      titleRow.append(h4, yearSpan);
+
+      const metaRow = document.createElement("div");
+      metaRow.className = "lb-meta-row";
+      const starsStr = formatStars(rev.rating);
+      if (starsStr) {
+        const starsEl = document.createElement("span");
+        starsEl.className = "lb-stars";
+        starsEl.setAttribute("aria-label", `${rev.rating} out of 5 stars`);
+        starsEl.textContent = starsStr;
+        metaRow.appendChild(starsEl);
+      }
+      if (rev.liked) {
+        const heart = document.createElement("span");
+        heart.className = "lb-stars";
+        heart.setAttribute("aria-label", "Liked");
+        heart.textContent = "♥";
+        metaRow.appendChild(heart);
+      }
+      if (rev.rewatch) {
+        const rw = document.createElement("span");
+        rw.className = "lb-date";
+        rw.textContent = "↻ Rewatch";
+        metaRow.appendChild(rw);
+      }
+      if (rev.watchedDate) {
+        const dt = document.createElement("time");
+        dt.className = "lb-date";
+        dt.dateTime = rev.watchedDate;
+        dt.textContent = rev.watchedDate;
+        metaRow.appendChild(dt);
+      }
+
+      const textWrap = document.createElement("div");
+      textWrap.className = "lb-review-text";
+      for (const pText of (rev.paragraphs || []).slice(0, 3)) {
+        const p = document.createElement("p");
+        p.textContent = pText;
+        textWrap.appendChild(p);
+      }
+
+      const link = document.createElement("a");
+      link.className = "lb-permalink";
+      link.href = rev.link || "https://letterboxd.com/brslli/";
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.textContent = "Read on Letterboxd ↗";
+
+      body.append(titleRow, metaRow, textWrap, link);
+      li.append(img, body);
+      lbGrid.appendChild(li);
+    }
+
+    if (lbMoreBtn) {
+      lbMoreBtn.hidden = matches.length <= lbVisibleCount;
+      if (!lbMoreBtn.hidden) {
+        lbMoreBtn.textContent = `Show More Reviews (${matches.length - lbVisibleCount} remaining)`;
+      }
+    }
+    if (lbCountLabel) {
+      lbCountLabel.textContent = matches.length
+        ? `Showing ${visible.length} of ${matches.length} hosted reviews`
+        : "No matching reviews found.";
+    }
+  }
+
+  function mergeLbReviews(freshList) {
+    if (!Array.isArray(freshList) || !freshList.length) return;
+    const byId = new Map();
+    for (const r of freshList) byId.set(r.id, r);
+    for (const r of allLbReviews) {
+      if (!byId.has(r.id)) byId.set(r.id, r);
+    }
+    allLbReviews = [...byId.values()];
+    renderLbReviews();
+  }
+
+  if (lbGrid) {
+    document.querySelectorAll("[data-lb-filter]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeLbFilter = btn.getAttribute("data-lb-filter") || "latest";
+        lbShuffledOrder = null;
+        lbVisibleCount = 6;
+        document.querySelectorAll("[data-lb-filter]").forEach((b) => {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+        renderLbReviews();
+      });
+    });
+
+    if (lbShuffleBtn) {
+      lbShuffleBtn.addEventListener("click", () => {
+        lbShuffledOrder = shuffleArray(allLbReviews);
+        lbVisibleCount = 6;
+        renderLbReviews();
+      });
+    }
+
+    if (lbSearchInput) {
+      lbSearchInput.addEventListener("input", () => {
+        lbSearchQuery = lbSearchInput.value.trim();
+        lbVisibleCount = 6;
+        renderLbReviews();
+      });
+    }
+
+    if (lbMoreBtn) {
+      lbMoreBtn.addEventListener("click", () => {
+        lbVisibleCount += 12;
+        renderLbReviews();
+      });
+    }
+
+    fetch("data/letterboxd-reviews.json")
+      .then((r) => r.json())
+      .then((data) => {
+        allLbReviews = Array.isArray(data.reviews) ? data.reviews : [];
+        renderLbReviews();
+        // Refresh from live Cloudflare edge RSS endpoint so new Letterboxd logs appear automatically
+        return fetch("/api/letterboxd").then((r) => (r.ok ? r.json() : null));
+      })
+      .then((live) => {
+        if (live?.ok && Array.isArray(live.reviews)) {
+          mergeLbReviews(live.reviews);
+        }
+      })
+      .catch(() => {});
+  }
 })();

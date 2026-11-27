@@ -163,6 +163,7 @@
           "https://github.com/MattBriselli",
           "https://github.com/MattBriselli/mattbriselli.com",
           "https://www.google.com/maps/contrib/104641095422852249098/reviews",
+          "https://letterboxd.com/brslli/",
           "https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit",
           "https://ariosoquartet.com",
           "https://eatbrandbite.com"
@@ -268,6 +269,18 @@
               <circle cx="12" cy="10" r="3"></circle>
             </svg>
             <span>Google Maps Profile</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://letterboxd.com/brslli/" class="pill-link" target="_blank" rel="noopener noreferrer">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
+              <line x1="7" y1="2" x2="7" y2="22"></line>
+              <line x1="17" y1="2" x2="17" y2="22"></line>
+              <line x1="2" y1="12" x2="22" y2="12"></line>
+            </svg>
+            <span>Letterboxd</span>
             <span class="arrow" aria-hidden="true">↗</span>
           </a>
         </li>
@@ -668,7 +681,7 @@
         <article class="compact-role-card">
           <div class="timeline-header">
             <div>
-              <h3 class="role-title">Carnegie Mellon University — Computer Science &amp; Engineering Foundations</h3>
+              <h3 class="role-title">Carnegie Mellon University — BS in Chemistry with Course Work in Chinese Studies and Computer Science</h3>
               <p class="company-name">Pittsburgh, PA · Stack: Java, TypeScript/JS, Python, Go, SQL, Swift, C, HTML/CSS, React Native, Next.js</p>
             </div>
             <time class="timeline-date">2012 — May 2016</time>
@@ -826,19 +839,126 @@
           </p>
         </li>
       </ul>
+
+      <!-- Hosted Letterboxd Film Log & Reviews (@brslli) -->
+      <div id="letterboxd" class="letterboxd-section">
+        <div class="letterboxd-header">
+          <div>
+            <span class="badge">Hosted Film Reviews · Auto-Synced RSS</span>
+            <h3 id="letterboxd-heading">Screening Log &amp; Reviews</h3>
+          </div>
+          <a href="https://letterboxd.com/brslli/" class="action-link" target="_blank" rel="noopener noreferrer">
+            <span>@brslli on Letterboxd</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+        </div>
+
+        <div class="letterboxd-controls">
+          <div class="toolbar-group" role="group" aria-label="Filter film reviews">
+            <button type="button" class="filter-chip" data-lb-filter="latest" aria-pressed="true">Latest Reviews</button>
+            <button type="button" class="filter-chip" data-lb-filter="favorites" aria-pressed="false">★★★★+ Favorites</button>
+            <button type="button" class="filter-chip" data-lb-filter="liked" aria-pressed="false">♥ Liked</button>
+            <button type="button" class="filter-chip" id="lb-shuffle-btn">🎲 Shuffle</button>
+          </div>
+          <search class="lb-search-wrap">
+            <label for="lb-search-input" class="visually-hidden">Search film reviews</label>
+            <input
+              type="search"
+              id="lb-search-input"
+              name="q"
+              class="lb-search-input"
+              placeholder="Search films or reviews…"
+              autocorrect="off"
+              autocapitalize="none"
+              spellcheck="false"
+            >
+          </search>
+        </div>
+
+        <ul class="letterboxd-grid" id="letterboxd-grid" role="list" aria-live="polite"></ul>
+
+        <div class="letterboxd-more-row">
+          <button type="button" class="action-btn" id="lb-more-btn" hidden>Show More Reviews</button>
+          <span class="lb-count-label" id="lb-count-label"></span>
+        </div>
+      </div>
     </section>
   </main>
 
   <footer id="contact" class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-contact">
-        <h2>Get in Touch</h2>
-        <p>
-          <a href="mailto:shout@mattbriselli.com">shout@mattbriselli.com</a> · <a href="https://www.linkedin.com/in/mattbriselli/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://github.com/MattBriselli" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href="https://eatbrandbite.com" target="_blank" rel="noopener noreferrer">Eat Brand Bite</a> · <a href="https://ariosoquartet.com" target="_blank" rel="noopener noreferrer">Mom’s Site</a>
-        </p>
+    <div class="footer-inner footer-stack">
+      <div class="footer-contact-block">
+        <div class="footer-contact-head">
+          <h2 id="contact-heading">Get in Touch</h2>
+          <p>
+            <a href="mailto:shout@mattbriselli.com">shout@mattbriselli.com</a> · <a href="https://www.linkedin.com/in/mattbriselli/" target="_blank" rel="noopener noreferrer">LinkedIn</a> · <a href="https://github.com/MattBriselli" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="https://letterboxd.com/brslli/" target="_blank" rel="noopener noreferrer">Letterboxd</a> · <a href="https://www.google.com/maps/contrib/104641095422852249098/reviews" target="_blank" rel="noopener noreferrer">Google Maps</a> · <a href="https://eatbrandbite.com" target="_blank" rel="noopener noreferrer">Eat Brand Bite</a> · <a href="https://ariosoquartet.com" target="_blank" rel="noopener noreferrer">Mom’s Site</a>
+          </p>
+        </div>
+
+        <form id="direct-contact-form" class="direct-contact-form" action="/api/contact" method="POST" aria-labelledby="contact-heading" novalidate>
+          <div class="hp-field" aria-hidden="true">
+            <label for="contact-website">Website</label>
+            <input type="text" id="contact-website" name="website" tabindex="-1" autocomplete="off">
+          </div>
+
+          <div class="contact-fields-grid">
+            <div class="pitch-field contact-message-field">
+              <label for="contact-message">Message <span aria-hidden="true">*</span></label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="3"
+                required
+                minlength="2"
+                maxlength="4000"
+                aria-describedby="contact-msg-error"
+              ></textarea>
+              <span id="contact-msg-error" class="field-error" hidden>Please write a short message first.</span>
+            </div>
+
+            <div class="contact-sender-col">
+              <div class="pitch-field">
+                <label for="contact-name">Your name <span class="optional-tag">(optional)</span></label>
+                <input
+                  type="text"
+                  id="contact-name"
+                  name="name"
+                  autocomplete="name"
+                  maxlength="100"
+                  enterkeyhint="next"
+                >
+              </div>
+
+              <div class="pitch-field">
+                <label for="contact-email">Your email <span class="optional-tag">(optional, for replies)</span></label>
+                <input
+                  type="email"
+                  id="contact-email"
+                  name="email"
+                  autocomplete="email"
+                  autocorrect="off"
+                  autocapitalize="none"
+                  spellcheck="false"
+                  maxlength="120"
+                  enterkeyhint="send"
+                  aria-describedby="contact-email-error"
+                >
+                <span id="contact-email-error" class="field-error" hidden>Please enter a valid email address or leave it blank.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pitch-submit-row">
+            <button type="submit" class="action-btn pitch-submit-btn" id="contact-submit-btn">
+              Send Message
+            </button>
+            <p id="contact-status" class="pitch-status" role="status" aria-live="polite"></p>
+          </div>
+        </form>
       </div>
+
       <div class="footer-colophon">
-        <p>&copy; <span id="current-year">2026</span> Matt L. Briselli · NYC, SF, Seattle, Arlington, Pittsburgh &amp; Philadelphia.</p>
+        <p>&copy; <span id="current-year">2026</span> Matt L. Briselli.</p>
       </div>
     </div>
   </footer>

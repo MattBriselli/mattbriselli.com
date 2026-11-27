@@ -177,7 +177,14 @@ for (let i = 1; i < rows.length; i++) {
   const r = rows[i];
   const date = (r[idx["Date"]] || "").trim();
   const isCanceled = String(r[idx["Canceled"]] || "").toLowerCase() === "true";
-  if (isCanceled || !date || date > today) continue;
+  const hasActual = Boolean(
+    (r[idx["Gate Departure (Actual)"]] || "").trim() ||
+    (r[idx["Take off (Actual)"]] || "").trim() ||
+    (r[idx["Landing (Actual)"]] || "").trim() ||
+    (r[idx["Gate Arrival (Actual)"]] || "").trim()
+  );
+  // Strictly exclude canceled flights and any future/unflown flights
+  if (isCanceled || !date || date > today || (date >= "2026-01-01" && !hasActual)) continue;
 
   const from = (r[idx["From"]] || "").trim().toUpperCase();
   const to = (r[idx["To"]] || "").trim().toUpperCase();

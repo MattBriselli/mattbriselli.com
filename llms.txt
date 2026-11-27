@@ -19,6 +19,7 @@
 - **Eat Brand Bite (Fast-Food & Limited-Edition Snack Tracker)**: https://eatbrandbite.com (https://github.com/MattBriselli/Brand-Bite)
 - **Public Google Work Dossier**: https://docs.google.com/document/d/1IL5IMiCyxgjhP4JkwxSfX0D_EeICt4TQjdg_-AWWIjE/edit (http://bit.ly/matt-briselli-work)
 - **Google Maps Reviews & Field Notes**: https://www.google.com/maps/contrib/104641095422852249098/reviews
+- **Letterboxd Film Reviews (@brslli)**: https://letterboxd.com/brslli/
 - **Structured JSON Resume Feed**: https://mattbriselli.com/resume.json
 
 ## Professional Experience (Reconciled Across LinkedIn & Resumes)
