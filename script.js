@@ -450,6 +450,9 @@
   // Focused Map Lenses: "photos" | "flights" | "atlas" | "all" | "static"
   let activeLens = "photos";
 
+  const isCoarseMapPointer =
+    typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches;
+
   const map = L.map(mapContainer, {
     center: [REGION_PRESETS.world.lat, REGION_PRESETS.world.lng],
     zoom: REGION_PRESETS.world.zoom,
@@ -459,25 +462,41 @@
     attributionControl: false,
     worldCopyJump: true,
     touchZoom: true,
-    doubleClickZoom: true,
+    doubleClickZoom: !isCoarseMapPointer,
     bounceAtZoomLimits: false,
-    zoomSnap: 0.5,
+    zoomSnap: isCoarseMapPointer ? 0.25 : 0.5,
     zoomDelta: 1,
     inertia: true,
     inertiaDeceleration: 2400
   });
 
-  // Mobile touch gestures (iOS Safari / Android Chrome suppress dblclick under touch-action: none):
-  // 1. Double-tap to zoom in at the tapped point
-  // 2. Two-finger tap to zoom out at the midpoint
-  // 3. Double-tap-and-drag (one-handed zoom: slide down to zoom in, up to zoom out)
+  // Mobile touch gestures (native-feeling, zero double-zoom, no popup flash on double-tap):
+  // 1. Double-tap to zoom in (+1) at the tapped point
+  // 2. Two-finger tap to zoom out (-1) at the midpoint
+  // 3. Double-tap & drag (one-handed zoom: slide down to zoom in, up to zoom out)
   let suppressMapClickUntil = 0;
+  let pendingTouchPinTimer = null;
+  let isOneHandZooming = false;
+  let markerRebuildTimer = null;
+  let lastMarkerZoomTier = -1;
+
+  function getMarkerZoomTier(z) {
+    if (z >= 15) return 5;
+    if (z >= 13) return 4;
+    if (z >= 12) return 3;
+    if (z >= 8) return 2;
+    if (z >= 5) return 1;
+    return 0;
+  }
+
   (() => {
     let lastTapTime = 0;
     let lastTapPt = null;
     let singleStart = null;
     let twoFingerStart = null;
     let oneHandZoom = null;
+    let oneHandRaf = 0;
+    let oneHandPendingZoom = null;
 
     const isControlTarget = (target) =>
       target instanceof Element &&
@@ -486,6 +505,13 @@
     const pointFromTouch = (touch) => {
       const rect = mapContainer.getBoundingClientRect();
       return L.point(touch.clientX - rect.left, touch.clientY - rect.top);
+    };
+
+    const cancelPendingPinTap = () => {
+      if (pendingTouchPinTimer) {
+        clearTimeout(pendingTouchPinTimer);
+        pendingTouchPinTimer = null;
+      }
     };
 
     mapContainer.addEventListener(
@@ -502,9 +528,10 @@
           twoFingerStart = null;
           const pt = pointFromTouch(ev.touches[0]);
           const isSecondTap =
-            lastTapPt && now - lastTapTime <= 320 && Math.hypot(pt.x - lastTapPt.x, pt.y - lastTapPt.y) <= 38;
+            lastTapPt && now - lastTapTime <= 300 && Math.hypot(pt.x - lastTapPt.x, pt.y - lastTapPt.y) <= 40;
           singleStart = { pt, time: now, moved: false, isSecondTap };
           if (isSecondTap) {
+            cancelPendingPinTap();
             oneHandZoom = {
               startY: pt.y,
               startZoom: map.getZoom(),
@@ -515,10 +542,12 @@
             oneHandZoom = null;
           }
         } else if (ev.touches.length === 2) {
+          cancelPendingPinTap();
           singleStart = null;
           if (oneHandZoom?.active) {
             map.dragging.enable();
           }
+          isOneHandZooming = false;
           oneHandZoom = null;
           lastTapTime = 0;
           lastTapPt = null;
@@ -545,16 +574,24 @@
             const dy = pt.y - oneHandZoom.startY;
             if (!oneHandZoom.active && Math.abs(dy) >= 12) {
               oneHandZoom.active = true;
+              isOneHandZooming = true;
               map.dragging.disable();
               map.closePopup();
             }
             if (oneHandZoom.active) {
               if (ev.cancelable) ev.preventDefault();
-              const targetZoom = Math.max(
+              oneHandPendingZoom = Math.max(
                 map.getMinZoom(),
                 Math.min(map.getMaxZoom(), oneHandZoom.startZoom + dy / 95)
               );
-              map.setZoomAround(oneHandZoom.anchorLatLng, targetZoom, { animate: false });
+              if (!oneHandRaf) {
+                oneHandRaf = requestAnimationFrame(() => {
+                  oneHandRaf = 0;
+                  if (oneHandZoom?.active && oneHandPendingZoom !== null) {
+                    map.setZoomAround(oneHandZoom.anchorLatLng, oneHandPendingZoom, { animate: false });
+                  }
+                });
+              }
             }
           }
         } else if (ev.touches.length === 2 && twoFingerStart) {
@@ -575,24 +612,35 @@
       const now = performance.now();
 
       if (oneHandZoom?.active) {
+        if (oneHandRaf) {
+          cancelAnimationFrame(oneHandRaf);
+          oneHandRaf = 0;
+        }
+        isOneHandZooming = false;
         map.dragging.enable();
         suppressMapClickUntil = now + 380;
         oneHandZoom = null;
         singleStart = null;
         lastTapTime = 0;
         lastTapPt = null;
+        const tier = getMarkerZoomTier(map.getZoom());
+        if (tier !== lastMarkerZoomTier) {
+          rebuildMarkers();
+        }
+        scheduleViewportSync();
         return;
       }
 
       if (twoFingerStart && ev.touches.length === 0) {
         const dt = now - twoFingerStart.time;
         if (!twoFingerStart.moved && dt <= 260) {
+          if (ev.cancelable) ev.preventDefault();
           const midPt = L.point(
             (twoFingerStart.p0.x + twoFingerStart.p1.x) / 2,
             (twoFingerStart.p0.y + twoFingerStart.p1.y) / 2
           );
           const midLatLng = map.containerPointToLatLng(midPt);
-          const nextZoom = Math.max(map.getMinZoom(), map.getZoom() - 1.5);
+          const nextZoom = Math.max(map.getMinZoom(), Math.floor(map.getZoom() - 0.01));
           suppressMapClickUntil = now + 380;
           map.closePopup();
           map.setZoomAround(midLatLng, nextZoom, { animate: true });
@@ -603,11 +651,13 @@
 
       if (singleStart && ev.touches.length === 0) {
         const dt = now - singleStart.time;
-        if (!singleStart.moved && dt <= 280) {
+        if (!singleStart.moved && dt <= 260) {
           if (singleStart.isSecondTap) {
+            if (ev.cancelable) ev.preventDefault();
+            cancelPendingPinTap();
             const tapLatLng = map.containerPointToLatLng(singleStart.pt);
-            const nextZoom = Math.min(map.getMaxZoom(), map.getZoom() + 1.5);
-            suppressMapClickUntil = now + 380;
+            const nextZoom = Math.min(map.getMaxZoom(), Math.ceil(map.getZoom() + 0.01));
+            suppressMapClickUntil = now + 400;
             map.closePopup();
             map.setZoomAround(tapLatLng, nextZoom, { animate: true });
             lastTapTime = 0;
@@ -625,11 +675,16 @@
       }
     };
 
-    mapContainer.addEventListener("touchend", endTouch, { passive: true });
+    mapContainer.addEventListener("touchend", endTouch, { passive: false });
     mapContainer.addEventListener(
       "touchcancel",
       () => {
+        if (oneHandRaf) {
+          cancelAnimationFrame(oneHandRaf);
+          oneHandRaf = 0;
+        }
         if (oneHandZoom?.active) map.dragging.enable();
+        isOneHandZooming = false;
         singleStart = null;
         twoFingerStart = null;
         oneHandZoom = null;
@@ -646,8 +701,6 @@
   const pinsPane = map.createPane("pinsPane");
   pinsPane.style.zIndex = "550";
 
-  const isCoarseMapPointer =
-    typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches;
   const pinsCanvasRenderer = L.canvas({
     pane: "pinsPane",
     padding: 0.5,
@@ -1474,16 +1527,30 @@
     if (!best) return false;
     if (origEvent) origEvent._mlbPinHandled = true;
 
-    if (best.kind === "photo") {
-      openPhotoPinSelection(best.idx);
-    } else if (best.kind === "place") {
-      stopAutoPlay();
-      openPlaceOnlyPopup(best.item);
-    } else if (best.kind === "cluster") {
-      stopAutoPlay();
-      const label = best.cluster.label || best.cluster.name || "Visited Cluster";
-      map.flyTo([best.cluster.lat, best.cluster.lng], Math.max(map.getZoom(), 6), { duration: 0.85 });
-      if (statusLineEl) statusLineEl.textContent = `Exploring: ${label}`;
+    const runSelection = () => {
+      if (performance.now() < suppressMapClickUntil) return;
+      if (best.kind === "photo") {
+        openPhotoPinSelection(best.idx);
+      } else if (best.kind === "place") {
+        stopAutoPlay();
+        openPlaceOnlyPopup(best.item);
+      } else if (best.kind === "cluster") {
+        stopAutoPlay();
+        const label = best.cluster.label || best.cluster.name || "Visited Cluster";
+        map.flyTo([best.cluster.lat, best.cluster.lng], Math.max(map.getZoom(), 6), { duration: 0.85 });
+        if (statusLineEl) statusLineEl.textContent = `Exploring: ${label}`;
+      }
+    };
+
+    // On touch screens, briefly defer pin activation so a double-tap zooms cleanly without flashing a popup first
+    if (isCoarseMapPointer) {
+      if (pendingTouchPinTimer) clearTimeout(pendingTouchPinTimer);
+      pendingTouchPinTimer = setTimeout(() => {
+        pendingTouchPinTimer = null;
+        runSelection();
+      }, 220);
+    } else {
+      runSelection();
     }
     return true;
   }
@@ -1799,6 +1866,8 @@
 
     const dark = isDarkActive();
     const zoom = map.getZoom();
+    lastMarkerZoomTier = getMarkerZoomTier(zoom);
+    const bindHoverTooltips = !isCoarseMapPointer;
 
     // 1. Regional footprint dots across all 50 US states, Central Asia, Canada, Europe & Asia-Pacific
     if (Array.isArray(mapsData.heatmapClusters)) {
@@ -1855,19 +1924,21 @@
                 : (dark ? "#f0ad4e" : "#d97724"),
               fillOpacity: count >= 3 ? 0.92 : 0.8
             });
-        mPin.bindTooltip(
-          buildPinLabelHtml({
-            icon: getCategoryIcon(category, "📍"),
-            name,
-            rating,
-            loc,
-            category,
-            lastDate,
-            firstDate,
-            visitCount: count
-          }),
-          { direction: "top", className: "pin-tip", offset: [0, -4] }
-        );
+        if (bindHoverTooltips) {
+          mPin.bindTooltip(
+            buildPinLabelHtml({
+              icon: getCategoryIcon(category, "📍"),
+              name,
+              rating,
+              loc,
+              category,
+              lastDate,
+              firstDate,
+              visitCount: count
+            }),
+            { direction: "top", className: "pin-tip", offset: [0, -4] }
+          );
+        }
         mPin.on("click", (ev) => {
           if (activateClosestPinAt(ev.containerPoint, ev.originalEvent)) return;
           stopAutoPlay();
@@ -1970,7 +2041,15 @@
   }
 
   map.on("zoomend", () => {
-    rebuildMarkers();
+    if (isOneHandZooming) return;
+    const nextTier = getMarkerZoomTier(map.getZoom());
+    if (nextTier !== lastMarkerZoomTier) {
+      if (markerRebuildTimer) clearTimeout(markerRebuildTimer);
+      markerRebuildTimer = setTimeout(() => {
+        markerRebuildTimer = null;
+        rebuildMarkers();
+      }, 90);
+    }
     if (lensShowsFlights()) rebuildFlightArcs();
     scheduleViewportSync();
   });
