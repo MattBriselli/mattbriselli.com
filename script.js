@@ -1940,7 +1940,7 @@
     photos: "Drag to pan · Scroll or + / − to zoom · Keys: ← / → slides, V next in view · Click any dot to explore",
     flights: "Flighty log: 173 completed flights · 314,804 miles (12.6× Earth) across 83 airports",
     atlas: "Visited Atlas: 39/199 countries · 50/50 US states · 8/13 Canadian provinces + overland drive",
-    all: "All layers active: 6,600+ place & photo pins, 173 Flighty routes, visited choropleth & Trans-Canada drive",
+    all: "All layers active: 10,700+ photo & visited-place pins, 173 Flighty routes, visited choropleth & Trans-Canada drive",
     static: "MapChart reference export · Scroll or use + / − to zoom, drag to pan"
   };
 

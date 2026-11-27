@@ -70,7 +70,7 @@
       "countriesVisited": 39,
       "usStatesVisited": 50,
       "canadianProvincesAndTerritoriesVisited": 8,
-      "interactiveMapPins": 6623,
+      "interactiveMapPins": 10796,
       "flightsLogged": 173,
       "milesFlown": 314804,
       "uniqueAirports": 83,
@@ -228,7 +228,7 @@
     {
       "name": "Personal Atlas & Film Archive (mattbriselli.com)",
       "url": "https://github.com/MattBriselli/mattbriselli.com",
-      "description": "Zero-framework personal website on Cloudflare Workers Static Assets featuring a 6,623-pin privacy-geofenced HTML5 Canvas world atlas (Google Maps, Flighty & Swarm with automated 7-day embargo), 1,422 cached Letterboxd reviews, 12 curated 2:3 poster lists, and llms.txt / resume.json agent feeds."
+      "description": "Zero-framework personal website on Cloudflare Workers Static Assets featuring a 10,796-pin privacy-geofenced HTML5 Canvas world atlas (Google Maps, Flighty & Swarm with automated 7-day embargo), 1,422 cached Letterboxd reviews, 12 curated 2:3 poster lists, and llms.txt / resume.json agent feeds."
     }
   ]
 }
