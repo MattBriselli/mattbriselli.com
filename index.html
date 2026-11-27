@@ -7,6 +7,9 @@
   <script>
     try {
       document.querySelector('meta[name="color-scheme"]').content = localStorage.getItem("color-scheme") ?? "light dark";
+      if (performance.getEntriesByType?.("navigation")?.[0]?.type === "reload") {
+        document.documentElement.dataset.reloading = "1";
+      }
     } catch {}
   </script>
   <title>Matt L. Briselli — Explorer + Photographer, Software Engineer + Technical Program Manager &amp; Eclectic</title>
@@ -322,7 +325,7 @@
     <!-- ======================================================================
          01 · EXPLORER + PHOTOGRAPHER
          ====================================================================== -->
-    <section id="explorer" class="section section-tight">
+    <section id="explorer" class="section section-tight" tabindex="-1">
       <div class="section-header section-header-split">
         <div class="section-title-group">
           <span class="section-index" aria-hidden="true">01</span>
@@ -641,7 +644,7 @@
     <!-- ======================================================================
          02 · SOFTWARE ENGINEER + TECHNICAL PROGRAM MANAGER
          ====================================================================== -->
-    <section id="coder" class="section">
+    <section id="coder" class="section" tabindex="-1">
       <div class="section-header section-header-split">
         <div class="section-title-group">
           <span class="section-index" aria-hidden="true">02</span>
@@ -781,7 +784,7 @@
     <!-- ======================================================================
          03 · ECLECTIC ENDEAVORS (Trapeze, Chemistry, Chinese, Chrysanthemums…)
          ====================================================================== -->
-    <section id="eclectic" class="section">
+    <section id="eclectic" class="section" tabindex="-1">
       <div class="section-header section-header-split">
         <div class="section-title-group">
           <span class="section-index" aria-hidden="true">03</span>
@@ -932,7 +935,7 @@
     </section>
   </main>
 
-  <footer id="contact" class="site-footer">
+  <footer id="contact" class="site-footer" tabindex="-1">
     <div class="footer-inner footer-stack">
       <div class="footer-contact-block">
         <div class="footer-contact-head">

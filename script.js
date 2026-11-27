@@ -81,6 +81,237 @@
   }
 
   /* ==========================================================================
+     Scrollspy + Non-Sticky URL Hash Sync & Reload Section Persistence
+     ========================================================================== */
+  const TRACKED_SECTION_IDS = ["explorer", "coder", "eclectic", "contact"];
+  const SCROLL_STATE_KEY = "mlb_section_scroll_v1";
+  const supportsScrollTargetGroup =
+    typeof CSS !== "undefined" && typeof CSS.supports === "function" && CSS.supports("scroll-target-group: auto");
+  const navLinks = Array.from(document.querySelectorAll(".site-header .nav-list a[href^='#']"));
+  const siteBrandLink = document.querySelector(".site-brand");
+  const navEntry = performance.getEntriesByType?.("navigation")?.[0];
+  const isPageReload = navEntry?.type === "reload";
+
+  let savedScrollState = null;
+  try {
+    const rawSaved = sessionStorage.getItem(SCROLL_STATE_KEY);
+    if (rawSaved) savedScrollState = JSON.parse(rawSaved);
+  } catch {}
+
+  let userInteractedSinceLoad = false;
+  let isRestoringScroll = false;
+  let initialRestoreWindowUntil = isPageReload && savedScrollState ? performance.now() + 1200 : 0;
+  let navScrollLockUntil = 0;
+  let activeTrackedSection = null;
+
+  function getHeaderOffset() {
+    const hdr = document.querySelector(".site-header");
+    return (hdr ? hdr.offsetHeight : 58) + 12;
+  }
+
+  function computeActiveSectionId() {
+    const firstEl = document.getElementById(TRACKED_SECTION_IDS[0]);
+    if (!firstEl) return "";
+    const probeY = getHeaderOffset() + Math.min(180, window.innerHeight * 0.26);
+    if (firstEl.getBoundingClientRect().top > probeY) {
+      return "";
+    }
+    const atPageBottom =
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 40;
+    if (atPageBottom) {
+      const contactEl = document.getElementById("contact");
+      if (contactEl && contactEl.getBoundingClientRect().top < window.innerHeight * 0.8) {
+        return "contact";
+      }
+    }
+    let current = "";
+    for (const id of TRACKED_SECTION_IDS) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top <= probeY) {
+        current = id;
+      }
+    }
+    return current;
+  }
+
+  function persistSectionScrollState(sectionId) {
+    try {
+      const el = sectionId ? document.getElementById(sectionId) : null;
+      const secTop = el ? el.getBoundingClientRect().top + window.scrollY : 0;
+      sessionStorage.setItem(
+        SCROLL_STATE_KEY,
+        JSON.stringify({
+          sectionId,
+          offsetInSection: el ? Math.round(window.scrollY - secTop) : 0,
+          scrollY: Math.round(window.scrollY)
+        })
+      );
+    } catch {}
+  }
+
+  function syncNavAndHash(sectionId, updateHistoryHash) {
+    const nativeCurrentLink = supportsScrollTargetGroup
+      ? document.querySelector(".site-header .nav-list a:target-current")
+      : null;
+
+    for (const link of navLinks) {
+      const isMatch =
+        supportsScrollTargetGroup && nativeCurrentLink && sectionId
+          ? link === nativeCurrentLink
+          : Boolean(sectionId) && link.getAttribute("href") === `#${sectionId}`;
+      if (!supportsScrollTargetGroup) {
+        link.classList.toggle("target-current", isMatch);
+      }
+      link.setAttribute("aria-current", isMatch ? "true" : "false");
+    }
+
+    if (updateHistoryHash) {
+      const desiredHash = sectionId ? `#${sectionId}` : "";
+      if (window.location.hash !== desiredHash) {
+        const cleanBase = `${window.location.pathname}${window.location.search}`;
+        try {
+          history.replaceState(null, "", desiredHash || cleanBase);
+        } catch {}
+      }
+    }
+  }
+
+  function restoreReloadSectionPosition() {
+    if (!isPageReload || !savedScrollState || userInteractedSinceLoad) return;
+    if (performance.now() > initialRestoreWindowUntil) return;
+    const { sectionId, offsetInSection, scrollY } = savedScrollState;
+    isRestoringScroll = true;
+    if (!sectionId) {
+      window.scrollTo({ top: Math.max(0, scrollY || 0), behavior: "instant" });
+      syncNavAndHash("", true);
+    } else {
+      const secEl = document.getElementById(sectionId);
+      if (secEl) {
+        const secTop = secEl.getBoundingClientRect().top + window.scrollY;
+        const maxOffset = Math.max(0, secEl.offsetHeight - 100);
+        const clampedOffset = Math.min(Math.max(-getHeaderOffset(), offsetInSection || 0), maxOffset);
+        window.scrollTo({ top: Math.max(0, secTop + clampedOffset), behavior: "instant" });
+        syncNavAndHash(sectionId, true);
+      }
+    }
+    requestAnimationFrame(() => {
+      isRestoringScroll = false;
+    });
+  }
+
+  if (isPageReload && savedScrollState) {
+    try {
+      if ("scrollRestoration" in history) history.scrollRestoration = "manual";
+    } catch {}
+    restoreReloadSectionPosition();
+  } else {
+    activeTrackedSection = computeActiveSectionId();
+    syncNavAndHash(activeTrackedSection, false);
+  }
+
+  requestAnimationFrame(() => {
+    delete document.documentElement.dataset.reloading;
+  });
+
+  const markUserScrollIntent = () => {
+    userInteractedSinceLoad = true;
+    initialRestoreWindowUntil = 0;
+    navScrollLockUntil = 0;
+  };
+  window.addEventListener("wheel", markUserScrollIntent, { passive: true });
+  window.addEventListener("touchstart", markUserScrollIntent, { passive: true });
+  window.addEventListener("pointerdown", markUserScrollIntent, { passive: true });
+  window.addEventListener("keydown", (e) => {
+    if (["ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "].includes(e.key)) {
+      markUserScrollIntent();
+    }
+  });
+
+  for (const link of navLinks) {
+    link.addEventListener("click", () => {
+      userInteractedSinceLoad = true;
+      initialRestoreWindowUntil = 0;
+      const targetId = (link.getAttribute("href") || "").replace(/^#/, "");
+      if (!targetId) return;
+      navScrollLockUntil = performance.now() + 900;
+      activeTrackedSection = targetId;
+      syncNavAndHash(targetId, true);
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        const secTop = targetEl.getBoundingClientRect().top + window.scrollY;
+        try {
+          sessionStorage.setItem(
+            SCROLL_STATE_KEY,
+            JSON.stringify({
+              sectionId: targetId,
+              offsetInSection: -getHeaderOffset(),
+              scrollY: Math.max(0, Math.round(secTop - getHeaderOffset()))
+            })
+          );
+        } catch {}
+      }
+    });
+  }
+
+  if (siteBrandLink) {
+    siteBrandLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      userInteractedSinceLoad = true;
+      initialRestoreWindowUntil = 0;
+      navScrollLockUntil = performance.now() + 900;
+      activeTrackedSection = "";
+      syncNavAndHash("", true);
+      const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduced ? "instant" : "smooth" });
+      try {
+        sessionStorage.setItem(
+          SCROLL_STATE_KEY,
+          JSON.stringify({ sectionId: "", offsetInSection: 0, scrollY: 0 })
+        );
+      } catch {}
+    });
+  }
+
+  let scrollTicking = false;
+  function handleViewportScroll() {
+    if (scrollTicking) return;
+    scrollTicking = true;
+    requestAnimationFrame(() => {
+      scrollTicking = false;
+      if (isRestoringScroll || performance.now() < initialRestoreWindowUntil) return;
+      if (performance.now() < navScrollLockUntil) return;
+      const nextSection = computeActiveSectionId();
+      if (nextSection !== activeTrackedSection) {
+        activeTrackedSection = nextSection;
+        syncNavAndHash(nextSection, true);
+      }
+      persistSectionScrollState(nextSection);
+    });
+  }
+
+  window.addEventListener("scroll", handleViewportScroll, { passive: true });
+  document.addEventListener("scrollend", () => {
+    if (isRestoringScroll || performance.now() < initialRestoreWindowUntil) return;
+    navScrollLockUntil = 0;
+    const settledSection = computeActiveSectionId();
+    activeTrackedSection = settledSection;
+    syncNavAndHash(settledSection, true);
+    persistSectionScrollState(settledSection);
+  });
+  window.addEventListener("pagehide", () => {
+    if (performance.now() >= navScrollLockUntil) {
+      const finalSection = computeActiveSectionId();
+      persistSectionScrollState(finalSection);
+    }
+    try {
+      if ("scrollRestoration" in history) history.scrollRestoration = "auto";
+    } catch {}
+  });
+  window.addEventListener("load", () => {
+    restoreReloadSectionPosition();
+  });
+
+  /* ==========================================================================
      Leaflet + Natural Earth GeoJSON (176 Countries + 50 US States) +
      Synced HTML5 Canvas Thermal Heatmap & Global Photo Slideshow
      ========================================================================== */
@@ -1770,6 +2001,7 @@
         }
         renderLbFavorites(data.favorites);
         renderLbReviews();
+        restoreReloadSectionPosition();
         // Refresh from live Cloudflare edge RSS endpoint so new Letterboxd logs appear automatically
         return fetch("/api/letterboxd").then((r) => (r.ok ? r.json() : null));
       })
