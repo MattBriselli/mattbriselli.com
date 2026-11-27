@@ -1096,6 +1096,39 @@
   }
 
   /* Google Maps Telemetry Banner & Interactive World Heatmap + Slideshow Workbench */
+  .explorer-follow-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .follow-cta-link {
+    border-color: color-mix(in oklab, var(--color-accent) 52%, var(--border-strong));
+    background-color: color-mix(in oklab, var(--color-accent) 7%, var(--bg-surface-elevated));
+    font-weight: 600;
+  }
+
+  .maps-social-callout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.75rem 1.25rem;
+    padding: 0.9rem 1.25rem;
+    margin-block-end: 0.85rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: 0.5rem;
+    background-color: var(--bg-surface-elevated);
+  }
+
+  .maps-social-copy {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    max-inline-size: none;
+  }
+
   .maps-telemetry-banner {
     display: flex;
     flex-wrap: wrap;

@@ -1595,7 +1595,7 @@
   }
 
   const LENS_DESCRIPTIONS = {
-    photos: "Drag to pan · Scroll or + / − to zoom · Use 📍 Next in View or click any dot to explore locally",
+    photos: "Drag to pan · Scroll or + / − to zoom · Keys: ← / → slides, V next in view · Click any dot to explore",
     flights: "Flighty log: 173 completed flights · 314,804 miles (12.6× Earth) across 83 airports",
     atlas: "Visited Atlas: 39/199 countries · 50/50 US states · 8/13 Canadian provinces + overland drive",
     all: "All layers active: 1,000+ photo dots, 173 Flighty routes, visited choropleth & Trans-Canada drive",
@@ -1650,36 +1650,99 @@
     });
   }
 
+  function stepViewportPhoto(direction = 1) {
+    stopAutoPlay();
+    if (!lensShowsPhotos()) {
+      setMapLens("photos");
+    }
+    const inView = getPlacesInCurrentViewport();
+    if (!inView.length) {
+      if (statusLineEl) {
+        statusLineEl.textContent = "No photo pins in this map area — zoom out or pan toward glowing dots";
+      }
+      return;
+    }
+    if (inView.length === 1 && inView[0].idx === activePlaceIndex) {
+      const curPhotos = filteredPlaces[activePlaceIndex]?.photos || [];
+      if (curPhotos.length > 1) {
+        activePhotoIndex = (activePhotoIndex + direction + curPhotos.length) % curPhotos.length;
+        renderActiveSlide(false, { pos: 1, total: 1 });
+        return;
+      }
+      if (statusLineEl) {
+        statusLineEl.textContent = `Only 1 pin in this zoomed area (${inView[0].pl.name}) — zoom out slightly for nearby spots`;
+      }
+      return;
+    }
+    const curPos = inView.findIndex((m) => m.idx === activePlaceIndex);
+    const nextPos =
+      curPos >= 0
+        ? (curPos + direction + inView.length) % inView.length
+        : direction >= 0
+          ? 0
+          : inView.length - 1;
+    selectPlace(inView[nextPos].idx, false, false, { pos: nextPos + 1, total: inView.length });
+  }
+
   if (viewportNextBtn) {
     viewportNextBtn.addEventListener("click", () => {
-      stopAutoPlay();
-      if (!lensShowsPhotos()) {
-        setMapLens("photos");
-      }
-      const inView = getPlacesInCurrentViewport();
-      if (!inView.length) {
-        if (statusLineEl) {
-          statusLineEl.textContent = "No photo pins in this map area — zoom out or pan toward glowing dots";
-        }
-        return;
-      }
-      if (inView.length === 1 && inView[0].idx === activePlaceIndex) {
-        const curPhotos = filteredPlaces[activePlaceIndex]?.photos || [];
-        if (curPhotos.length > 1) {
-          activePhotoIndex = (activePhotoIndex + 1) % curPhotos.length;
-          renderActiveSlide(false, { pos: 1, total: 1 });
-          return;
-        }
-        if (statusLineEl) {
-          statusLineEl.textContent = `Only 1 pin in this zoomed area (${inView[0].pl.name}) — zoom out slightly for nearby spots`;
-        }
-        return;
-      }
-      const curPos = inView.findIndex((m) => m.idx === activePlaceIndex);
-      const nextPos = curPos >= 0 ? (curPos + 1) % inView.length : 0;
-      selectPlace(inView[nextPos].idx, false, false, { pos: nextPos + 1, total: inView.length });
+      stepViewportPhoto(1);
     });
   }
+
+  // Keyboard navigation for the Explorer Photo Atlas (← / → / [ / ] for slides, V or Shift+←/→ for local viewport)
+  document.addEventListener("keydown", (e) => {
+    if (e.altKey || e.ctrlKey || e.metaKey) return;
+    const target = e.target;
+    if (
+      target instanceof HTMLElement &&
+      (target.matches("input, textarea, select, [contenteditable='true']") ||
+        target.closest("[role='toolbar']"))
+    ) {
+      return;
+    }
+    if (target === staticViewport && smScale > 1) return;
+
+    const explorerSec = document.getElementById("explorer");
+    const atlasEl = document.getElementById("atlas");
+    if (!explorerSec || !atlasEl || !filteredPlaces.length) return;
+
+    const focusInsideExplorer = explorerSec.contains(document.activeElement);
+    const rect = atlasEl.getBoundingClientRect();
+    const atlasVisible = rect.bottom > 80 && rect.top < window.innerHeight - 80;
+    if (!focusInsideExplorer && !atlasVisible) return;
+
+    // When Leaflet map container itself has focus, let bare Arrow keys pan the map natively;
+    // still support Shift+Arrows, [ / ], and V everywhere!
+    const mapHasDirectFocus = document.activeElement === mapContainer;
+
+    if (e.key === "v" || e.key === "V") {
+      e.preventDefault();
+      stepViewportPhoto(e.shiftKey ? -1 : 1);
+    } else if (e.key === "[") {
+      e.preventDefault();
+      stopAutoPlay();
+      selectPlace(activePlaceIndex - 1, true);
+    } else if (e.key === "]") {
+      e.preventDefault();
+      stopAutoPlay();
+      selectPlace(activePlaceIndex + 1, true);
+    } else if (e.key === "ArrowLeft" && e.shiftKey) {
+      e.preventDefault();
+      stepViewportPhoto(-1);
+    } else if (e.key === "ArrowRight" && e.shiftKey) {
+      e.preventDefault();
+      stepViewportPhoto(1);
+    } else if (e.key === "ArrowLeft" && !mapHasDirectFocus) {
+      e.preventDefault();
+      stopAutoPlay();
+      selectPlace(activePlaceIndex - 1, true);
+    } else if (e.key === "ArrowRight" && !mapHasDirectFocus) {
+      e.preventDefault();
+      stopAutoPlay();
+      selectPlace(activePlaceIndex + 1, true);
+    }
+  });
 
   const goalCountriesBtn = document.getElementById("goal-countries-btn");
   if (goalCountriesBtn) {
@@ -2143,7 +2206,7 @@
 
   function savePosterCache() {
     try {
-      if (posterCache.size > 400) return;
+      if (posterCache.size > 2000) return;
       localStorage.setItem("mlb_lb_posters_v1", JSON.stringify(Object.fromEntries(posterCache)));
     } catch {
       // ignore
@@ -2469,31 +2532,87 @@
       });
     }
 
-    fetch("data/letterboxd-reviews.json")
-      .then((r) => r.json())
-      .then((data) => {
-        allLbReviews = Array.isArray(data.reviews) ? data.reviews : [];
-        if (data.stats) {
-          const setStat = (id, val) => {
-            const el = document.getElementById(id);
-            if (el && typeof val === "number") el.textContent = val.toLocaleString();
-          };
-          setStat("lb-stat-watched", data.stats.watchedCount);
-          setStat("lb-stat-reviews", data.stats.reviewCount);
-          setStat("lb-stat-theatres", data.stats.theatreCount);
-          setStat("lb-stat-liked", data.stats.likedCount);
+    const LB_CACHE_NAME = "mlb-letterboxd-archive-v1";
+    const LB_RSS_DELTA_KEY = "mlb_lb_rss_delta_v1";
+    const LB_ARCHIVE_URL = "data/letterboxd-reviews.json";
+
+    function applyLbArchiveData(data) {
+      if (!data) return;
+      allLbReviews = Array.isArray(data.reviews) ? data.reviews : [];
+      if (data.stats) {
+        const setStat = (id, val) => {
+          const el = document.getElementById(id);
+          if (el && typeof val === "number") el.textContent = val.toLocaleString();
+        };
+        setStat("lb-stat-watched", data.stats.watchedCount);
+        setStat("lb-stat-reviews", data.stats.reviewCount);
+        setStat("lb-stat-theatres", data.stats.theatreCount);
+        setStat("lb-stat-liked", data.stats.likedCount);
+      }
+      renderLbFavorites(data.favorites);
+      // Immediately overlay any cached RSS delta reviews before network responds
+      try {
+        const rawDelta = localStorage.getItem(LB_RSS_DELTA_KEY);
+        if (rawDelta) {
+          const cachedRss = JSON.parse(rawDelta);
+          if (Array.isArray(cachedRss) && cachedRss.length) {
+            mergeLbReviews(cachedRss);
+            return;
+          }
         }
-        renderLbFavorites(data.favorites);
-        renderLbReviews();
-        restoreReloadSectionPosition();
-        // Refresh from live Cloudflare edge RSS endpoint so new Letterboxd logs appear automatically
-        return fetch("/api/letterboxd").then((r) => (r.ok ? r.json() : null));
-      })
-      .then((live) => {
-        if (live?.ok && Array.isArray(live.reviews)) {
-          mergeLbReviews(live.reviews);
+      } catch {}
+      renderLbReviews();
+    }
+
+    async function loadLetterboxdWithCache() {
+      let renderedFromCache = false;
+      if ("caches" in window) {
+        try {
+          const cache = await caches.open(LB_CACHE_NAME);
+          const cachedRes = await cache.match(LB_ARCHIVE_URL);
+          if (cachedRes) {
+            const cachedData = await cachedRes.json();
+            applyLbArchiveData(cachedData);
+            restoreReloadSectionPosition();
+            renderedFromCache = true;
+          }
+        } catch {}
+      }
+
+      // Network fetch (stale-while-revalidate if already rendered from Cache Storage)
+      try {
+        const netRes = await fetch(LB_ARCHIVE_URL);
+        if (netRes.ok) {
+          const cloneForCache = netRes.clone();
+          const freshData = await netRes.json();
+          if (!renderedFromCache || freshData?.updatedAt) {
+            applyLbArchiveData(freshData);
+            if (!renderedFromCache) restoreReloadSectionPosition();
+          }
+          if ("caches" in window) {
+            caches
+              .open(LB_CACHE_NAME)
+              .then((c) => c.put(LB_ARCHIVE_URL, cloneForCache))
+              .catch(() => {});
+          }
         }
-      })
-      .catch(() => {});
+      } catch {}
+
+      // Refresh from live Cloudflare edge RSS endpoint & persist delta locally
+      try {
+        const rssRes = await fetch("/api/letterboxd");
+        if (rssRes.ok) {
+          const live = await rssRes.json();
+          if (live?.ok && Array.isArray(live.reviews)) {
+            try {
+              localStorage.setItem(LB_RSS_DELTA_KEY, JSON.stringify(live.reviews));
+            } catch {}
+            mergeLbReviews(live.reviews);
+          }
+        }
+      } catch {}
+    }
+
+    loadLetterboxdWithCache();
   }
 })();

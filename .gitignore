@@ -2,3 +2,8 @@
 node_modules/
 dist/
 .env
+.env.*
+.swarm-blocklist.local.json
+*swarm-raw*
+*checkins*.json
+*foursquare*
