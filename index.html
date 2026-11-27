@@ -610,30 +610,35 @@
         </ul>
       </div>
 
-      <!-- Explorer & Photography Notes Strip -->
-      <ul class="explorer-notes-grid" role="list">
-        <li class="explorer-note-card">
-          <span class="badge">Photography Study · Seattle</span>
-          <h3>Photographic Center Northwest (PCNW)</h3>
-          <p>
-            Honed composition and visual storytelling through photography coursework at Seattle’s <strong>Photographic Center Northwest (PCNW)</strong>—part of the city’s UW-connected arts and library community—alongside building camera, HDR, and reminiscing tools at Google Photos.
-          </p>
-        </li>
-        <li class="explorer-note-card">
-          <span class="badge">Global Footprint</span>
-          <h3>39 Countries &amp; All 50 US States</h3>
-          <p>
-            Explored <strong>39 countries</strong> across Europe, Asia-Pacific, North America, and Central Asia, alongside <strong>all 50 US states</strong> (many multiple times) and <strong>8 Canadian provinces &amp; territories</strong>.
-          </p>
-        </li>
-        <li class="explorer-note-card">
-          <span class="badge">Home Bases</span>
-          <h3>Six Cities &amp; Two Continents</h3>
-          <p>
-            Based in <strong>New York City</strong> after 6 years in <strong>San Francisco</strong> (3 with a Pacific Ocean bedroom view), plus <strong>Seattle</strong>, <strong>Arlington VA</strong>, <strong>Pittsburgh</strong>, and <strong>Philadelphia</strong>—along with a summer in <strong>Shanghai</strong> and a month in <strong>London</strong>.
-          </p>
-        </li>
-      </ul>
+      <!-- Collapsible Explorer & Photography Notes Drawer -->
+      <details class="atlas-disclosure explorer-notes-disclosure">
+        <summary>📸 Photography Study &amp; Six Home Bases (PCNW Seattle · NYC · SF · Shanghai · London)</summary>
+        <div class="disclosure-body">
+          <ul class="explorer-notes-grid" role="list">
+            <li class="explorer-note-card">
+              <span class="badge">Photography Study · Seattle</span>
+              <h3>Photographic Center Northwest (PCNW)</h3>
+              <p>
+                Honed composition and visual storytelling through photography coursework at Seattle’s <strong>Photographic Center Northwest (PCNW)</strong>—part of the city’s UW-connected arts and library community—alongside building camera, HDR, and reminiscing tools at Google Photos.
+              </p>
+            </li>
+            <li class="explorer-note-card">
+              <span class="badge">Global Footprint</span>
+              <h3>39 Countries &amp; All 50 US States</h3>
+              <p>
+                Explored <strong>39 countries</strong> across Europe, Asia-Pacific, North America, and Central Asia, alongside <strong>all 50 US states</strong> (many multiple times) and <strong>8 Canadian provinces &amp; territories</strong>.
+              </p>
+            </li>
+            <li class="explorer-note-card">
+              <span class="badge">Home Bases</span>
+              <h3>Six Cities &amp; Two Continents</h3>
+              <p>
+                Based in <strong>New York City</strong> after 6 years in <strong>San Francisco</strong> (3 with a Pacific Ocean bedroom view), plus <strong>Seattle</strong>, <strong>Arlington VA</strong>, <strong>Pittsburgh</strong>, and <strong>Philadelphia</strong>—along with a summer in <strong>Shanghai</strong> and a month in <strong>London</strong>.
+              </p>
+            </li>
+          </ul>
+        </div>
+      </details>
 
       <!-- Social Follow Strip alongside Google Maps Reviews & Photos -->
       <div class="maps-social-callout">
@@ -698,6 +703,7 @@
 
           <div class="letterboxd-more-row">
             <button type="button" class="action-btn" id="gmap-rev-more-btn" hidden>Show More Reviews</button>
+            <button type="button" class="action-btn action-btn-subtle" id="gmap-rev-less-btn" hidden>Show Fewer</button>
             <span class="lb-count-label" id="gmap-rev-count-label"></span>
           </div>
         </div>
@@ -856,7 +862,7 @@
         <span class="section-kicker">Off-screen side quests, bench science &amp; circus rigs</span>
       </div>
 
-      <ul class="eclectic-grid" role="list">
+      <ul class="eclectic-grid" id="eclectic-grid" role="list">
         <li class="eclectic-card">
           <div class="card-meta">
             <span class="badge">Flying Trapeze &amp; Lyra</span>
@@ -881,28 +887,6 @@
 
         <li class="eclectic-card">
           <div class="card-meta">
-            <span class="badge">Mandarin Immersion</span>
-            <span class="card-year">Shanghai · SISU</span>
-          </div>
-          <h3>Mandarin Chinese in Shanghai</h3>
-          <p>
-            Spent a summer living and studying in China at <strong>Shanghai International Studies University</strong> (<em>Mandarin Chinese for Oral Communication</em> &amp; <em>The Structure of Chinese</em>), paired with Chinese studies at CMU.
-          </p>
-        </li>
-
-        <li class="eclectic-card">
-          <div class="card-meta">
-            <span class="badge">Horticulture</span>
-            <span class="card-year">Hands in the Soil</span>
-          </div>
-          <h3>Planting Chrysanthemums</h3>
-          <p>
-            Trading keyboards and camera viewfinders for soil and pruning shears—planting and tending autumn <strong>chrysanthemums</strong> and seasonal blooms whenever there’s a patch of dirt within reach.
-          </p>
-        </li>
-
-        <li class="eclectic-card">
-          <div class="card-meta">
             <span class="badge">25+ Productions</span>
             <span class="card-year">Stage Manager · Director</span>
           </div>
@@ -912,17 +896,49 @@
           </p>
         </li>
 
-        <li class="eclectic-card">
-          <div class="card-meta">
-            <span class="badge">Cinema &amp; Community</span>
-            <span class="card-year">CMU · Google SF</span>
+        <li class="eclectic-extra-item" data-eclectic-extra hidden="until-found">
+          <div class="eclectic-card">
+            <div class="card-meta">
+              <span class="badge">Mandarin Immersion</span>
+              <span class="card-year">Shanghai · SISU</span>
+            </div>
+            <h3>Mandarin Chinese in Shanghai</h3>
+            <p>
+              Spent a summer living and studying in China at <strong>Shanghai International Studies University</strong> (<em>Mandarin Chinese for Oral Communication</em> &amp; <em>The Structure of Chinese</em>), paired with Chinese studies at CMU.
+            </p>
           </div>
-          <h3>Booth Projectionist &amp; Culture Lead</h3>
-          <p>
-            Projected $1 auditorium films with CMU AB Films—spearheading the purchase of a <strong>$30,000 theatre-grade projector</strong>—and later served as <strong>Google San Francisco Culture Lead</strong> managing a $160k event and community grant budget.
-          </p>
+        </li>
+
+        <li class="eclectic-extra-item" data-eclectic-extra hidden="until-found">
+          <div class="eclectic-card">
+            <div class="card-meta">
+              <span class="badge">Horticulture</span>
+              <span class="card-year">Hands in the Soil</span>
+            </div>
+            <h3>Planting Chrysanthemums</h3>
+            <p>
+              Trading keyboards and camera viewfinders for soil and pruning shears—planting and tending autumn <strong>chrysanthemums</strong> and seasonal blooms whenever there’s a patch of dirt within reach.
+            </p>
+          </div>
+        </li>
+
+        <li class="eclectic-extra-item" data-eclectic-extra hidden="until-found">
+          <div class="eclectic-card">
+            <div class="card-meta">
+              <span class="badge">Cinema &amp; Community</span>
+              <span class="card-year">CMU · Google SF</span>
+            </div>
+            <h3>Booth Projectionist &amp; Culture Lead</h3>
+            <p>
+              Projected $1 auditorium films with CMU AB Films—spearheading the purchase of a <strong>$30,000 theatre-grade projector</strong>—and later served as <strong>Google San Francisco Culture Lead</strong> managing a $160k event and community grant budget.
+            </p>
+          </div>
         </li>
       </ul>
+
+      <div class="letterboxd-more-row eclectic-more-row">
+        <button type="button" class="action-btn" id="eclectic-more-btn" aria-expanded="false">Show All 6 Side Quests (+3 more)</button>
+      </div>
 
       <!-- Hosted Letterboxd Film Log, Curated Lists & Reviews (@brslli) -->
       <div id="letterboxd" class="letterboxd-section">
@@ -992,6 +1008,7 @@
 
           <div class="letterboxd-more-row" id="lb-lists-more-row" hidden>
             <button type="button" class="action-btn" id="lb-lists-more-btn">Show All 12 Curated Lists</button>
+            <button type="button" class="action-btn action-btn-subtle" id="lb-lists-less-btn" hidden>Show Fewer Lists</button>
           </div>
         </div>
 
@@ -1023,6 +1040,7 @@
 
         <div class="letterboxd-more-row">
           <button type="button" class="action-btn" id="lb-more-btn" hidden>Show More Reviews</button>
+          <button type="button" class="action-btn action-btn-subtle" id="lb-less-btn" hidden>Show Fewer</button>
           <span class="lb-count-label" id="lb-count-label"></span>
         </div>
       </div>

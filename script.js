@@ -2034,6 +2034,7 @@
   function initHostedMapsReviews(reviewsList) {
     const grid = document.getElementById("gmap-reviews-grid");
     const moreBtn = document.getElementById("gmap-rev-more-btn");
+    const lessBtn = document.getElementById("gmap-rev-less-btn");
     const countLabel = document.getElementById("gmap-rev-count-label");
     const summaryCount = document.getElementById("gmap-rev-summary-count");
     const searchInput = document.getElementById("gmap-rev-search");
@@ -2044,9 +2045,10 @@
       summaryCount.textContent = formatNumber(reviewsList.length);
     }
 
+    const INITIAL_REV_LIMIT = 3;
     let activeFilter = "all";
     let query = "";
-    let visibleLimit = 6;
+    let visibleLimit = INITIAL_REV_LIMIT;
     let baseOrder = shuffleArray(reviewsList);
 
     const isNycAddr = (addr = "") =>
@@ -2121,6 +2123,9 @@
           moreBtn.textContent = `Show More Dispatches (${formatNumber(matches.length - visibleLimit)} remaining)`;
         }
       }
+      if (lessBtn) {
+        lessBtn.hidden = visibleLimit <= INITIAL_REV_LIMIT || matches.length <= INITIAL_REV_LIMIT;
+      }
       if (countLabel) {
         countLabel.textContent = matches.length
           ? `Showing ${formatNumber(slice.length)} of ${formatNumber(matches.length)} hosted Google Maps reviews`
@@ -2131,7 +2136,7 @@
     document.querySelectorAll("[data-gmap-filter]").forEach((btn) => {
       btn.addEventListener("click", () => {
         activeFilter = btn.getAttribute("data-gmap-filter") || "all";
-        visibleLimit = 6;
+        visibleLimit = INITIAL_REV_LIMIT;
         document.querySelectorAll("[data-gmap-filter]").forEach((b) => {
           b.setAttribute("aria-pressed", String(b === btn));
         });
@@ -2142,7 +2147,7 @@
     if (shufBtn) {
       shufBtn.addEventListener("click", () => {
         baseOrder = shuffleArray(reviewsList);
-        visibleLimit = 6;
+        visibleLimit = INITIAL_REV_LIMIT;
         renderGrid();
       });
     }
@@ -2150,14 +2155,21 @@
     if (searchInput) {
       searchInput.addEventListener("input", () => {
         query = searchInput.value.trim();
-        visibleLimit = 6;
+        visibleLimit = INITIAL_REV_LIMIT;
         renderGrid();
       });
     }
 
     if (moreBtn) {
       moreBtn.addEventListener("click", () => {
-        visibleLimit += 12;
+        visibleLimit += 9;
+        renderGrid();
+      });
+    }
+
+    if (lessBtn) {
+      lessBtn.addEventListener("click", () => {
+        visibleLimit = INITIAL_REV_LIMIT;
         renderGrid();
       });
     }
@@ -2266,20 +2278,59 @@
   }
 
   /* ==========================================================================
+     Progressive Disclosure for Eclectic Side Quests (hidden="until-found")
+     ========================================================================== */
+  const eclecticGrid = document.getElementById("eclectic-grid");
+  const eclecticMoreBtn = document.getElementById("eclectic-more-btn");
+  const eclecticExtraItems = Array.from(document.querySelectorAll("[data-eclectic-extra]"));
+
+  if (eclecticGrid && eclecticMoreBtn && eclecticExtraItems.length) {
+    let eclecticExpanded = false;
+
+    const setEclecticExpanded = (expand) => {
+      eclecticExpanded = expand;
+      for (const el of eclecticExtraItems) {
+        if (expand) {
+          el.removeAttribute("hidden");
+        } else if ("onbeforematch" in HTMLElement.prototype) {
+          el.setAttribute("hidden", "until-found");
+        } else {
+          el.hidden = true;
+        }
+      }
+      eclecticMoreBtn.setAttribute("aria-expanded", String(expand));
+      eclecticMoreBtn.textContent = expand
+        ? "Show Fewer Side Quests"
+        : `Show All ${3 + eclecticExtraItems.length} Side Quests (+${eclecticExtraItems.length} more)`;
+    };
+
+    // Fallback from search-hidden-content guide: if browser lacks beforematch, reveal on click cleanly
+    eclecticGrid.addEventListener("beforematch", () => {
+      setEclecticExpanded(true);
+    });
+
+    eclecticMoreBtn.addEventListener("click", () => {
+      setEclecticExpanded(!eclecticExpanded);
+    });
+  }
+
+  /* ==========================================================================
      Hosted Letterboxd Reviews (@brslli) + Auto-Updating Edge RSS Sync
      ========================================================================== */
   const lbGrid = document.getElementById("letterboxd-grid");
   const lbMoreBtn = document.getElementById("lb-more-btn");
+  const lbLessBtn = document.getElementById("lb-less-btn");
   const lbCountLabel = document.getElementById("lb-count-label");
   const lbSearchInput = document.getElementById("lb-search-input");
   const lbShuffleBtn = document.getElementById("lb-shuffle-btn");
   const lbFavShelf = document.getElementById("lb-favorites-shelf");
   const lbFavList = document.getElementById("lb-favorites-list");
 
+  const INITIAL_LB_REV_COUNT = 3;
   let allLbReviews = [];
   let activeLbFilter = "latest";
   let lbSearchQuery = "";
-  let lbVisibleCount = 6;
+  let lbVisibleCount = INITIAL_LB_REV_COUNT;
   let lbShuffledOrder = null;
 
   const posterCache = new Map();
@@ -2546,6 +2597,9 @@
         lbMoreBtn.textContent = `Show More Reviews (${(matches.length - lbVisibleCount).toLocaleString()} remaining)`;
       }
     }
+    if (lbLessBtn) {
+      lbLessBtn.hidden = lbVisibleCount <= INITIAL_LB_REV_COUNT || matches.length <= INITIAL_LB_REV_COUNT;
+    }
     if (lbCountLabel) {
       lbCountLabel.textContent = matches.length
         ? `Showing ${visible.length.toLocaleString()} of ${matches.length.toLocaleString()} hosted reviews`
@@ -2592,7 +2646,7 @@
       btn.addEventListener("click", () => {
         activeLbFilter = btn.getAttribute("data-lb-filter") || "latest";
         lbShuffledOrder = null;
-        lbVisibleCount = 6;
+        lbVisibleCount = INITIAL_LB_REV_COUNT;
         document.querySelectorAll("[data-lb-filter]").forEach((b) => {
           b.setAttribute("aria-pressed", String(b === btn));
         });
@@ -2603,7 +2657,7 @@
     if (lbShuffleBtn) {
       lbShuffleBtn.addEventListener("click", () => {
         lbShuffledOrder = shuffleArray(allLbReviews);
-        lbVisibleCount = 6;
+        lbVisibleCount = INITIAL_LB_REV_COUNT;
         renderLbReviews();
       });
     }
@@ -2611,14 +2665,21 @@
     if (lbSearchInput) {
       lbSearchInput.addEventListener("input", () => {
         lbSearchQuery = lbSearchInput.value.trim();
-        lbVisibleCount = 6;
+        lbVisibleCount = INITIAL_LB_REV_COUNT;
         renderLbReviews();
       });
     }
 
     if (lbMoreBtn) {
       lbMoreBtn.addEventListener("click", () => {
-        lbVisibleCount += 12;
+        lbVisibleCount += 9;
+        renderLbReviews();
+      });
+    }
+
+    if (lbLessBtn) {
+      lbLessBtn.addEventListener("click", () => {
+        lbVisibleCount = INITIAL_LB_REV_COUNT;
         renderLbReviews();
       });
     }
@@ -2713,6 +2774,7 @@
   const lbListsGrid = document.getElementById("lb-lists-grid");
   const lbListsMoreRow = document.getElementById("lb-lists-more-row");
   const lbListsMoreBtn = document.getElementById("lb-lists-more-btn");
+  const lbListsLessBtn = document.getElementById("lb-lists-less-btn");
   const lbListDialog = document.getElementById("lb-list-dialog");
 
   if (lbListDialog) {
@@ -2741,9 +2803,10 @@
   }
 
   if (lbListsGrid) {
+    const INITIAL_LISTS_COUNT = 3;
     let allLists = [];
     let activeListCat = "all";
-    let showAllLists = false;
+    let listsVisibleCount = INITIAL_LISTS_COUNT;
 
     const LIST_CAT_BADGES = {
       tropes: "🎬 Cinema Trope",
@@ -2866,8 +2929,7 @@
         activeListCat === "all"
           ? allLists
           : allLists.filter((l) => l.category === activeListCat);
-      const limit = activeListCat === "all" && !showAllLists ? 6 : matching.length;
-      const visible = matching.slice(0, limit);
+      const visible = matching.slice(0, listsVisibleCount);
 
       lbListsGrid.innerHTML = "";
       for (const listObj of visible) {
@@ -2955,10 +3017,16 @@
       }
 
       if (lbListsMoreRow && lbListsMoreBtn) {
-        const hasMore = activeListCat === "all" && !showAllLists && matching.length > 6;
-        lbListsMoreRow.hidden = !hasMore;
+        const hasMore = matching.length > listsVisibleCount;
+        const canCollapse = listsVisibleCount > INITIAL_LISTS_COUNT && matching.length > INITIAL_LISTS_COUNT;
+        lbListsMoreRow.hidden = !hasMore && !canCollapse;
+        lbListsMoreBtn.hidden = !hasMore;
         if (hasMore) {
-          lbListsMoreBtn.textContent = `Show All ${matching.length} Curated Lists`;
+          const rem = matching.length - listsVisibleCount;
+          lbListsMoreBtn.textContent = `Show More Lists (+${rem} more)`;
+        }
+        if (lbListsLessBtn) {
+          lbListsLessBtn.hidden = !canCollapse;
         }
       }
     }
@@ -2966,6 +3034,7 @@
     document.querySelectorAll("[data-lb-list-filter]").forEach((btn) => {
       btn.addEventListener("click", () => {
         activeListCat = btn.getAttribute("data-lb-list-filter") || "all";
+        listsVisibleCount = INITIAL_LISTS_COUNT;
         document.querySelectorAll("[data-lb-list-filter]").forEach((b) => {
           b.setAttribute("aria-pressed", String(b === btn));
         });
@@ -2975,7 +3044,14 @@
 
     if (lbListsMoreBtn) {
       lbListsMoreBtn.addEventListener("click", () => {
-        showAllLists = true;
+        listsVisibleCount += 6;
+        renderListsShelf();
+      });
+    }
+
+    if (lbListsLessBtn) {
+      lbListsLessBtn.addEventListener("click", () => {
+        listsVisibleCount = INITIAL_LISTS_COUNT;
         renderListsShelf();
       });
     }
