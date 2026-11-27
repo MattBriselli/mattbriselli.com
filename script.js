@@ -2615,4 +2615,291 @@
 
     loadLetterboxdWithCache();
   }
+
+  /* ==========================================================================
+     Curated Letterboxd Lists Shelf + Native <dialog> 2:3 Poster Gallery
+     ========================================================================== */
+  const lbListsGrid = document.getElementById("lb-lists-grid");
+  const lbListsMoreRow = document.getElementById("lb-lists-more-row");
+  const lbListsMoreBtn = document.getElementById("lb-lists-more-btn");
+  const lbListDialog = document.getElementById("lb-list-dialog");
+
+  if (lbListDialog) {
+    lbListDialog.addEventListener("close", () => {
+      lbListDialog.returnValue = "";
+    });
+    // Light-dismiss fallback for browsers without native <dialog closedby="any">
+    if (!("closedBy" in HTMLDialogElement.prototype)) {
+      const isOutside = (ev) => {
+        const r = lbListDialog.getBoundingClientRect();
+        return (
+          ev.clientX < r.left ||
+          ev.clientX > r.right ||
+          ev.clientY < r.top ||
+          ev.clientY > r.bottom
+        );
+      };
+      let pressedOut = false;
+      lbListDialog.addEventListener("pointerdown", (ev) => {
+        pressedOut = isOutside(ev);
+      });
+      lbListDialog.addEventListener("pointerup", (ev) => {
+        if (pressedOut && isOutside(ev)) lbListDialog.close();
+      });
+    }
+  }
+
+  if (lbListsGrid) {
+    let allLists = [];
+    let activeListCat = "all";
+    let showAllLists = false;
+
+    const LIST_CAT_BADGES = {
+      tropes: "🎬 Cinema Trope",
+      yearly: "🎟️ 2026 & Ranked",
+      "places-seasons": "📍 Place & Season"
+    };
+
+    function openListModal(listObj) {
+      if (!lbListDialog || !listObj) return;
+      const titleEl = document.getElementById("lb-list-dialog-title");
+      const descEl = document.getElementById("lb-list-dialog-desc");
+      const badgesEl = document.getElementById("lb-list-dialog-badges");
+      const linkEl = document.getElementById("lb-list-dialog-link");
+      const gridEl = document.getElementById("lb-list-dialog-grid");
+      const footerEl = document.getElementById("lb-list-dialog-footer");
+
+      if (titleEl) titleEl.textContent = listObj.title;
+      if (descEl) {
+        descEl.textContent = listObj.description || "Curated film list by Matt B (@brslli) on Letterboxd.";
+      }
+      if (linkEl) linkEl.href = listObj.url || "https://letterboxd.com/brslli/lists/";
+      if (badgesEl) {
+        badgesEl.innerHTML = "";
+        const b1 = document.createElement("span");
+        b1.className = "badge";
+        b1.textContent = listObj.isRanked ? "🏆 Ranked / Ordered List" : (LIST_CAT_BADGES[listObj.category] || "🎬 Curated List");
+        const b2 = document.createElement("span");
+        b2.className = "lb-list-count";
+        b2.textContent = `${formatNumber(listObj.filmCount)} ${listObj.filmCount === 1 ? "film" : "films"}`;
+        badgesEl.append(b1, b2);
+      }
+
+      if (gridEl) {
+        gridEl.innerHTML = "";
+        const films = listObj.films || [];
+        films.forEach((f, idx) => {
+          const li = document.createElement("li");
+          li.className = "lb-dialog-film";
+
+          const a = document.createElement("a");
+          a.className = "lb-dialog-poster-link";
+          a.href = f.link || listObj.url;
+          a.target = "_blank";
+          a.rel = "noopener noreferrer";
+          a.setAttribute("aria-label", `${f.title}${f.year ? ` (${f.year})` : ""} on Letterboxd`);
+
+          if (f.poster) {
+            const img = document.createElement("img");
+            img.className = "lb-dialog-poster-img";
+            img.src = f.poster;
+            img.alt = `${f.title}${f.year ? ` (${f.year})` : ""} poster`;
+            img.width = 200;
+            img.height = 300;
+            img.loading = "lazy";
+            img.fetchPriority = "low";
+            img.referrerPolicy = "no-referrer";
+            a.appendChild(img);
+          }
+
+          if (f.rank || (/top films/i.test(listObj.title) && listObj.isRanked)) {
+            const rk = document.createElement("span");
+            rk.className = "lb-dialog-rank-pill";
+            rk.textContent = `#${f.rank || idx + 1}`;
+            a.appendChild(rk);
+          }
+
+          const tSpan = document.createElement("span");
+          tSpan.className = "lb-dialog-film-title";
+          tSpan.textContent = f.title;
+
+          const metaSpan = document.createElement("span");
+          metaSpan.className = "lb-dialog-film-meta";
+          if (f.year) {
+            const yr = document.createElement("span");
+            yr.textContent = f.year;
+            metaSpan.appendChild(yr);
+          }
+          if (typeof f.rating === "number" && f.rating > 0) {
+            const st = document.createElement("span");
+            st.className = "lb-stars";
+            const full = Math.floor(f.rating);
+            const half = f.rating - full >= 0.5 ? "½" : "";
+            st.textContent = `${"★".repeat(full)}${half}${f.liked ? " ♥" : ""}`;
+            metaSpan.appendChild(st);
+          } else if (f.liked) {
+            const lk = document.createElement("span");
+            lk.className = "lb-stars";
+            lk.textContent = "♥";
+            metaSpan.appendChild(lk);
+          }
+
+          li.append(a, tSpan, metaSpan);
+
+          if (f.reviewSnippet) {
+            const q = document.createElement("span");
+            q.className = "lb-dialog-film-quote";
+            q.textContent = `“${f.reviewSnippet}”`;
+            li.appendChild(q);
+          }
+
+          gridEl.appendChild(li);
+        });
+      }
+
+      if (footerEl) {
+        const shown = (listObj.films || []).length;
+        footerEl.textContent =
+          listObj.filmCount > shown
+            ? `Showing ${formatNumber(shown)} of ${formatNumber(listObj.filmCount)} films in this list — click “Open on Letterboxd” above to browse all ${formatNumber(listObj.filmCount)}.`
+            : `Showing all ${formatNumber(shown)} ${shown === 1 ? "film" : "films"} in this list.`;
+      }
+
+      if (!lbListDialog.open) {
+        lbListDialog.showModal();
+      }
+    }
+
+    function renderListsShelf() {
+      const matching =
+        activeListCat === "all"
+          ? allLists
+          : allLists.filter((l) => l.category === activeListCat);
+      const limit = activeListCat === "all" && !showAllLists ? 6 : matching.length;
+      const visible = matching.slice(0, limit);
+
+      lbListsGrid.innerHTML = "";
+      for (const listObj of visible) {
+        const li = document.createElement("li");
+        li.className = "lb-list-card";
+
+        // 1. Overlapping 5-poster 2:3 Letterboxd art stack
+        const fanBtn = document.createElement("button");
+        fanBtn.type = "button";
+        fanBtn.className = "lb-list-fan-btn";
+        fanBtn.setAttribute(
+          "aria-label",
+          `Explore ${listObj.title} (${listObj.filmCount} films)`
+        );
+
+        const fanUl = document.createElement("ul");
+        fanUl.className = "lb-list-poster-fan";
+        const previewFilms = (listObj.films || []).filter((f) => f.poster).slice(0, 5);
+        previewFilms.forEach((f, idx) => {
+          const fanLi = document.createElement("li");
+          fanLi.className = "lb-fan-item";
+          fanLi.style.zIndex = String(5 - idx);
+
+          const img = document.createElement("img");
+          img.className = "lb-fan-poster";
+          img.src = f.poster;
+          img.alt = "";
+          img.width = 144;
+          img.height = 216;
+          img.loading = "lazy";
+          img.fetchPriority = "low";
+          img.referrerPolicy = "no-referrer";
+          fanLi.appendChild(img);
+          fanUl.appendChild(fanLi);
+        });
+        fanBtn.appendChild(fanUl);
+        fanBtn.addEventListener("click", () => openListModal(listObj));
+
+        // 2. Meta + Title + Description
+        const metaRow = document.createElement("div");
+        metaRow.className = "lb-list-meta-row";
+        const badge = document.createElement("span");
+        badge.className = "badge";
+        badge.textContent = /top films/i.test(listObj.title)
+          ? "🏆 Ranked Top 10"
+          : (LIST_CAT_BADGES[listObj.category] || "🎬 Curated List");
+        const countEl = document.createElement("span");
+        countEl.className = "lb-list-count";
+        countEl.textContent = `${formatNumber(listObj.filmCount)} ${listObj.filmCount === 1 ? "film" : "films"}`;
+        metaRow.append(badge, countEl);
+
+        const h4 = document.createElement("h4");
+        h4.className = "lb-list-title";
+        h4.textContent = listObj.title;
+
+        const desc = document.createElement("p");
+        desc.className = "lb-list-desc";
+        desc.textContent =
+          listObj.description ||
+          `Curated collection of ${formatNumber(listObj.filmCount)} ${listObj.filmCount === 1 ? "film" : "films"} on Letterboxd.`;
+
+        const actions = document.createElement("div");
+        actions.className = "lb-list-actions";
+
+        const openBtn = document.createElement("button");
+        openBtn.type = "button";
+        openBtn.className = "action-btn lb-open-list-btn";
+        const shownCnt = (listObj.films || []).length;
+        openBtn.textContent =
+          listObj.filmCount > shownCnt
+            ? `Explore Films (${shownCnt}/${listObj.filmCount})`
+            : `Explore ${listObj.filmCount} ${listObj.filmCount === 1 ? "Film" : "Films"}`;
+        openBtn.addEventListener("click", () => openListModal(listObj));
+
+        const extLink = document.createElement("a");
+        extLink.className = "lb-permalink";
+        extLink.href = listObj.url;
+        extLink.target = "_blank";
+        extLink.rel = "noopener noreferrer";
+        extLink.textContent = "Letterboxd ↗";
+
+        actions.append(openBtn, extLink);
+        li.append(fanBtn, metaRow, h4, desc, actions);
+        lbListsGrid.appendChild(li);
+      }
+
+      if (lbListsMoreRow && lbListsMoreBtn) {
+        const hasMore = activeListCat === "all" && !showAllLists && matching.length > 6;
+        lbListsMoreRow.hidden = !hasMore;
+        if (hasMore) {
+          lbListsMoreBtn.textContent = `Show All ${matching.length} Curated Lists`;
+        }
+      }
+    }
+
+    document.querySelectorAll("[data-lb-list-filter]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeListCat = btn.getAttribute("data-lb-list-filter") || "all";
+        document.querySelectorAll("[data-lb-list-filter]").forEach((b) => {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+        renderListsShelf();
+      });
+    });
+
+    if (lbListsMoreBtn) {
+      lbListsMoreBtn.addEventListener("click", () => {
+        showAllLists = true;
+        renderListsShelf();
+      });
+    }
+
+    fetch("data/letterboxd-lists.json")
+      .then((r) => (r.ok ? r.json() : null))
+      .then((payload) => {
+        if (!payload || !Array.isArray(payload.lists)) return;
+        allLists = payload.lists;
+        const statEl = document.getElementById("lb-stat-lists");
+        if (statEl && allLists.length) {
+          statEl.textContent = `${allLists.length}+`;
+        }
+        renderListsShelf();
+      })
+      .catch(() => {});
+  }
 })();

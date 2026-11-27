@@ -30,6 +30,7 @@ jobs:
       - name: Crawl latest Google Maps reviews, photos & live telemetry
         env:
           CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
+          PRIVACY_GEOFENCE_JSON: ${{ secrets.PRIVACY_GEOFENCE_JSON }}
         run: node scripts/crawl-google-maps.mjs --weekly
 
       - name: Commit & push if new dispatches or telemetry updated
@@ -38,7 +39,7 @@ jobs:
           if [ -n "$(git status --porcelain)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/maps-index.json data/maps-reviews.json index.html llms.txt
+            git add data/maps-index.json data/maps-pins.json data/maps-reviews.json index.html llms.txt
             git commit -m "chore(maps): weekly Google Maps contributor & telemetry sync"
             git pull --rebase origin main
             git push origin main

@@ -19,6 +19,7 @@ import { spawn } from "node:child_process";
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import { filterAndBlurPlace, loadPrivacyConfig } from "./privacy-geofence.mjs";
 
 const CONTRIB_ID = "104641095422852249098";
 const REVIEWS_URL = `https://www.google.com/maps/contrib/${CONTRIB_ID}/reviews?hl=en&gl=us`;
@@ -668,6 +669,7 @@ async function main() {
   // Finalize places with coordinates:
   // - Core 348 places in data/maps-index.json (< 256 KB ceiling, globally balanced NYC cap <= 45)
   // - Extended archive in data/maps-pins.json (up to maxPins total across all cities/countries!)
+  const privacyConfig = loadPrivacyConfig();
   const allCandidates = [];
   const seenDedupe = new Set();
   for (const p of store.places.values()) {
@@ -675,6 +677,28 @@ async function main() {
     const hasPhoto = Boolean(p.photos?.length);
     const hasWrittenReview = Boolean(p.caption && p.caption.startsWith("“"));
     if (!hasPhoto && !hasWrittenReview && !p.rating) continue;
+
+    const safe = filterAndBlurPlace(
+      {
+        name: p.name,
+        location: p.location || p.name,
+        category: p.category || "",
+        lat: p.lat,
+        lng: p.lng,
+        dateOrTs: p.date || "",
+        source: "maps"
+      },
+      privacyConfig
+    );
+    if (!safe) continue;
+    p.lat = safe.lat;
+    p.lng = safe.lng;
+    if (safe.blurred) {
+      p.location = safe.location;
+      if (p.caption && !p.caption.startsWith("“")) {
+        p.caption = `Photographed in ${safe.location}.`;
+      }
+    }
 
     const dedupeKey = `${p.name.toLowerCase().trim()}|${p.lat.toFixed(3)}|${p.lng.toFixed(3)}`;
     if (seenDedupe.has(dedupeKey)) continue;

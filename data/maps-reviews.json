@@ -1,6 +1,6 @@
 {
   "lastUpdated": "2026-11-27",
-  "count": 416,
+  "count": 407,
   "reviews": [
     {
       "id": "ChZDSUhNMG9nS0VJQ0FnSUR1eDlITVlREAE",
@@ -1906,17 +1906,6 @@
       "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLcBE9CGHvGPX3b5jt-og7opmU8tBI-39W3-BCpXQfkh_zbRfQfqUFYkTE5hWdRnGQp0BA8_dXjGX9zXeniri3Ku1AeAE7Xx3P0ImoRNRa2UP_g1IxZJPRsR5XnuUVFPAJVSKlwAa6H8kUHd=w1000-h750-p-k-no"
     },
     {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT214ck1WQkpMVTFzYmxCMU1rTkNOblJWWm5selZGRRAB",
-      "name": "Wawa",
-      "location": "970 Baltimore Pike, Glen Mills, PA 19342",
-      "countryIso": "US",
-      "rating": 5,
-      "date": "2026-02-27",
-      "dateText": "Edited 9 months ago",
-      "text": "A very convenient Wawa location, with a large gas station and a full store.",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLf_gcVrWnl8I8v0O2BKUJWV07Ejezl08nyV7wqWs7PARRnwf1HMLZYr3bACYlWwtcVC1WKNHomseGXKcxxdvVpgv25JMBA04WaOFWbgfS6f1ZZb1VJibPxug84kMxOHuLoYdBHnoybBNBeX=w1000-h750-p-k-no"
-    },
-    {
       "id": "ChdDSUhNMG9nS0VJQ0FnSURJazdDSzRBRRAB",
       "name": "Chickie's & Pete's Terminal A",
       "location": "8500 Essington Ave, Philadelphia, PA 19153",
@@ -1930,7 +1919,7 @@
     {
       "id": "ChZDSUhNMG9nS0VJQ0FnTURJbjhtTEp3EAE",
       "name": "Ashley's Restaurant and Bar",
-      "location": "68 W Baltimore Pike, Glen Mills, PA 19342",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-09-27",
@@ -2029,7 +2018,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2tKUFExODVTMEl6VTJscmJHRmFhRzlQVkc1U1MxRRAB",
       "name": "Sancho Pistola's",
-      "location": "19 W Girard Ave, Philadelphia, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-10-27",
@@ -2040,7 +2029,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xsdlNEUnVXVGR6YjA0eVMyWm9OakZKTTBGMlgxRRAB",
       "name": "Impresso Express",
-      "location": "544 E Girard Ave Storefront, Philadelphia, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-10-27",
@@ -2051,7 +2040,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xsbmNGRTFjRFo2ZURWNk9YTkxka2RsV0RkQmJYYxAB",
       "name": "JD Vance Mural",
-      "location": "632 E Girard Ave, Philadelphia, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-10-27",
@@ -2062,7 +2051,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25oNk9XZEphRTloWkUxcVFrUnNWalZJYWt4WVVHYxAB",
       "name": "Front Street Walls",
-      "location": "1601 N Front St, Philadelphia, PA 19122",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-10-27",
@@ -2073,7 +2062,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2s1c1ZXOUhNMlp1YVVWR05UaExZbVp2YWpaTFRsRRAB",
       "name": "Mecha Noodle Bar",
-      "location": "1700 N Front St Ste 2.1, Philadelphia, PA 19122",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-10-27",
@@ -2106,7 +2095,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xCTGQxQmxXaTAxZFVNMVVVMURRamc0WW5OaU1WRRAB",
       "name": "Loco Pez",
-      "location": "2401 E Norris St, Philadelphia, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-08-27",
@@ -2117,7 +2106,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT21aZmN6SkpSbGxYYjJvMWQybzFUVWhvWm5wS1NrRRAB",
       "name": "Rowhome Coffee - Front Street",
-      "location": "2152 N Front St, Philadelphia, PA 19122",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-08-27",
@@ -2126,31 +2115,9 @@
       "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLeTK15YSChGRm_ndfbJTpdVmRTIqvoSEARSiPkMDonFkBSNKzSMUSBm6F7-W8yAqt2cIfdV5QW5MSKOpDDcob5A5D9p2R2bIV2Fn3wFVRT9erG-3--7JWcUWyyxQqnd1Db6yxqPAm1hFyA=w1000-h750-p-k-no"
     },
     {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT2kxa1RHcDZXSFZZVEZsWFdUSjVjRWxPU1Rsc2QwRRAB",
-      "name": "Fishtown Beverage",
-      "location": "2636 E York St, Philadelphia, PA 19125",
-      "countryIso": "US",
-      "rating": 5,
-      "date": "2026-08-27",
-      "dateText": "3 months ago",
-      "text": "Fishtown Beverage may not have the most square footage, but they occupy the space that they have quite well. That includes a really sizable refrigerated section.",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLeutrgMinqPBZtDCyGcVzYYVaw3GZlRnNf4yHVhSKZjcOdUkn_tkPDFzuEQ5avlHUSWhDl3Z33KLNSxKxOMbohcwk6Qqgzf3PCkyBUz00za8ttotWUCwHCv6QigWFnhSBXObDy3NrF9_AM9=w1000-h750-p-k-no"
-    },
-    {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT2xGaGJIUXRNVmx4VEhvNWQzQmpXbWxrZUZCeFJsRRAB",
-      "name": "Wawa",
-      "location": "2535 Aramingo Ave, Philadelphia, PA 19125",
-      "countryIso": "US",
-      "rating": 3,
-      "date": "2026-08-27",
-      "dateText": "3 months ago",
-      "text": "This Wawa is perfectly fine. They have the normal menu and selection, and they have a perfectly fine gas station, but their ordering is very slow, and they forget about online orders. Make sure to check in often to make sure they’re working on your food and/or drinks.",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLfKB6i3n6mwHlp67OAswP7lE2ayExyS_OLYYluYVbCEI2dHyKr6y4hzNe16p7FqwE-TU0aVaJox726r0sn4itV5Mw1U9qCuyh2FUdJ7QN8lPQ9niUEJpu4nKjTZTWmbE5nZR005GFrfRYS6=w1000-h750-p-k-no"
-    },
-    {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2pGQ1NFSmlSbGxaZEc5VGNuUnFWVEZHY1VaVU5tYxAB",
       "name": "Gilda",
-      "location": "300 E Girard Ave, Philadelphia, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-08-27",
@@ -2160,8 +2127,8 @@
     },
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25Sb1pUTjFOMUpvVGtNMlRGWXpOVE41VlRkVGMyYxAB",
-      "name": "ReAnimator Coffee - Fishtown",
-      "location": "1523 E Susquehanna Ave, Philadelphia, PA 19125",
+      "name": "ReAnimator Coffee",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-08-27",
@@ -2172,7 +2139,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25GT2RYSTRNRkZQUkhseVoySnFUVzh5ZEhOS1RuYxAB",
       "name": "PrimoHoagies",
-      "location": "1501 E Susquehanna Ave, Fishtown, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-08-27",
@@ -2183,7 +2150,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2tKTk0wTXlObHAxVmpWWE5GZHpRbmh5UzFBNFoyYxAB",
       "name": "Caletta",
-      "location": "1401 E Susquehanna Ave, Philadelphia, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-08-27",
@@ -2194,7 +2161,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2pscVVqSjBYM05GV1RGSlIwNHdhMmw1YnpaUFVHYxAB",
       "name": "Philly Halal Gyro",
-      "location": "Aramingo Avenue &, E York St, Philadelphia, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 4,
       "date": "2026-07-27",
@@ -2203,20 +2170,9 @@
       "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLcOGXNnptr2aceG5fyTXMmR1iywE5Ymlnsvb-GlNLCecyr-oxy5yw8Wbg2HAS6FaJ5h2a5YoW-Gcrh76ED7z27Y0KTTZqSGSaXKAq5mZEB2VoUQLnS7OkkGMY-ILWB5y-8go5ODmM_-cA=w1000-h750-p-k-no"
     },
     {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT25WQk1WOXhZM05oY1VjdE1FRnZOVll3YmtONmFuYxAB",
-      "name": "Pet Supplies Plus Fishtown",
-      "location": "2475 Aramingo Ave, Philadelphia, PA 19125",
-      "countryIso": "US",
-      "rating": 5,
-      "date": "2026-07-27",
-      "dateText": "4 months ago",
-      "text": "A very well-stocked pet store, with the largest section catering to dogs, followed by cats, and finally fish. I just wish the cat section were a bit larger.",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLcp1RnCnQpaA1Rjo4GYV0kTU7BayaWpt772s_CF96D8IdLF0oyP0CZzj8rG0YJPUA78qEn8lRh_sSQIonfifFfQz9nLIAQevmiqi93ilInacZEbP-RH7w7a-T4uc0YE0iWz2m_YAWxKgl0=w1000-h750-p-k-no"
-    },
-    {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xCUmJXcDFZamxUV0ZadmJHb3hhakpKWm5nNVlYYxAB",
       "name": "The Richmond Shops IGA",
-      "location": "2497 Aramingo Ave, Philadelphia, PA 19125",
+      "location": "Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-07-27",
@@ -2315,7 +2271,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2pnNE1IcHVkMUYwWmpsTlZFRkRObGhEWTE5eExWRRAB",
       "name": "MOD Pizza",
-      "location": "1751 Wilmington Pike Ste F-1, Glen Mills, PA 19342",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-06-27",
@@ -2337,7 +2293,7 @@
     {
       "id": "ChZDSUhNMG9nS0VJQ0FnSUREMDlXWklnEAE",
       "name": "Meghan's",
-      "location": "1117 Smithbridge Rd, Glen Mills, PA 19342",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-06-27",
@@ -2700,7 +2656,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xkQlZtZ3dSRGxHWTBORlNUQnlhM2Q0YW1NM1RsRRAB",
       "name": "Ravanesi Pizzeria, Inc.",
-      "location": "790 Baltimore Pike, Glen Mills, PA 19342",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -2909,7 +2865,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xJMGRIRnJOM2RqVlcxQlgwSkpiRTg1Ym5jeU9FRRAB",
       "name": "Buffalo Wild Wings",
-      "location": "920 Baltimore Pike, Glen Mills, PA 19342",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -3041,7 +2997,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT210S2RVcGlUbkZQY2tkVmFIZFViblYzU1hwVWNuYxAB",
       "name": "CAVA",
-      "location": "1751 Wilmington Pike Ste B-1, Glen Mills, PA 19342",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-04-27",
@@ -3052,7 +3008,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT21reGFHNHlNMHhqWW5kRFdsRjVSbDlsVVU5TGQzYxAB",
       "name": "Masamoto Asian Grill & Sushi Bar",
-      "location": "1810 Wilmington Pike, Glen Mills, PA 19342",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-04-27",
@@ -3128,8 +3084,8 @@
     },
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2tOWVdFNXNkVU4yTFRSeVRWTmtYMHA2U1ZsSWEyYxAB",
-      "name": "Concordville Town Centre",
-      "location": "914 Baltimore Pike, Glen Mills, PA 19342",
+      "name": "Town Centre",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-04-27",
@@ -3635,7 +3591,7 @@
     {
       "id": "ChdDSUhNMG9nS0VJQ0FnTUNvdUp5U3FnRRAB",
       "name": "PetSmart",
-      "location": "800 Hatton Dr, Glen Mills, PA 19342",
+      "location": "Greater Philadelphia, PA",
       "countryIso": "US",
       "rating": 4,
       "date": "2026-03-27",
@@ -3921,7 +3877,7 @@
     {
       "id": "ChdDSUhNMG9nS0VNVFFvZTcwaXBTODdRRRAB",
       "name": "AMC Lincoln Square 13",
-      "location": "1998 Broadway, New York, NY 10023",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -3965,7 +3921,7 @@
     {
       "id": "ChdDSUhNMG9nS0VMMmNtdkdLZ3JfbTlnRRAB",
       "name": "Grand Bazaar NYC",
-      "location": "100 W 77th St, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 4,
       "date": "2026-07-27",
@@ -3976,7 +3932,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xsSVgxSTRXVFpHWDNoUVJFWTFaV2QwVTNaemVsRRAB",
       "name": "The Viand",
-      "location": "517 Columbus Ave, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-08-27",
@@ -3987,7 +3943,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2pCeFNuQTNkakV4TUZkRGNtaHNOREZSVkVkVmRuYxAB",
       "name": "Gray's Papaya",
-      "location": "2090 Broadway, New York, NY 10023",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-08-27",
@@ -3998,7 +3954,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2w5bU1HaFFMVGd3ZUhkbFRXVnVhbE5sYlZWNGNXYxAB",
       "name": "AMC 84th Street 6",
-      "location": "2310 Broadway, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-06-27",
@@ -4008,8 +3964,8 @@
     },
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2paMWJFRnhUaTFrV2poSVVuRmxTVGhVVnpKNE0xRRAB",
-      "name": "7th Street Burger Upper West Side",
-      "location": "424 Amsterdam Ave, New York, NY 10024",
+      "name": "7th Street Burger",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 3,
       "date": "2026-08-27",
@@ -4020,7 +3976,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT21oTVYxaGhWRTlLVXpOS2JFeEtSVXRFUjIwNVdHYxAB",
       "name": "El Gallo Taqueria",
-      "location": "502 Amsterdam Ave #504, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 4,
       "date": "2026-08-27",
@@ -4062,20 +4018,9 @@
       "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLdUJQNgR30H2xFzCdVULOKXR6JmVirLNfAkuAhxaL__UuJSPi5ubqOpaKD32hqNEYuRIKKvqOjzhBx4UvzfmXU8C8mPD1qOvVZcVhH_BsqYSllzUBzzj9PCxrswxOOyyxU81-SRHSWsBac=w1000-h750-p-k-no"
     },
     {
-      "id": "ChZDSUhNMG9nS0VPT0twNXVYcVlLRUxBEAE",
-      "name": "Superfly New York City - Upper West Side Licensed Adult-Use Recreational Dispensary",
-      "location": "57 W 86th St, New York, NY 10024",
-      "countryIso": "US",
-      "rating": 5,
-      "date": "2026-08-27",
-      "dateText": "Edited 3 months ago",
-      "text": "A decent dispensary with a wide selection, and a slightly higher price point. It looks fancy inside, and they’ve got machines where you can view their products.",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLc9ZVU2hDYcmp8CfOBiLjy7kLnyGxH2QujIiPQTKLaEzoy3jOnSeBJeLtpY5D-OMuDQUnGrkPsTnHN72nKmZWdP_Tt5q8X5UN0ysNUnp3IVKJP3aR2gCtQEu2qz0vartHuamfW8=w1000-h750-p-k-no"
-    },
-    {
       "id": "ChZDSUhNMG9nS0VLampfOVd2dmMySGVREAE",
       "name": "The Strand",
-      "location": "450 Columbus Ave, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-07-27",
@@ -4086,7 +4031,7 @@
     {
       "id": "ChZDSUhNMG9nS0VOZnE0cXpMX2FIUERnEAE",
       "name": "Brickman's Columbus Ave",
-      "location": "610 Columbus Ave, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-07-27",
@@ -4097,7 +4042,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25CSE1FWTFTbGN0U0VsaGRrUXhhbmN3YTNGU01IYxAB",
       "name": "Crumbl Cookies",
-      "location": "301 Columbus Ave, New York, NY 10023",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-07-27",
@@ -4119,7 +4064,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25OZmMwWTJkVFZNTTBGTFQyaG5aMGxRVjNCVWQxRRAB",
       "name": "Broad Nosh Bagels",
-      "location": "2350 Broadway, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -4163,24 +4108,13 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xSelgzQjRORU52TWpCemNUUnlXRFp3UWt0MVdIYxAB",
       "name": "The Lake",
-      "location": "Central Park, Bow Bridge, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-06-27",
       "dateText": "Edited 5 months ago",
       "text": "There’s a few bodies of water within Central Park and The Lake is one of the more prominent ones, although not the largest. But for The Pond, it’s the most downtown body of water, so it gives some of the best reflected skyscraper views. You can also see the Dakota and other iconic UWS buildings from here.",
       "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLdO6ov0Nt0bQdqXHGoaSpohBbVH8g8RToSR-59DQJBGProIDy_3KDa9OcSZbPm6qUbLR6YwXc7y2RqiIkZ9wW67wfyEWp6TOQH9iM7mUKTbmRvncO1vtexZaZ71YFtGz4FDTdI62W85U7Z_=w1000-h750-p-k-no"
-    },
-    {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT2xSTWJrNXJPVEJ6VjI5d016QjFZWE5UUXpsVU9GRRAB",
-      "name": "St. Paul the Apostle Church",
-      "location": "405 W 59th St, New York, NY 10019",
-      "countryIso": "US",
-      "rating": 5,
-      "date": "2026-11-20",
-      "dateText": "a week ago",
-      "text": "New York City has no shortage of beautiful churches, but St. Paul the Apostle stands out in that crowded field. Not only does it have a brilliant facade, it has a stunningly colorful, cavernous interior. I could’ve spent hours here studying every detail, this building is truly a work of art.",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLf6U22RnE80lxGV1oQtIAMHvoy42slHUFWACYvogyD5URGT45jrKOkE_Xr9_gs6TMOZzBfWWvP7lk7AESjg_g_Be2dU0ZXIICV4zpp81xMaPomgvDsrFS-xLt0jz9lOw0di9CfabFy3NchC=w1000-h750-p-k-no"
     },
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2s5dFUxaEZiMVZuTlVwSWIyeFhjRWRJYVY5dGFIYxAB",
@@ -4192,17 +4126,6 @@
       "dateText": "2 months ago",
       "text": "A very expansive, indoor miniature golf place, with multiple courses located on the property. It’s a very aesthetically pleasing place, with colorful lights, and good scenes for photography. They also have decent food and drinks. I came here for a work event and we all had a great time",
       "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLevUggwbKmr4BKq9oHnshu3J1zdB-ay6rzF-h79hCyKFk7268BmAOeaQtCdEYjUnPaWjYxkqaWQwle5MWdq0NQH-XpPEliJKYaGNB1u8KWe_yYbQDoWTEd0LznFECmUN_0d2tyx10TBAQub=w1000-h750-p-k-no"
-    },
-    {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT21aRFRGSmhhbFJWUVdwNlNEUkRTRFl5YTJwaGJuYxAB",
-      "name": "Imagine Mosaic",
-      "location": "Imagine, Terrace Dr, New York, NY 10023",
-      "countryIso": "US",
-      "rating": 5,
-      "date": "2026-06-27",
-      "dateText": "5 months ago",
-      "text": "The Upper West Side has its own little, micro Times Square in the former of a tribute to a former Beatle. This is one of the few, rare places that you’ll spot a crowd in the quieter neighborhood, and plenty of vendors hocking their wares, and musicians busking famous Lennon tracks.",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLdGe-UNWDJvzaj6mQ8Doc8nE3saf2vbEcOPftfc-AfFBuE8spDWONT-eVF-tYq1O4g2MzN62P_-THnlm2yRn83yKlUXmwi9i8327s49mIhiLJtzQWPEiUzrIxzdSSfjl6rurcW_-l5pksHC=w1000-h750-p-k-no"
     },
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2t0Wk5HRlVWVmhwVTFreVRYWm5PRTFNZVVsQ05uYxAB",
@@ -4218,7 +4141,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2pSdWRrbzFhR3h2ZDJ0NVQzVk5hMEZsYzNGSVVIYxAB",
       "name": "Peace Fountain by Greg Wyatt",
-      "location": "1047 Amsterdam Ave, New York, NY 10025",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -4240,7 +4163,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT21wZmVHaFVUMk5RUnpnMlprbFpkbW81U0c5eFZIYxAB",
       "name": "City Diner",
-      "location": "2441 Broadway, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 4,
       "date": "2026-02-27",
@@ -4251,7 +4174,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2tWT1dHTkpPSFpPV0VFeVZuQjRha2xoUlhWVldrRRAB",
       "name": "Tom's Restaurant",
-      "location": "2880 Broadway, New York, NY 10025",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -4262,7 +4185,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT210M05sbG5SblpCYUdZNE1XRkJaSFJYVjI1MFUzYxAB",
       "name": "Kossar's Bagels & Bialys",
-      "location": "270 W 72nd St, New York, NY 10023",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -4273,7 +4196,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2s1dVRHdFBaakJFZWpaQllsRTJOM2xxVVdSQmFGRRAB",
       "name": "Hall of Saurischian Dinosaurs",
-      "location": "79 W 79th St, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -4339,7 +4262,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25OTk1XWXhSRFZDYURVd2NsTTFVVFV5Wm1veFdFRRAB",
       "name": "Eleanor Roosevelt Memorial",
-      "location": "W 72nd St, New York, NY 10023",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -4392,17 +4315,6 @@
       "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLcu33whh8pIuV5CaqHH6janh97jimOZ_N5AF9cG1Yo7TumKR2737Pv6n0Ws78E0pQagf8dFXDU2-GL4HyJ8Rpy_Ymy1vPfAMaZVpqKsQ6vy1xsx-dhlr8rnU25MCgrA0TZ3d4jocYamT5Y4=w1000-h750-p-k-no"
     },
     {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT2tWVmNYQXlNSGx5WTJWWVUwZElTamN4TFVaNlluYxAB",
-      "name": "Apthorp Cleaners",
-      "location": "383 Amsterdam Ave, New York, NY 10024",
-      "countryIso": "US",
-      "rating": 5,
-      "date": "2026-06-27",
-      "dateText": "Edited 5 months ago",
-      "text": "Apthorp Cleaners have some of the most elaborate storefront windows that I’ve seen on the UWS. The current two are Barbie and Wicked: For Good, and there’s easily a dozen dolls in each with custom backgrounds and floors, arranged into scenes.",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLeEozadpiSYIcjqcobXpS5FcEyV1LNLMsNG8oHHYtxiG4BsUJqu3Y8REObmSjh1QwZ6kUYZLxhLbYh0JGsJ0RisiO7MWKfygV41HuccO1GNjUk59TQ4akVAcHbt7Coyl1Ohbdu_Ruy4-lo=w1000-h750-p-k-no"
-    },
-    {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25KR1VtRmFZekJVTUU5V1pXRkphM1pGZEhwWllXYxAB",
       "name": "Porto Rico Importing Co.",
       "location": "201 Bleecker St, New York, NY 10012",
@@ -4447,17 +4359,6 @@
       "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLdHRBWe8kZexeuQYNb_Xzw0NqnRKIlxD4hdCdlooLvoW7hTlw88xyPQeanXKL02Z-KX3qBP_jKxrnok8h3TjvIW8lwxCrl7wmy7ojkL6RLBXEKUX0orSu8fZWvmHqCjHAalSL1nP4Qvg_Z0=w1000-h750-p-k-no"
     },
     {
-      "id": "Ci9DQUlRQUNvZENodHljRjlvT21RMk1IRkxYMkY2ZDJaMk9XMXRTbVZqWW1OS1IxRRAB",
-      "name": "Carnegie Hall",
-      "location": "57th Street and, 7th Ave, New York, NY 10019",
-      "countryIso": "US",
-      "rating": 5,
-      "date": "2026-11-23",
-      "dateText": "4 days ago",
-      "text": "Carnegie Hall is one of the preeminent concert venues in the country, if not the world, and you can almost feel the grandeur in the halls. I was lucky enough to see Gustavo Dudamel conduct Tosca here, and will certainly try to return soon",
-      "photo": "https://lh3.googleusercontent.com/grass-cs/AABkmLdb7m4IhXrVHjoeZQtyTPd4ToCY6s_2ZxZQ7QI4z7S-5pGFZ548oNHGttgVNnSMMUNtgvjMtXEw4J2kQ8RkFKynOLyDkQGk2K8sZEMGV9fPmzx_DFWy0KvPGsPuZ00GUtsozKVUmMXvE4A=w1000-h750-p-k-no"
-    },
-    {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2xNMFNsUmxaRmxRZVhWa2VHOVZObHBZWHpWT1dGRRAB",
       "name": "Google NYC - Chelsea Market",
       "location": "75 9th Ave, New York, NY 10011",
@@ -4471,7 +4372,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT25SUVVXMWxjUzFET0dsdGVrZDVXbFJFVnkxMGNuYxAB",
       "name": "Bareburger",
-      "location": "2233 Broadway, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-07-27",
@@ -4493,7 +4394,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2poTFJIUXhiWEZMYjJKNVZtaENkbk00T1hoaGFIYxAB",
       "name": "Just Salad",
-      "location": "670 Columbus Ave, New York, NY 10025",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-02-27",
@@ -4515,7 +4416,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT2tOSk4zbHFWVE14V1hGUExVbG9WVVkwZFdSNVpGRRAB",
       "name": "Mount Tom",
-      "location": "110-116 Riverside Dr, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",
@@ -4559,7 +4460,7 @@
     {
       "id": "Ci9DQUlRQUNvZENodHljRjlvT21nemMzTm5jM2xoUlRSbFRUVlFlVlZWT1VkR1lWRRAB",
       "name": "American Museum of Natural History",
-      "location": "200 Central Prk W, New York, NY 10024",
+      "location": "New York, NY",
       "countryIso": "US",
       "rating": 5,
       "date": "2026-05-27",

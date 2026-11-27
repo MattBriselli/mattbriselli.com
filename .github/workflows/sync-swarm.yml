@@ -1,0 +1,40 @@
+name: Sync Swarm Check-ins (7-Day Delayed & Geofenced)
+
+on:
+  schedule:
+    # Twice weekly (Wednesdays & Sundays at 09:30 UTC) — strictly >7d delayed
+    - cron: "30 9 * * 0,3"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-swarm:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Sync matured (>7d) Swarm check-ins with private geofence
+        env:
+          SWARM_OAUTH_TOKEN: ${{ secrets.SWARM_OAUTH_TOKEN }}
+          PRIVACY_GEOFENCE_JSON: ${{ secrets.PRIVACY_GEOFENCE_JSON }}
+        run: node scripts/sync-swarm-api.mjs
+
+      - name: Commit and push if new matured venues arrived
+        run: |
+          if [[ -n "$(git status --porcelain data/maps-pins.json index.html)" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/maps-pins.json index.html
+            git commit -m "chore(map): sync matured Swarm travel venues"
+            git push
+          else
+            echo "No map pin changes to commit."
+          fi

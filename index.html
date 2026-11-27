@@ -424,10 +424,10 @@
 
         <div class="toolbar-group" role="group" aria-label="Filter slideshow collection">
           <span class="toolbar-label">Slideshow:</span>
-          <button type="button" class="filter-chip" data-slide-filter="all" aria-pressed="true">Shuffled Mix (612)</button>
+          <button type="button" class="filter-chip" data-slide-filter="all" aria-pressed="true">Shuffled Mix (593)</button>
           <button type="button" class="filter-chip" data-slide-filter="international" aria-pressed="false">Global &amp; Canada (228)</button>
-          <button type="button" class="filter-chip" data-slide-filter="us-50" aria-pressed="false">50 US States (310)</button>
-          <button type="button" class="filter-chip" data-slide-filter="nyc" aria-pressed="false">NYC &amp; Broadway (74)</button>
+          <button type="button" class="filter-chip" data-slide-filter="us-50" aria-pressed="false">50 US States (306)</button>
+          <button type="button" class="filter-chip" data-slide-filter="nyc" aria-pressed="false">NYC &amp; Broadway (59)</button>
         </div>
       </div>
 
@@ -484,8 +484,8 @@
 
           <div class="map-legend" id="map-legend">
             <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Slideshow Pin</span>
-            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> 612 Photo Pins</span>
-            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 770 Additional Place Pins (1,382 Total)</span>
+            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> 593 Photo Pins</span>
+            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 767 Additional Place Pins (1,360 Total)</span>
           </div>
 
           <div class="viewport-strip-wrap" id="viewport-strip-wrap">
@@ -506,7 +506,7 @@
         <!-- Right: Synced Multi-Photo Slideshow & Field Notes Card -->
         <div class="slideshow-stage-card" aria-live="polite">
           <div class="slideshow-top-bar">
-            <span class="slide-counter" id="slide-counter">Dispatch 1 of 612</span>
+            <span class="slide-counter" id="slide-counter">Dispatch 1 of 593</span>
             <div class="slideshow-nav-btns" id="slideshow-nav-btns" role="toolbar" focusgroup="toolbar wrap" aria-label="Slideshow navigation">
               <button type="button" class="map-ctrl-btn" id="slide-shuffle-btn" title="Shuffle to a random place across the world">🎲 Shuffle</button>
               <button type="button" class="map-ctrl-btn" id="slide-viewport-next-btn" title="Show the next photo inside the current map area">📍 Next in View</button>
@@ -669,7 +669,7 @@
 
       <!-- Collapsible Hosted Google Maps Written Reviews Explorer -->
       <details class="atlas-disclosure maps-reviews-disclosure" id="maps-reviews-drawer">
-        <summary>📍 Hosted Google Maps Field Reviews (<span id="gmap-rev-summary-count">428</span> Written Dispatches · Searchable + Weekly Sync)</summary>
+        <summary>📍 Hosted Google Maps Field Reviews (<span id="gmap-rev-summary-count">407</span> Written Dispatches · Searchable + Weekly Sync)</summary>
         <div class="disclosure-body">
           <div class="letterboxd-controls">
             <div class="toolbar-group" role="group" aria-label="Filter Google Maps reviews">
@@ -924,13 +924,13 @@
         </li>
       </ul>
 
-      <!-- Hosted Letterboxd Film Log & Reviews (@brslli) -->
+      <!-- Hosted Letterboxd Film Log, Curated Lists & Reviews (@brslli) -->
       <div id="letterboxd" class="letterboxd-section">
         <div class="letterboxd-header">
           <div>
-            <span class="badge">Hosted Film Archive · 1,422 Reviews + Auto-Synced RSS</span>
-            <h3 id="letterboxd-heading">Screening Log &amp; Reviews</h3>
-            <p class="lb-subtitle">“a movie a day or so i say” — full Letterboxd review archive hosted here, with new logs synced automatically.</p>
+            <span class="badge">Hosted Film Archive · 1,422 Reviews · Curated Lists + Auto-Synced RSS</span>
+            <h3 id="letterboxd-heading">Screening Log, Curated Lists &amp; Reviews</h3>
+            <p class="lb-subtitle">“a movie a day or so i say” — curated film lists and full Letterboxd review archive hosted here, synced automatically.</p>
           </div>
           <a href="https://letterboxd.com/brslli/" class="action-link follow-cta-link" target="_blank" rel="noopener noreferrer">
             <span>Follow @brslli on Letterboxd</span>
@@ -956,11 +956,42 @@
               <dt>♥ Liked</dt>
               <dd id="lb-stat-liked">496</dd>
             </div>
+            <div class="lb-stat-pill">
+              <dt>Curated Lists</dt>
+              <dd id="lb-stat-lists">12+</dd>
+            </div>
           </dl>
 
           <div class="lb-favorites-shelf" id="lb-favorites-shelf" hidden>
             <span class="lb-fav-label">Four Favorites</span>
             <ul class="lb-favorites-list" id="lb-favorites-list" role="list"></ul>
+          </div>
+        </div>
+
+        <!-- Curated Letterboxd Lists Shelf (Overlapping 5-Poster 2:3 Art Stacks + Interactive Gallery Modal) -->
+        <div class="lb-lists-showcase" id="lb-lists-showcase" aria-labelledby="lb-lists-heading">
+          <div class="lb-lists-head">
+            <div>
+              <span class="badge">Curated Collections · Click Any List to Browse Films</span>
+              <h4 id="lb-lists-heading">Letterboxd Lists &amp; Cinema Rabbit Holes</h4>
+            </div>
+            <a href="https://letterboxd.com/brslli/lists/" class="action-link" target="_blank" rel="noopener noreferrer">
+              <span>All Lists on Letterboxd</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
+
+          <div class="lb-lists-toolbar" role="group" aria-label="Filter curated film lists">
+            <button type="button" class="filter-chip" data-lb-list-filter="all" aria-pressed="true">All Recent Lists (12)</button>
+            <button type="button" class="filter-chip" data-lb-list-filter="tropes" aria-pressed="false">Tropes &amp; Oddities (5)</button>
+            <button type="button" class="filter-chip" data-lb-list-filter="yearly" aria-pressed="false">2026 &amp; Ranked (3)</button>
+            <button type="button" class="filter-chip" data-lb-list-filter="places-seasons" aria-pressed="false">Places &amp; Seasons (4)</button>
+          </div>
+
+          <ul class="lb-lists-grid" id="lb-lists-grid" role="list" aria-live="polite"></ul>
+
+          <div class="letterboxd-more-row" id="lb-lists-more-row" hidden>
+            <button type="button" class="action-btn" id="lb-lists-more-btn">Show All 12 Curated Lists</button>
           </div>
         </div>
 
@@ -996,6 +1027,30 @@
         </div>
       </div>
     </section>
+
+    <!-- Native Modal Dialog for Exploring Films Inside Any Letterboxd List -->
+    <dialog id="lb-list-dialog" class="lb-list-dialog" closedby="any" aria-labelledby="lb-list-dialog-title">
+      <div class="lb-dialog-header">
+        <div class="lb-dialog-title-wrap">
+          <div class="lb-dialog-badges" id="lb-list-dialog-badges"></div>
+          <h1 id="lb-list-dialog-title">Curated Film List</h1>
+          <p class="lb-dialog-desc" id="lb-list-dialog-desc"></p>
+        </div>
+        <div class="lb-dialog-actions">
+          <a id="lb-list-dialog-link" href="https://letterboxd.com/brslli/lists/" class="action-link" target="_blank" rel="noopener noreferrer">
+            <span>Open on Letterboxd</span>
+            <span class="arrow" aria-hidden="true">↗</span>
+          </a>
+          <form method="dialog">
+            <button type="submit" value="close" class="action-btn lb-dialog-close-btn" autofocus>✕ Close</button>
+          </form>
+        </div>
+      </div>
+      <div class="lb-dialog-body">
+        <ul class="lb-dialog-poster-grid" id="lb-list-dialog-grid" role="list"></ul>
+        <p class="lb-dialog-footer-note" id="lb-list-dialog-footer"></p>
+      </div>
+    </dialog>
   </main>
 
   <footer id="contact" class="site-footer" tabindex="-1">

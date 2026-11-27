@@ -1,0 +1,3995 @@
+{
+  "profileUrl": "https://letterboxd.com/brslli/lists/",
+  "updatedAt": "2026-11-27",
+  "totalListsCount": 12,
+  "lists": [
+    {
+      "id": "55517300",
+      "slug": "features-footage-of-a-fictional-film",
+      "title": "Features Footage of a Fictional Film",
+      "url": "https://letterboxd.com/brslli/list/features-footage-of-a-fictional-film/",
+      "filmCount": 19,
+      "isRanked": false,
+      "category": "tropes",
+      "description": "At some point in the theatrical runtime of the movie, footage from a movie that does not exist (at time of release) is shown.",
+      "films": [
+        {
+          "title": "Home Alone 2: Lost in New York",
+          "year": "1992",
+          "filmBoxdId": "29F6",
+          "link": "https://boxd.it/8almMR",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/i5/04/e8/7t/home%20alone%202-0-600-0-900-crop.jpg?v=03abfa6a99",
+          "rating": 3,
+          "reviewSnippet": "It’s impressive how much of the energy and beats of the original they were able to recapture while giving the movie a new, urba…"
+        },
+        {
+          "title": "I'm Thinking of Ending Things",
+          "year": "2020",
+          "filmBoxdId": "i4IQ",
+          "link": "https://boxd.it/98zR2N",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/3/0/8/0/6/430806-i-m-thinking-of-ending-things-0-600-0-900-crop.jpg?v=16bd3ec573",
+          "rating": 3,
+          "reviewSnippet": "A film made for someone smarter than me. I kinda got it, I think"
+        },
+        {
+          "title": "Jay Kelly",
+          "year": "2025",
+          "filmBoxdId": "EsWw",
+          "link": "https://boxd.it/bX8zv9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/6/4/4/3/8/964438-jay-kelly-0-600-0-900-crop.jpg?v=173fd0d7da",
+          "rating": 3.5,
+          "reviewSnippet": "The classic tale of the consequences of choosing work over life. Well done, as all Baumback projects are, and heartbreaking at…"
+        },
+        {
+          "title": "Scrooged",
+          "year": "1988",
+          "filmBoxdId": "1Y9e",
+          "link": "https://boxd.it/cdqazb",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/9/5/4/46954-scrooged-0-600-0-900-crop.jpg?v=a9ea7a8859",
+          "rating": 3,
+          "reviewSnippet": "“Where are we Trump tower”, when Bill Murray lands in a disgusting sewer in 1988. This isn’t the place for this, but The Appren…"
+        },
+        {
+          "title": "Anaconda",
+          "year": "2025",
+          "filmBoxdId": "KV9g",
+          "link": "https://boxd.it/clEiMH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/8/2/7/7/1118277-anaconda-2025-0-600-0-900-crop.jpg?v=8f1d3ec1ce",
+          "rating": 1,
+          "reviewSnippet": "The real question is how this got a December release when this is one of the most January movies I’ve ever seen"
+        },
+        {
+          "title": "Under the Silver Lake",
+          "year": "2018",
+          "filmBoxdId": "dSAs",
+          "link": "https://boxd.it/cuRdXH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/3/0/8/1/0/330810-under-the-silver-lake-0-600-0-900-crop.jpg?v=28f0cabef3",
+          "rating": 3,
+          "reviewSnippet": "You get a huff of that Pepe Silvia magic in a few scenes"
+        },
+        {
+          "title": "Wonder Man",
+          "year": "2026",
+          "filmBoxdId": "10jdQ",
+          "link": "https://boxd.it/cUwCEx",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/8/5/0/2/3/1485023-wonder-man-2026-0-600-0-900-crop.jpg?v=5672d8a977",
+          "rating": 2,
+          "reviewSnippet": "They had to have the main bad guy say, “oh we need to fill up our fancy new prisons” in the first episode, otherwise you’d be o…"
+        },
+        {
+          "title": "For Your Consideration",
+          "year": "2006",
+          "filmBoxdId": "1NmG",
+          "link": "https://boxd.it/d8i6ov",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/2/8/0/9/42809-for-your-consideration-0-600-0-900-crop.jpg?v=4f216b5ef4",
+          "rating": 3,
+          "reviewSnippet": "Not my favorite Christopher Guest, and a bit too reminiscent of Waiting For Guffman"
+        },
+        {
+          "title": "The Bride!",
+          "year": "2026",
+          "filmBoxdId": "HSw6",
+          "link": "https://boxd.it/dwcJPf",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/4/5/7/6/7/1045767-the-bride-2026-0-600-0-900-crop.jpg?v=1a15412f4b",
+          "rating": 1.5,
+          "reviewSnippet": "Girlboss, Grundy (Solomon), Grand Theft Auto"
+        },
+        {
+          "title": "Planet Terror",
+          "year": "2007",
+          "filmBoxdId": "27Gw",
+          "link": "https://boxd.it/euTv1r",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/6/2/0/50620-planet-terror-0-600-0-900-crop.jpg?v=d8cbbb5a09",
+          "rating": 3.5,
+          "reviewSnippet": "It’s a shame Rose McGowan didn’t have a bigger career. Fuck Harvey Weinstein (all reasons inclusive)"
+        },
+        {
+          "title": "Scary Movie",
+          "year": "2026",
+          "filmBoxdId": "MxEo",
+          "link": "https://boxd.it/eN2UQp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/6/9/1/0/1156910-scary-movie-2026-0-600-0-900-crop.jpg?v=4714559ea7",
+          "rating": 1.5,
+          "reviewSnippet": "Shawn Wayans was just playing Mac from Sunny"
+        },
+        {
+          "title": "Scream 2",
+          "year": "1997",
+          "filmBoxdId": "24Es",
+          "link": "https://boxd.it/4Y2OoN",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/ju/sr/4r/t3/c5AyWNWooMGkJXlqLwmPQCjUwHt-0-600-0-900-crop.jpg?v=b19f368866",
+          "rating": 3,
+          "reviewSnippet": "Not nearly as good as the first, but still pretty fun. After seeing three of these movies, I can confidently say that I’m a fan…"
+        },
+        {
+          "title": "Tropic Thunder",
+          "year": "2008",
+          "filmBoxdId": "20WM",
+          "link": "https://boxd.it/fO6QAx",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/0/3/0/48030-tropic-thunder-0-600-0-900-crop.jpg?v=f75fe170e6",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "There was a time when this movie played weekly on FX or TBS, when I must’ve seen a chunk of this movie dozens of times across m…"
+        },
+        {
+          "title": "The Holiday",
+          "year": "2006",
+          "filmBoxdId": "28ye",
+          "link": "https://boxd.it/5Ebel5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/9/5/3/50953-the-holiday-0-600-0-900-crop.jpg?v=6fb4cb65e6",
+          "rating": 3,
+          "reviewSnippet": "A fine parent trap-y switch movie. I liked the Cameron Diaz coupling more than the Kate Winslet one."
+        },
+        {
+          "title": "Minions & Monsters",
+          "year": "2026",
+          "filmBoxdId": "Odry",
+          "link": "https://boxd.it/f2MorT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/6/8/0/8/1196808-minions-monsters-2026-0-600-0-900-crop.jpg?v=8ff282e996",
+          "rating": 3,
+          "reviewSnippet": "The movie Babylon wishes it was"
+        },
+        {
+          "title": "Teenage Sex and Death at Camp Miasma",
+          "year": "2026",
+          "filmBoxdId": "L9GS",
+          "link": "https://boxd.it/fITdM9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/3/8/6/7/1123867-teenage-sex-and-death-at-camp-miasma-0-600-0-900-crop.jpg?v=f6059120f8",
+          "rating": 3,
+          "reviewSnippet": "I guess I’ll try Jolly Rancher Gummies"
+        },
+        {
+          "title": "La La Land",
+          "year": "2016",
+          "filmBoxdId": "a5fa",
+          "link": "https://boxd.it/fY40tF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/4/0/3/4/4/240344-la-la-land-0-600-0-900-crop.jpg?v=053670ff84",
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "La La Land remains a masterpiece. If Letterboxd gave a Top 5, La La Land would occupy my final slot."
+        },
+        {
+          "title": "The Further Mis-Adventures of Cliff Booth",
+          "year": "2026",
+          "filmBoxdId": "TZdY",
+          "link": "https://letterboxd.com/brslli/film/the-further-mis-adventures-of-cliff-booth/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/3/4/3/3/9/1334339-the-further-mis-adventures-of-cliff-booth-0-600-0-900-crop.jpg?v=60142816e0",
+          "rating": 2.5,
+          "reviewSnippet": "I probably would’ve had a better time with Dingo Dan"
+        },
+        {
+          "title": "Guarding Stars",
+          "year": "2026",
+          "filmBoxdId": "XOd2",
+          "link": "https://letterboxd.com/brslli/film/guarding-stars/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/2/5/4/3/6/1425436-guarding-stars-0-600-0-900-crop.jpg?v=83cbd3596e",
+          "rating": 1.5,
+          "reviewSnippet": "Netflix does Hallmark Christmas Movies now"
+        }
+      ]
+    },
+    {
+      "id": "58695653",
+      "slug": "hey-thats-the-name-of-the-movie",
+      "title": "Hey! That’s the name of the movie",
+      "url": "https://letterboxd.com/brslli/list/hey-thats-the-name-of-the-movie/",
+      "filmCount": 201,
+      "isRanked": false,
+      "category": "tropes",
+      "description": "Cinematic movies in which the movie’s name is said aloud during the movie’s runtime (often, but not exclusively, in an obvious way).",
+      "films": [
+        {
+          "title": "Here",
+          "year": "2024",
+          "filmBoxdId": "zscS",
+          "link": "https://boxd.it/8Hf3nD",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/4/4/9/9/1/844991-here-2024-0-600-0-900-crop.jpg?v=49944d6ac0",
+          "rating": 1.5,
+          "reviewSnippet": "Have you ever gotten too high and stared at a wall sconce and thought, “what have you seen?” Then you  take another rip off you…"
+        },
+        {
+          "title": "Companion",
+          "year": "2025",
+          "filmBoxdId": "F04o",
+          "link": "https://boxd.it/8E9vFV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/7/1/7/2/977172-companion-2025-0-600-0-900-crop.jpg?v=66c5c946ec",
+          "rating": 3.5,
+          "reviewSnippet": "This was fun as hell. Go into this as blind as you can, don’t watch the trailers."
+        },
+        {
+          "title": "Presence",
+          "year": "2024",
+          "filmBoxdId": "H88i",
+          "link": "https://boxd.it/8G9dI1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/2/7/9/3/7/1027937-presence-2024-0-600-0-900-crop.jpg?v=e47f97445a",
+          "rating": 2.5,
+          "reviewSnippet": "Some very smooth camera work, but this just wasn’t for me. I didn’t love the story, I found it really predictable."
+        },
+        {
+          "title": "The Room Next Door",
+          "year": "2024",
+          "filmBoxdId": "Fb4k",
+          "link": "https://boxd.it/8voTT7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/8/1/4/0/0/981400-the-room-next-door-0-600-0-900-crop.jpg?v=6eabb7ce9a",
+          "rating": 2.5,
+          "reviewSnippet": "I’m fairly mixed on this one, because while I found Julianne Moore and Tilda Swinton great, I really didn’t like either Tilda o…"
+        },
+        {
+          "title": "Erin Brockovich",
+          "year": "2000",
+          "filmBoxdId": "2al2",
+          "link": "https://boxd.it/8tXThp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/6/4/0/51640-erin-brockovich-0-600-0-900-crop.jpg?v=6d5ed6af13",
+          "rating": 4,
+          "reviewSnippet": "It’s hard to think of a protagonist that you root for more than Erin. Sometime you need to trust your gut and find a way to get…"
+        },
+        {
+          "title": "Do the Right Thing",
+          "year": "1989",
+          "filmBoxdId": "29gA",
+          "link": "https://boxd.it/8l5jGj",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/zm/fz/vn/ie/obNQLtdeJy3IiKnExWoWBJH8V67-0-600-0-900-crop.jpg?v=b4926532f8",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "While I’m always going to root for some named Mookie wearing a Dodgers uniform, Mookie is an awful pizza delivery guy. That bei…"
+        },
+        {
+          "title": "Abigail",
+          "year": "2024",
+          "filmBoxdId": "G0NA",
+          "link": "https://boxd.it/8dYGS1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/0/1/2/8/5/1001285-abigail-0-600-0-900-crop.jpg?v=39f001008d",
+          "rating": 2.5,
+          "reviewSnippet": "The weakest part of this was the dialogue. I enjoyed the whole ensemble cast and the direction a decent amount."
+        },
+        {
+          "title": "Lee",
+          "year": "2023",
+          "filmBoxdId": "vpTG",
+          "link": "https://boxd.it/8d5b3B",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/4/8/7/7/2/748772-lee-2023-0-600-0-900-crop.jpg?v=e7b2eb09ce",
+          "rating": 2.5,
+          "reviewSnippet": "Going through all of the Oscar likelies, and this was just the most meh. I’m tired of doing WWII flicks, especially when they’r…"
+        },
+        {
+          "title": "Nosferatu",
+          "year": "2024",
+          "filmBoxdId": "f5eG",
+          "link": "https://boxd.it/8agEil",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/5/9/5/0/5/359505-nosferatu-2024-0-600-0-900-crop.jpg?v=a12d4ad648",
+          "rating": 3.5,
+          "reviewSnippet": "Robert Eggers’ Nosferatu was some really quality horror. More jump scares than I would’ve preferred, but a really haunting aest…"
+        },
+        {
+          "title": "A Complete Unknown",
+          "year": "2024",
+          "filmBoxdId": "oBYa",
+          "link": "https://boxd.it/85LBQB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/8/6/5/8/3/586583-a-complete-unknown-0-600-0-900-crop.jpg?v=f14ab6ecf6",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Timmy could do it all: sing, play guitar, play harmonica, but the one skill that he didn’t pick up was motorcycle riding. The v…"
+        },
+        {
+          "title": "Maria",
+          "year": "2024",
+          "filmBoxdId": "Dh4c",
+          "link": "https://boxd.it/884Dwp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/3/6/0/4/0/936040-maria-2024-0-600-0-900-crop.jpg?v=66ba1a738c",
+          "rating": 2.5,
+          "reviewSnippet": "Technically, this was well put together, but it really wasn’t for me and it felt quite flat. I really did like Angelina’s perfo…"
+        },
+        {
+          "title": "Juror #2",
+          "year": "2024",
+          "filmBoxdId": "FRwU",
+          "link": "https://boxd.it/7SOAcT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/9/7/7/2/2/997722-juror-2-0-600-0-900-crop.jpg?v=14601fa694",
+          "rating": 3,
+          "reviewSnippet": "One Guilty Man"
+        },
+        {
+          "title": "Emilia Pérez",
+          "year": "2024",
+          "filmBoxdId": "AP3G",
+          "link": "https://boxd.it/7PrjSF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/7/7/6/0/8/877608-emilia-perez-0-600-0-900-crop.jpg?v=cc7782128e",
+          "rating": 3,
+          "reviewSnippet": "This was good, but ironically I wish it was more of an operetta. Selena had a much larger arc in the second half, and didn’t si…"
+        },
+        {
+          "title": "Anora",
+          "year": "2024",
+          "filmBoxdId": "Egcw",
+          "link": "https://boxd.it/7E6HiP",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/5/9/5/4/0/959540-anora-0-600-0-900-crop.jpg?v=6f92877033",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "This was such a blast and a whirlwind of a time. Anora left me feeling so satisfied in the end, like I got to experience a whol…"
+        },
+        {
+          "title": "IF",
+          "year": "2024",
+          "filmBoxdId": "nJwG",
+          "link": "https://boxd.it/7z6PSL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/6/5/6/5/5/565655-if-0-600-0-900-crop.jpg?v=21d87db193",
+          "rating": 1.5,
+          "reviewSnippet": "Fosters Home for Imaginary Friends walked so this movie could kinda stumble around for a bit. They even took the name Blue!"
+        },
+        {
+          "title": "The Substance",
+          "year": "2024",
+          "filmBoxdId": "zanS",
+          "link": "https://boxd.it/7xYiBH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/3/8/1/4/0/838140-the-substance-0-600-0-900-crop.jpg?v=ab9e1072f8",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "I’m so glad that I started watching horror because of films like this. This was such a fun mix of body horror with a satire abo…"
+        },
+        {
+          "title": "Saturday Night",
+          "year": "2024",
+          "filmBoxdId": "Gpfo",
+          "link": "https://boxd.it/7t4g5V",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/1/0/6/8/3/1010683-saturday-night-0-600-0-900-crop.jpg?v=f4857efc36",
+          "rating": 3,
+          "reviewSnippet": "It’s the Lorne Michaels show and his life is stressful, but Lorne is always able to remain calm and composed and clear eyed for…"
+        },
+        {
+          "title": "Smile",
+          "year": "2022",
+          "filmBoxdId": "xjfE",
+          "link": "https://boxd.it/7hxYAj",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/9/3/8/8/3/793883-smile-0-600-0-900-crop.jpg?v=54791d7575",
+          "rating": 2.5,
+          "reviewSnippet": "Pretty simple horror, but quite effective. My main complaints were it felt a bit slow in a few places, and relied way too heavi…"
+        },
+        {
+          "title": "Reagan",
+          "year": "2024",
+          "filmBoxdId": "o2QA",
+          "link": "https://boxd.it/7ehsff",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/7/3/0/8/2/573082-reagan-0-600-0-900-crop.jpg?v=af733427cb",
+          "rating": 1.5,
+          "reviewSnippet": "Wow, what a weird movie. The whole thing is set from a 2020s Russian POV, and everything is narrated by these Soviet sympathize…"
+        },
+        {
+          "title": "Blink Twice",
+          "year": "2024",
+          "filmBoxdId": "vIOg",
+          "link": "https://boxd.it/7aa0SN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/5/6/0/4/2/756042-blink-twice-0-600-0-900-crop.jpg?v=2f35ddcd4e",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "This is the spiritual successor to Get Out in so many ways, certainly including this being an extremely strong directorial debu…"
+        },
+        {
+          "title": "Late Night with the Devil",
+          "year": "2023",
+          "filmBoxdId": "zo6G",
+          "link": "https://boxd.it/8Hsj8l",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/4/3/4/1/5/843415-late-night-with-the-devil-0-600-0-900-crop.jpg?v=b6c384f7c5",
+          "rating": 3.5,
+          "reviewSnippet": "This was a lot of fun. The “found footage” documentary style intro worked for me, and David Dastmalchian was able to carry the…"
+        },
+        {
+          "title": "Paddington in Peru",
+          "year": "2024",
+          "filmBoxdId": "iJve",
+          "link": "https://boxd.it/8M8jjt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/4/6/4/8/2/446482-paddington-in-peru-0-600-0-900-crop.jpg?v=929c78758b",
+          "rating": 3,
+          "reviewSnippet": "Antonio Banderas and Olivia Colman were giving it their all, everything else was fine and sweet."
+        },
+        {
+          "title": "Apple Cider Vinegar",
+          "year": "2025",
+          "filmBoxdId": "SMcm",
+          "link": "https://boxd.it/8N7CWB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/0/5/4/9/9/1305499-apple-cider-vinegar-2025-0-600-0-900-crop.jpg?v=ac065c657a",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "This is one of those “true story” miniseries where you immediately need to know what actually happened afterwards. It’s 6hrs lo…"
+        },
+        {
+          "title": "The Monkey",
+          "year": "2025",
+          "filmBoxdId": "Gwiu",
+          "link": "https://boxd.it/8W7hiL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/1/3/3/9/3/1013393-the-monkey-2025-0-600-0-900-crop.jpg?v=ac27f20e5a",
+          "rating": 2.5,
+          "reviewSnippet": "Familial Destination"
+        },
+        {
+          "title": "Mickey 17",
+          "year": "2025",
+          "filmBoxdId": "q1Dk",
+          "link": "https://boxd.it/932ZTJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/2/0/2/8/1/620281-mickey-17-0-600-0-900-crop.jpg?v=93e4d2af6d",
+          "rating": 3.5,
+          "reviewSnippet": "I loved a lot of this, and just would’ve preferred a bit less narration - despite how charming Robert Pattinson was at it. Mark…"
+        },
+        {
+          "title": "After Hours",
+          "year": "1985",
+          "filmBoxdId": "1VfS",
+          "link": "https://boxd.it/95O87B",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/2z/7c/vx/lo/qpr5tRmvyx4rbv1gKMKbW1v5JUC-0-600-0-900-crop.jpg?v=3f65cdcb25",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "And that’s why I never leave my house after dark"
+        },
+        {
+          "title": "I'm Thinking of Ending Things",
+          "year": "2020",
+          "filmBoxdId": "i4IQ",
+          "link": "https://boxd.it/98zR2N",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/3/0/8/0/6/430806-i-m-thinking-of-ending-things-0-600-0-900-crop.jpg?v=16bd3ec573",
+          "rating": 3,
+          "reviewSnippet": "A film made for someone smarter than me. I kinda got it, I think"
+        },
+        {
+          "title": "Black Bag",
+          "year": "2025",
+          "filmBoxdId": "KRbM",
+          "link": "https://boxd.it/99hCh7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/6/7/5/5/1116755-black-bag-2025-0-600-0-900-crop.jpg?v=7dbc1baf6f",
+          "rating": 3,
+          "reviewSnippet": "Spies Who Fuck."
+        },
+        {
+          "title": "The Predator",
+          "year": "2018",
+          "filmBoxdId": "bDw2",
+          "link": "https://boxd.it/9a2nLZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/7/7/3/5/1/277351-the-predator-0-600-0-900-crop.jpg?v=9ba96984b4",
+          "rating": 1.5,
+          "reviewSnippet": "Impressively bad script"
+        },
+        {
+          "title": "Thunderbolts*",
+          "year": "2025",
+          "filmBoxdId": "BfbQ",
+          "link": "https://boxd.it/9Aj18T",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/8/7/6/5/3/887653-thunderbolts-0-600-0-900-crop.jpg?v=80380bc773",
+          "rating": 3,
+          "reviewSnippet": "Very paint-by-numbers movie, which still managed to be better than the average Marvel movie. But those accents, oof"
+        },
+        {
+          "title": "Another Simple Favor",
+          "year": "2025",
+          "filmBoxdId": "AO6k",
+          "link": "https://boxd.it/9EXluV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/7/7/2/4/0/877240-another-simple-favor-0-600-0-900-crop.jpg?v=88c4688885",
+          "rating": 1.5,
+          "reviewSnippet": "This was ridiculous and stupid, but not in a good way."
+        },
+        {
+          "title": "Love Hurts",
+          "year": "2025",
+          "filmBoxdId": "KyBc",
+          "link": "https://boxd.it/9F5HpT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/0/9/6/0/9/1109609-love-hurts-2025-0-600-0-900-crop.jpg?v=4369814548",
+          "rating": 2,
+          "reviewSnippet": "The action was very coherent, and that was about it. The dialogue, story, performance, basically everything else was really not…"
+        },
+        {
+          "title": "Rogue One: A Star Wars Story",
+          "year": "2016",
+          "filmBoxdId": "aPvy",
+          "link": "https://boxd.it/9HSj7R",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/5/8/1/2/8/258128-rogue-one-a-star-wars-story-0-600-0-900-crop.jpg?v=eff30d0282",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "Watching this just after finishing season two of Andor really hits different. They really landed the series finale perfectly ri…"
+        },
+        {
+          "title": "Heart Eyes",
+          "year": "2025",
+          "filmBoxdId": "NHOK",
+          "link": "https://boxd.it/9ITead",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/8/4/6/5/1/1184651-heart-eyes-0-600-0-900-crop.jpg?v=423007bf45",
+          "rating": 2.5,
+          "reviewSnippet": "The number of cops that were killed holding guns (pointed at Heart Eyes!!) without firing them. I hate when movies turn me into…"
+        },
+        {
+          "title": "Nonnas",
+          "year": "2025",
+          "filmBoxdId": "HxlQ",
+          "link": "https://boxd.it/9J1PcV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/3/7/6/3/1/1037631-nonnas-0-600-0-900-crop.jpg?v=bc0631c706",
+          "rating": 2.5,
+          "reviewSnippet": "One of the most paint-by-numbers movies I’ve seen, but it did feel like Nonnas was an actual passion project of Vince’s. The on…"
+        },
+        {
+          "title": "Mission: Impossible – The Final Reckoning",
+          "year": "2025",
+          "filmBoxdId": "l7A2",
+          "link": "https://boxd.it/9MWbtN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/3/4/0/3/503403-mission-impossible-the-final-reckoning-0-600-0-900-crop.jpg?v=00eae3744d",
+          "rating": 3.5,
+          "reviewSnippet": "This was a bit less ridiculous than many of the entries in the series. It was a solid ending - though, as with so many of the M…"
+        },
+        {
+          "title": "The Phoenician Scheme",
+          "year": "2025",
+          "filmBoxdId": "H0Ca",
+          "link": "https://boxd.it/9QwySv",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/2/5/0/4/7/1025047-the-phoenician-scheme-0-600-0-900-crop.jpg?v=606059b69f",
+          "rating": 2.5,
+          "reviewSnippet": "In the pantheon of movies, this was one that existed. Everyone was good, Wes was Andersoning, but the movie just didn’t coalesc…"
+        },
+        {
+          "title": "Dog Man",
+          "year": "2025",
+          "filmBoxdId": "t6Iq",
+          "link": "https://boxd.it/9ShKe1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/9/3/7/3/3/693733-dog-man-0-600-0-900-crop.jpg?v=ac7ec8741e",
+          "rating": 2.5,
+          "reviewSnippet": "Certainly a kids movie, but it was fine. It’s been a while since I’ve disliked what Dreamworks has put out."
+        },
+        {
+          "title": "Predator: Killer of Killers",
+          "year": "2025",
+          "filmBoxdId": "QYvQ",
+          "link": "https://boxd.it/9Woj0h",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/6/2/5/6/7/1262567-predator-killer-of-killers-0-600-0-900-crop.jpg?v=937d8a8ccf",
+          "rating": 3,
+          "reviewSnippet": "A series of vignettes, told across centuries and continents, through lifelike dynamic animation. Each of the chapters weaves an…"
+        },
+        {
+          "title": "Snow White",
+          "year": "2025",
+          "filmBoxdId": "fVuc",
+          "link": "https://boxd.it/9ZATKr",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/7/9/5/9/0/379590-disneys-snow-white-0-600-0-900-crop.jpg?v=150e421404",
+          "rating": 1.5,
+          "reviewSnippet": "Who wants a mirror that can only tell them who’s the hottest person in your country? That’s more of a monkey’s paw curse than a…"
+        },
+        {
+          "title": "Are You There God? It's Me, Margaret.",
+          "year": "2023",
+          "filmBoxdId": "kiYC",
+          "link": "https://boxd.it/a3snYr",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/3/9/5/1/483951-are-you-there-god-it-s-me-margaret--0-600-0-900-crop.jpg?v=cbd73d07a9",
+          "rating": 4,
+          "reviewSnippet": "This was a really sweet, heartfelt, bildungsroman. Though it certainly didn’t feel like it was made for me, as a child that gre…"
+        },
+        {
+          "title": "A Minecraft Movie",
+          "year": "2025",
+          "filmBoxdId": "zRro",
+          "link": "https://boxd.it/a4xVWt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/5/4/6/9/1/854691-a-minecraft-movie-0-600-0-900-crop.jpg?v=074e7fed9e",
+          "rating": 1.5,
+          "reviewSnippet": "I liked the part at the end, when the main kid is writing software with a soldering iron."
+        },
+        {
+          "title": "28 Days Later",
+          "year": "2002",
+          "filmBoxdId": "2aXU",
+          "link": "https://boxd.it/a4CyeN",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/qr/28/nz/3f/xaYdxi1PBEAYvqknvAmMPK5Eff3-0-600-0-900-crop.jpg?v=22d7237ed9",
+          "rating": 4,
+          "reviewSnippet": "Excellent zombie movie, even though it was shot on a potato."
+        },
+        {
+          "title": "28 Weeks Later",
+          "year": "2007",
+          "filmBoxdId": "28Bi",
+          "link": "https://boxd.it/a4GvL3",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/9/7/2/50972-28-weeks-later-0-600-0-900-crop.jpg?v=811010e540",
+          "rating": 2.5,
+          "reviewSnippet": "An interesting enough premise, but the execution just wasn’t there. If anything, this makes 28 Days Later look so much better b…"
+        },
+        {
+          "title": "28 Years Later",
+          "year": "2025",
+          "filmBoxdId": "FEGM",
+          "link": "https://boxd.it/a4OzTV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/9/2/7/8/6/992786-28-years-later-0-600-0-900-crop.jpg?v=014e09c066",
+          "rating": 3,
+          "reviewSnippet": "A fitting end to the trilogy (which I binged today). This script had a lot to say about everything from lip filler to death."
+        },
+        {
+          "title": "I Know What You Did Last Summer",
+          "year": "1997",
+          "filmBoxdId": "2588",
+          "link": "https://boxd.it/a6oCu1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/9/6/3/8/49638-i-know-what-you-did-last-summer-0-600-0-900-crop.jpg?v=0800c84ab8",
+          "rating": 2,
+          "reviewSnippet": "I hadn’t seen this movie before, but I’d seen about a dozen parodies of it, so nothing felt new or special. It was more nautica…"
+        },
+        {
+          "title": "My Mom Jayne",
+          "year": "2025",
+          "filmBoxdId": "Uajy",
+          "link": "https://boxd.it/acMn03",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/3/8/6/0/2/1338602-my-mom-jayne-0-600-0-900-crop.jpg?v=cead38776e",
+          "rating": 4,
+          "reviewSnippet": "A really beautiful and intimate telling of the lives of Jayne Mansfield and+by Mariska Hargitay, which leaves you loving both s…"
+        },
+        {
+          "title": "Pineapple Express",
+          "year": "2008",
+          "filmBoxdId": "1WRS",
+          "link": "https://boxd.it/al6fu7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/4/6/2/46462-pineapple-express-0-600-0-900-crop.jpg?v=671682c7b0",
+          "rating": 2.5,
+          "reviewSnippet": "This felt extremely of its time, in all of the ways, good and bad. It’s aged about as well as Franco’s career in 2025, at some…"
+        }
+      ]
+    },
+    {
+      "id": "39077657",
+      "slug": "set-at-christmas",
+      "title": "Set at Christmas 🎄",
+      "url": "https://letterboxd.com/brslli/list/set-at-christmas/",
+      "filmCount": 60,
+      "isRanked": false,
+      "category": "places-seasons",
+      "description": "At least one scene in the film is set during Christmas, or the Christmas season, or a Christmas-y activity is being done.",
+      "films": [
+        {
+          "title": "The Killing of a Sacred Deer",
+          "year": "2017",
+          "filmBoxdId": "dZ5G",
+          "link": "https://boxd.it/5cX8oB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/3/3/3/1/0/333310-the-killing-of-a-sacred-deer-0-600-0-900-crop.jpg?v=f2a22b1af9",
+          "rating": 3.5,
+          "reviewSnippet": "Weird and horrific, but in a good, artsy kinda way."
+        },
+        {
+          "title": "The Holdovers",
+          "year": "2023",
+          "filmBoxdId": "vHza",
+          "link": "https://boxd.it/58SbOh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/5/5/5/6/4/755564-the-holdovers-0-600-0-900-crop.jpg?v=99bbdd8955",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "Wonderfully hearted film about two mirrored twins: half their problems they share, the other half they have the opposite proble…"
+        },
+        {
+          "title": "Mean Girls",
+          "year": "2024",
+          "filmBoxdId": "p6nO",
+          "link": "https://boxd.it/5zoYwz",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/9/8/2/7/4/598274-mean-girls-0-600-0-900-crop.jpg?v=c5c5a46d52",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "I loved this because I really enjoy Mean Girls the Musical, and I love Mean Girls the movie. So I can overlook the various flaw…"
+        },
+        {
+          "title": "Zombieland: Double Tap",
+          "year": "2019",
+          "filmBoxdId": "bgb6",
+          "link": "https://boxd.it/5D3YQN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/6/8/3/8/0/268380-zombieland-double-tap-0-600-0-900-crop.jpg?v=3bbb3e327b",
+          "rating": 2,
+          "reviewSnippet": "Did Jesse Eisenberg narrate the first one, because that may’ve been the worst part of a pretty bad movie. Zoey Deutch was uniqu…"
+        },
+        {
+          "title": "The Holiday",
+          "year": "2006",
+          "filmBoxdId": "28ye",
+          "link": "https://boxd.it/5Ebel5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/9/5/3/50953-the-holiday-0-600-0-900-crop.jpg?v=6fb4cb65e6",
+          "rating": 3,
+          "reviewSnippet": "A fine parent trap-y switch movie. I liked the Cameron Diaz coupling more than the Kate Winslet one."
+        },
+        {
+          "title": "Carry-On",
+          "year": "2024",
+          "filmBoxdId": "C0B2",
+          "link": "https://boxd.it/82WPPH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/0/5/8/7/6/905876-carry-on-2024-0-600-0-900-crop.jpg?v=bc2c1c0d8f",
+          "rating": 3.5,
+          "reviewSnippet": "This has to be the first TSA movie that I’ve ever seen, and it wasn’t bad! I wouldn’t mind having Jason Bateman talking to me i…"
+        },
+        {
+          "title": "A Nonsense Christmas with Sabrina Carpenter",
+          "year": "2024",
+          "filmBoxdId": "QkR8",
+          "link": "https://boxd.it/83amjP",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/4/7/3/2/3/1247323-a-nonsense-christmas-with-sabrina-carpenter-0-600-0-900-crop.jpg?v=161525d20f",
+          "rating": 2.5,
+          "reviewSnippet": "The variety show is such a dated format, but Sabrina did a decent job with hers. That being said, the comedy didn’t really work…"
+        },
+        {
+          "title": "A Carpool Karaoke Christmas",
+          "year": "2024",
+          "filmBoxdId": "RXo2",
+          "link": "https://boxd.it/84jQKj",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/8/5/9/6/7/1285967-a-carpool-karaoke-christmas-0-600-0-900-crop.jpg?v=d56097a82d",
+          "rating": 1.5,
+          "reviewSnippet": "I do like the presented narrative that celebrities are using James Corden as a free uber, and I like even more that he leaves i…"
+        },
+        {
+          "title": "The Simpsons: O C'mon All Ye Faithful",
+          "year": "2024",
+          "filmBoxdId": "RQfM",
+          "link": "https://boxd.it/86Gcfp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/8/3/2/2/5/1283225-the-simpsons-o-cmon-all-ye-faithful-0-600-0-900-crop.jpg?v=8cbed95da3",
+          "rating": 2,
+          "reviewSnippet": "It’s been a long time since I’ve watched The Simpsons, and whoa does everyone sound different from how I remember them."
+        },
+        {
+          "title": "Our Little Secret",
+          "year": "2024",
+          "filmBoxdId": "KVeA",
+          "link": "https://boxd.it/86KU6J",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/8/3/1/0/1118310-our-little-secret-0-600-0-900-crop.jpg?v=8df03ea5f9",
+          "rating": 1.5,
+          "reviewSnippet": "The premise of the movie was dumb and the scenes ranged from awkward to boring. LiLo was fine."
+        },
+        {
+          "title": "Nutcrackers",
+          "year": "2024",
+          "filmBoxdId": "JEkO",
+          "link": "https://boxd.it/87a8QL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/8/7/9/8/1/1087981-nutcrackers-0-600-0-900-crop.jpg?v=7ad04ac41b",
+          "rating": 2.5,
+          "reviewSnippet": "This really took a while to get going, but once it did it had a nice heart."
+        },
+        {
+          "title": "How the Grinch Stole Christmas",
+          "year": "2000",
+          "filmBoxdId": "1ZHQ",
+          "link": "https://boxd.it/88YeBh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/5/5/3/47553-the-grinch-0-600-0-900-crop.jpg?v=38c8815075",
+          "rating": 3,
+          "reviewSnippet": "I grew up on this movie, it’s such a classic, and that’s thanks largely to Jim Carrey, who is an outstanding Grinch, and Ron Ho…"
+        },
+        {
+          "title": "The Grinch",
+          "year": "2018",
+          "filmBoxdId": "chpK",
+          "link": "https://boxd.it/89hLPp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/9/2/6/8/8/292688-the-grinch-0-600-0-900-crop.jpg?v=0006db6665",
+          "rating": 2,
+          "reviewSnippet": "A serviceable Grinch movie, pretty glad it wasn’t mine growing up. The dog was cute and not overused."
+        },
+        {
+          "title": "A Saturday Night Live Christmas Special",
+          "year": "2024",
+          "filmBoxdId": "S2Co",
+          "link": "https://boxd.it/89qr0T",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/8/7/9/7/8/1287978-a-saturday-night-live-christmas-special-0-600-0-900-crop.jpg?v=c25614db91",
+          "rating": 3.5,
+          "reviewSnippet": "This was just a clip show with no new footage whatsoever. Across the 50 years, there was enough quality content to populate an…"
+        },
+        {
+          "title": "Home Alone 2: Lost in New York",
+          "year": "1992",
+          "filmBoxdId": "29F6",
+          "link": "https://boxd.it/8almMR",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/i5/04/e8/7t/home%20alone%202-0-600-0-900-crop.jpg?v=03abfa6a99",
+          "rating": 3,
+          "reviewSnippet": "It’s impressive how much of the energy and beats of the original they were able to recapture while giving the movie a new, urba…"
+        },
+        {
+          "title": "Red One",
+          "year": "2024",
+          "filmBoxdId": "vTBM",
+          "link": "https://boxd.it/7Mw003",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/6/0/1/9/3/760193-red-one-0-600-0-900-crop.jpg?v=b0fe4428fb",
+          "rating": 1.5,
+          "reviewSnippet": "Just purely bad. One of those movies that thinks saying something louder is funnier. Don’t watch this one."
+        },
+        {
+          "title": "Nickel Boys",
+          "year": "2024",
+          "filmBoxdId": "CStQ",
+          "link": "https://boxd.it/8l0YHn",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/2/6/5/8/9/926589-nickel-boys-0-600-0-900-crop.jpg?v=c90912e607",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "Nickel Boys is a lot, it’s beautiful, it’s heavy, it’s got incredible performances, and it’s shot creatively as hell (switching…"
+        },
+        {
+          "title": "The Brutalist",
+          "year": "2024",
+          "filmBoxdId": "k4BO",
+          "link": "https://boxd.it/8q7h5f",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/8/4/2/8/478428-the-brutalist-0-600-0-900-crop.jpg?v=2f8cae2ea5",
+          "rating": 3.5,
+          "reviewSnippet": "I loved all of the Philadelphia porn, but didn’t love the story that they told. That being said, Adrien Brody was excellent."
+        },
+        {
+          "title": "Little Fockers",
+          "year": "2010",
+          "filmBoxdId": "13Ea",
+          "link": "https://boxd.it/awqVnh",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/ld/2u/bc/8p/qsumvJX3GHfGeQOzTGlJfZJNEaW-0-600-0-900-crop.jpg?v=14c8757e6a",
+          "rating": 1.5,
+          "reviewSnippet": "One of those infuriating plots, where every character is acting dumb. This felt very unnecessary, but somehow they’re making an…"
+        },
+        {
+          "title": "Roofman",
+          "year": "2025",
+          "filmBoxdId": "LcIW",
+          "link": "https://boxd.it/bkpMHv",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/5/0/3/3/1125033-roofman-0-600-0-900-crop.jpg?v=017b87fa71",
+          "rating": 3,
+          "reviewSnippet": "Channing Tatum with a really solid performance against an equally good Kirsten Dunst, I just wish the story was a bit better."
+        },
+        {
+          "title": "Play Dirty",
+          "year": "2025",
+          "filmBoxdId": "zuuE",
+          "link": "https://boxd.it/bveW09",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/4/5/8/7/0/845870-play-dirty-2025-1-0-600-0-900-crop.jpg?v=37e055af54",
+          "rating": 2.5,
+          "reviewSnippet": "I miss the days when Shane Black was churning out Kiss Kiss Bang Bangs, but alas, what he’s making now is an effective enough a…"
+        },
+        {
+          "title": "A Very Jonas Christmas Movie",
+          "year": "2025",
+          "filmBoxdId": "SJ3c",
+          "link": "https://boxd.it/bJb52B",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/0/4/2/8/9/1304289-a-very-jonas-christmas-movie-0-600-0-900-crop.jpg?v=7304e06b1c",
+          "rating": 2.5,
+          "reviewSnippet": "Camp Rockettes"
+        },
+        {
+          "title": "Cast Away",
+          "year": "2000",
+          "filmBoxdId": "20i8",
+          "link": "https://boxd.it/bYmnEb",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/ze/6e/v4/6d/w515BrZvczKIxbHurG6HIiYYrba-0-600-0-900-crop.jpg?v=a219b513ea",
+          "rating": 3.5,
+          "reviewSnippet": "I was honestly surprised with how much time they spent off the island. I thought it’d be >=90% casted away, but it’s like 65%,…"
+        },
+        {
+          "title": "The Addams Family",
+          "year": "1991",
+          "filmBoxdId": "267g",
+          "link": "https://boxd.it/c0Zr4R",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/0/1/7/50017-the-addams-family-0-600-0-900-crop.jpg?v=3dd26b5545",
+          "rating": 3,
+          "reviewSnippet": "As someone that watched Wednesday before watching this (as I assume most people will nowadays), it’s interesting how much they…"
+        },
+        {
+          "title": "Last Christmas",
+          "year": "2019",
+          "filmBoxdId": "k38G",
+          "link": "https://boxd.it/c4k3u1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/7/8/6/3/477863-last-christmas-0-600-0-900-crop.jpg?v=c5acc20c96",
+          "rating": 2,
+          "reviewSnippet": "I liked the Yugoslavian immigrant storyline, but wow was the main storyline disappointing. This is one third act reveal that I…"
+        },
+        {
+          "title": "The Muppet Christmas Carol",
+          "year": "1992",
+          "filmBoxdId": "1WgC",
+          "link": "https://boxd.it/c9Hs6z",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/2/3/1/46231-the-muppet-christmas-carol-0-600-0-900-crop.jpg?v=f16d842c57",
+          "rating": 4,
+          "reviewSnippet": "This was remarkably well done! They use as much of the original Dickens text as they could muster, and still manage to make thi…"
+        },
+        {
+          "title": "A Christmas Story",
+          "year": "1983",
+          "filmBoxdId": "29sw",
+          "link": "https://boxd.it/cbic2J",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/3/0/2/51302-a-christmas-story-1983-0-600-0-900-crop.jpg?v=69666c8131",
+          "rating": 3,
+          "reviewSnippet": "Was this made before the backpack was invented? These kids look like professors walking to school with loose books."
+        },
+        {
+          "title": "Home Alone",
+          "year": "1990",
+          "filmBoxdId": "29Fg",
+          "link": "https://letterboxd.com/film/home-alone/",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/e6/mn/oi/ky/8IWPBT1rkAaI8Kpk5V3WfQRklJ7-0-600-0-900-crop.jpg?v=cb22d36a0e",
+          "rating": 3.5
+        },
+        {
+          "title": "A Charlie Brown Christmas",
+          "year": "1965",
+          "filmBoxdId": "1QDq",
+          "link": "https://boxd.it/cbjIn7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/4/0/6/6/44066-a-charlie-brown-christmas-0-600-0-900-crop.jpg?v=9afcdc7950",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "I’ve definitely seen this one before. This one even reached the Jewish households"
+        },
+        {
+          "title": "Jingle All the Way",
+          "year": "1996",
+          "filmBoxdId": "1Z58",
+          "link": "https://boxd.it/cc53VN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/3/1/3/47313-jingle-all-the-way-0-600-0-900-crop.jpg?v=c424e0bd0d",
+          "rating": 3,
+          "reviewSnippet": "I love a movie that captures the pure consumerist angle that is modern American Christmas. And Jingle All the Way captures the…"
+        },
+        {
+          "title": "National Lampoon's Christmas Vacation",
+          "year": "1989",
+          "filmBoxdId": "22wQ",
+          "link": "https://boxd.it/cd70ZF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/6/3/8/48638-national-lampoon-s-christmas-vacation-0-600-0-900-crop.jpg?v=e91c94d094",
+          "rating": 2,
+          "reviewSnippet": "Letterboxd has listed this as a comedy, but there’s not a single part of this that worked for me comedically. Also, what vacation?"
+        },
+        {
+          "title": "Scrooged",
+          "year": "1988",
+          "filmBoxdId": "1Y9e",
+          "link": "https://boxd.it/cdqazb",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/9/5/4/46954-scrooged-0-600-0-900-crop.jpg?v=a9ea7a8859",
+          "rating": 3,
+          "reviewSnippet": "“Where are we Trump tower”, when Bill Murray lands in a disgusting sewer in 1988. This isn’t the place for this, but The Appren…"
+        },
+        {
+          "title": "It's a Wonderful Life",
+          "year": "1946",
+          "filmBoxdId": "28xA",
+          "link": "https://boxd.it/ce3j29",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/9/4/9/50949-it-s-a-wonderful-life-0-600-0-900-crop.jpg?v=64b72dd083",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "As someone who’s seen two dozen versions of the It’s A Wonderful Life story before seeing the original, I just need to accept t…"
+        },
+        {
+          "title": "The Family Stone",
+          "year": "2005",
+          "filmBoxdId": "1Zja",
+          "link": "https://boxd.it/cex72V",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/4/0/0/47400-the-family-stone-0-600-0-900-crop.jpg?v=6cc90d66b1",
+          "rating": 2.5,
+          "reviewSnippet": "It’s always fun to check in on how homophobic media was at different points in the US zeitgeist, and wow, The Family Stone make…"
+        },
+        {
+          "title": "The American President",
+          "year": "1995",
+          "filmBoxdId": "1Zce",
+          "link": "https://boxd.it/cjvoT9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/3/5/7/47357-the-american-president-0-600-0-900-crop.jpg?v=52e18ab783",
+          "rating": 3,
+          "reviewSnippet": "I just wanna see this universe’s Fox News coverage of that final speech."
+        },
+        {
+          "title": "Goodbye June",
+          "year": "2025",
+          "filmBoxdId": "T55Y",
+          "link": "https://boxd.it/clUDp7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/1/2/7/6/3/1312763-goodbye-june-0-600-0-900-crop.jpg?v=efad0a1394",
+          "rating": 2.5,
+          "reviewSnippet": "A somber and personal portrayal of death and family. It’s not all doom and gloom, as Goodbye June also shows how the worst of t…"
+        },
+        {
+          "title": "Greenland 2: Migration",
+          "year": "2026",
+          "filmBoxdId": "vH5O",
+          "link": "https://boxd.it/cyaidJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/5/5/3/8/2/755382-greenland-2-migration-0-600-0-900-crop.jpg?v=c6c6a8303f",
+          "rating": 2,
+          "reviewSnippet": "It only took a mass extinction event to make living in France desirous."
+        },
+        {
+          "title": "About a Boy",
+          "year": "2002",
+          "filmBoxdId": "2aMC",
+          "link": "https://boxd.it/czsF0N",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/8/1/1/51811-about-a-boy-0-600-0-900-crop.jpg?v=5da731fccf",
+          "rating": 3,
+          "reviewSnippet": "Definitely one of the best romcoms that I’ve seen between a middle-aged man and a child."
+        },
+        {
+          "title": "Twinless",
+          "year": "2025",
+          "filmBoxdId": "LkKc",
+          "link": "https://boxd.it/cHXMNr",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/8/1/1/6/1128116-twinless-0-600-0-900-crop.jpg?v=685774222b",
+          "rating": 3,
+          "reviewSnippet": "Any time you’re doing a Dear Evan Hansen, where someone’s taking advantage of the dead to gain proximity to the grieving, it ma…"
+        },
+        {
+          "title": "Wuthering Heights",
+          "year": "2026",
+          "filmBoxdId": "OdIa",
+          "link": "https://boxd.it/d6vShF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/6/9/1/1/1196911-wuthering-heights-2026-0-600-0-900-crop.jpg?v=7d02cf3bdc",
+          "rating": 2.5,
+          "reviewSnippet": "Too much hand stuff for me"
+        },
+        {
+          "title": "The Nightmare Before Christmas",
+          "year": "1993",
+          "filmBoxdId": "1YzQ",
+          "link": "https://boxd.it/di4EqR",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/1/1/9/47119-the-nightmare-before-christmas-0-600-0-900-crop.jpg?v=cc72c8b470",
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "The biggest Mandala Effect of my life may be that Patrick Stewart doesn’t do the opening narration in the movie, despite doing…"
+        },
+        {
+          "title": "Love Actually",
+          "year": "2003",
+          "filmBoxdId": "2aeU",
+          "link": "https://letterboxd.com/film/love-actually/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/6/0/2/51602-love-actually-0-600-0-900-crop.jpg?v=02e0f1f133",
+          "rating": 4
+        },
+        {
+          "title": "The Guardians of the Galaxy Holiday Special",
+          "year": "2022",
+          "filmBoxdId": "t77K",
+          "link": "https://letterboxd.com/film/the-guardians-of-the-galaxy-holiday-special/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/9/3/8/9/0/693890-the-guardians-of-the-galaxy-holiday-special-0-600-0-900-crop.jpg?v=cc3d660612",
+          "rating": 3.5
+        },
+        {
+          "title": "Die Hard",
+          "year": "1988",
+          "filmBoxdId": "2a7u",
+          "link": "https://letterboxd.com/film/die-hard/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/5/5/6/51556-die-hard-0-600-0-900-crop.jpg?v=e24e92754d",
+          "rating": 4
+        },
+        {
+          "title": "Iron Man 3",
+          "year": "2013",
+          "filmBoxdId": "2cBQ",
+          "link": "https://letterboxd.com/film/iron-man-3/",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/5r/0i/96/db/7XiGqZE8meUv7L4720L0tIDd7gO-0-600-0-900-crop.jpg?v=25f900a8ee",
+          "rating": 3.5
+        },
+        {
+          "title": "Let It Snow",
+          "year": "2019",
+          "filmBoxdId": "9kKg",
+          "link": "https://letterboxd.com/film/let-it-snow-2019/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/2/2/4/7/0/222470-let-it-snow-0-600-0-900-crop.jpg?v=c47774e8b5",
+          "rating": 2.5
+        },
+        {
+          "title": "Klaus",
+          "year": "2019",
+          "filmBoxdId": "ipoi",
+          "link": "https://letterboxd.com/film/klaus/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/3/8/7/5/1/438751-klaus-0-600-0-900-crop.jpg?v=f935de3efa",
+          "rating": 4.5
+        },
+        {
+          "title": "Fast Times at Ridgemont High",
+          "year": "1982",
+          "filmBoxdId": "1QnM",
+          "link": "https://boxd.it/eZt8ez",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/ou/6a/j4/uh/lvEenO2CikD4Zo3rFK1flAU99Pr-0-600-0-900-crop.jpg?v=1a3d11da89",
+          "rating": 3,
+          "reviewSnippet": "When Judge Reinhold is whacking it, I’m picturing an undercover Cameron Crowe, hidden in a bathroom closet, furiously scribblin…"
+        }
+      ]
+    },
+    {
+      "id": "78621462",
+      "slug": "watched-in-2026",
+      "title": "Watched in 2026",
+      "url": "https://letterboxd.com/brslli/list/watched-in-2026/",
+      "filmCount": 292,
+      "isRanked": true,
+      "category": "yearly",
+      "description": "An ordered list of (basically*) all of the things that I watched in 2026. * I’m not including shorts, so anything ~50mins or longer makes the cut.",
+      "films": [
+        {
+          "title": "Song Sung Blue",
+          "year": "2025",
+          "filmBoxdId": "QMqO",
+          "link": "https://boxd.it/cmGCtN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/5/7/9/2/3/1257923-song-sung-blue-2025-0-600-0-900-crop.jpg?v=cbd714fcd7",
+          "rating": 3.5,
+          "reviewSnippet": "140mins of Craig Brewster trying to teach me that there’s a song called Soolaimon,"
+        },
+        {
+          "title": "The Guilty",
+          "year": "2021",
+          "filmBoxdId": "kOPW",
+          "link": "https://boxd.it/cmM9Sh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/9/6/1/9/8/496198-the-guilty-0-600-0-900-crop.jpg?v=3b0d782f54",
+          "rating": 2.5,
+          "reviewSnippet": "Well, this movie managed to make my laptop call 911, that sure added some unnecessary stressors to the runtime."
+        },
+        {
+          "title": "Hell of a Summer",
+          "year": "2023",
+          "filmBoxdId": "BLQQ",
+          "link": "https://boxd.it/cmZWQ1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/0/0/2/0/8/900208-hell-of-a-summer-0-600-0-900-crop.jpg?v=6bcf22a0dd",
+          "rating": 2.5,
+          "reviewSnippet": "Not sure if Finn and Billy will remain a writer-director duo, but they’re stronger directors than they are writers."
+        },
+        {
+          "title": "Dark Shadows",
+          "year": "2012",
+          "filmBoxdId": "bQ2",
+          "link": "https://boxd.it/cnVQLF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/5/5/1/4551-dark-shadows-0-600-0-900-crop.jpg?v=714ebd58de",
+          "rating": 2,
+          "reviewSnippet": "A rare miss from Burton IMHO. Far too much Depp doing his tired schtick (though it was maybe 50% of Jack Sparrow’s intensity),…"
+        },
+        {
+          "title": "The Da Vinci Code",
+          "year": "2006",
+          "filmBoxdId": "2a3i",
+          "link": "https://boxd.it/cofgTX",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/z4/t4/e8/sa/3hM1jR5zoee8h9sV5IxmcFt0gbZ-0-600-0-900-crop.jpg?v=fbb523bbbd",
+          "rating": 2.5,
+          "reviewSnippet": "What a silly movie this was. If I remember correctly, the Catholic Church got very upset at this book/movie back when they came…"
+        },
+        {
+          "title": "Fresh",
+          "year": "2022",
+          "filmBoxdId": "tCNi",
+          "link": "https://boxd.it/covI25",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/0/6/0/6/4/706064-fresh-0-600-0-900-crop.jpg?v=546285b96d",
+          "rating": 3,
+          "reviewSnippet": "I went into this completely blind, and honestly, I think that you should too. Don’t read anything else and just watch Fresh, it…"
+        },
+        {
+          "title": "Janet Planet",
+          "year": "2023",
+          "filmBoxdId": "DdWu",
+          "link": "https://boxd.it/coSt4V",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/3/4/8/3/9/934839-janet-planet-0-600-0-900-crop.jpg?v=68d114d081",
+          "rating": 2.5,
+          "reviewSnippet": "I bet Richard Linklater loved this one"
+        },
+        {
+          "title": "Please Don't Destroy: The Treasure of Foggy Mountain",
+          "year": "2023",
+          "filmBoxdId": "BSZg",
+          "link": "https://boxd.it/cpS1h7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/0/2/9/5/1/902951-please-don-t-destroy-the-treasure-of-foggy-mountain-0-600-0-900-crop.jpg?v=d2a60c0b23",
+          "rating": 2,
+          "reviewSnippet": "I generally don’t find Please Don’t Destroy that funny, and this movie was no exception. There were a few bits and jokes that m…"
+        },
+        {
+          "title": "Hellboy",
+          "year": "2004",
+          "filmBoxdId": "28HK",
+          "link": "https://boxd.it/cq8yT1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/0/1/2/51012-hellboy-0-600-0-900-crop.jpg?v=e79d873290",
+          "rating": 3.5,
+          "reviewSnippet": "Definitely wasn’t expecting so much Jeffrey Tambor"
+        },
+        {
+          "title": "This Is 40",
+          "year": "2012",
+          "filmBoxdId": "39WI",
+          "link": "https://boxd.it/cqpDth",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/5/3/2/2/75322-this-is-40-0-600-0-900-crop.jpg?v=f70b0b48d3",
+          "rating": 2,
+          "reviewSnippet": "Yea, this dragged and meandered, but I’d definitely still watch This Is 60"
+        },
+        {
+          "title": "Ghost World",
+          "year": "2001",
+          "filmBoxdId": "28Dy",
+          "link": "https://boxd.it/cqGy8H",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/b3/fj/5k/es/t9uXmc321EzCp6uUYU3XtghjqTq-0-600-0-900-crop.jpg?v=8c0964a95e",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "With both David Cross and “Solid As a Rock”, my Arrested senses were tingling"
+        },
+        {
+          "title": "Short Term 12",
+          "year": "2013",
+          "filmBoxdId": "5f6s",
+          "link": "https://boxd.it/crxBY3",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/0k/gq/x9/2w/wYkiNNMM1O5c2yEcj8Lf9UbaB1a-0-600-0-900-crop.jpg?v=5dda66ba4c",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "This isn’t the app for this, but I’ve lived through a few of these characters’ depicted experiences, and you can clearly tell t…"
+        },
+        {
+          "title": "Just Go with It",
+          "year": "2011",
+          "filmBoxdId": "Doq",
+          "link": "https://boxd.it/crM60B",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/5/1/4/3/15143-just-go-with-it-0-600-0-900-crop.jpg?v=603d5fb33a",
+          "rating": 2.5,
+          "reviewSnippet": "It took 12 years but, the joke’s gone from “Who’s *NSYNC?” to “Who’s Justin Timberlake?”"
+        },
+        {
+          "title": "Practical Magic",
+          "year": "1998",
+          "filmBoxdId": "21HS",
+          "link": "https://boxd.it/crZjY1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/3/2/2/48322-practical-magic-0-600-0-900-crop.jpg?v=5994b961f2",
+          "rating": 3,
+          "reviewSnippet": "While I don’t think Practical Magic is the greatest movie, it does have a certain charm to it, which just works for me."
+        },
+        {
+          "title": "Fury",
+          "year": "2014",
+          "filmBoxdId": "6JwC",
+          "link": "https://boxd.it/csjKUZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/6/0/4/9/7/160497-fury-0-600-0-900-crop.jpg?v=e213dcfd19",
+          "rating": 2,
+          "reviewSnippet": "I’m not really sure what I was supposed to get out of that 2hrs (and a smidge) other than “war is hell”."
+        },
+        {
+          "title": "Ash",
+          "year": "2025",
+          "filmBoxdId": "z5n4",
+          "link": "https://boxd.it/ctEb67",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/3/6/2/1/3/836213-ash-2025-0-600-0-900-crop.jpg?v=39e3f3c32c",
+          "rating": 1.5,
+          "reviewSnippet": "I hated how this movie looked more than any of the other quite meh to bad parts."
+        },
+        {
+          "title": "Under the Silver Lake",
+          "year": "2018",
+          "filmBoxdId": "dSAs",
+          "link": "https://boxd.it/cuRdXH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/3/0/8/1/0/330810-under-the-silver-lake-0-600-0-900-crop.jpg?v=28f0cabef3",
+          "rating": 3,
+          "reviewSnippet": "You get a huff of that Pepe Silvia magic in a few scenes"
+        },
+        {
+          "title": "Famous Last Words: Dr. Jane Goodall",
+          "year": "2025",
+          "filmBoxdId": "Y0Ry",
+          "link": "https://boxd.it/cvRouZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/3/0/3/0/0/1430300-famous-last-words-dr-jane-goodall-0-600-0-900-crop.jpg?v=778f0dc646",
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "Truly something special"
+        },
+        {
+          "title": "Greenland",
+          "year": "2020",
+          "filmBoxdId": "j1Um",
+          "link": "https://boxd.it/cx5CUJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/5/3/5/5/7/453557-greenland-0-600-0-900-crop.jpg?v=7b74f6dd73",
+          "rating": 2,
+          "reviewSnippet": "I own that floral notepad!"
+        },
+        {
+          "title": "Marcello Hernández: American Boy",
+          "year": "2026",
+          "filmBoxdId": "ZAbA",
+          "link": "https://boxd.it/cxSDLB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/6/7/7/1/1/1467711-marcello-hernandez-american-boy-0-600-0-900-crop.jpg?v=69574b840b",
+          "rating": 3,
+          "reviewSnippet": "It’s a lot of “white people are like… while Latin people are like….”, but it’s funny and it works more than it doesn’t! I prefe…"
+        },
+        {
+          "title": "Greenland 2: Migration",
+          "year": "2026",
+          "filmBoxdId": "vH5O",
+          "link": "https://boxd.it/cyaidJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/5/5/3/8/2/755382-greenland-2-migration-0-600-0-900-crop.jpg?v=c6c6a8303f",
+          "rating": 2,
+          "reviewSnippet": "It only took a mass extinction event to make living in France desirous."
+        },
+        {
+          "title": "Dead Man's Wire",
+          "year": "2025",
+          "filmBoxdId": "M8wu",
+          "link": "https://boxd.it/cyR0rp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/4/7/2/5/1/1147251-dead-mans-wire-0-600-0-900-crop.jpg?v=75bec36eec",
+          "rating": 3.5,
+          "reviewSnippet": "A very smooth movie, carried by a crazed Bill Skarsgård and an especially cool Colman Domingo. Al Pacino was great when he was…"
+        },
+        {
+          "title": "The End",
+          "year": "2024",
+          "filmBoxdId": "xfAe",
+          "link": "https://boxd.it/cyWY4P",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/9/2/4/7/3/792473-the-end-2024-0-600-0-900-crop.jpg?v=d1f4ed9c7f",
+          "rating": 2,
+          "reviewSnippet": "Wow, did this not work for me. I can recognize that The End is a quality piece of filmmaking but this was a slog to get through…"
+        },
+        {
+          "title": "The Toxic Avenger",
+          "year": "2023",
+          "filmBoxdId": "bgbq",
+          "link": "https://boxd.it/cz5aWl",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/6/8/3/8/2/268382-the-toxic-avenger-2023-0-600-0-900-crop.jpg?v=d28ec39941",
+          "rating": 2.5,
+          "reviewSnippet": "This has got a decently strong style and world building, but that’s sadly about it"
+        },
+        {
+          "title": "About a Boy",
+          "year": "2002",
+          "filmBoxdId": "2aMC",
+          "link": "https://boxd.it/czsF0N",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/8/1/1/51811-about-a-boy-0-600-0-900-crop.jpg?v=5da731fccf",
+          "rating": 3,
+          "reviewSnippet": "Definitely one of the best romcoms that I’ve seen between a middle-aged man and a child."
+        },
+        {
+          "title": "Point Break",
+          "year": "1991",
+          "filmBoxdId": "2958",
+          "link": "https://boxd.it/cA5IeV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/1/5/7/51157-point-break-0-600-0-900-crop.jpg?v=3cd33a67b2",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "“I AM AN FBI AGENT”"
+        },
+        {
+          "title": "People We Meet on Vacation",
+          "year": "2026",
+          "filmBoxdId": "D8ME",
+          "link": "https://boxd.it/cAdEkh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/3/2/8/5/6/932856-people-we-meet-on-vacation-0-600-0-900-crop.jpg?v=c98853a2fc",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Best Pixel Bud advert of all time"
+        },
+        {
+          "title": "Primate",
+          "year": "2025",
+          "filmBoxdId": "Obz6",
+          "link": "https://boxd.it/cAtpqB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/6/0/8/6/1196086-primate-2025-0-600-0-900-crop.jpg?v=a12c6e9ce8",
+          "rating": 2,
+          "reviewSnippet": "“Who the fuck has a pet chimp?” My thoughts exactly."
+        },
+        {
+          "title": "The Player",
+          "year": "1992",
+          "filmBoxdId": "1WlM",
+          "link": "https://boxd.it/cAFjzV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/2/6/3/46263-the-player-0-600-0-900-crop.jpg?v=f62c0b2e5f",
+          "rating": 3,
+          "reviewSnippet": "My god Tim Robbins is huge"
+        },
+        {
+          "title": "The Game",
+          "year": "1997",
+          "filmBoxdId": "26vC",
+          "link": "https://boxd.it/cCXPpn",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/p4/tj/oj/ph/4b7QXyDJsDFXrwVHUNlrmezCZJC-0-600-0-900-crop.jpg?v=0f6a2cc0bb",
+          "rating": 3.5,
+          "reviewSnippet": "Some strong early Fincher direction, and a fun plot that hooked me, and kept me on the hook. I called a turn or two, but enjoye…"
+        },
+        {
+          "title": "28 Years Later: The Bone Temple",
+          "year": "2026",
+          "filmBoxdId": "MwlA",
+          "link": "https://boxd.it/cETyGh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/6/4/0/9/1156409-28-years-later-the-bone-temple-0-600-0-900-crop.jpg?v=131058c6ff",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "I don’t know if Alex Garland knew when he wrote 28 Days Later that he’d still be writing about this world more than two decades…"
+        },
+        {
+          "title": "Bram Stoker's Dracula",
+          "year": "1992",
+          "filmBoxdId": "223a",
+          "link": "https://boxd.it/cEWEXp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/4/5/4/48454-bram-stoker-s-dracula-0-600-0-900-crop.jpg?v=18a4a777e2",
+          "rating": 4,
+          "reviewSnippet": "Saying “Bram Stoker’s Dracula” is a bit like saying “Saban’s Power Rangers”, aren’t they all Saban’s Power Rangers?"
+        },
+        {
+          "title": "The Thinking Game",
+          "year": "2024",
+          "filmBoxdId": "MD7q",
+          "link": "https://boxd.it/cFMEil",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/9/0/1/2/1159012-the-thinking-game-0-600-0-900-crop.jpg?v=c1ccbc0d32",
+          "rating": 3,
+          "reviewSnippet": "Cool to see gLinux in a Doc."
+        },
+        {
+          "title": "The Rip",
+          "year": "2026",
+          "filmBoxdId": "NP5y",
+          "link": "https://boxd.it/cFRa8P",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/8/7/4/4/6/1187446-the-rip-2026-0-600-0-900-crop.jpg?v=d7686b3035",
+          "rating": 2.5,
+          "reviewSnippet": "The story is interesting enough, but the writing ain’t great. A whole lot of tell, and way less show. Anyways, Matt and Ben wer…"
+        },
+        {
+          "title": "The King",
+          "year": "2019",
+          "filmBoxdId": "ieZs",
+          "link": "https://boxd.it/cGBq0J",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/3/4/7/5/3/434753-the-king-0-600-0-900-crop.jpg?v=0c5cfedd4a",
+          "rating": 3.5,
+          "reviewSnippet": "Better than I was expecting, especially the battle."
+        },
+        {
+          "title": "The Lost Daughter",
+          "year": "2021",
+          "filmBoxdId": "kgww",
+          "link": "https://boxd.it/cGM5H5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/3/0/0/8/483008-the-lost-daughter-0-600-0-900-crop.jpg?v=d94060af3e",
+          "rating": 3,
+          "reviewSnippet": "Seeing Dakota Johnson on my holiday would also set me off"
+        },
+        {
+          "title": "Pi",
+          "year": "1998",
+          "filmBoxdId": "2ajq",
+          "link": "https://boxd.it/cGYKS3",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/6/3/0/51630-pi-0-600-0-900-crop.jpg?v=ddc5842725",
+          "rating": 3,
+          "reviewSnippet": "Really strong direction-wise, with a pretty out there story"
+        },
+        {
+          "title": "Hotel Transylvania: Transformania",
+          "year": "2022",
+          "filmBoxdId": "lwCC",
+          "link": "https://boxd.it/cHNxwZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/3/0/2/9/513029-hotel-transylvania-transformania-0-600-0-900-crop.jpg?v=8c453a8370",
+          "rating": 2,
+          "reviewSnippet": "They made one of these without the Sandman?!? And also, Genndy isn’t back to direct?! How dare they!"
+        },
+        {
+          "title": "Twinless",
+          "year": "2025",
+          "filmBoxdId": "LkKc",
+          "link": "https://boxd.it/cHXMNr",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/8/1/1/6/1128116-twinless-0-600-0-900-crop.jpg?v=685774222b",
+          "rating": 3,
+          "reviewSnippet": "Any time you’re doing a Dear Evan Hansen, where someone’s taking advantage of the dead to gain proximity to the grieving, it ma…"
+        },
+        {
+          "title": "A Big Bold Beautiful Journey",
+          "year": "2025",
+          "filmBoxdId": "Lcle",
+          "link": "https://boxd.it/cI78cF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/4/8/8/6/1124886-a-big-bold-beautiful-journey-0-600-0-900-crop.jpg?v=23272418a3",
+          "rating": 2,
+          "reviewSnippet": "This felt so flat for some grand sweeping epic. I’m not sure if it was the direction, the writing, or the lack of background mu…"
+        },
+        {
+          "title": "Night at the Museum: Secret of the Tomb",
+          "year": "2014",
+          "filmBoxdId": "5x3m",
+          "link": "https://boxd.it/cIhysJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/1/8/7/0/131870-night-at-the-museum-secret-of-the-tomb-0-600-0-900-crop.jpg?v=ee923b80cf",
+          "rating": 1.5,
+          "reviewSnippet": "While I miss Robin Williams, the rest of what was going on here I could’ve done without."
+        },
+        {
+          "title": "The Twilight Saga: New Moon",
+          "year": "2009",
+          "filmBoxdId": "1Hj2",
+          "link": "https://boxd.it/cIWsNN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/0/4/8/0/40480-the-twilight-saga-new-moon-0-600-0-900-crop.jpg?v=ba5ab4ba1e",
+          "rating": 2,
+          "reviewSnippet": "Definitely not my kinda trash, but I will say (from only watching this and the first movie), I’m definitely Edward over Jacob."
+        },
+        {
+          "title": "The Twilight Saga: Eclipse",
+          "year": "2010",
+          "filmBoxdId": "1ytW",
+          "link": "https://boxd.it/cJ745J",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/7/0/8/8/37088-the-twilight-saga-eclipse-0-600-0-900-crop.jpg?v=b7981ac336",
+          "rating": 1.5,
+          "reviewSnippet": "My least favorite of the three that I’ve watched so far, but I’m now too far in to get out."
+        },
+        {
+          "title": "The Twilight Saga: Breaking Dawn – Part 1",
+          "year": "2011",
+          "filmBoxdId": "DdM",
+          "link": "https://boxd.it/cJlzOt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/5/0/7/7/15077-the-twilight-saga-breaking-dawn-part-1-0-600-0-900-crop.jpg?v=00df403dcd",
+          "rating": 1,
+          "reviewSnippet": "They spend two movies establishing that imprinting is a thing, and seeding that it’s going to happen, just for it to happen to…"
+        },
+        {
+          "title": "The Twilight Saga: Breaking Dawn – Part 2",
+          "year": "2012",
+          "filmBoxdId": "DdC",
+          "link": "https://boxd.it/cJqVwr",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/5/0/7/6/15076-the-twilight-saga-breaking-dawn-part-2-0-600-0-900-crop.jpg?v=1557beaa77",
+          "rating": 1,
+          "reviewSnippet": "They split the last book into two movies so both movies could have awful endings (the battle, not the Christina Perri song)"
+        },
+        {
+          "title": "Inferno",
+          "year": "2016",
+          "filmBoxdId": "6dMS",
+          "link": "https://boxd.it/cLew4V",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/8/2/9/7/148297-inferno-0-600-0-900-crop.jpg?v=65031d44bf",
+          "rating": 2,
+          "reviewSnippet": "Did Thanos steal the plot of Inferno?"
+        },
+        {
+          "title": "Mel Brooks: The 99 Year Old Man!",
+          "year": "2026",
+          "filmBoxdId": "10m2G",
+          "link": "https://boxd.it/cNZ5HD",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/8/6/1/0/7/1486107-mel-brooks-the-99-year-old-man-0-600-0-900-crop.jpg?v=f2fec29fbe",
+          "rating": 3.5,
+          "reviewSnippet": "Judd’s really loving making these 3-4hr, two-part Docs. I’ve seen a few of his now, and they’re all fine enough. I’m here for w…"
+        },
+        {
+          "title": "Mercy",
+          "year": "2026",
+          "filmBoxdId": "KYv0",
+          "link": "https://boxd.it/cO89dl",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/9/5/6/5/1119565-mercy-2026-0-600-0-900-crop.jpg?v=44de7ae605",
+          "rating": 1,
+          "reviewSnippet": "Why is Amazon still making COVID movies in 2026?"
+        }
+      ]
+    },
+    {
+      "id": "78621559",
+      "slug": "watched-in-theatres-2026",
+      "title": "Watched in Theatres 2026",
+      "url": "https://letterboxd.com/brslli/list/watched-in-theatres-2026/",
+      "filmCount": 67,
+      "isRanked": true,
+      "category": "yearly",
+      "description": "A list of the films that I saw in theatres in 2026 (order by date seen).",
+      "films": [
+        {
+          "title": "Song Sung Blue",
+          "year": "2025",
+          "filmBoxdId": "QMqO",
+          "link": "https://boxd.it/cmGCtN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/5/7/9/2/3/1257923-song-sung-blue-2025-0-600-0-900-crop.jpg?v=cbd714fcd7",
+          "rank": 1,
+          "rating": 3.5,
+          "reviewSnippet": "140mins of Craig Brewster trying to teach me that there’s a song called Soolaimon,"
+        },
+        {
+          "title": "Greenland 2: Migration",
+          "year": "2026",
+          "filmBoxdId": "vH5O",
+          "link": "https://boxd.it/cyaidJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/5/5/3/8/2/755382-greenland-2-migration-0-600-0-900-crop.jpg?v=c6c6a8303f",
+          "rank": 2,
+          "rating": 2,
+          "reviewSnippet": "It only took a mass extinction event to make living in France desirous."
+        },
+        {
+          "title": "Dead Man's Wire",
+          "year": "2025",
+          "filmBoxdId": "M8wu",
+          "link": "https://boxd.it/cyR0rp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/4/7/2/5/1/1147251-dead-mans-wire-0-600-0-900-crop.jpg?v=75bec36eec",
+          "rank": 3,
+          "rating": 3.5,
+          "reviewSnippet": "A very smooth movie, carried by a crazed Bill Skarsgård and an especially cool Colman Domingo. Al Pacino was great when he was…"
+        },
+        {
+          "title": "Primate",
+          "year": "2025",
+          "filmBoxdId": "Obz6",
+          "link": "https://boxd.it/cAtpqB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/6/0/8/6/1196086-primate-2025-0-600-0-900-crop.jpg?v=a12c6e9ce8",
+          "rank": 4,
+          "rating": 2,
+          "reviewSnippet": "“Who the fuck has a pet chimp?” My thoughts exactly."
+        },
+        {
+          "title": "28 Years Later: The Bone Temple",
+          "year": "2026",
+          "filmBoxdId": "MwlA",
+          "link": "https://boxd.it/cETyGh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/6/4/0/9/1156409-28-years-later-the-bone-temple-0-600-0-900-crop.jpg?v=131058c6ff",
+          "rank": 5,
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "I don’t know if Alex Garland knew when he wrote 28 Days Later that he’d still be writing about this world more than two decades…"
+        },
+        {
+          "title": "Mercy",
+          "year": "2026",
+          "filmBoxdId": "KYv0",
+          "link": "https://boxd.it/cO89dl",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/9/5/6/5/1119565-mercy-2026-0-600-0-900-crop.jpg?v=44de7ae605",
+          "rank": 6,
+          "rating": 1,
+          "reviewSnippet": "Why is Amazon still making COVID movies in 2026?"
+        },
+        {
+          "title": "Send Help",
+          "year": "2026",
+          "filmBoxdId": "JuhA",
+          "link": "https://boxd.it/cWDge5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/8/4/1/1/7/1084117-send-help-0-600-0-900-crop.jpg?v=9d8917c355",
+          "rank": 7,
+          "rating": 3,
+          "reviewSnippet": "Danny Elfman cooked"
+        },
+        {
+          "title": "GOAT",
+          "year": "2026",
+          "filmBoxdId": "NvB0",
+          "link": "https://boxd.it/d21bIR",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/7/9/9/5/3/1179953-goat-2026-0-600-0-900-crop.jpg?v=35c7b7eebe",
+          "rank": 8,
+          "rating": 2.5,
+          "reviewSnippet": "While the writing is fine (though this is certainly a kids movie), I found the animation to be a bit lacking. The motion was al…"
+        },
+        {
+          "title": "The Moment",
+          "year": "2026",
+          "filmBoxdId": "SCkg",
+          "link": "https://boxd.it/d3k25N",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/0/1/7/0/4/1301704-the-moment-2026-0-600-0-900-crop.jpg?v=b001663404",
+          "rank": 9,
+          "rating": 2,
+          "reviewSnippet": "Unfortunately, I felt that the style (brat. as it may have been) corrupted the substance (light as it may have been)."
+        },
+        {
+          "title": "Wuthering Heights",
+          "year": "2026",
+          "filmBoxdId": "OdIa",
+          "link": "https://boxd.it/d6vShF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/6/9/1/1/1196911-wuthering-heights-2026-0-600-0-900-crop.jpg?v=7d02cf3bdc",
+          "rank": 10,
+          "rating": 2.5,
+          "reviewSnippet": "Too much hand stuff for me"
+        },
+        {
+          "title": "Crime 101",
+          "year": "2026",
+          "filmBoxdId": "IoGs",
+          "link": "https://boxd.it/d8glqd",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/5/8/1/3/2/1058132-crime-101-0-600-0-900-crop.jpg?v=eaba4b3224",
+          "rank": 11,
+          "rating": 3,
+          "reviewSnippet": "You go see a movie called Crime 101 and think it’s going to be about the fundamentals of crime, but nope, it’s about crimes occ…"
+        },
+        {
+          "title": "Nirvanna the Band the Show the Movie",
+          "year": "2025",
+          "filmBoxdId": "HG9a",
+          "link": "https://boxd.it/d95sZB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/4/1/0/1/2/1041012-nirvanna-the-band-the-show-the-movie-0-600-0-900-crop.jpg?v=4d80f82f8a",
+          "rank": 12,
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "What would’ve happened if Nathan Fielder didn’t graduate from one of Canada’s top business schools (with really good grades)"
+        },
+        {
+          "title": "Good Luck, Have Fun, Don't Die",
+          "year": "2025",
+          "filmBoxdId": "Glua",
+          "link": "https://boxd.it/daf8Od",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/0/9/2/3/7/1009237-good-luck-have-fun-dont-die-0-600-0-900-crop.jpg?v=be79007f48",
+          "rank": 13,
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "You’ve seen every bit of the runtime in multiple excellent movies before, but for some reason (similar to Everything, Everywher…"
+        },
+        {
+          "title": "EPiC: Elvis Presley in Concert",
+          "year": "2025",
+          "filmBoxdId": "TuDQ",
+          "link": "https://boxd.it/ddolm7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/2/2/5/8/3/1322583-epic-elvis-presley-in-concert-0-600-0-900-crop.jpg?v=99de3d392c",
+          "rank": 14,
+          "rating": 2.5,
+          "reviewSnippet": "Austin Butler may’ve gotten over his Elvis obsession, but Baz certainly hasn’t. This is a maximalist’s take on the King of Rock…"
+        },
+        {
+          "title": "Hoppers",
+          "year": "2026",
+          "filmBoxdId": "OFpg",
+          "link": "https://boxd.it/dvCep9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/0/7/5/5/7/1207557-hoppers-0-600-0-900-crop.jpg?v=7711e7b5a7",
+          "rank": 15,
+          "rating": 3.5,
+          "reviewSnippet": "The Glade-iator"
+        },
+        {
+          "title": "The Bride!",
+          "year": "2026",
+          "filmBoxdId": "HSw6",
+          "link": "https://boxd.it/dwcJPf",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/4/5/7/6/7/1045767-the-bride-2026-0-600-0-900-crop.jpg?v=1a15412f4b",
+          "rank": 16,
+          "rating": 1.5,
+          "reviewSnippet": "Girlboss, Grundy (Solomon), Grand Theft Auto"
+        },
+        {
+          "title": "Project Hail Mary",
+          "year": "2026",
+          "filmBoxdId": "pEeQ",
+          "link": "https://boxd.it/dAPot7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/1/1/2/8/8/611288-project-hail-mary-0-600-0-900-crop.jpg?v=ac31b6ec03",
+          "rank": 17,
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "This was really solid, but even as someone that’s never read the book, you could tell a lot of the best parts came from the pag…"
+        },
+        {
+          "title": "Ready or Not 2: Here I Come",
+          "year": "2026",
+          "filmBoxdId": "MfY6",
+          "link": "https://boxd.it/dBEpOR",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/0/1/1/3/1150113-ready-or-not-2-here-i-come-0-600-0-900-crop.jpg?v=da35b35f85",
+          "rank": 18,
+          "rating": 3,
+          "reviewSnippet": "The goriest smoking ad I ever seen."
+        },
+        {
+          "title": "The Super Mario Galaxy Movie",
+          "year": "2026",
+          "filmBoxdId": "KzPa",
+          "link": "https://boxd.it/dOJmaL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/0/0/8/0/1110080-the-super-mario-galaxy-movie-0-600-0-900-crop.jpg?v=fefcfca134",
+          "rank": 19,
+          "rating": 2,
+          "reviewSnippet": "These movies are a bit better than they need to be. Not Sonic good, but nearly there. Chris Pratt’s Mario is sadly bad though"
+        },
+        {
+          "title": "The Drama",
+          "year": "2026",
+          "filmBoxdId": "OA2w",
+          "link": "https://boxd.it/dPQxDd",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/0/5/4/9/4/1205494-the-drama-0-600-0-900-crop.jpg?v=2320acafd5",
+          "rank": 20,
+          "rating": 2,
+          "reviewSnippet": "A24 has lost the mandate of heaven"
+        },
+        {
+          "title": "Mother Mary",
+          "year": "2026",
+          "filmBoxdId": "FILw",
+          "link": "https://boxd.it/e1v7bX",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/9/4/3/5/3/994353-mother-mary-2026-0-600-0-900-crop.jpg?v=a2644168b4",
+          "rank": 21,
+          "rating": 3,
+          "reviewSnippet": "Marketing: This movie isn’t A Ghost Story\nMovie: Has multiple Ghost Stories"
+        },
+        {
+          "title": "Michael",
+          "year": "2026",
+          "filmBoxdId": "zi5M",
+          "link": "https://boxd.it/e76sGB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/4/1/1/0/3/841103-michael-2026-0-600-0-900-crop.jpg?v=1e8e478e40",
+          "rank": 22,
+          "rating": 1.5,
+          "reviewSnippet": "A Jimmy Savile biopic, but the last quarter is all media appearances, and they stop showing his personal life entirely"
+        },
+        {
+          "title": "The Devil Wears Prada 2",
+          "year": "2026",
+          "filmBoxdId": "Oags",
+          "link": "https://boxd.it/ec8kpL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/5/5/8/6/1195586-the-devil-wears-prada-2-0-600-0-900-crop.jpg?v=0d955add69",
+          "rank": 23,
+          "rating": 3,
+          "reviewSnippet": "So who played Fantine in this universe? Did she win an Oscar?"
+        },
+        {
+          "title": "The Mandalorian and Grogu",
+          "year": "2026",
+          "filmBoxdId": "KCpk",
+          "link": "https://boxd.it/evKgz5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/1/0/7/3/1111073-star-wars-the-mandalorian-and-grogu-0-600-0-900-crop.jpg?v=5da24e2cba",
+          "rank": 24,
+          "rating": 1.5,
+          "reviewSnippet": "I fed my cat dinner late for that?"
+        },
+        {
+          "title": "Backrooms",
+          "year": "2026",
+          "filmBoxdId": "EY6W",
+          "link": "https://boxd.it/ez4Na5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/6/4/1/9/976419-backrooms-2026-0-600-0-900-crop.jpg?v=f7a99e3fc8",
+          "rank": 25,
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Not\nsince"
+        },
+        {
+          "title": "Obsession",
+          "year": "2025",
+          "filmBoxdId": "PNqo",
+          "link": "https://boxd.it/ezDQJH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/3/4/4/7/2/1234472-obsession-2025-2-0-600-0-900-crop.jpg?v=cff6fc00b6",
+          "rank": 26,
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Such a strong debut, and incredible performances from both leads."
+        },
+        {
+          "title": "Masters of the Universe",
+          "year": "2026",
+          "filmBoxdId": "gdKW",
+          "link": "https://boxd.it/eDIZ61",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/8/6/6/1/3/386613-masters-of-the-universe-2026-0-600-0-900-crop.jpg?v=8340b3dfbe",
+          "rank": 27,
+          "rating": 2.5,
+          "reviewSnippet": "This had its charms, for sure, but it felt too cute by half. Some scenes looked extremely fake"
+        },
+        {
+          "title": "The Sheep Detectives",
+          "year": "2026",
+          "filmBoxdId": "NDSe",
+          "link": "https://boxd.it/eGfhnL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/8/3/1/3/5/1183135-the-sheep-detectives-0-600-0-900-crop.jpg?v=c7b622176e",
+          "rank": 28,
+          "rating": 2.5,
+          "reviewSnippet": "I had Orf one, it was Orfful. Bahhhh"
+        },
+        {
+          "title": "Pressure",
+          "year": "2026",
+          "filmBoxdId": "Oj4A",
+          "link": "https://boxd.it/eHkLhn",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/8/9/7/2/1198972-pressure-2026-0-600-0-900-crop.jpg?v=38a01c694d",
+          "rank": 29,
+          "rating": 3,
+          "reviewSnippet": "The story of a weatherboy who weathered harder than anyone’s ever weathered before."
+        },
+        {
+          "title": "Disclosure Day",
+          "year": "2026",
+          "filmBoxdId": "MDJY",
+          "link": "https://boxd.it/eMcKqR",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/9/2/5/1/1159251-disclosure-day-0-600-0-900-crop.jpg?v=9ae810e4bb",
+          "rank": 30,
+          "rating": 3,
+          "reviewSnippet": "Spielberg’s movies have kept up with our society, because this was goofy, so dumb, conspiratorial as hell, but it keeps that cl…"
+        },
+        {
+          "title": "Scary Movie",
+          "year": "2026",
+          "filmBoxdId": "MxEo",
+          "link": "https://boxd.it/eN2UQp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/6/9/1/0/1156910-scary-movie-2026-0-600-0-900-crop.jpg?v=4714559ea7",
+          "rank": 31,
+          "rating": 1.5,
+          "reviewSnippet": "Shawn Wayans was just playing Mac from Sunny"
+        },
+        {
+          "title": "Toy Story 5",
+          "year": "2026",
+          "filmBoxdId": "F06E",
+          "link": "https://boxd.it/eRcf0N",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/7/1/8/6/977186-toy-story-5-0-600-0-900-crop.jpg?v=d0ac6a7d01",
+          "rank": 32,
+          "rating": 3,
+          "reviewSnippet": "I’m not surprised that Disney made the first pro-iPad baby movie but I am surprised that they did it in a Toy Story"
+        },
+        {
+          "title": "The Invite",
+          "year": "2026",
+          "filmBoxdId": "zRNY",
+          "link": "https://boxd.it/eXBPGp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/5/4/8/3/1/854831-the-invite-2026-0-600-0-900-crop.jpg?v=ee72905e48",
+          "rank": 33,
+          "rating": 3.5,
+          "reviewSnippet": "I enjoyed this one quite a bit more than I was expecting: some really nice tension here, which layered will with the humor."
+        },
+        {
+          "title": "Supergirl",
+          "year": "2026",
+          "filmBoxdId": "ESyU",
+          "link": "https://boxd.it/eYdkeZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/4/2/8/6/974286-supergirl-2026-0-600-0-900-crop.jpg?v=e85ddf39db",
+          "rank": 34,
+          "rating": 2,
+          "reviewSnippet": "Kara Zor-El and the PG(-13) Space Pedo. Lobo’s here too, but even he’s not really sure why"
+        },
+        {
+          "title": "Minions & Monsters",
+          "year": "2026",
+          "filmBoxdId": "Odry",
+          "link": "https://boxd.it/f2MorT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/6/8/0/8/1196808-minions-monsters-2026-0-600-0-900-crop.jpg?v=8ff282e996",
+          "rank": 35,
+          "rating": 3,
+          "reviewSnippet": "The movie Babylon wishes it was"
+        },
+        {
+          "title": "Gail Daughtry and the Celebrity Sex Pass",
+          "year": "2026",
+          "filmBoxdId": "UMPC",
+          "link": "https://boxd.it/fbMRov",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/5/3/4/0/8/1353408-gail-daughtry-and-the-celebrity-sex-pass-0-600-0-900-crop.jpg?v=cd9d330b88",
+          "rank": 36,
+          "rating": 3,
+          "reviewSnippet": "Tons of jokes, I just wish more of them landed. My theatre loved this one way more than I did."
+        },
+        {
+          "title": "The Odyssey",
+          "year": "2026",
+          "filmBoxdId": "QFQU",
+          "link": "https://boxd.it/fiNtXB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/5/5/3/9/4/1255394-the-odyssey-2026-0-600-0-900-crop.jpg?v=1eed046d0c",
+          "rank": 37,
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "You catch a lot more on a repeat viewing, like how Other Mommy has wise eyes; Athena’s eyes"
+        },
+        {
+          "title": "Hadestown: The Musical",
+          "year": "2026",
+          "filmBoxdId": "Th8A",
+          "link": "https://boxd.it/fs4PsZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/1/7/3/9/2/1317392-hadestown-0-600-0-900-crop.jpg?v=6b2dea3e7b",
+          "rank": 38,
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "There’s almost no way that any recording of OG cast Hadestown was going to get a non-perfect score; I would’ve given a 480p rec…"
+        },
+        {
+          "title": "Spider-Man: Brand New Day",
+          "year": "2026",
+          "filmBoxdId": "ACJE",
+          "link": "https://boxd.it/fz2iPF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/7/2/8/7/1/872871-spider-man-brand-new-day-0-600-0-900-crop.jpg?v=ebe6beb4fc",
+          "rank": 39,
+          "rating": 3,
+          "reviewSnippet": "Why have a Roosevelt Island set piece without showing the tram? What’s even the point?"
+        },
+        {
+          "title": "Teenage Sex and Death at Camp Miasma",
+          "year": "2026",
+          "filmBoxdId": "L9GS",
+          "link": "https://boxd.it/fITdM9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/3/8/6/7/1123867-teenage-sex-and-death-at-camp-miasma-0-600-0-900-crop.jpg?v=f6059120f8",
+          "rank": 40,
+          "rating": 3,
+          "reviewSnippet": "I guess I’ll try Jolly Rancher Gummies"
+        },
+        {
+          "title": "Tony",
+          "year": "2026",
+          "filmBoxdId": "OJaa",
+          "link": "https://boxd.it/fJIX61",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/0/9/0/0/1/1209001-tony-2026-0-600-0-900-crop.jpg?v=63ce7b9234",
+          "rank": 41,
+          "rating": 3.5,
+          "reviewSnippet": "That Matt Johnson sure can cut a movie. This is no Nirvanna, but truly nothing is. I had a good time with Dominic Sessa’s curmu…"
+        },
+        {
+          "title": "The End of Oak Street",
+          "year": "2026",
+          "filmBoxdId": "FF9a",
+          "link": "https://boxd.it/fQvpYl",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/9/2/9/6/2/992962-the-end-of-oak-street-0-600-0-900-crop.jpg?v=b06dbfb4c9",
+          "rank": 42,
+          "rating": 3,
+          "reviewSnippet": "One of the more random movies of the year (non-compliment), but you get enough action-horror and dino thrills to offset the mor…"
+        },
+        {
+          "title": "Nimrods",
+          "year": "2025",
+          "filmBoxdId": "T0Z8",
+          "link": "https://boxd.it/fRKLh3",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/1/1/1/8/3/1311183-nimrods-0-600-0-900-crop.jpg?v=b62c211d05",
+          "rank": 43,
+          "rating": 2.5,
+          "reviewSnippet": "It’s criminal to not use Holiday in this movie"
+        },
+        {
+          "title": "La La Land",
+          "year": "2016",
+          "filmBoxdId": "a5fa",
+          "link": "https://boxd.it/fY40tF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/4/0/3/4/4/240344-la-la-land-0-600-0-900-crop.jpg?v=053670ff84",
+          "rank": 44,
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "La La Land remains a masterpiece. If Letterboxd gave a Top 5, La La Land would occupy my final slot."
+        },
+        {
+          "title": "Coyote vs. Acme",
+          "year": "2026",
+          "filmBoxdId": "JHdm",
+          "link": "https://boxd.it/fZt6Gf",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/8/9/0/8/8/1089088-coyote-vs-acme-0-600-0-900-crop.jpg?v=735eb10cc7",
+          "rank": 45,
+          "rating": 3,
+          "reviewSnippet": "Move over My Cousin Vinny, there’s a new movie they’re going to be showing in law schools"
+        },
+        {
+          "title": "Buddy",
+          "year": "2026",
+          "filmBoxdId": "Wjhq",
+          "link": "https://boxd.it/g5m0oT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/8/9/7/1/4/1389714-buddy-2026-0-600-0-900-crop.jpg?v=6a078eb95a",
+          "rank": 46,
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Really fun and inventive; this almost has a modern Grimms’ element to it"
+        },
+        {
+          "title": "Mutiny",
+          "year": "2026",
+          "filmBoxdId": "Na66",
+          "link": "https://boxd.it/g6tFsP",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/7/1/6/8/9/1171689-mutiny-2026-0-600-0-900-crop.jpg?v=71650d2444",
+          "rank": 47,
+          "rating": 1.5,
+          "reviewSnippet": "Boat"
+        },
+        {
+          "title": "Onslaught",
+          "year": "2026",
+          "filmBoxdId": "MYKI",
+          "link": "https://boxd.it/gbqKpF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/6/7/3/2/8/1167328-onslaught-2026-0-600-0-900-crop.jpg?v=54130fd313",
+          "rank": 48,
+          "rating": 2,
+          "reviewSnippet": "And I usually like big swings"
+        }
+      ]
+    },
+    {
+      "id": "78733966",
+      "slug": "powered-by-google",
+      "title": "Powered by Google",
+      "url": "https://letterboxd.com/brslli/list/powered-by-google/",
+      "filmCount": 30,
+      "isRanked": false,
+      "category": "tropes",
+      "description": "Features a Google product logo within the theatrical runtime, or mentions a Google product.",
+      "films": [
+        {
+          "title": "Fresh",
+          "year": "2022",
+          "filmBoxdId": "tCNi",
+          "link": "https://boxd.it/covI25",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/0/6/0/6/4/706064-fresh-0-600-0-900-crop.jpg?v=546285b96d",
+          "rating": 3,
+          "reviewSnippet": "I went into this completely blind, and honestly, I think that you should too. Don’t read anything else and just watch Fresh, it…"
+        },
+        {
+          "title": "Under the Silver Lake",
+          "year": "2018",
+          "filmBoxdId": "dSAs",
+          "link": "https://boxd.it/cuRdXH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/3/0/8/1/0/330810-under-the-silver-lake-0-600-0-900-crop.jpg?v=28f0cabef3",
+          "rating": 3,
+          "reviewSnippet": "You get a huff of that Pepe Silvia magic in a few scenes"
+        },
+        {
+          "title": "The Thinking Game",
+          "year": "2024",
+          "filmBoxdId": "MD7q",
+          "link": "https://boxd.it/cFMEil",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/9/0/1/2/1159012-the-thinking-game-0-600-0-900-crop.jpg?v=c1ccbc0d32",
+          "rating": 3,
+          "reviewSnippet": "Cool to see gLinux in a Doc."
+        },
+        {
+          "title": "Night at the Museum: Secret of the Tomb",
+          "year": "2014",
+          "filmBoxdId": "5x3m",
+          "link": "https://boxd.it/cIhysJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/1/8/7/0/131870-night-at-the-museum-secret-of-the-tomb-0-600-0-900-crop.jpg?v=ee923b80cf",
+          "rating": 1.5,
+          "reviewSnippet": "While I miss Robin Williams, the rest of what was going on here I could’ve done without."
+        },
+        {
+          "title": "Mercy",
+          "year": "2026",
+          "filmBoxdId": "KYv0",
+          "link": "https://boxd.it/cO89dl",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/9/5/6/5/1119565-mercy-2026-0-600-0-900-crop.jpg?v=44de7ae605",
+          "rating": 1,
+          "reviewSnippet": "Why is Amazon still making COVID movies in 2026?"
+        },
+        {
+          "title": "Blended",
+          "year": "2014",
+          "filmBoxdId": "6QQY",
+          "link": "https://boxd.it/cZE02h",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/6/3/3/1/4/163314-blended-0-600-0-900-crop.jpg?v=f9421de6b4",
+          "rating": 3,
+          "reviewSnippet": "If it’s a Happy Madison film, you know a great vacation was had; I hope Bella Thorne enjoyed Africa"
+        },
+        {
+          "title": "Crime 101",
+          "year": "2026",
+          "filmBoxdId": "IoGs",
+          "link": "https://boxd.it/d8glqd",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/5/8/1/3/2/1058132-crime-101-0-600-0-900-crop.jpg?v=eaba4b3224",
+          "rating": 3,
+          "reviewSnippet": "You go see a movie called Crime 101 and think it’s going to be about the fundamentals of crime, but nope, it’s about crimes occ…"
+        },
+        {
+          "title": "Nirvanna the Band the Show the Movie",
+          "year": "2025",
+          "filmBoxdId": "HG9a",
+          "link": "https://boxd.it/d95sZB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/4/1/0/1/2/1041012-nirvanna-the-band-the-show-the-movie-0-600-0-900-crop.jpg?v=4d80f82f8a",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "What would’ve happened if Nathan Fielder didn’t graduate from one of Canada’s top business schools (with really good grades)"
+        },
+        {
+          "title": "Fall",
+          "year": "2022",
+          "filmBoxdId": "Bf6G",
+          "link": "https://boxd.it/dedHc1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/8/7/6/2/1/887621-fall-0-600-0-900-crop.jpg?v=6bf31e9474",
+          "rating": 2,
+          "reviewSnippet": "Vultures catching an unnecessary stray from this middling movie"
+        },
+        {
+          "title": "Molly's Game",
+          "year": "2017",
+          "filmBoxdId": "dSl8",
+          "link": "https://boxd.it/dgvJCJ",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/te/bh/hd/ib/h9hUP5ZJGsjL2wbERrGlj4dMjZq-0-600-0-900-crop.jpg?v=cd55a90634",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Nothing punches you in the face like some good Aaron Sorkin writing. He’s pulling out all the stops to make you want to side wi…"
+        },
+        {
+          "title": "Hoppers",
+          "year": "2026",
+          "filmBoxdId": "OFpg",
+          "link": "https://boxd.it/dvCep9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/0/7/5/5/7/1207557-hoppers-0-600-0-900-crop.jpg?v=7711e7b5a7",
+          "rating": 3.5,
+          "reviewSnippet": "The Glade-iator"
+        },
+        {
+          "title": "Louis Theroux: Inside the Manosphere",
+          "year": "2026",
+          "filmBoxdId": "10VY6",
+          "link": "https://boxd.it/dxbuZL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/9/9/9/1/7/1499917-louis-theroux-inside-the-manosphere-0-600-0-900-crop.jpg?v=901afcf4d1",
+          "rating": 3,
+          "reviewSnippet": "While not the strongest documentary, and I really wish Louis intervened more, this did shine a light on a very important and gr…"
+        },
+        {
+          "title": "The Drama",
+          "year": "2026",
+          "filmBoxdId": "OA2w",
+          "link": "https://boxd.it/dPQxDd",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/0/5/4/9/4/1205494-the-drama-0-600-0-900-crop.jpg?v=2320acafd5",
+          "rating": 2,
+          "reviewSnippet": "A24 has lost the mandate of heaven"
+        },
+        {
+          "title": "DTF St. Louis",
+          "year": "2026",
+          "filmBoxdId": "11oiI",
+          "link": "https://boxd.it/e1oVpL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/5/1/0/8/0/8/1510808-dtf-st-louis-0-600-0-900-crop.jpg?v=139044d7f9",
+          "rating": 3,
+          "reviewSnippet": "There was an inherent sweetness to this story, but the mini-series certainly dragged. Why was this seven parts, such a strange…"
+        },
+        {
+          "title": "The Invite",
+          "year": "2026",
+          "filmBoxdId": "zRNY",
+          "link": "https://boxd.it/eXBPGp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/5/4/8/3/1/854831-the-invite-2026-0-600-0-900-crop.jpg?v=ee72905e48",
+          "rating": 3.5,
+          "reviewSnippet": "I enjoyed this one quite a bit more than I was expecting: some really nice tension here, which layered will with the humor."
+        },
+        {
+          "title": "The Intern",
+          "year": "2015",
+          "filmBoxdId": "7AOE",
+          "link": "https://boxd.it/f5a9Wj",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/8/0/9/8/2/180982-the-intern-0-600-0-900-crop.jpg?v=305de9a810",
+          "rating": 2.5,
+          "reviewSnippet": "This is certainly in the running for Most Boomer Movie, but damn Nancy Meyers knows how to tug on some heart strings"
+        },
+        {
+          "title": "Good Boy",
+          "year": "2025",
+          "filmBoxdId": "SC0q",
+          "link": "https://boxd.it/fsobgp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/0/1/5/8/1/1301581-good-boy-2025-0-600-0-900-crop.jpg?v=43c5363517",
+          "rating": 2.5,
+          "reviewSnippet": "What a unique pawspective"
+        },
+        {
+          "title": "TÁR",
+          "year": "2022",
+          "filmBoxdId": "uNIA",
+          "link": "https://boxd.it/fIEXmh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/3/4/0/9/6/734096-tar-0-600-0-900-crop.jpg?v=e6d8348cff",
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "The greatest Me Too movie. As crazy as this may have sounded in 2022, I’d actually see a sequel to TÁR where we see Lydia’s und…"
+        },
+        {
+          "title": "Tropic Thunder",
+          "year": "2008",
+          "filmBoxdId": "20WM",
+          "link": "https://boxd.it/fO6QAx",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/0/3/0/48030-tropic-thunder-0-600-0-900-crop.jpg?v=f75fe170e6",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "There was a time when this movie played weekly on FX or TBS, when I must’ve seen a chunk of this movie dozens of times across m…"
+        },
+        {
+          "title": "La La Land",
+          "year": "2016",
+          "filmBoxdId": "a5fa",
+          "link": "https://boxd.it/fY40tF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/4/0/3/4/4/240344-la-la-land-0-600-0-900-crop.jpg?v=053670ff84",
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "La La Land remains a masterpiece. If Letterboxd gave a Top 5, La La Land would occupy my final slot."
+        },
+        {
+          "title": "Primetime",
+          "year": "2026",
+          "filmBoxdId": "QX5s",
+          "link": "https://letterboxd.com/brslli/film/primetime-2026/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/6/2/0/1/9/1262019-primetime-2026-0-600-0-900-crop.jpg?v=41640d6988",
+          "rating": 3.5,
+          "reviewSnippet": "Didn’t expect JJ Abrams to be such an antagonist in this one"
+        },
+        {
+          "title": "Digger",
+          "year": "2026",
+          "filmBoxdId": "LwDC",
+          "link": "https://letterboxd.com/brslli/film/digger-2026/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/3/2/6/8/8/1132688-digger-2026-0-600-0-900-crop.jpg?v=81ec883a95",
+          "rating": 3.5,
+          "reviewSnippet": "Don’t Look Up meets Megalopolis meets Birdman, with a sprinkling of Veep on top."
+        },
+        {
+          "title": "The Social Reckoning",
+          "year": "2026",
+          "filmBoxdId": "MRPQ",
+          "link": "https://letterboxd.com/brslli/film/the-social-reckoning/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/6/4/6/6/9/1164669-the-social-reckoning-0-600-0-900-crop.jpg?v=e880229a7f",
+          "rating": 2.5,
+          "reviewSnippet": "Why was this so funny?"
+        },
+        {
+          "title": "You Can See Everything",
+          "year": "2026",
+          "filmBoxdId": "16mVo",
+          "link": "https://letterboxd.com/brslli/film/you-can-see-everything/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/6/2/9/4/4/3/1629443-you-can-see-everything-0-600-0-900-crop.jpg?v=84f6724d74",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "You Can See Everything, sure, but can you understand what it’s trying to say"
+        },
+        {
+          "title": "Comedy Central Roast of Bob Saget",
+          "year": "2008",
+          "filmBoxdId": "axU6",
+          "link": "https://letterboxd.com/film/comedy-central-roast-of-bob-saget/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/5/1/3/6/1/251361-comedy-central-roast-of-bob-saget-0-600-0-900-crop.jpg?v=8b520f2e54",
+          "rating": 4
+        },
+        {
+          "title": "Norm: The Tale of Norm Macdonald",
+          "year": "2026",
+          "filmBoxdId": "10uQO",
+          "link": "https://letterboxd.com/brslli/film/norm-the-tale-of-norm-macdonald/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/8/9/4/9/3/1489493-norm-the-tale-of-norm-macdonald-0-600-0-900-crop.jpg?v=bbdd6c0de5",
+          "rating": 2.5,
+          "reviewSnippet": "Norm deserved better than this lazily edited doc, consisting only of prerecorded material. No one had anything new to say about…"
+        },
+        {
+          "title": "Scream 7",
+          "year": "2026",
+          "filmBoxdId": "HRvQ",
+          "link": "https://letterboxd.com/brslli/film/scream-7/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/4/5/3/8/1/1045381-scream-7-0-600-0-900-crop.jpg?v=ec86a2dec8",
+          "rating": 1.5,
+          "reviewSnippet": "My alma mater, and current employer, were both mentioned by name in this mess"
+        },
+        {
+          "title": "ParaNorman",
+          "year": "2012",
+          "filmBoxdId": "2FuY",
+          "link": "https://letterboxd.com/brslli/film/paranorman/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/3/6/1/8/63618-paranorman-0-600-0-900-crop.jpg?v=4feb69b2ce",
+          "rating": 3,
+          "reviewSnippet": "Probably one of the weaker Laika films, but still so many of the pieces worked, and I really enjoyed this one. Laika really nev…"
+        },
+        {
+          "title": "The Altruists",
+          "year": "2026",
+          "filmBoxdId": "18sZ6",
+          "link": "https://letterboxd.com/brslli/film/the-altruists/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/6/7/9/4/3/8/1679438-the-altruists-0-600-0-900-crop.jpg?v=29c13f0acd",
+          "rating": 3,
+          "reviewSnippet": "I got weirdly into this watch (maybe partially because I’m oddly like 3 degrees away from SBF having benefited from his pissing…"
+        },
+        {
+          "title": "Focker In-Law",
+          "year": "2026",
+          "filmBoxdId": "RRsW",
+          "link": "https://letterboxd.com/brslli/film/focker-in-law/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/8/3/6/9/1/1283691-focker-in-law-0-600-0-900-crop.jpg?v=a6a9003b74",
+          "rating": 2,
+          "reviewSnippet": "But for a few funny moments, this was largely just fine"
+        }
+      ]
+    },
+    {
+      "id": "36930838",
+      "slug": "opening-scene-is-a-later-scene-in-the-movie",
+      "title": "Opening Scene is a Later Scene in the Movie",
+      "url": "https://letterboxd.com/brslli/list/opening-scene-is-a-later-scene-in-the-movie/",
+      "filmCount": 50,
+      "isRanked": false,
+      "category": "tropes",
+      "description": "",
+      "films": [
+        {
+          "title": "Beautiful Boy",
+          "year": "2018",
+          "filmBoxdId": "g76Q",
+          "link": "https://boxd.it/4NLyJL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/8/4/0/5/8/384058-beautiful-boy-0-600-0-900-crop.jpg?v=f926f71a50",
+          "rating": 3.5,
+          "reviewSnippet": "Timothée gives a captivating performance as a spiraling drug addict, and you can’t help but feel for, clearly excellent father,…"
+        },
+        {
+          "title": "Dumb Money",
+          "year": "2023",
+          "filmBoxdId": "tNdU",
+          "link": "https://boxd.it/4Rxup1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/1/0/0/7/3/710073-dumb-money-0-600-0-900-crop.jpg?v=3ec94863dd",
+          "rating": 3,
+          "reviewSnippet": "Every scene felt like it was stretched 30% longer than it needed to be to compensate for the super short story. Loved the “fuck…"
+        },
+        {
+          "title": "Lessons in Chemistry",
+          "year": "2023",
+          "filmBoxdId": "J6wm",
+          "link": "https://boxd.it/50K59f",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/7/4/9/8/3/1074983-lessons-in-chemistry-0-600-0-900-crop.jpg?v=15830ec867",
+          "rating": 3.5,
+          "reviewSnippet": "Elizabeth Zott is the new Lydia Tarr"
+        },
+        {
+          "title": "Saltburn",
+          "year": "2023",
+          "filmBoxdId": "z4eg",
+          "link": "https://boxd.it/5cLpIz",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/3/5/7/7/4/835774-saltburn-0-600-0-900-crop.jpg?v=b58cbd3b08",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Legitimately one of the funniest movies of the year, with such an iconic ending."
+        },
+        {
+          "title": "Raging Bull",
+          "year": "1980",
+          "filmBoxdId": "28yI",
+          "link": "https://boxd.it/5eDFTZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/9/5/6/50956-raging-bull-0-600-0-900-crop.jpg?v=b25f43f7b6",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "Jake LaMotto’s got a real problem with jealousy."
+        },
+        {
+          "title": "Maestro",
+          "year": "2023",
+          "filmBoxdId": "j0DE",
+          "link": "https://boxd.it/5x4N89",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/5/3/0/6/9/453069-maestro-0-600-0-900-crop.jpg?v=1dde1fa55f",
+          "rating": 2,
+          "reviewSnippet": "Similar to Mank, I found myself struggling to care about the characters (Leonard and any supporting part) or the story - I lay…"
+        },
+        {
+          "title": "Girls State",
+          "year": "2024",
+          "filmBoxdId": "BgaE",
+          "link": "https://boxd.it/6u11Gx",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/8/8/0/3/0/888030-girls-state-0-600-0-900-crop.jpg?v=ed290ac697",
+          "rating": 3.5,
+          "reviewSnippet": "Just to start out, I’m so glad that they figured out that the two teams need different colors. This was great to watch as a bac…"
+        },
+        {
+          "title": "Baby Reindeer",
+          "year": "2024",
+          "filmBoxdId": "MwSa",
+          "link": "https://boxd.it/6v48Iv",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/6/6/1/1/1156611-baby-reindeer-0-600-0-900-crop.jpg?v=fded89eeed",
+          "rating": 3.5,
+          "reviewSnippet": "This was seriously a lot. You watch one person go through a ton of harm (much of it self-inflicted), and not in a comedic way.…"
+        },
+        {
+          "title": "Back to Black",
+          "year": "2024",
+          "filmBoxdId": "BKV6",
+          "link": "https://boxd.it/6yq8eh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/9/9/8/5/0/899850-back-to-black-0-600-0-900-crop.jpg?v=404729cbca",
+          "rating": 2,
+          "reviewSnippet": "A great performance and a pretty rough screenplay. If you like Amy’s music, you’ll get all the hits and some earlier tracks per…"
+        },
+        {
+          "title": "Brick",
+          "year": "2005",
+          "filmBoxdId": "1Z6A",
+          "link": "https://boxd.it/6GUi7x",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/3/2/2/47322-brick-0-600-0-900-crop.jpg?v=de1c77ff6b",
+          "rating": 3,
+          "reviewSnippet": "A really good directorial debut, though noir’s certainly aren’t my genre. You can really see the foundations for what would lat…"
+        },
+        {
+          "title": "The Bikeriders",
+          "year": "2023",
+          "filmBoxdId": "C6Ym",
+          "link": "https://boxd.it/6HoX5d",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/0/8/3/2/7/908327-the-bikeriders-0-600-0-900-crop.jpg?v=71c876af34",
+          "rating": 3,
+          "reviewSnippet": "Fun setting and subject but the story went nowhere and didn’t have much to say. Tom Hardy was doing his Marlon Brando and Jodie…"
+        },
+        {
+          "title": "Deadpool & Wolverine",
+          "year": "2024",
+          "filmBoxdId": "jq8s",
+          "link": "https://boxd.it/6XIfsV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/2/8/7/0/462870-deadpool-wolverine-0-600-0-900-crop.jpg?v=1aa778d2c6",
+          "rating": 2.5,
+          "reviewSnippet": "I went to the premiere of this at 7pm in IMAX, with various people in Deadpool costumes, applause at the Marvel logo, screams a…"
+        },
+        {
+          "title": "Reagan",
+          "year": "2024",
+          "filmBoxdId": "o2QA",
+          "link": "https://boxd.it/7ehsff",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/7/3/0/8/2/573082-reagan-0-600-0-900-crop.jpg?v=af733427cb",
+          "rating": 1.5,
+          "reviewSnippet": "Wow, what a weird movie. The whole thing is set from a 2020s Russian POV, and everything is narrated by these Soviet sympathize…"
+        },
+        {
+          "title": "Memoir of a Snail",
+          "year": "2024",
+          "filmBoxdId": "EgX8",
+          "link": "https://boxd.it/7IlFex",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/5/9/8/2/9/959829-memoir-of-a-snail-0-600-0-900-crop.jpg?v=e23dff99a0",
+          "rating": 3.5,
+          "reviewSnippet": "I was shocked that this wasn’t an autobiographical film debut from a middle aged woman."
+        },
+        {
+          "title": "The Last Showgirl",
+          "year": "2024",
+          "filmBoxdId": "KWtm",
+          "link": "https://boxd.it/8nWyAJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/8/7/8/6/1118786-the-last-showgirl-0-600-0-900-crop.jpg?v=811b7fc7a2",
+          "rating": 3,
+          "reviewSnippet": "This was pretty good despite the camerawork, I did not need all of the shaky cam during fairly static shots. That being said, P…"
+        },
+        {
+          "title": "Companion",
+          "year": "2025",
+          "filmBoxdId": "F04o",
+          "link": "https://boxd.it/8E9vFV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/7/1/7/2/977172-companion-2025-0-600-0-900-crop.jpg?v=66c5c946ec",
+          "rating": 3.5,
+          "reviewSnippet": "This was fun as hell. Go into this as blind as you can, don’t watch the trailers."
+        },
+        {
+          "title": "Apple Cider Vinegar",
+          "year": "2025",
+          "filmBoxdId": "SMcm",
+          "link": "https://boxd.it/8N7CWB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/0/5/4/9/9/1305499-apple-cider-vinegar-2025-0-600-0-900-crop.jpg?v=ac065c657a",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "This is one of those “true story” miniseries where you immediately need to know what actually happened afterwards. It’s 6hrs lo…"
+        },
+        {
+          "title": "Mickey 17",
+          "year": "2025",
+          "filmBoxdId": "q1Dk",
+          "link": "https://boxd.it/932ZTJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/2/0/2/8/1/620281-mickey-17-0-600-0-900-crop.jpg?v=93e4d2af6d",
+          "rating": 3.5,
+          "reviewSnippet": "I loved a lot of this, and just would’ve preferred a bit less narration - despite how charming Robert Pattinson was at it. Mark…"
+        },
+        {
+          "title": "Sinners",
+          "year": "2025",
+          "filmBoxdId": "KQMM",
+          "link": "https://boxd.it/bzhKcJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/6/6/0/0/1116600-sinners-2025-0-600-0-900-crop.jpg?v=5996b7d555",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "Caught a lot more on the second viewing, like the fact that the main story takes place on my birthday! Sinners remains incredible"
+        },
+        {
+          "title": "The Fantastic 4: First Steps",
+          "year": "2025",
+          "filmBoxdId": "mP6C",
+          "link": "https://boxd.it/atGCTt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/4/3/9/6/7/543967-the-fantastic-four-first-steps-0-600-0-900-crop.jpg?v=ab7c919b04",
+          "rating": 3,
+          "reviewSnippet": "I like that Natasha Lyonne was included just to confirm that Ben was Jewish."
+        },
+        {
+          "title": "Oh, Hi!",
+          "year": "2025",
+          "filmBoxdId": "PLns",
+          "link": "https://boxd.it/avpNkt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/3/3/6/8/5/1233685-oh-hi-0-600-0-900-crop.jpg?v=74221a07f8",
+          "rating": 1.5,
+          "reviewSnippet": "They lost me pretty early and unfortunately never got me back. I saw this in a packed NYC theatre which laughed throughout, I s…"
+        },
+        {
+          "title": "Hitchcock",
+          "year": "2012",
+          "filmBoxdId": "3LDa",
+          "link": "https://boxd.it/ay3faH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/9/8/0/8/89808-hitchcock-0-600-0-900-crop.jpg?v=cc52645636",
+          "rating": 2.5,
+          "reviewSnippet": "DO NOT WATCH THIS MOVIE BEFORE PSYCHO (1960)!!!"
+        },
+        {
+          "title": "Nobody 2",
+          "year": "2025",
+          "filmBoxdId": "C5Lc",
+          "link": "https://boxd.it/aJzUCZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/0/7/8/6/1/907861-nobody-2-0-600-0-900-crop.jpg?v=2e34255620",
+          "rating": 2,
+          "reviewSnippet": "This is not a spoiler, it’s only mentioned twice in passing, and this is a movie that can’t be spoiled. One of the things that…"
+        },
+        {
+          "title": "Americana",
+          "year": "2023",
+          "filmBoxdId": "zdXO",
+          "link": "https://boxd.it/aKXs8p",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/3/9/5/1/6/839516-americana-2023-0-600-0-900-crop.jpg?v=a3ac7282a0",
+          "rating": 3,
+          "reviewSnippet": "Gavin Maddox Bergman was the best part of this movie, closely followed by Halsey. This was a bit funnier than I was expecting."
+        },
+        {
+          "title": "Bird Box",
+          "year": "2018",
+          "filmBoxdId": "eh1i",
+          "link": "https://boxd.it/aL6Fn1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/4/0/2/0/2/340202-bird-box-0-600-0-900-crop.jpg?v=865f10f90a",
+          "rating": 2.5,
+          "reviewSnippet": "An interesting enough post-apocalyptic world story, and certainly a unique set of survival parameters. The story never really w…"
+        },
+        {
+          "title": "The Roses",
+          "year": "2025",
+          "filmBoxdId": "MjnI",
+          "link": "https://boxd.it/aSZk9v",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/1/4/2/5/1151425-the-roses-2025-0-600-0-900-crop.jpg?v=50088985de",
+          "rating": 2.5,
+          "reviewSnippet": "A bunch of the humor worked, but I grew tired of all of the characters in the short 90min runtime."
+        },
+        {
+          "title": "Black Phone 2",
+          "year": "2025",
+          "filmBoxdId": "JpbW",
+          "link": "https://boxd.it/boTEbR",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/8/2/1/6/0/1082160-black-phone-2-0-600-0-900-crop.jpg?v=5ff6eeb27d",
+          "rating": 3,
+          "reviewSnippet": "Probably a little bit better than the first one, but still not excellent. You really need to see the first one first."
+        },
+        {
+          "title": "Frankenstein",
+          "year": "2025",
+          "filmBoxdId": "Ecsg",
+          "link": "https://boxd.it/bDrKOp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/5/8/1/0/0/958100-frankenstein-2025-0-600-0-900-crop.jpg?v=49a1ca2305",
+          "rating": 3,
+          "reviewSnippet": "The subtext was the text"
+        },
+        {
+          "title": "Wake Up Dead Man",
+          "year": "2025",
+          "filmBoxdId": "uAKS",
+          "link": "https://boxd.it/c2dw3r",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/2/9/1/1/3/729113-wake-up-dead-man-0-600-0-900-crop.jpg?v=85f3366617",
+          "rating": 3.5,
+          "reviewSnippet": "There’s no mystery like a good Benoit Blanc mystery."
+        },
+        {
+          "title": "People We Meet on Vacation",
+          "year": "2026",
+          "filmBoxdId": "D8ME",
+          "link": "https://boxd.it/cAdEkh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/3/2/8/5/6/932856-people-we-meet-on-vacation-0-600-0-900-crop.jpg?v=c98853a2fc",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Best Pixel Bud advert of all time"
+        },
+        {
+          "title": "Primate",
+          "year": "2025",
+          "filmBoxdId": "Obz6",
+          "link": "https://boxd.it/cAtpqB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/6/0/8/6/1196086-primate-2025-0-600-0-900-crop.jpg?v=a12c6e9ce8",
+          "rating": 2,
+          "reviewSnippet": "“Who the fuck has a pet chimp?” My thoughts exactly."
+        },
+        {
+          "title": "The Lost Daughter",
+          "year": "2021",
+          "filmBoxdId": "kgww",
+          "link": "https://boxd.it/cGM5H5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/3/0/0/8/483008-the-lost-daughter-0-600-0-900-crop.jpg?v=d94060af3e",
+          "rating": 3,
+          "reviewSnippet": "Seeing Dakota Johnson on my holiday would also set me off"
+        },
+        {
+          "title": "Twinless",
+          "year": "2025",
+          "filmBoxdId": "LkKc",
+          "link": "https://boxd.it/cHXMNr",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/8/1/1/6/1128116-twinless-0-600-0-900-crop.jpg?v=685774222b",
+          "rating": 3,
+          "reviewSnippet": "Any time you’re doing a Dear Evan Hansen, where someone’s taking advantage of the dead to gain proximity to the grieving, it ma…"
+        },
+        {
+          "title": "Tuesday",
+          "year": "2023",
+          "filmBoxdId": "vlQI",
+          "link": "https://boxd.it/cPqirh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/4/7/2/1/6/747216-tuesday-0-600-0-900-crop.jpg?v=37c94d2cbd",
+          "rating": 2.5,
+          "reviewSnippet": "Magical surrealism is usually very hit or miss for me, but not Tuesday. I found Tuesday to be perfectly fine, pretty close to r…"
+        },
+        {
+          "title": "Nirvanna the Band the Show the Movie",
+          "year": "2025",
+          "filmBoxdId": "HG9a",
+          "link": "https://boxd.it/d95sZB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/4/1/0/1/2/1041012-nirvanna-the-band-the-show-the-movie-0-600-0-900-crop.jpg?v=4d80f82f8a",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "What would’ve happened if Nathan Fielder didn’t graduate from one of Canada’s top business schools (with really good grades)"
+        },
+        {
+          "title": "Good Luck, Have Fun, Don't Die",
+          "year": "2025",
+          "filmBoxdId": "Glua",
+          "link": "https://boxd.it/daf8Od",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/0/9/2/3/7/1009237-good-luck-have-fun-dont-die-0-600-0-900-crop.jpg?v=be79007f48",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "You’ve seen every bit of the runtime in multiple excellent movies before, but for some reason (similar to Everything, Everywher…"
+        },
+        {
+          "title": "Molly's Game",
+          "year": "2017",
+          "filmBoxdId": "dSl8",
+          "link": "https://boxd.it/dgvJCJ",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/te/bh/hd/ib/h9hUP5ZJGsjL2wbERrGlj4dMjZq-0-600-0-900-crop.jpg?v=cd55a90634",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Nothing punches you in the face like some good Aaron Sorkin writing. He’s pulling out all the stops to make you want to side wi…"
+        },
+        {
+          "title": "Magnolia",
+          "year": "1999",
+          "filmBoxdId": "2aze",
+          "link": "https://boxd.it/duTfBF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/7/2/8/51728-magnolia-0-600-0-900-crop.jpg?v=178b5e5c17",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "An absolute marvel of storytelling and cinema, and character!"
+        },
+        {
+          "title": "Michael",
+          "year": "2026",
+          "filmBoxdId": "zi5M",
+          "link": "https://boxd.it/e76sGB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/4/1/1/0/3/841103-michael-2026-0-600-0-900-crop.jpg?v=1e8e478e40",
+          "rating": 1.5,
+          "reviewSnippet": "A Jimmy Savile biopic, but the last quarter is all media appearances, and they stop showing his personal life entirely"
+        },
+        {
+          "title": "Fruitvale Station",
+          "year": "2013",
+          "filmBoxdId": "4VRy",
+          "link": "https://boxd.it/eHu99v",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/4i/ao/9w/sf/zwPYTHFCgWYHRW1OoxE23dxZZRX-0-600-0-900-crop.jpg?v=f56e9553ca",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "The B. stands for Baby in this one What a powerful debut"
+        },
+        {
+          "title": "Minions & Monsters",
+          "year": "2026",
+          "filmBoxdId": "Odry",
+          "link": "https://boxd.it/f2MorT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/6/8/0/8/1196808-minions-monsters-2026-0-600-0-900-crop.jpg?v=8ff282e996",
+          "rating": 3,
+          "reviewSnippet": "The movie Babylon wishes it was"
+        },
+        {
+          "title": "The Wizard of the Kremlin",
+          "year": "2025",
+          "filmBoxdId": "NhhA",
+          "link": "https://boxd.it/g0TsXt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/7/4/4/5/1/1174451-the-wizard-of-the-kremlin-0-600-0-900-crop.jpg?v=7c3ac03cd2",
+          "rating": 2,
+          "reviewSnippet": "The inconsistency of the Russian accents killed me, when none of the lead actors are doing one."
+        },
+        {
+          "title": "Buddy",
+          "year": "2026",
+          "filmBoxdId": "Wjhq",
+          "link": "https://boxd.it/g5m0oT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/8/9/7/1/4/1389714-buddy-2026-0-600-0-900-crop.jpg?v=6a078eb95a",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Really fun and inventive; this almost has a modern Grimms’ element to it"
+        },
+        {
+          "title": "Mutiny",
+          "year": "2026",
+          "filmBoxdId": "Na66",
+          "link": "https://boxd.it/g6tFsP",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/7/1/6/8/9/1171689-mutiny-2026-0-600-0-900-crop.jpg?v=71650d2444",
+          "rating": 1.5,
+          "reviewSnippet": "Boat"
+        },
+        {
+          "title": "Paprika",
+          "year": "2006",
+          "filmBoxdId": "23wW",
+          "link": "https://boxd.it/g6SM25",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/9/0/2/3/49023-paprika-0-600-0-900-crop.jpg?v=bdcabb9981",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Extremely imaginative and original. It definitely tried to make a point about society, but that kinda got lost somewhere along…"
+        },
+        {
+          "title": "You Can See Everything",
+          "year": "2026",
+          "filmBoxdId": "16mVo",
+          "link": "https://letterboxd.com/brslli/film/you-can-see-everything/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/6/2/9/4/4/3/1629443-you-can-see-everything-0-600-0-900-crop.jpg?v=84f6724d74",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "You Can See Everything, sure, but can you understand what it’s trying to say"
+        },
+        {
+          "title": "Wildwood",
+          "year": "2026",
+          "filmBoxdId": "tLD2",
+          "link": "https://letterboxd.com/brslli/film/wildwood-2026/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/0/9/4/6/0/709460-wildwood-2026-0-600-0-900-crop.jpg?v=e0b4be5769",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Spirited Away meets Zootopia meets some Lord of the Rings / Narnia high fantasy meets Portland, Oregon."
+        },
+        {
+          "title": "Hokum",
+          "year": "2026",
+          "filmBoxdId": "SUeq",
+          "link": "https://letterboxd.com/brslli/film/hokum/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/0/8/5/8/7/1308587-hokum-0-600-0-900-crop.jpg?v=29deb57767",
+          "rating": 3.5,
+          "reviewSnippet": "Definitely a spookier one; I couldn’t finish this one at night"
+        }
+      ]
+    },
+    {
+      "id": "46830523",
+      "slug": "true-story",
+      "title": "“True Story”",
+      "url": "https://letterboxd.com/brslli/list/true-story/",
+      "filmCount": 73,
+      "isRanked": false,
+      "category": "tropes",
+      "description": "For feature films that at some point self-define as a “True Story”, or show clips of the real events which inspired the movie.",
+      "films": [
+        {
+          "title": "Baby Reindeer",
+          "year": "2024",
+          "filmBoxdId": "MwSa",
+          "link": "https://boxd.it/6v48Iv",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/6/6/1/1/1156611-baby-reindeer-0-600-0-900-crop.jpg?v=fded89eeed",
+          "rating": 3.5,
+          "reviewSnippet": "This was seriously a lot. You watch one person go through a ton of harm (much of it self-inflicted), and not in a comedic way.…"
+        },
+        {
+          "title": "Fighting with My Family",
+          "year": "2019",
+          "filmBoxdId": "fRyO",
+          "link": "https://boxd.it/6wp8ET",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/7/8/0/8/1/378081-fighting-with-my-family-0-600-0-900-crop.jpg?v=7280e4468a",
+          "rating": 3,
+          "reviewSnippet": "Flo, the accent isn’t working for me. It’s not at all lived in, and really comes and goes. She’s a a good casting choice for ev…"
+        },
+        {
+          "title": "Hit Man",
+          "year": "2023",
+          "filmBoxdId": "ANB2",
+          "link": "https://boxd.it/6FmJuV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/7/7/0/4/6/877046-hit-man-0-600-0-900-crop.jpg?v=7a8e101a9d",
+          "rating": 3,
+          "reviewSnippet": "The through line of Linklater’s films is a lack of things happening. Even in this movie, where maybe the most things happen, it…"
+        },
+        {
+          "title": "The Bikeriders",
+          "year": "2023",
+          "filmBoxdId": "C6Ym",
+          "link": "https://boxd.it/6HoX5d",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/0/8/3/2/7/908327-the-bikeriders-0-600-0-900-crop.jpg?v=71c876af34",
+          "rating": 3,
+          "reviewSnippet": "Fun setting and subject but the story went nowhere and didn’t have much to say. Tom Hardy was doing his Marlon Brando and Jodie…"
+        },
+        {
+          "title": "Thelma",
+          "year": "2024",
+          "filmBoxdId": "DOou",
+          "link": "https://boxd.it/6IqtOP",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/4/8/8/5/1/948851-thelma-0-600-0-900-crop.jpg?v=697d382334",
+          "rating": 3,
+          "reviewSnippet": "A wonderfully cute with a smidge of nonagenarian thrills that didn’t fully click for me."
+        },
+        {
+          "title": "Scoop",
+          "year": "2024",
+          "filmBoxdId": "EZu6",
+          "link": "https://boxd.it/74pisT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/6/9/4/7/976947-scoop-0-600-0-900-crop.jpg?v=2700510922",
+          "rating": 2.5,
+          "reviewSnippet": "The direction of this movie was so flat, it needed a lot more dynamic musical underscoring, that and more interesting writing,…"
+        },
+        {
+          "title": "The Iron Lady",
+          "year": "2011",
+          "filmBoxdId": "2qli",
+          "link": "https://boxd.it/74v2Dj",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/tm/xm/uw/ip/e67tal4u66eFz8yGnJGTO5FYRxY-0-600-0-900-crop.jpg?v=7ab55f910c",
+          "rating": 2,
+          "reviewSnippet": "This was a strange movie, the bulk of it is based in “modern day” with an aged Thatcher being (mostly lovingly) haunted by her…"
+        },
+        {
+          "title": "Skincare",
+          "year": "2024",
+          "filmBoxdId": "HinC",
+          "link": "https://boxd.it/75CxRT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/3/1/8/7/6/1031876-skincare-0-600-0-900-crop.jpg?v=1cc8c8cefa",
+          "rating": 2.5,
+          "reviewSnippet": "I saw this on a blind prerelease screening and it was fine. The story was nothing I hadn’t seen before (and I successfully gues…"
+        },
+        {
+          "title": "Your Monster",
+          "year": "2024",
+          "filmBoxdId": "FwOI",
+          "link": "https://boxd.it/7CfmMf",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/8/9/7/6/0/989760-your-monster-0-600-0-900-crop.jpg?v=93d5994063",
+          "rating": 2,
+          "reviewSnippet": "Hated how they made stage managers the butt of the joke and a goof. The rest of the movie was pretty mid, but I really hated ho…"
+        },
+        {
+          "title": "Erin Brockovich",
+          "year": "2000",
+          "filmBoxdId": "2al2",
+          "link": "https://boxd.it/8tXThp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/6/4/0/51640-erin-brockovich-0-600-0-900-crop.jpg?v=6d5ed6af13",
+          "rating": 4,
+          "reviewSnippet": "It’s hard to think of a protagonist that you root for more than Erin. Sometime you need to trust your gut and find a way to get…"
+        },
+        {
+          "title": "Better Man",
+          "year": "2024",
+          "filmBoxdId": "u6t8",
+          "link": "https://boxd.it/8si7P3",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/1/7/4/7/1/717471-better-man-2024-0-600-0-900-crop.jpg?v=e2168b52aa",
+          "rating": 3,
+          "reviewSnippet": "Robbie’s movie, much like his music, was really quite good. It’s a shame that America has failed to embrace either."
+        },
+        {
+          "title": "The Last Emperor",
+          "year": "1987",
+          "filmBoxdId": "29Ji",
+          "link": "https://boxd.it/8mcssN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/4/0/6/51406-the-last-emperor-0-600-0-900-crop.jpg?v=db0c8250da",
+          "rating": 3.5,
+          "reviewSnippet": "A sweeping epic, to be certain. It was strange how much English was spoken. If this were made today, I assume it would’ve been…"
+        },
+        {
+          "title": "I'm Still Here",
+          "year": "2024",
+          "filmBoxdId": "BPEO",
+          "link": "https://boxd.it/8AQTD5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/0/1/6/7/1/901671-im-still-here-2024-0-600-0-900-crop.jpg?v=62be7ea503",
+          "rating": 4,
+          "reviewSnippet": "“Smile”"
+        },
+        {
+          "title": "The Six Triple Eight",
+          "year": "2024",
+          "filmBoxdId": "Ear6",
+          "link": "https://boxd.it/8BoYPD",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/5/7/3/2/4/957324-the-six-triple-eight-2024-0-600-0-900-crop.jpg?v=6ea2359b8f",
+          "rating": 2.5,
+          "reviewSnippet": "My first Tyler Perry movie! Who doesn’t love some competency porn? Kerry was great, the movie was fine."
+        },
+        {
+          "title": "The Bling Ring",
+          "year": "2013",
+          "filmBoxdId": "3lPY",
+          "link": "https://boxd.it/8JbPsr",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/9/8/9/3/79893-the-bling-ring-0-600-0-900-crop.jpg?v=b9409f8bdc",
+          "rating": 3,
+          "reviewSnippet": "The worst kids you know. Documenting the anonymity to fame pipeline for people with no morals, in the time shortly before Insta…"
+        },
+        {
+          "title": "Apple Cider Vinegar",
+          "year": "2025",
+          "filmBoxdId": "SMcm",
+          "link": "https://boxd.it/8N7CWB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/0/5/4/9/9/1305499-apple-cider-vinegar-2025-0-600-0-900-crop.jpg?v=ac065c657a",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "This is one of those “true story” miniseries where you immediately need to know what actually happened afterwards. It’s 6hrs lo…"
+        },
+        {
+          "title": "Last Breath",
+          "year": "2025",
+          "filmBoxdId": "AJqO",
+          "link": "https://boxd.it/94Z3YX",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/7/5/4/4/5/875445-last-breath-2025-0-600-0-900-crop.jpg?v=38624b64e4",
+          "rating": 2.5,
+          "reviewSnippet": "All of the underwater stuff looked really cool, but the boat scenes was all so goofy."
+        },
+        {
+          "title": "Warfare",
+          "year": "2025",
+          "filmBoxdId": "LbRo",
+          "link": "https://boxd.it/9nLLLr",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/4/7/0/1/1124701-warfare-0-600-0-900-crop.jpg?v=f379233a1b",
+          "rating": 3,
+          "reviewSnippet": "Has there ever been a movie with more guys that make you go, “hey, he was in that one thing.”"
+        },
+        {
+          "title": "Nonnas",
+          "year": "2025",
+          "filmBoxdId": "HxlQ",
+          "link": "https://boxd.it/9J1PcV",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/3/7/6/3/1/1037631-nonnas-0-600-0-900-crop.jpg?v=bc0631c706",
+          "rating": 2.5,
+          "reviewSnippet": "One of the most paint-by-numbers movies I’ve seen, but it did feel like Nonnas was an actual passion project of Vince’s. The on…"
+        },
+        {
+          "title": "Born on the Fourth of July",
+          "year": "1989",
+          "filmBoxdId": "26A8",
+          "link": "https://boxd.it/ae7Xi9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/1/9/6/50196-born-on-the-fourth-of-july-0-600-0-900-crop.jpg?v=d35a8cecf1",
+          "rating": 3.5,
+          "reviewSnippet": "Started on the Fourth of July (but then I got sleepy, so it was actually) Finished on the Fifth of July."
+        },
+        {
+          "title": "We Bought a Zoo",
+          "year": "2011",
+          "filmBoxdId": "2AU8",
+          "link": "https://boxd.it/apfpaP",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/1/8/5/2/61852-we-bought-a-zoo-0-600-0-900-crop.jpg?v=0af2122d69",
+          "rating": 2.5,
+          "reviewSnippet": "If you’ve never seen a movie before, you will LOVE We Bought a Zoo. Otherwise, you’ve seen this movie before."
+        },
+        {
+          "title": "Mary and Max",
+          "year": "2009",
+          "filmBoxdId": "1y2m",
+          "link": "https://boxd.it/avgAXz",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/h5/ak/cq/1k/k0lQISUC4NuvKYasJn59JHc2rla-0-600-0-900-crop.jpg?v=c98c9106e5",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "A beautiful, decades-spanning tale of two pen-mates a world away, shaping one another’s lives."
+        },
+        {
+          "title": "The Order",
+          "year": "2024",
+          "filmBoxdId": "EVrs",
+          "link": "https://boxd.it/aBeBXl",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/5/3/9/3/975393-the-order-2024-0-600-0-900-crop.jpg?v=4a956cfea6",
+          "rating": 3,
+          "reviewSnippet": "Nicholas Hoult can play a damn good villain. This one had some strong direction."
+        },
+        {
+          "title": "Chief of War",
+          "year": "2025",
+          "filmBoxdId": "Wtso",
+          "link": "https://boxd.it/aEYpKX",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/9/3/6/2/6/1393626-chief-of-war-0-600-0-900-crop.jpg?v=cdddb9977d",
+          "rating": 3,
+          "reviewSnippet": "The story of the unification of the kingdoms of Hawaii and the introduction of the “palefaced” to the island archipelago. It’s…"
+        },
+        {
+          "title": "Weapons",
+          "year": "2025",
+          "filmBoxdId": "EMTM",
+          "link": "https://boxd.it/aGCMAF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/2/1/0/9/972109-weapons-2025-0-600-0-900-crop.jpg?v=8100270337",
+          "rating": 3.5,
+          "reviewSnippet": "Parasite (2025)"
+        },
+        {
+          "title": "The Outrun",
+          "year": "2024",
+          "filmBoxdId": "txPo",
+          "link": "https://boxd.it/aIP2ab",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/0/4/1/5/5/704155-the-outrun-0-600-0-900-crop.jpg?v=5727e4a6cc",
+          "rating": 3,
+          "reviewSnippet": "This one was tough to watch at times, but ultimately felt worth it. You’re watching a woman battle addiction through the highs…"
+        },
+        {
+          "title": "Apollo 13",
+          "year": "1995",
+          "filmBoxdId": "2a6G",
+          "link": "https://boxd.it/aPihLD",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/5/5/1/51551-apollo-13-0-600-0-900-crop.jpg?v=256e0eeb8f",
+          "rating": 3.5,
+          "reviewSnippet": "In terms of space movies, this was quite a good one. Ron Howard’s hopeful “aw shucks” charm works really well on this classic A…"
+        },
+        {
+          "title": "Eden",
+          "year": "2024",
+          "filmBoxdId": "Dt52",
+          "link": "https://boxd.it/aQUAND",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/4/0/6/5/8/940658-eden-2024-0-600-0-900-crop.jpg?v=c88a4a3cb9",
+          "rating": 2.5,
+          "reviewSnippet": "Went into this one completely blind and it was fine. It’s kind of like an episode of Alone, but set in a way too easy landscape…"
+        },
+        {
+          "title": "The Lost Bus",
+          "year": "2025",
+          "filmBoxdId": "KYKE",
+          "link": "https://boxd.it/bh1tUb",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/1/9/6/6/2/1119662-the-lost-bus-0-600-0-900-crop.jpg?v=1bdbef0371",
+          "rating": 3,
+          "reviewSnippet": "This is the saddest protagonist that Matthew McConaughey has ever played. I know that it’s based on a true story, but they real…"
+        },
+        {
+          "title": "Roofman",
+          "year": "2025",
+          "filmBoxdId": "LcIW",
+          "link": "https://boxd.it/bkpMHv",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/2/5/0/3/3/1125033-roofman-0-600-0-900-crop.jpg?v=017b87fa71",
+          "rating": 3,
+          "reviewSnippet": "Channing Tatum with a really solid performance against an equally good Kirsten Dunst, I just wish the story was a bit better."
+        },
+        {
+          "title": "The Smashing Machine",
+          "year": "2025",
+          "filmBoxdId": "syUC",
+          "link": "https://boxd.it/blHFdt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/8/0/7/3/9/680739-the-smashing-machine-2025-0-600-0-900-crop.jpg?v=e1c8e23118",
+          "rating": 3,
+          "reviewSnippet": "A very straight-down-the-middle sports biopic. I wanna hear what real world Dawn thinks about this movie, because as portrayed,…"
+        },
+        {
+          "title": "Blue Moon",
+          "year": "2025",
+          "filmBoxdId": "Nzwy",
+          "link": "https://boxd.it/bq9Bb1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/8/1/4/6/3/1181463-blue-moon-2025-0-600-0-900-crop.jpg?v=e7b58cae0d",
+          "rating": 3,
+          "reviewSnippet": "More of a play than a movie, telling the story of a pretty sad man on one of the sadder days of his life. Blue Moon is telling…"
+        },
+        {
+          "title": "Downfall",
+          "year": "2004",
+          "filmBoxdId": "2a04",
+          "link": "https://boxd.it/bJ4ufh",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/pd/9a/uf/as/jOs0I1g4bzUnUhDz4elREczbMQL-0-600-0-900-crop.jpg?v=508748fdb7",
+          "rating": 4,
+          "reviewSnippet": "The story of the final days of Nazi Germany, told heavily through the eyes of Hilter’s secretary. There’s not much spin on the…"
+        },
+        {
+          "title": "Nuremberg",
+          "year": "2025",
+          "filmBoxdId": "K6qU",
+          "link": "https://boxd.it/bNNv9P",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/9/8/7/8/2/1098782-nuremberg-2025-0-600-0-900-crop.jpg?v=954f98ffb4",
+          "rating": 3.5,
+          "reviewSnippet": "A damn near perfect sequel to Downfall."
+        },
+        {
+          "title": "Battle of the Sexes",
+          "year": "2017",
+          "filmBoxdId": "cNxw",
+          "link": "https://boxd.it/bW4wgD",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/u5/7k/i8/sv/B6E77791-C29F-4CAC-A309-2424F47DA4E5-0-600-0-900-crop.jpg?v=bdc9de1046",
+          "rating": 3,
+          "reviewSnippet": "A feel great kinda movie"
+        },
+        {
+          "title": "Is This Thing On?",
+          "year": "2025",
+          "filmBoxdId": "H73Q",
+          "link": "https://boxd.it/cckHKF",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/cu/cp/cr/2m/o0uOCDLZEwlForZ5Bf3IeBwlPLd-0-600-0-900-crop.jpg?v=371b64c948",
+          "rating": 2.5,
+          "reviewSnippet": "Men don’t need therapy, they need stand up: the movie."
+        },
+        {
+          "title": "Marty Supreme",
+          "year": "2025",
+          "filmBoxdId": "Off0",
+          "link": "https://boxd.it/cd1Obt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/7/4/9/9/1197499-marty-supreme-0-600-0-900-crop.jpg?v=b14a26bb43",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Well the jury is out, Josh Safdie is the Popo to Benny’s Nana, where Marty Supreme gave me that signature Safdie Bros Sweaty Pa…"
+        },
+        {
+          "title": "The Man in the Iron Mask",
+          "year": "1998",
+          "filmBoxdId": "1YZO",
+          "link": "https://boxd.it/ch8AbT",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/2/8/0/47280-the-man-in-the-iron-mask-0-600-0-900-crop.jpg?v=1163a0025b",
+          "rating": 2.5,
+          "reviewSnippet": "On a quest to watch every Leo movie, as I normally wouldn’t have sought out a three musketeers story, and really didn’t love th…"
+        },
+        {
+          "title": "The Testament of Ann Lee",
+          "year": "2025",
+          "filmBoxdId": "RTTU",
+          "link": "https://boxd.it/chUyvj",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/8/4/6/2/7/1284627-the-testament-of-ann-lee-0-600-0-900-crop.jpg?v=3da6a9dae0",
+          "rating": 3,
+          "reviewSnippet": "As a Quaker, who went to a Quaker school, they didn’t teach us much about the offshoots of our religion, and in that sense, I l…"
+        },
+        {
+          "title": "Song Sung Blue",
+          "year": "2025",
+          "filmBoxdId": "QMqO",
+          "link": "https://boxd.it/cmGCtN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/5/7/9/2/3/1257923-song-sung-blue-2025-0-600-0-900-crop.jpg?v=cbd714fcd7",
+          "rating": 3.5,
+          "reviewSnippet": "140mins of Craig Brewster trying to teach me that there’s a song called Soolaimon,"
+        },
+        {
+          "title": "Dead Man's Wire",
+          "year": "2025",
+          "filmBoxdId": "M8wu",
+          "link": "https://boxd.it/cyR0rp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/4/7/2/5/1/1147251-dead-mans-wire-0-600-0-900-crop.jpg?v=75bec36eec",
+          "rating": 3.5,
+          "reviewSnippet": "A very smooth movie, carried by a crazed Bill Skarsgård and an especially cool Colman Domingo. Al Pacino was great when he was…"
+        },
+        {
+          "title": "The Rip",
+          "year": "2026",
+          "filmBoxdId": "NP5y",
+          "link": "https://boxd.it/cFRa8P",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/8/7/4/4/6/1187446-the-rip-2026-0-600-0-900-crop.jpg?v=d7686b3035",
+          "rating": 2.5,
+          "reviewSnippet": "The story is interesting enough, but the writing ain’t great. A whole lot of tell, and way less show. Anyways, Matt and Ben wer…"
+        },
+        {
+          "title": "Molly's Game",
+          "year": "2017",
+          "filmBoxdId": "dSl8",
+          "link": "https://boxd.it/dgvJCJ",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/te/bh/hd/ib/h9hUP5ZJGsjL2wbERrGlj4dMjZq-0-600-0-900-crop.jpg?v=cd55a90634",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Nothing punches you in the face like some good Aaron Sorkin writing. He’s pulling out all the stops to make you want to side wi…"
+        },
+        {
+          "title": "Green Book",
+          "year": "2018",
+          "filmBoxdId": "hErk",
+          "link": "https://boxd.it/ecX1YJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/2/0/7/0/3/420703-green-book-0-600-0-900-crop.jpg?v=9919fcce4c",
+          "rating": 2.5,
+          "reviewSnippet": "Not just “racism = bad”, but the additional that you get doesn’t amount to much. Certainly an outliers among its surrounding de…"
+        },
+        {
+          "title": "Christy",
+          "year": "2025",
+          "filmBoxdId": "N6Ye",
+          "link": "https://boxd.it/ee8gL7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/7/0/4/8/7/1170487-christy-2025-1-0-600-0-900-crop.jpg?v=eb2c154e5b",
+          "rating": 3,
+          "reviewSnippet": "Very standard biopic, but Sydney is really solid here. It felt like this story was important enough to merit a biopic"
+        },
+        {
+          "title": "Pressure",
+          "year": "2026",
+          "filmBoxdId": "Oj4A",
+          "link": "https://boxd.it/eHkLhn",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/9/8/9/7/2/1198972-pressure-2026-0-600-0-900-crop.jpg?v=38a01c694d",
+          "rating": 3,
+          "reviewSnippet": "The story of a weatherboy who weathered harder than anyone’s ever weathered before."
+        },
+        {
+          "title": "Fruitvale Station",
+          "year": "2013",
+          "filmBoxdId": "4VRy",
+          "link": "https://boxd.it/eHu99v",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/4i/ao/9w/sf/zwPYTHFCgWYHRW1OoxE23dxZZRX-0-600-0-900-crop.jpg?v=f56e9553ca",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "The B. stands for Baby in this one What a powerful debut"
+        },
+        {
+          "title": "The Social Network",
+          "year": "2010",
+          "filmBoxdId": "17ue",
+          "link": "https://letterboxd.com/brslli/film/the-social-network/1/",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/nw/cm/pa/ai/sGQv3ZMZBDBnl3z42Q0mEQ5uiDe-0-600-0-900-crop.jpg?v=54ee59f7cd",
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "This movie is the death of my favorite era of the internet, the website era. I miss websites."
+        }
+      ]
+    },
+    {
+      "id": "36096212",
+      "slug": "set-in-the-sf-bay-area",
+      "title": "Set in the [SF] Bay Area 🌉",
+      "url": "https://letterboxd.com/brslli/list/set-in-the-sf-bay-area/",
+      "filmCount": 52,
+      "isRanked": false,
+      "category": "places-seasons",
+      "description": "A list of films which are set in San Francisco, or at least have a scene prominently featuring the Bay Area.",
+      "films": [
+        {
+          "title": "Milk",
+          "year": "2008",
+          "filmBoxdId": "1WZC",
+          "link": "https://boxd.it/4kuSmn",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/6/5/1/0/46510-milk-0-600-0-900-crop.jpg?v=1f16ddfcfc",
+          "rating": 3.5,
+          "reviewSnippet": "Happy Pride 🌈"
+        },
+        {
+          "title": "The Times of Harvey Milk",
+          "year": "1984",
+          "filmBoxdId": "1g1U",
+          "link": "https://boxd.it/4kszMH",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/9/9/9/5/29995-the-times-of-harvey-milk-0-600-0-900-crop.jpg?v=bfe71eb3a1",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Happy Pride 🌈"
+        },
+        {
+          "title": "Rise of the Planet of the Apes",
+          "year": "2011",
+          "filmBoxdId": "cS4",
+          "link": "https://boxd.it/4EMltB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/9/4/8/4948-rise-of-the-planet-of-the-apes-0-600-0-900-crop.jpg?v=2185768098",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "The apes are headed to Napa, they’re going to wine country!Caesar’s a pretty great leader. I’m not even rooting for the humans…"
+        },
+        {
+          "title": "Dawn of the Planet of the Apes",
+          "year": "2014",
+          "filmBoxdId": "3XyQ",
+          "link": "https://boxd.it/4FaZct",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/4/3/9/4/94394-dawn-of-the-planet-of-the-apes-0-600-0-900-crop.jpg?v=29a00ba752",
+          "rating": 4,
+          "reviewSnippet": "The humans are holed up in my office lobby - the building one block past the Federal Reserve building in SF. They got the shot…"
+        },
+        {
+          "title": "Robin Williams: Come Inside My Mind",
+          "year": "2018",
+          "filmBoxdId": "hLSi",
+          "link": "https://boxd.it/4FvbEJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/2/3/5/6/1/423561-robin-williams-come-inside-my-mind-0-600-0-900-crop.jpg?v=11c392150c",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Touching tribute to the legendary comedian, actor and performer. It really felt like this showed a full picture of the man, wit…"
+        },
+        {
+          "title": "Venom",
+          "year": "2018",
+          "filmBoxdId": "b8wA",
+          "link": "https://letterboxd.com/film/venom-2018/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/6/5/4/3/8/265438-venom-0-600-0-900-crop.jpg?v=044d757925",
+          "rating": 3.5
+        },
+        {
+          "title": "Ant-Man",
+          "year": "2015",
+          "filmBoxdId": "3vmW",
+          "link": "https://letterboxd.com/film/ant-man/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/3/5/5/7/83557-ant-man-0-600-0-900-crop.jpg?v=17265166a5",
+          "rating": 3.5
+        },
+        {
+          "title": "Ant-Man and the Wasp",
+          "year": "2018",
+          "filmBoxdId": "cqUW",
+          "link": "https://letterboxd.com/film/ant-man-and-the-wasp/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/9/6/3/4/1/296341-ant-man-and-the-wasp-0-600-0-900-crop.jpg?v=a94b0d3017",
+          "rating": 3.5
+        },
+        {
+          "title": "Venom: Let There Be Carnage",
+          "year": "2021",
+          "filmBoxdId": "llco",
+          "link": "https://letterboxd.com/film/venom-let-there-be-carnage/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/8/6/3/8/508638-venom-let-there-be-carnage-0-600-0-900-crop.jpg?v=553c604246",
+          "rating": 3.5
+        },
+        {
+          "title": "Stephen Curry: Underrated",
+          "year": "2023",
+          "filmBoxdId": "wuUw",
+          "link": "https://boxd.it/4zSOfP",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/7/4/5/3/2/774532-stephen-curry-underrated-0-600-0-900-crop.jpg?v=93af14ed09",
+          "rating": 2.5,
+          "reviewSnippet": "The opening to Steph‘s younger years had some big Dewey Cox energy; Steph Curry needs to think about his whole life before he g…"
+        },
+        {
+          "title": "Beautiful Boy",
+          "year": "2018",
+          "filmBoxdId": "g76Q",
+          "link": "https://boxd.it/4NLyJL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/8/4/0/5/8/384058-beautiful-boy-0-600-0-900-crop.jpg?v=f926f71a50",
+          "rating": 3.5,
+          "reviewSnippet": "Timothée gives a captivating performance as a spiraling drug addict, and you can’t help but feel for, clearly excellent father,…"
+        },
+        {
+          "title": "Us",
+          "year": "2019",
+          "filmBoxdId": "gnV6",
+          "link": "https://boxd.it/4ZVqkL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/9/0/5/2/0/390520-us-0-600-0-900-crop.jpg?v=968884c876",
+          "rating": 3.5,
+          "reviewSnippet": "I was just on the Santa Cruz boardwalk last week! It was a lot less life changing for me, anyways."
+        },
+        {
+          "title": "The Princess Diaries",
+          "year": "2001",
+          "filmBoxdId": "1XCO",
+          "link": "https://boxd.it/6yw6Rj",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/5w/kf/y1/r9/89CTU3plfKw6mGpzkLmdQkHHLeS-0-600-0-900-crop.jpg?v=66ee5d3a6c",
+          "rating": 3.5,
+          "reviewSnippet": "I was not expecting this to be so prominently set in SF, or to be so funny."
+        },
+        {
+          "title": "Inside Out 2",
+          "year": "2024",
+          "filmBoxdId": "CFrC",
+          "link": "https://boxd.it/6FIqgf",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/2/1/5/7/8/921578-inside-out-2-0-600-0-900-crop.jpg?v=efa25e5cca",
+          "rating": 3,
+          "reviewSnippet": "This one really wasn’t as deep as the first, and didn’t really break any new ground. I loved the first one, and this felt like…"
+        },
+        {
+          "title": "Funny People",
+          "year": "2009",
+          "filmBoxdId": "1CRy",
+          "link": "https://boxd.it/6QOURL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/8/7/7/2/38772-funny-people-0-600-0-900-crop.jpg?v=40b2d88ed6",
+          "rating": 3,
+          "reviewSnippet": "Whichever Apatow sang Memory killed it"
+        },
+        {
+          "title": "Dìdi (弟弟)",
+          "year": "2024",
+          "filmBoxdId": "HQOW",
+          "link": "https://boxd.it/71WLlL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/4/5/1/1/5/1045115-didi--0-600-0-900-crop.jpg?v=e65b2443a7",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "It’s hard to think of how a movie could represent my formative years more perfectly than Didi’s lonely SmarterChild conversation."
+        },
+        {
+          "title": "WarGames",
+          "year": "1983",
+          "filmBoxdId": "29qU",
+          "link": "https://boxd.it/7bi3hF",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/2/9/2/51292-wargames-0-600-0-900-crop.jpg?v=8642fe2e30",
+          "rating": 3,
+          "reviewSnippet": "Before the hacking (and the internet) was depicted as a bunch of wacky 90s tubes or Matrix code falling, it actually looked lik…"
+        },
+        {
+          "title": "Reagan",
+          "year": "2024",
+          "filmBoxdId": "o2QA",
+          "link": "https://boxd.it/7ehsff",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/7/3/0/8/2/573082-reagan-0-600-0-900-crop.jpg?v=af733427cb",
+          "rating": 1.5,
+          "reviewSnippet": "Wow, what a weird movie. The whole thing is set from a 2020s Russian POV, and everything is narrated by these Soviet sympathize…"
+        },
+        {
+          "title": "Hasan Minhaj: Off with His Head",
+          "year": "2024",
+          "filmBoxdId": "Q6D2",
+          "link": "https://boxd.it/7E8ylJ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/4/1/8/5/4/1241854-hasan-minhaj-off-with-his-head-0-600-0-900-crop.jpg?v=4b79d9d36d",
+          "rating": 3.5,
+          "reviewSnippet": "I really appreciate this more unleashed energy. With this being in the Bay, there’s a decent chance that I knew someone in the…"
+        },
+        {
+          "title": "A Complete Unknown",
+          "year": "2024",
+          "filmBoxdId": "oBYa",
+          "link": "https://boxd.it/85LBQB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/8/6/5/8/3/586583-a-complete-unknown-0-600-0-900-crop.jpg?v=f14ab6ecf6",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Timmy could do it all: sing, play guitar, play harmonica, but the one skill that he didn’t pick up was motorcycle riding. The v…"
+        },
+        {
+          "title": "Feels Good Man",
+          "year": "2020",
+          "filmBoxdId": "oigS",
+          "link": "https://boxd.it/8eXuxd",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/7/9/0/1/1/579011-feels-good-man-0-600-0-900-crop.jpg?v=6871d6ff14",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Oh the emotional roller coaster that this one takes you on. You end up feeling so badly for Matt as Pepe is Nazified, but that’…"
+        },
+        {
+          "title": "Wolf Man",
+          "year": "2025",
+          "filmBoxdId": "qzSI",
+          "link": "https://boxd.it/8xBNA3",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/3/3/4/4/6/633446-wolf-man-2025-0-600-0-900-crop.jpg?v=a1ca32eec3",
+          "rating": 1.5,
+          "reviewSnippet": "Meh. The only cool bit was the “wolfvision”"
+        },
+        {
+          "title": "The Pixar Story",
+          "year": "2007",
+          "filmBoxdId": "1Mtm",
+          "link": "https://boxd.it/8DBS9l",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/2/4/6/6/42466-the-pixar-story-0-600-0-900-crop.jpg?v=f0ea732644",
+          "rating": 3.5,
+          "reviewSnippet": "In 2017, I was given a personal, behind-the-scenes tour of Pixar’s Emeryville, CA offices from a friend who worked there (who w…"
+        },
+        {
+          "title": "The Internet's Own Boy: The Story of Aaron Swartz",
+          "year": "2014",
+          "filmBoxdId": "7lcA",
+          "link": "https://boxd.it/8GMlJf",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/7/4/9/8/0/174980-the-internet-s-own-boy-the-story-of-aaron-swartz-0-600-0-900-crop.jpg?v=49c5360f1a",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "“They don’t let felons work there” (in reference to the White House).Well that didn’t age too well.\n“Gingrich plunged Congress…"
+        },
+        {
+          "title": "Becoming Led Zeppelin",
+          "year": "2025",
+          "filmBoxdId": "wobU",
+          "link": "https://boxd.it/8Kpevl",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/7/1/9/4/9/771949-becoming-led-zeppelin-0-600-0-900-crop.jpg?v=f699236a79",
+          "rating": 3,
+          "reviewSnippet": "I can’t think of another piece of media which “just ends” quite like this doc. It was about 65% concert footage and 100% strang…"
+        },
+        {
+          "title": "Apple Cider Vinegar",
+          "year": "2025",
+          "filmBoxdId": "SMcm",
+          "link": "https://boxd.it/8N7CWB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/0/5/4/9/9/1305499-apple-cider-vinegar-2025-0-600-0-900-crop.jpg?v=ac065c657a",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "This is one of those “true story” miniseries where you immediately need to know what actually happened afterwards. It’s 6hrs lo…"
+        },
+        {
+          "title": "M3GAN 2.0",
+          "year": "2025",
+          "filmBoxdId": "EwHU",
+          "link": "https://boxd.it/aah57v",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/6/5/8/8/5/965885-m3gan-20-0-600-0-900-crop.jpg?v=4427bb61b1",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "In the time between M3GAN and M3GAN 2.0, the robot technology went from scifi to near reality, and they writing here has comple…"
+        },
+        {
+          "title": "Pacific Rim",
+          "year": "2013",
+          "filmBoxdId": "2cB2",
+          "link": "https://boxd.it/aduson",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/2/5/0/8/52508-pacific-rim-0-600-0-900-crop.jpg?v=f8a975b8cc",
+          "rating": 2.5,
+          "reviewSnippet": "Something of a dumb, but visually stunning kaiju flick, wish I’d caught it in theatres. Far from Guillermo’s best."
+        },
+        {
+          "title": "Superman",
+          "year": "1978",
+          "filmBoxdId": "27Qm",
+          "link": "https://boxd.it/aeTEyj",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/6/8/1/50681-superman-0-600-0-900-crop.jpg?v=874476852b",
+          "rating": 3,
+          "reviewSnippet": "Was the person feeding lines into Brando’s earpiece Scottish? I’m not sure how else he got, “Kryptoon”"
+        },
+        {
+          "title": "Mrs. Doubtfire",
+          "year": "1993",
+          "filmBoxdId": "29Cw",
+          "link": "https://boxd.it/ajtlZD",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/1/3/6/4/51364-mrs-doubtfire-0-600-0-900-crop.jpg?v=f30c65a693",
+          "rating": 3.5,
+          "reviewSnippet": "An EXTREMELY SF movie. Every street has a 15° incline, the house has the classic SF front windows, Sally Field’s desk has a ver…"
+        },
+        {
+          "title": "Vertigo",
+          "year": "1958",
+          "filmBoxdId": "2apI",
+          "link": "https://boxd.it/ajZVUX",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/q9/3o/ng/om/obhM86qyv8RsE69XSMTtT9FdE0b-0-600-0-900-crop.jpg?v=1403a5e003",
+          "rating": 4,
+          "reviewSnippet": "For someone that lived in SF for 6 years, this movie was the ultimate game of “what’s still there, and what’s changed”. Good to…"
+        },
+        {
+          "title": "Freaky Tales",
+          "year": "2024",
+          "filmBoxdId": "B0MC",
+          "link": "https://boxd.it/aHYtGx",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/8d/0l/3t/e7/freaky-0-600-0-900-crop.jpg?v=e887f2fd6b",
+          "rating": 3,
+          "reviewSnippet": "If you’re a big fan of Bay Area sports from the 80s, and bashing Nazis, this is the movie for you"
+        },
+        {
+          "title": "The Roses",
+          "year": "2025",
+          "filmBoxdId": "MjnI",
+          "link": "https://boxd.it/aSZk9v",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/1/4/2/5/1151425-the-roses-2025-0-600-0-900-crop.jpg?v=50088985de",
+          "rating": 2.5,
+          "reviewSnippet": "A bunch of the humor worked, but I grew tired of all of the characters in the short 90min runtime."
+        },
+        {
+          "title": "The Game",
+          "year": "1997",
+          "filmBoxdId": "26vC",
+          "link": "https://boxd.it/cCXPpn",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/p4/tj/oj/ph/4b7QXyDJsDFXrwVHUNlrmezCZJC-0-600-0-900-crop.jpg?v=0f6a2cc0bb",
+          "rating": 3.5,
+          "reviewSnippet": "Some strong early Fincher direction, and a fun plot that hooked me, and kept me on the hook. I called a turn or two, but enjoye…"
+        },
+        {
+          "title": "Inside Out",
+          "year": "2015",
+          "filmBoxdId": "4KHC",
+          "link": "https://letterboxd.com/film/inside-out-2015/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/3/2/8/4/113284-inside-out-0-600-0-900-crop.jpg?v=de03b9b6ef",
+          "rating": 4.5
+        },
+        {
+          "title": "Rumor Has It...",
+          "year": "2005",
+          "filmBoxdId": "26h6",
+          "link": "https://boxd.it/d4hxnL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/0/7/8/50078-rumor-has-it--0-600-0-900-crop.jpg?v=852aaae7e0",
+          "rating": 2,
+          "reviewSnippet": "One of the most “what was that movie” movies, who came up with that plot?"
+        },
+        {
+          "title": "A Mighty Wind",
+          "year": "2003",
+          "filmBoxdId": "1Qke",
+          "link": "https://boxd.it/d53I71",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/3/9/4/7/43947-a-mighty-wind-0-600-0-900-crop.jpg?v=709ef2c7d2",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "A Folk Musical Mockumentary! The more Christopher Guest that I watch, the more I like his work. All that being said, this was E…"
+        },
+        {
+          "title": "Project Hail Mary",
+          "year": "2026",
+          "filmBoxdId": "pEeQ",
+          "link": "https://boxd.it/dAPot7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/1/1/2/8/8/611288-project-hail-mary-0-600-0-900-crop.jpg?v=ac31b6ec03",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "This was really solid, but even as someone that’s never read the book, you could tell a lot of the best parts came from the pag…"
+        },
+        {
+          "title": "Backrooms",
+          "year": "2026",
+          "filmBoxdId": "EY6W",
+          "link": "https://boxd.it/ez4Na5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/6/4/1/9/976419-backrooms-2026-0-600-0-900-crop.jpg?v=f7a99e3fc8",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Not\nsince"
+        },
+        {
+          "title": "Minions: The Rise of Gru",
+          "year": "2022",
+          "filmBoxdId": "fz9w",
+          "link": "https://boxd.it/eFSxdL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/7/1/0/0/5/371005-minions-the-rise-of-gru-0-600-0-900-crop.jpg?v=ca97b9c24a",
+          "rating": 2,
+          "reviewSnippet": "“San Pan Pisco”"
+        },
+        {
+          "title": "Fruitvale Station",
+          "year": "2013",
+          "filmBoxdId": "4VRy",
+          "link": "https://boxd.it/eHu99v",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/4i/ao/9w/sf/zwPYTHFCgWYHRW1OoxE23dxZZRX-0-600-0-900-crop.jpg?v=f56e9553ca",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "The B. stands for Baby in this one What a powerful debut"
+        },
+        {
+          "title": "The Invite",
+          "year": "2026",
+          "filmBoxdId": "zRNY",
+          "link": "https://boxd.it/eXBPGp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/5/4/8/3/1/854831-the-invite-2026-0-600-0-900-crop.jpg?v=ee72905e48",
+          "rating": 3.5,
+          "reviewSnippet": "I enjoyed this one quite a bit more than I was expecting: some really nice tension here, which layered will with the humor."
+        },
+        {
+          "title": "Voicemails for Isabelle",
+          "year": "2026",
+          "filmBoxdId": "mJVk",
+          "link": "https://boxd.it/eYyjzp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/4/1/9/7/5/541975-voicemails-for-isabelle-0-600-0-900-crop.jpg?v=1a9f45496a",
+          "rating": 3.5,
+          "reviewSnippet": "“Everyone hates the Marina. The Marina hates itself. It’s basically LA.”"
+        },
+        {
+          "title": "Tropic Thunder",
+          "year": "2008",
+          "filmBoxdId": "20WM",
+          "link": "https://boxd.it/fO6QAx",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/8/0/3/0/48030-tropic-thunder-0-600-0-900-crop.jpg?v=f75fe170e6",
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "There was a time when this movie played weekly on FX or TBS, when I must’ve seen a chunk of this movie dozens of times across m…"
+        },
+        {
+          "title": "James Austin Johnson - He'll Yeah",
+          "year": "2026",
+          "filmBoxdId": "16c9O",
+          "link": "https://letterboxd.com/brslli/film/james-austin-johnson-hell-yeah/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/6/2/5/3/0/4/1625304-james-austin-johnson-hell-yeah-0-600-0-900-crop.jpg?v=235cd898c0",
+          "rating": 2.5,
+          "reviewSnippet": "Maybe the singular best Joe Biden comedy bits I’ve seen."
+        },
+        {
+          "title": "Unabomber",
+          "year": "2026",
+          "filmBoxdId": "VrWu",
+          "link": "https://letterboxd.com/brslli/film/unabomber-2026/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/3/6/9/2/1/1/1369211-unabomber-2026-0-600-0-900-crop.jpg?v=8b88a65b3a",
+          "rating": 3,
+          "reviewSnippet": "Finally, a movie that respects the Unabomber’s ideas (sarcasm)"
+        },
+        {
+          "title": "Avengers: Endgame",
+          "year": "2019",
+          "filmBoxdId": "9vE4",
+          "link": "https://letterboxd.com/brslli/film/avengers-endgame/1/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/2/2/6/6/6/0/226660-avengers-endgame-0-600-0-900-crop.jpg?v=d4006bfd5e",
+          "rating": 3.5,
+          "reviewSnippet": "Was Tony Stark the first vibecoder?"
+        },
+        {
+          "title": "The Social Network",
+          "year": "2010",
+          "filmBoxdId": "17ue",
+          "link": "https://letterboxd.com/brslli/film/the-social-network/1/",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/nw/cm/pa/ai/sGQv3ZMZBDBnl3z42Q0mEQ5uiDe-0-600-0-900-crop.jpg?v=54ee59f7cd",
+          "rating": 5,
+          "liked": true,
+          "reviewSnippet": "This movie is the death of my favorite era of the internet, the website era. I miss websites."
+        }
+      ]
+    },
+    {
+      "id": "79183734",
+      "slug": "top-films-of-2026",
+      "title": "Top Films of 2026",
+      "url": "https://letterboxd.com/brslli/list/top-films-of-2026/",
+      "filmCount": 10,
+      "isRanked": true,
+      "category": "yearly",
+      "description": "A list of my ranked top 10 films of 2026.",
+      "films": [
+        {
+          "title": "The Odyssey",
+          "year": "2026",
+          "filmBoxdId": "QFQU",
+          "link": "https://boxd.it/fiNtXB",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/2/5/5/3/9/4/1255394-the-odyssey-2026-0-600-0-900-crop.jpg?v=1eed046d0c",
+          "rank": 1,
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "You catch a lot more on a repeat viewing, like how Other Mommy has wise eyes; Athena’s eyes"
+        },
+        {
+          "title": "You Can See Everything",
+          "year": "2026",
+          "filmBoxdId": "16mVo",
+          "link": "https://letterboxd.com/brslli/film/you-can-see-everything/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/6/2/9/4/4/3/1629443-you-can-see-everything-0-600-0-900-crop.jpg?v=84f6724d74",
+          "rank": 2,
+          "rating": 4.5,
+          "liked": true,
+          "reviewSnippet": "You Can See Everything, sure, but can you understand what it’s trying to say"
+        },
+        {
+          "title": "Wild Horse Nine",
+          "year": "2026",
+          "filmBoxdId": "xG0M",
+          "link": "https://letterboxd.com/brslli/film/wild-horse-nine/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/0/2/6/3/2/802632-wild-horse-nine-0-600-0-900-crop.jpg?v=eade7a541c",
+          "rank": 3,
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "If John Malkovich doesn’t win all the acting awards, we riot"
+        },
+        {
+          "title": "Club Kid",
+          "year": "2026",
+          "filmBoxdId": "Z6lK",
+          "link": "https://letterboxd.com/brslli/film/club-kid/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/5/6/2/4/2/1456242-club-kid-0-600-0-900-crop.jpg?v=b2d52aad9d",
+          "rank": 4,
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Azerbaijan mentioned!"
+        },
+        {
+          "title": "28 Years Later: The Bone Temple",
+          "year": "2026",
+          "filmBoxdId": "MwlA",
+          "link": "https://boxd.it/cETyGh",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/5/6/4/0/9/1156409-28-years-later-the-bone-temple-0-600-0-900-crop.jpg?v=131058c6ff",
+          "rank": 5,
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "I don’t know if Alex Garland knew when he wrote 28 Days Later that he’d still be writing about this world more than two decades…"
+        },
+        {
+          "title": "Project Hail Mary",
+          "year": "2026",
+          "filmBoxdId": "pEeQ",
+          "link": "https://boxd.it/dAPot7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/1/1/2/8/8/611288-project-hail-mary-0-600-0-900-crop.jpg?v=ac31b6ec03",
+          "rank": 6,
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "This was really solid, but even as someone that’s never read the book, you could tell a lot of the best parts came from the pag…"
+        },
+        {
+          "title": "The Invite",
+          "year": "2026",
+          "filmBoxdId": "zRNY",
+          "link": "https://boxd.it/eXBPGp",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/5/4/8/3/1/854831-the-invite-2026-0-600-0-900-crop.jpg?v=ee72905e48",
+          "rank": 7,
+          "rating": 3.5,
+          "reviewSnippet": "I enjoyed this one quite a bit more than I was expecting: some really nice tension here, which layered will with the humor."
+        },
+        {
+          "title": "Wildwood",
+          "year": "2026",
+          "filmBoxdId": "tLD2",
+          "link": "https://letterboxd.com/brslli/film/wildwood-2026/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/0/9/4/6/0/709460-wildwood-2026-0-600-0-900-crop.jpg?v=e0b4be5769",
+          "rank": 8,
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Spirited Away meets Zootopia meets some Lord of the Rings / Narnia high fantasy meets Portland, Oregon."
+        },
+        {
+          "title": "The Hunger Games: Sunrise on the Reaping",
+          "year": "2026",
+          "filmBoxdId": "NCIM",
+          "link": "https://letterboxd.com/brslli/film/the-hunger-games-sunrise-on-the-reaping/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/1/8/2/6/9/2/1182692-the-hunger-games-sunrise-on-the-reaping-0-600-0-900-crop.jpg?v=91001efc76",
+          "rank": 9,
+          "rating": 3.5,
+          "reviewSnippet": "Is the Hunger Games the best franchise running? Sunrise on the Reaping is certainly making a strong argument for it"
+        },
+        {
+          "title": "Backrooms",
+          "year": "2026",
+          "filmBoxdId": "EY6W",
+          "link": "https://boxd.it/ez4Na5",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/7/6/4/1/9/976419-backrooms-2026-0-600-0-900-crop.jpg?v=f7a99e3fc8",
+          "rank": 10,
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Not\nsince"
+        }
+      ]
+    },
+    {
+      "id": "89633362",
+      "slug": "set-at-thanksgiving",
+      "title": "Set at Thanksgiving 🦃",
+      "url": "https://letterboxd.com/brslli/list/set-at-thanksgiving/",
+      "filmCount": 2,
+      "isRanked": false,
+      "category": "places-seasons",
+      "description": "",
+      "films": [
+        {
+          "title": "Planes, Trains and Automobiles",
+          "year": "1987",
+          "filmBoxdId": "26zE",
+          "link": "https://letterboxd.com/brslli/film/planes-trains-and-automobiles/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/1/9/3/50193-planes-trains-and-automobiles-0-600-0-900-crop.jpg?v=f36141cb58",
+          "rating": 3.5,
+          "reviewSnippet": "An ode to the days when you could smoke in a rental car while doing a groovy little dance. Never forget what they took from us!"
+        },
+        {
+          "title": "A Charlie Brown Thanksgiving",
+          "year": "1973",
+          "filmBoxdId": "1Q5I",
+          "link": "https://boxd.it/bTDbL9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/3/8/5/7/43857-a-charlie-brown-thanksgiving-0-600-0-900-crop.jpg?v=599fa7c6a3",
+          "rating": 4,
+          "reviewSnippet": "They just don’t make ‘em like they used to. Also Peppermint Patty is a menace"
+        }
+      ]
+    },
+    {
+      "id": "38666986",
+      "slug": "set-in-philly",
+      "title": "Set in Philly",
+      "url": "https://letterboxd.com/brslli/list/set-in-philly/",
+      "filmCount": 16,
+      "isRanked": false,
+      "category": "places-seasons",
+      "description": "Content which has at least one scene prominently in the Philadelphia metro area.",
+      "films": [
+        {
+          "title": "Quiz Lady",
+          "year": "2023",
+          "filmBoxdId": "tCT6",
+          "link": "https://boxd.it/586l9n",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/7/0/6/1/0/0/706100-quiz-lady-0-600-0-900-crop.jpg?v=a4b1e51b3c",
+          "rating": 3,
+          "reviewSnippet": "The movie was perfectly fine, but Will Ferrell gave such a good tribute to Alex Trebeck, who was by all accounts incredibly kin…"
+        },
+        {
+          "title": "Sly",
+          "year": "2023",
+          "filmBoxdId": "HlW6",
+          "link": "https://boxd.it/57eQTN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/3/3/2/4/3/1033243-sly-0-600-0-900-crop.jpg?v=d7bb1133a6",
+          "rating": 2.5,
+          "reviewSnippet": "We live in an age of great documentaries / docuseries, but folks, this wasn’t it. The story was fine, but it really felt like t…"
+        },
+        {
+          "title": "The Irishman",
+          "year": "2019",
+          "filmBoxdId": "dYOq",
+          "link": "https://boxd.it/5djKyt",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/3/3/3/2/0/3/333203-the-irishman-0-600-0-900-crop.jpg?v=44b0138d78",
+          "rating": 3.5,
+          "reviewSnippet": "As someone that doesn’t love gangster movies, this was fine. The de-aging didn’t fully work for me, to ebbed and flowed.\nAlso t…"
+        },
+        {
+          "title": "Kelce",
+          "year": "2023",
+          "filmBoxdId": "IjGs",
+          "link": "https://boxd.it/5mGTsL",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/5/6/2/1/0/1056210-kelce-0-600-0-900-crop.jpg?v=07e34ca982",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "I’m glad this was made pre-Taylor, so there’s no backsplanation about this being because of her. Love that they’re giving an Ea…"
+        },
+        {
+          "title": "Kevin Hart & Chris Rock: Headliners Only",
+          "year": "2023",
+          "filmBoxdId": "Jgnk",
+          "link": "https://boxd.it/5wBkkn",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/0/7/8/7/7/1/1078771-kevin-hart-chris-rock-headliners-only-0-600-0-900-crop.jpg?v=f862986323",
+          "rating": 2.5,
+          "reviewSnippet": "This is not a comedy special, this is a documentary, which I was not expecting. I appreciated learning the backstories from the…"
+        },
+        {
+          "title": "Drive-Away Dolls",
+          "year": "2024",
+          "filmBoxdId": "A8vi",
+          "link": "https://boxd.it/5TDWM1",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/8/6/1/2/5/0/861250-drive-away-dolls-0-600-0-900-crop.jpg?v=2e83bbe648",
+          "rating": 3,
+          "reviewSnippet": "The best possible explanation for what was in the Pulp Fiction case. Equal parts fun and funny, with a great largely female cast."
+        },
+        {
+          "title": "Split",
+          "year": "2016",
+          "filmBoxdId": "dgSy",
+          "link": "https://boxd.it/6skdtb",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/5e/pw/vs/km/8CHJcVc5IGXS1sC5DyjeMwTDEQH-0-600-0-900-crop.jpg?v=ab64d75800",
+          "rating": 3,
+          "reviewSnippet": "“Karate at the King of Prussia mall”, M. always brings the local western Philly suburb references."
+        },
+        {
+          "title": "Trap",
+          "year": "2024",
+          "filmBoxdId": "D4nK",
+          "link": "https://boxd.it/70LcGN",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/9/3/1/1/6/4/931164-trap-0-600-0-900-crop.jpg?v=23298a998e",
+          "rating": 3.5,
+          "liked": true,
+          "reviewSnippet": "Lady Raven stan and day one."
+        },
+        {
+          "title": "The Brutalist",
+          "year": "2024",
+          "filmBoxdId": "k4BO",
+          "link": "https://boxd.it/8q7h5f",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/8/4/2/8/478428-the-brutalist-0-600-0-900-crop.jpg?v=2f8cae2ea5",
+          "rating": 3.5,
+          "reviewSnippet": "I loved all of the Philadelphia porn, but didn’t love the story that they told. That being said, Adrien Brody was excellent."
+        },
+        {
+          "title": "Task",
+          "year": "2025",
+          "filmBoxdId": "Xwl8",
+          "link": "https://boxd.it/brarzj",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/1/4/1/8/5/6/7/1418567-task-2025-0-600-0-900-crop.jpg?v=c6284170cb",
+          "rating": 4,
+          "reviewSnippet": "They nailed almost everything right about Delco except nothing’s ever been this exciting, and they didn’t nearly have enough Wawa"
+        },
+        {
+          "title": "This Is Spinal Tap",
+          "year": "1984",
+          "filmBoxdId": "1UOs",
+          "link": "https://boxd.it/c3pip7",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/5/6/7/2/45672-this-is-spinal-tap-0-600-0-900-crop.jpg?v=cc2f1011d3",
+          "rating": 4,
+          "liked": true,
+          "reviewSnippet": "Generally, I say that I don’t find the comedy of the early 80s / 70s that funny, but Spinal Tap worked for me, both musically a…"
+        },
+        {
+          "title": "Signs",
+          "year": "2002",
+          "filmBoxdId": "26t2",
+          "link": "https://boxd.it/cdxsr9",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/1/5/2/50152-signs-0-600-0-900-crop.jpg?v=8efc1ad42c",
+          "rating": 2.5,
+          "reviewSnippet": "Man, the Culkin parents really said, “we’re not working”, and stuck to it"
+        },
+        {
+          "title": "Baby Mama",
+          "year": "2008",
+          "filmBoxdId": "1ZQe",
+          "link": "https://boxd.it/f386VZ",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/4/7/6/0/5/47605-baby-mama-0-600-0-900-crop.jpg?v=5078a4ce69",
+          "rating": 2,
+          "reviewSnippet": "There may be an interesting movie at the core here, but this wasn’t it. It either needed to be way less joke-y (and probably sw…"
+        },
+        {
+          "title": "National Treasure",
+          "year": "2004",
+          "filmBoxdId": "27x0",
+          "link": "https://letterboxd.com/film/national-treasure/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/5/0/5/6/1/50561-national-treasure-0-600-0-900-crop.jpg?v=e2b1828dd0",
+          "rating": 3.5
+        },
+        {
+          "title": "Silver Linings Playbook",
+          "year": "2012",
+          "filmBoxdId": "2TTo",
+          "link": "https://letterboxd.com/film/silver-linings-playbook/",
+          "poster": "https://a.ltrbxd.com/resized/film-poster/6/9/1/5/1/69151-silver-linings-playbook-0-600-0-900-crop.jpg?v=dabe98e003",
+          "rating": 3.5
+        },
+        {
+          "title": "Twelve Monkeys",
+          "year": "1995",
+          "filmBoxdId": "2beQ",
+          "link": "https://letterboxd.com/brslli/film/twelve-monkeys/",
+          "poster": "https://a.ltrbxd.com/resized/sm/upload/gx/5a/fn/12/6Sj9wDu3YugthXsU0Vry5XFAZGg-0-600-0-900-crop.jpg?v=f6da1ec950",
+          "rating": 3.5,
+          "reviewSnippet": "Oh, how different flying was pre-9/11. I miss it."
+        }
+      ]
+    }
+  ]
+}

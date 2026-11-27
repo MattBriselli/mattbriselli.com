@@ -38,6 +38,7 @@ for (const file of [
   "data/maps-reviews.json",
   "data/flighty-routes.json",
   "data/letterboxd-reviews.json",
+  "data/letterboxd-lists.json",
   "data/world-countries.json",
   "data/us-states.json",
   "data/canada-provinces.json",
