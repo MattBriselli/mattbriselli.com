@@ -110,6 +110,7 @@
   let showHeatmap = true;
   let showPins = true;
   let showArcs = true;
+  let showCanadaDrive = true;
   let autoPlayTimer = null;
 
   // Initialize Leaflet map
@@ -129,6 +130,7 @@
   let countriesLayer = null;
   let statesLayer = null;
   const flightArcsLayerGroup = L.layerGroup().addTo(map);
+  const canadaDriveLayerGroup = L.layerGroup().addTo(map);
   const pinsLayerGroup = L.layerGroup().addTo(map);
   const placeMarkers = [];
 
@@ -240,18 +242,131 @@
     return copy;
   }
 
-  // Region-stratified interleave so consecutive slides rotate globally instead of clustering on NYC
+  // Disjoint Cross-Canada Road Quest Segments (Driven vs. Remaining)
+  const CANADA_DRIVE_SEGMENTS = [
+    {
+      driven: true,
+      title: "✓ Driven: Halifax, NS → Thunder Bay, ON",
+      note: "Atlantic coast across Nova Scotia, New Brunswick, Québec & Ontario to Lake Superior",
+      coords: [
+        [44.6488, -63.5752], // Halifax, NS
+        [45.3686, -63.2662], // Truro, NS
+        [46.0878, -64.7782], // Moncton, NB
+        [45.9636, -66.6431], // Fredericton, NB
+        [47.3623, -68.3251], // Edmundston, NB
+        [47.8360, -69.5342], // Rivière-du-Loup, QC
+        [46.8139, -71.2080], // Québec City, QC
+        [45.5017, -73.5673], // Montréal, QC
+        [45.4215, -75.6972], // Ottawa, ON
+        [46.3091, -79.4608], // North Bay, ON
+        [46.4917, -80.9930], // Sudbury, ON
+        [46.5219, -84.3461], // Sault Ste. Marie, ON
+        [47.9947, -84.7700], // Wawa, ON
+        [48.7019, -86.3822], // Marathon, ON
+        [48.9950, -88.2610], // Nipigon, ON
+        [48.3809, -89.2477]  // Thunder Bay, ON
+      ]
+    },
+    {
+      driven: true,
+      title: "✓ Driven: Calgary ↔ Banff ↔ Jasper ↔ Edmonton",
+      note: "Alberta Rockies, Icefields Parkway & Queen Elizabeth II Hwy corridor",
+      coords: [
+        [51.0447, -114.0719], // Calgary, AB
+        [51.1784, -115.5708], // Banff, AB
+        [51.4254, -116.1773], // Lake Louise, AB
+        [52.8737, -118.0814], // Jasper, AB
+        [53.5461, -113.4938], // Edmonton, AB
+        [52.2681, -113.8112], // Red Deer, AB
+        [51.0447, -114.0719]  // Calgary, AB
+      ]
+    },
+    {
+      driven: false,
+      title: "○ Future Link: Thunder Bay, ON → Winnipeg → Regina → Calgary",
+      note: "Prairies Trans-Canada gap across Manitoba & Saskatchewan",
+      coords: [
+        [48.3809, -89.2477],  // Thunder Bay, ON
+        [49.7670, -94.4894],  // Kenora, ON
+        [49.8951, -97.1384],  // Winnipeg, MB
+        [50.4452, -104.6189], // Regina, SK
+        [50.0405, -110.6764], // Medicine Hat, AB
+        [51.0447, -114.0719]  // Calgary, AB
+      ]
+    },
+    {
+      driven: false,
+      title: "○ Future Link: Jasper, AB → Kamloops → Vancouver / Victoria, BC",
+      note: "Yellowhead / Trans-Canada Rockies-to-Pacific gap",
+      coords: [
+        [52.8737, -118.0814], // Jasper, AB
+        [50.6745, -120.3273], // Kamloops, BC
+        [49.2827, -123.1207], // Vancouver, BC
+        [48.4284, -123.3656]  // Victoria, BC
+      ]
+    }
+  ];
+
+  function rebuildCanadaDrive() {
+    canadaDriveLayerGroup.clearLayers();
+    if (!showCanadaDrive) return;
+    const dark = isDarkActive();
+    const drivenColor = dark ? "#6ea8fe" : "#2457c5";
+    const gapColor = dark ? "#7c8899" : "#6c788a";
+
+    for (const seg of CANADA_DRIVE_SEGMENTS) {
+      const poly = L.polyline(seg.coords, {
+        color: seg.driven ? drivenColor : gapColor,
+        weight: seg.driven ? 3.4 : 1.8,
+        opacity: seg.driven ? 0.92 : 0.55,
+        dashArray: seg.driven ? null : "5,6",
+        smoothFactor: 1.1
+      });
+      poly.bindTooltip(`<strong>${seg.title}</strong><br>${seg.note}`, {
+        sticky: true,
+        direction: "top"
+      });
+      poly.addTo(canadaDriveLayerGroup);
+    }
+
+    const endpoints = [
+      { name: "Halifax, NS (Driven East Terminus)", lat: 44.6488, lng: -63.5752 },
+      { name: "Thunder Bay, ON (Driven West Terminus)", lat: 48.3809, lng: -89.2477 },
+      { name: "Calgary, AB", lat: 51.0447, lng: -114.0719 },
+      { name: "Edmonton, AB", lat: 53.5461, lng: -113.4938 },
+      { name: "Jasper, AB", lat: 52.8737, lng: -118.0814 }
+    ];
+    for (const ep of endpoints) {
+      const dot = L.circleMarker([ep.lat, ep.lng], {
+        radius: 4.5,
+        color: dark ? "#111110" : "#ffffff",
+        weight: 1.5,
+        fillColor: drivenColor,
+        fillOpacity: 0.95
+      });
+      dot.bindTooltip(`<strong>🚗 ${ep.name}</strong>`, { direction: "top" });
+      dot.addTo(canadaDriveLayerGroup);
+    }
+  }
+
+  // Region + Era stratified interleave so consecutive slides rotate across continents AND years
   function buildBalancedDeck(items) {
     const buckets = new Map();
     for (const item of items) {
-      const key =
-        item.tag === "nyc"
-          ? "nyc"
-          : item.region === "international" || item.region === "canada"
-            ? "global"
-            : item.region === "west-coast"
-              ? "west"
-              : "other";
+      const year = item.date ? item.date.slice(0, 4) : "classic";
+      const geo =
+        item.tag === "hall-of-fame"
+          ? "hof"
+          : item.region === "international" || item.region === "central-asia"
+            ? "intl"
+            : item.region === "canada"
+              ? "canada"
+              : item.region === "west-coast"
+                ? "west"
+                : item.tag === "nyc"
+                  ? `nyc-${year >= "2026" ? "recent" : "archive"}`
+                  : "us";
+      const key = `${geo}|${year >= "2025" ? "recent" : "archive"}`;
       if (!buckets.has(key)) buckets.set(key, []);
       buckets.get(key).push(item);
     }
@@ -331,6 +446,7 @@
     if (statesLayer) statesLayer.setStyle(getStateStyle);
     updateTileLayer();
     rebuildFlightArcs();
+    rebuildCanadaDrive();
     rebuildMarkers();
     drawHeatmapOverlay();
   }
@@ -370,6 +486,7 @@
     }
     updateTileLayer();
     rebuildFlightArcs();
+    rebuildCanadaDrive();
     rebuildMarkers();
     drawHeatmapOverlay();
   });
@@ -886,6 +1003,47 @@
       rebuildFlightArcs();
     });
   }
+  const canadaDriveBtn = document.getElementById("toggle-canada-drive-btn");
+  if (canadaDriveBtn) {
+    canadaDriveBtn.addEventListener("click", () => {
+      showCanadaDrive = !showCanadaDrive;
+      canadaDriveBtn.setAttribute("aria-pressed", String(showCanadaDrive));
+      rebuildCanadaDrive();
+    });
+  }
+  const goalCountriesBtn = document.getElementById("goal-countries-btn");
+  if (goalCountriesBtn) {
+    goalCountriesBtn.addEventListener("click", () => {
+      setMapViewMode("static");
+      focusStaticPreset("world");
+      staticMapWrap?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
+  const goalStatesBtn = document.getElementById("goal-states-btn");
+  if (goalStatesBtn) {
+    goalStatesBtn.addEventListener("click", () => {
+      setMapViewMode("interactive");
+      const p = REGION_PRESETS.us50;
+      map.flyTo([p.lat, p.lng], p.zoom, { duration: 1.0 });
+      if (statusLineEl) statusLineEl.textContent = "Goal 02 ✓ Complete: All 50 US States Visited";
+      mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
+  const goalCanadaDriveBtn = document.getElementById("goal-canada-drive-btn");
+  if (goalCanadaDriveBtn) {
+    goalCanadaDriveBtn.addEventListener("click", () => {
+      setMapViewMode("interactive");
+      showCanadaDrive = true;
+      if (canadaDriveBtn) canadaDriveBtn.setAttribute("aria-pressed", "true");
+      rebuildCanadaDrive();
+      map.flyTo([50.8, -90.5], 4, { duration: 1.1 });
+      if (statusLineEl) {
+        statusLineEl.textContent =
+          "Goal 03: 8/13 Canadian Provinces & Territories · Disjoint Trans-Canada Drive (Halifax → Thunder Bay + Calgary/Edmonton/Jasper)";
+      }
+      mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    });
+  }
   if (zoomInBtn) {
     zoomInBtn.addEventListener("click", () => {
       if (mapViewMode === "static" && staticViewport) {
@@ -989,9 +1147,144 @@
         if (rEl) rEl.textContent = formatNumber(data.profile.totalReviews);
       }
       populateTopViewsTable(data.topViewedLedger || []);
+      initHostedMapsReviews(data.hostedReviews || []);
       renderActiveSlide(false);
       resizeOverlayCanvas();
     });
+
+  function initHostedMapsReviews(reviewsList) {
+    const grid = document.getElementById("gmap-reviews-grid");
+    const moreBtn = document.getElementById("gmap-rev-more-btn");
+    const countLabel = document.getElementById("gmap-rev-count-label");
+    const summaryCount = document.getElementById("gmap-rev-summary-count");
+    const searchInput = document.getElementById("gmap-rev-search");
+    const shufBtn = document.getElementById("gmap-rev-shuffle-btn");
+    if (!grid) return;
+
+    if (summaryCount && reviewsList.length) {
+      summaryCount.textContent = formatNumber(reviewsList.length);
+    }
+
+    let activeFilter = "all";
+    let query = "";
+    let visibleLimit = 6;
+    let baseOrder = shuffleArray(reviewsList);
+
+    const isNycAddr = (addr = "") =>
+      /new york,\s*ny|brooklyn,\s*ny|queens,\s*ny|manhattan|bronx/i.test(addr);
+
+    function getMatches() {
+      let arr = baseOrder.slice();
+      if (activeFilter === "intl") {
+        arr = arr.filter((r) => r.countryIso && r.countryIso !== "US");
+      } else if (activeFilter === "nyc") {
+        arr = arr.filter((r) => r.countryIso === "US" && isNycAddr(r.location));
+      } else if (activeFilter === "us") {
+        arr = arr.filter((r) => (!r.countryIso || r.countryIso === "US") && !isNycAddr(r.location));
+      }
+      if (query) {
+        const q = query.toLowerCase();
+        arr = arr.filter(
+          (r) =>
+            r.name.toLowerCase().includes(q) ||
+            r.location.toLowerCase().includes(q) ||
+            r.text.toLowerCase().includes(q)
+        );
+      }
+      return arr;
+    }
+
+    function renderGrid() {
+      const matches = getMatches();
+      const slice = matches.slice(0, visibleLimit);
+      grid.innerHTML = "";
+
+      for (const rev of slice) {
+        const li = document.createElement("li");
+        li.className = "gmap-rev-card";
+
+        if (rev.photo) {
+          const img = document.createElement("img");
+          img.className = "gmap-rev-thumb";
+          img.src = rev.photo.replace("=w1000-h750-p-k-no", "=w640-h360-p-k-no");
+          img.alt = `${rev.name} — ${rev.location}`;
+          img.width = 320;
+          img.height = 180;
+          img.loading = "lazy";
+          img.referrerPolicy = "no-referrer";
+          img.addEventListener("error", () => img.remove());
+          li.appendChild(img);
+        }
+
+        const h4 = document.createElement("h4");
+        h4.textContent = rev.name;
+
+        const meta = document.createElement("div");
+        meta.className = "lb-meta-row";
+        const stars = document.createElement("span");
+        stars.className = "lb-stars";
+        stars.textContent = "★".repeat(Math.max(1, Math.min(5, rev.rating || 5)));
+        const loc = document.createElement("span");
+        loc.className = "lb-date";
+        loc.textContent = rev.location;
+        meta.append(stars, loc);
+
+        const p = document.createElement("p");
+        p.textContent = `“${rev.text}”`;
+
+        li.append(h4, meta, p);
+        grid.appendChild(li);
+      }
+
+      if (moreBtn) {
+        moreBtn.hidden = matches.length <= visibleLimit;
+        if (!moreBtn.hidden) {
+          moreBtn.textContent = `Show More Dispatches (${formatNumber(matches.length - visibleLimit)} remaining)`;
+        }
+      }
+      if (countLabel) {
+        countLabel.textContent = matches.length
+          ? `Showing ${formatNumber(slice.length)} of ${formatNumber(matches.length)} hosted Google Maps reviews`
+          : "No matching Google Maps reviews.";
+      }
+    }
+
+    document.querySelectorAll("[data-gmap-filter]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeFilter = btn.getAttribute("data-gmap-filter") || "all";
+        visibleLimit = 6;
+        document.querySelectorAll("[data-gmap-filter]").forEach((b) => {
+          b.setAttribute("aria-pressed", String(b === btn));
+        });
+        renderGrid();
+      });
+    });
+
+    if (shufBtn) {
+      shufBtn.addEventListener("click", () => {
+        baseOrder = shuffleArray(reviewsList);
+        visibleLimit = 6;
+        renderGrid();
+      });
+    }
+
+    if (searchInput) {
+      searchInput.addEventListener("input", () => {
+        query = searchInput.value.trim();
+        visibleLimit = 6;
+        renderGrid();
+      });
+    }
+
+    if (moreBtn) {
+      moreBtn.addEventListener("click", () => {
+        visibleLimit += 12;
+        renderGrid();
+      });
+    }
+
+    renderGrid();
+  }
 
   /* ==========================================================================
      Direct "Get in Touch" Contact Form (/api/contact)

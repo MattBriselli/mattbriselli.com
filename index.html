@@ -375,16 +375,17 @@
           <button type="button" class="filter-chip" data-region-preset="west" aria-pressed="false">SF, Seattle &amp; West</button>
           <button type="button" class="filter-chip" data-region-preset="us50" aria-pressed="false">All 50 US States</button>
           <button type="button" class="filter-chip" data-region-preset="europe-apac" aria-pressed="false">Europe &amp; Asia-Pacific</button>
-          <button type="button" class="filter-chip" data-region-preset="canada" aria-pressed="false">Canada (8 Provinces)</button>
+          <button type="button" class="filter-chip" data-region-preset="canada" aria-pressed="false">Canada (8/13 + Drive)</button>
           <button type="button" class="filter-chip" data-region-preset="central-asia" aria-pressed="false">Central Asia</button>
         </div>
 
         <div class="toolbar-group" role="group" aria-label="Filter slideshow collection">
           <span class="toolbar-label">Slideshow:</span>
-          <button type="button" class="filter-chip" data-slide-filter="all" aria-pressed="true">Shuffled Mix (20)</button>
-          <button type="button" class="filter-chip" data-slide-filter="hall-of-fame" aria-pressed="false">10M+ View Hall of Fame</button>
-          <button type="button" class="filter-chip" data-slide-filter="nyc" aria-pressed="false">NYC &amp; Broadway</button>
-          <button type="button" class="filter-chip" data-slide-filter="international" aria-pressed="false">Global &amp; Borders</button>
+          <button type="button" class="filter-chip" data-slide-filter="all" aria-pressed="true">Shuffled Mix (339)</button>
+          <button type="button" class="filter-chip" data-slide-filter="hall-of-fame" aria-pressed="false">Top Views (58)</button>
+          <button type="button" class="filter-chip" data-slide-filter="international" aria-pressed="false">Global &amp; Canada (137)</button>
+          <button type="button" class="filter-chip" data-slide-filter="us-50" aria-pressed="false">50 US States (112)</button>
+          <button type="button" class="filter-chip" data-slide-filter="nyc" aria-pressed="false">NYC &amp; Broadway (32)</button>
         </div>
       </div>
 
@@ -405,6 +406,7 @@
                 <button type="button" class="map-ctrl-btn" id="toggle-heatmap-btn" aria-pressed="true">🔥 Heatmap</button>
                 <button type="button" class="map-ctrl-btn" id="toggle-pins-btn" aria-pressed="true">📍 Pins</button>
                 <button type="button" class="map-ctrl-btn" id="toggle-arcs-btn" aria-pressed="true">✈️ Flights (173)</button>
+                <button type="button" class="map-ctrl-btn" id="toggle-canada-drive-btn" aria-pressed="true">🚗 Canada Drive</button>
               </span>
               <button type="button" class="map-ctrl-btn" id="map-zoom-in" aria-label="Zoom in">+</button>
               <button type="button" class="map-ctrl-btn" id="map-zoom-out" aria-label="Zoom out">−</button>
@@ -444,7 +446,8 @@
           <div class="map-legend">
             <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> Photo Heatmap</span>
             <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 39 Countries &amp; 50 US States</span>
-            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Flighty Great-Circle Routes (314,804 mi · 83 Airports)</span>
+            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Flighty Routes (314,804 mi · 83 Airports)</span>
+            <span class="legend-item"><span class="legend-swatch swatch-drive" aria-hidden="true"></span> Disjoint Trans-Canada Drive</span>
           </div>
         </div>
 
@@ -497,6 +500,63 @@
         </div>
       </div>
 
+      <!-- Three Active Travel Goals -->
+      <div class="travel-goals-block" aria-labelledby="travel-goals-heading">
+        <div class="travel-goals-head">
+          <div>
+            <span class="badge">Three Travel Quests</span>
+            <h3 id="travel-goals-heading">Active Geography &amp; Overland Goals</h3>
+          </div>
+          <span class="section-kicker">1 complete · 2 underway</span>
+        </div>
+
+        <ul class="travel-goals-grid" role="list">
+          <li class="goal-card">
+            <div class="goal-top-row">
+              <span class="badge">Goal 01 · In Progress</span>
+              <span class="goal-fraction"><strong>39</strong> / 199</span>
+            </div>
+            <h4>See Every Country in the World</h4>
+            <progress class="goal-progress" max="199" value="39" aria-label="39 of 199 countries visited (19.6%)"></progress>
+            <p>
+              Tracking every UN member state, observer, and sovereign territory in <em>So you wanna see the world?</em>—<strong>39 visited</strong> across Europe, Asia, North America, and Oceania (strictly excluding airport-only layovers).
+            </p>
+            <button type="button" class="table-fly-btn goal-action-btn" id="goal-countries-btn">🗺️ View 39-Country Map</button>
+          </li>
+
+          <li class="goal-card goal-card-done">
+            <div class="goal-top-row">
+              <span class="badge badge-done">Goal 02 · ✓ Done</span>
+              <span class="goal-fraction"><strong>50</strong> / 50</span>
+            </div>
+            <h4>Visit All 50 US States</h4>
+            <progress class="goal-progress goal-progress-done" max="50" value="50" aria-label="50 of 50 US states visited (100% complete)"></progress>
+            <p>
+              <strong>Complete.</strong> Visited and photographed every US state from coast to coast—including Alaska and Hawaii—with dozens revisited across cross-country road trips and regional detours.
+            </p>
+            <button type="button" class="table-fly-btn goal-action-btn" id="goal-states-btn">🇺🇸 Fly to All 50 States</button>
+          </li>
+
+          <li class="goal-card">
+            <div class="goal-top-row">
+              <span class="badge">Goal 03 · 62% + Overland</span>
+              <span class="goal-fraction"><strong>8</strong> / 13</span>
+            </div>
+            <h4>Every Canadian Province &amp; Territory + Drive Across Canada</h4>
+            <progress class="goal-progress" max="13" value="8" aria-label="8 of 13 Canadian provinces and territories visited"></progress>
+            <p>
+              Visited <strong>8 of 13</strong> (<strong>BC, AB, NT, ON, QC, NB, NS, PE</strong>; remaining: YT, NU, SK, MB, NL)—paired with a <strong>disjoint cross-Canada road drive</strong>:
+            </p>
+            <ul class="canada-drive-legs" role="list">
+              <li><strong>✓ Driven:</strong> Halifax, NS → Thunder Bay, ON (Atlantic coast to Lake Superior)</li>
+              <li><strong>✓ Driven:</strong> Calgary ↔ Edmonton ↔ Jasper Rockies loop (Alberta)</li>
+              <li><strong>○ Remaining:</strong> BC coast → Jasper &amp; Thunder Bay → Prairies → Calgary</li>
+            </ul>
+            <button type="button" class="table-fly-btn goal-action-btn" id="goal-canada-drive-btn">🚗 Show Canada Drive on Map</button>
+          </li>
+        </ul>
+      </div>
+
       <!-- Explorer & Photography Notes Strip -->
       <ul class="explorer-notes-grid" role="list">
         <li class="explorer-note-card">
@@ -540,6 +600,42 @@
               </thead>
               <tbody id="top-views-tbody"></tbody>
             </table>
+          </div>
+        </div>
+      </details>
+
+      <!-- Collapsible Hosted Google Maps Written Reviews Explorer -->
+      <details class="atlas-disclosure maps-reviews-disclosure" id="maps-reviews-drawer">
+        <summary>📍 Hosted Google Maps Field Reviews (<span id="gmap-rev-summary-count">416</span> Written Dispatches · Searchable + Weekly Sync)</summary>
+        <div class="disclosure-body">
+          <div class="letterboxd-controls">
+            <div class="toolbar-group" role="group" aria-label="Filter Google Maps reviews">
+              <button type="button" class="filter-chip" data-gmap-filter="all" aria-pressed="true">All Dispatches</button>
+              <button type="button" class="filter-chip" data-gmap-filter="intl" aria-pressed="false">Global &amp; Canada</button>
+              <button type="button" class="filter-chip" data-gmap-filter="us" aria-pressed="false">US States</button>
+              <button type="button" class="filter-chip" data-gmap-filter="nyc" aria-pressed="false">NYC</button>
+              <button type="button" class="filter-chip" id="gmap-rev-shuffle-btn">🎲 Shuffle</button>
+            </div>
+            <search class="lb-search-wrap">
+              <label for="gmap-rev-search" class="visually-hidden">Search Google Maps reviews</label>
+              <input
+                type="search"
+                id="gmap-rev-search"
+                name="q"
+                class="lb-search-input"
+                placeholder="Search places, cities, or reviews…"
+                autocorrect="off"
+                autocapitalize="none"
+                spellcheck="false"
+              >
+            </search>
+          </div>
+
+          <ul class="gmap-reviews-grid" id="gmap-reviews-grid" role="list" aria-live="polite"></ul>
+
+          <div class="letterboxd-more-row">
+            <button type="button" class="action-btn" id="gmap-rev-more-btn" hidden>Show More Reviews</button>
+            <span class="lb-count-label" id="gmap-rev-count-label"></span>
           </div>
         </div>
       </details>
@@ -674,7 +770,7 @@
             </a>
           </h4>
           <p>
-            Fast-food &amp; limited-edition snack tracker built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API—with automated feed syncing and weekly newsletter drafting.
+            Fast-food &amp; limited-edition snack tracker covering 87+ brands with original taste-test reviews, built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API—with automated feed syncing and the Weekly Bite newsletter.
           </p>
           <ul class="tag-list" role="list" aria-label="Eat Brand Bite stack">
             <li>Next.js 15 &amp; React 19</li>

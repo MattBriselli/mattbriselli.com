@@ -216,7 +216,7 @@
     {
       "name": "Eat Brand Bite",
       "url": "https://eatbrandbite.com",
-      "description": "Fast-food & limited-edition snack tracker built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API, with automated feed syncing and weekly newsletter drafting."
+      "description": "Fast-food & limited-edition snack tracker covering 87+ brands with original taste-test reviews, built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API, with automated feed syncing and the Weekly Bite newsletter."
     }
   ]
 }
