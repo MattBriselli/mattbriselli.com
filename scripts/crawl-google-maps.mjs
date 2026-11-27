@@ -175,7 +175,16 @@ function rewriteMasPhotoCursor(rawUrl, targetCursor) {
 async function launchChrome(port = 9241, { headless = true, profileDir = "" } = {}) {
   const isTemp = !profileDir;
   const userDataDir = profileDir || fs.mkdtempSync(path.join(os.tmpdir(), "maps-cdp-"));
-  if (profileDir) fs.mkdirSync(profileDir, { recursive: true });
+  if (profileDir) {
+    fs.mkdirSync(profileDir, { recursive: true });
+    for (const f of ["SingletonLock", "SingletonSocket", "SingletonCookie"]) {
+      try {
+        fs.unlinkSync(path.join(profileDir, f));
+      } catch {
+        // ignore
+      }
+    }
+  }
   const chromeBin = findChromeBinary();
   let stderrBuf = "";
   const chromeArgs = [
@@ -311,7 +320,12 @@ function parseMasPayload(rawText, store) {
   let reviewsFound = 0;
   let photosFound = 0;
   let oldestPhotoDate = "";
-  const nextPhotoCursor = typeof parsed?.[22]?.[0] === "string" && parsed[22][0].length >= 8 ? parsed[22][0] : "";
+  const nextPhotoCursor =
+    typeof parsed?.[22]?.[3] === "string" && parsed[22][3].length >= 8
+      ? parsed[22][3]
+      : typeof parsed?.[22]?.[0] === "string" && parsed[22][0].length >= 8
+        ? parsed[22][0]
+        : "";
 
   const upsertPlace = (id, patch) => {
     if (!id) return null;
