@@ -39,6 +39,7 @@ for (const file of [
   "data/letterboxd-reviews.json",
   "data/world-countries.json",
   "data/us-states.json",
+  "data/canada-provinces.json",
   "vendor/leaflet.js",
   "vendor/leaflet.css"
 ]) {

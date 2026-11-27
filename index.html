@@ -389,65 +389,61 @@
         </div>
       </div>
 
-      <!-- Dual Interactive Stage: World Heatmap Canvas + Synced Photo Slideshow -->
+      <!-- Dual Interactive Stage: World Map Lenses + Synced Photo Slideshow -->
       <div id="atlas" class="atlas-workbench">
-        <!-- Left: Interactive World Heatmap & Pin Canvas + 39-Country Static Map Switcher -->
+        <!-- Left: Multi-Lens Interactive Atlas (Photo Thumbnails · Flighty Arcs · Visited Choropleth · MapChart) -->
         <div class="map-stage-card">
           <div class="map-stage-header">
-            <div class="map-stage-title">
-              <div class="map-view-tabs" role="group" aria-label="Choose map display">
-                <button type="button" class="map-ctrl-btn" id="view-interactive-map-btn" aria-pressed="true">🌐 Interactive Pin Map</button>
-                <button type="button" class="map-ctrl-btn" id="view-static-map-btn" aria-pressed="false">🗺️ 39-Country Map</button>
-              </div>
-              <p class="map-stage-subtitle" id="map-status-line">Drag to pan · Scroll or use buttons to zoom · Click any glowing pin to view photos</p>
+            <div class="map-lens-toolbar" id="map-lens-toolbar" role="toolbar" focusgroup="toolbar wrap" aria-label="Map display lens">
+              <button type="button" class="map-ctrl-btn" data-map-lens="photos" id="lens-photos-btn" aria-pressed="true">📸 Photos</button>
+              <button type="button" class="map-ctrl-btn" data-map-lens="flights" id="lens-flights-btn" aria-pressed="false">✈️ Flights (173)</button>
+              <button type="button" class="map-ctrl-btn" data-map-lens="atlas" id="lens-atlas-btn" aria-pressed="false">🌍 Visited Atlas</button>
+              <button type="button" class="map-ctrl-btn" data-map-lens="all" id="lens-all-btn" aria-pressed="false">✨ All Layers</button>
+              <button type="button" class="map-ctrl-btn" data-map-lens="static" id="lens-static-btn" aria-pressed="false">🗺️ MapChart</button>
             </div>
-            <div class="map-layer-controls" id="map-interactive-controls" role="group" aria-label="Map layers and zoom">
-              <span class="map-Data-toggles" id="map-data-toggles">
-                <button type="button" class="map-ctrl-btn" id="toggle-heatmap-btn" aria-pressed="true">🔥 Heatmap</button>
-                <button type="button" class="map-ctrl-btn" id="toggle-pins-btn" aria-pressed="true">📍 Pins</button>
-                <button type="button" class="map-ctrl-btn" id="toggle-arcs-btn" aria-pressed="true">✈️ Flights (173)</button>
-                <button type="button" class="map-ctrl-btn" id="toggle-canada-drive-btn" aria-pressed="true">🚗 Canada Drive</button>
-              </span>
-              <button type="button" class="map-ctrl-btn" id="map-zoom-in" aria-label="Zoom in">+</button>
-              <button type="button" class="map-ctrl-btn" id="map-zoom-out" aria-label="Zoom out">−</button>
-              <button type="button" class="map-ctrl-btn" id="map-reset-btn" aria-label="Reset world view">Reset</button>
-            </div>
+            <p class="map-stage-subtitle" id="map-status-line" role="status" aria-live="polite">Click any photo stack to zoom in, or click a photo pin to open its dispatch</p>
           </div>
 
-          <div class="map-canvas-wrap" id="map-canvas-wrap">
-            <div id="leaflet-world-map" class="leaflet-world-map" role="application" aria-label="Interactive world map showing Matt Briselli's Google Maps photo heatmap and clickable location pins"></div>
-            <canvas id="world-heatmap-canvas" class="heatmap-overlay-canvas" width="960" height="540" aria-hidden="true"></canvas>
-            <div class="map-tooltip" id="map-tooltip" hidden></div>
-          </div>
+          <div class="map-stage-body">
+            <div class="map-canvas-wrap" id="map-canvas-wrap">
+              <div id="leaflet-world-map" class="leaflet-world-map" role="application" aria-label="Interactive world map of Matt Briselli's photographed places, Flighty flight routes, and visited countries, US states, and Canadian provinces"></div>
+            </div>
 
-          <figure class="static-countries-map-wrap" id="static-countries-map-wrap" hidden>
-            <div
-              class="static-map-viewport"
-              id="static-map-viewport"
-              tabindex="0"
-              role="application"
-              aria-label="Zoomable and pannable map of all 39 countries and 50 US states visited. Drag or use arrow keys to pan, scroll or use plus and minus buttons to zoom."
-            >
-              <img
-                id="static-countries-img"
-                src="countries-visited-map.png"
-                alt="World map highlighting all 39 countries, 8 Canadian provinces and territories, and all 50 US states visited by Matt Briselli"
-                width="2400"
-                height="1264"
-                draggable="false"
-                loading="lazy"
+            <figure class="static-countries-map-wrap" id="static-countries-map-wrap" hidden>
+              <div
+                class="static-map-viewport"
+                id="static-map-viewport"
+                tabindex="0"
+                role="application"
+                aria-label="Zoomable and pannable map of all 39 countries and 50 US states visited. Drag or use arrow keys to pan, scroll or use plus and minus buttons to zoom."
               >
-            </div>
-            <figcaption class="static-map-caption">
-              All 39 countries, all 50 US states &amp; 8 Canadian provinces/territories · Scroll, double-click, or use + / − to zoom; drag to pan
-            </figcaption>
-          </figure>
+                <img
+                  id="static-countries-img"
+                  src="countries-visited-map.png"
+                  alt="World map highlighting all 39 countries, 8 Canadian provinces and territories, and all 50 US states visited by Matt Briselli"
+                  width="2400"
+                  height="1264"
+                  draggable="false"
+                  loading="lazy"
+                >
+              </div>
+              <figcaption class="static-map-caption">
+                All 39 countries, all 50 US states &amp; 8 Canadian provinces/territories · Scroll, double-click, or use + / − to zoom; drag to pan
+              </figcaption>
+            </figure>
 
-          <div class="map-legend">
-            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> Photo Heatmap</span>
-            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 39 Countries &amp; 50 US States</span>
-            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Flighty Routes (314,804 mi · 83 Airports)</span>
-            <span class="legend-item"><span class="legend-swatch swatch-drive" aria-hidden="true"></span> Disjoint Trans-Canada Drive</span>
+            <div class="map-zoom-toolbar" id="map-zoom-toolbar" role="toolbar" aria-orientation="vertical" focusgroup="toolbar wrap block" aria-label="Map zoom controls">
+              <button type="button" class="map-zoom-btn" id="map-zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
+              <button type="button" class="map-zoom-btn" id="map-zoom-out" aria-label="Zoom out" title="Zoom out">−</button>
+              <span class="map-zoom-sep" role="separator" aria-orientation="horizontal"></span>
+              <button type="button" class="map-zoom-btn" id="map-reset-btn" aria-label="Reset world view" title="Reset world view">⟲</button>
+            </div>
+          </div>
+
+          <div class="map-legend" id="map-legend">
+            <span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Dispatch</span>
+            <span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> Photo Stacks (Click to Zoom)</span>
+            <span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 39 Countries · 50 States · 8/13 Canada</span>
           </div>
         </div>
 

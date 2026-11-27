@@ -312,22 +312,68 @@
   });
 
   /* ==========================================================================
-     Leaflet + Natural Earth GeoJSON (176 Countries + 50 US States) +
-     Synced HTML5 Canvas Thermal Heatmap & Global Photo Slideshow
+     Multi-Lens Leaflet Atlas (CARTO @2x Retina Basemaps + Photo Thumbnail
+     Stacks + Glowing Flighty Great-Circle Routes + 39-Country / 50-State /
+     13-Canadian-Province Vector Choropleth)
      ========================================================================== */
   const mapContainer = document.getElementById("leaflet-world-map");
-  const canvas = document.getElementById("world-heatmap-canvas");
-  if (!mapContainer || !canvas || typeof window.L === "undefined") return;
-  const ctx = canvas.getContext("2d");
+  if (!mapContainer || typeof window.L === "undefined") return;
   const statusLineEl = document.getElementById("map-status-line");
 
+  // Roving tabindex fallback for role="toolbar" [focusgroup] where native focusgroup is unsupported
+  if (!("focusGroup" in HTMLElement.prototype)) {
+    document.querySelectorAll('[role="toolbar"][focusgroup]').forEach((bar) => {
+      const items = Array.from(bar.querySelectorAll("button"));
+      if (!items.length) return;
+      items.forEach((b, i) => {
+        b.tabIndex = i === 0 ? 0 : -1;
+      });
+      bar.addEventListener("focusin", ({ target }) => {
+        if (items.includes(target)) {
+          items.forEach((b) => {
+            b.tabIndex = b === target ? 0 : -1;
+          });
+        }
+      });
+      bar.addEventListener("keydown", (e) => {
+        const curIdx = items.indexOf(document.activeElement);
+        if (curIdx === -1) return;
+        const vertical = bar.getAttribute("aria-orientation") === "vertical";
+        const rtl = getComputedStyle(bar).direction === "rtl";
+        const steps = vertical
+          ? { ArrowDown: 1, ArrowUp: -1 }
+          : { ArrowRight: rtl ? -1 : 1, ArrowLeft: rtl ? 1 : -1 };
+        let nextIdx = null;
+        if (e.key in steps) {
+          nextIdx = (curIdx + steps[e.key] + items.length) % items.length;
+        } else if (e.key === "Home") {
+          nextIdx = 0;
+        } else if (e.key === "End") {
+          nextIdx = items.length - 1;
+        }
+        if (nextIdx !== null) {
+          e.preventDefault();
+          items[nextIdx].focus();
+        }
+      });
+    });
+  }
+
+  function escMapHtml(str) {
+    return String(str ?? "")
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;");
+  }
+
   const REGION_PRESETS = {
-    world: { lat: 28, lng: -15, zoom: 2, label: "Whole World (39 Countries · All 50 US States · 66,085 Photos)" },
-    nyc: { lat: 40.55, lng: -75.2, zoom: 6, label: "NYC, Philadelphia, Pittsburgh & East Coast" },
-    west: { lat: 42.5, lng: -122.2, zoom: 5, label: "San Francisco (6 yrs), Seattle & West Coast" },
+    world: { lat: 25, lng: -12, zoom: 2, label: "Whole World (39 Countries · All 50 US States · 66,085 Photos)" },
+    nyc: { lat: 40.73, lng: -73.98, zoom: 11, label: "New York City & Tri-State Dispatches" },
+    west: { lat: 41.8, lng: -122.3, zoom: 5, label: "San Francisco (6 yrs), Seattle & West Coast" },
     us50: { lat: 39.5, lng: -98.5, zoom: 4, label: "All 50 US States Visited" },
     "central-asia": { lat: 42.2, lng: 67.5, zoom: 5, label: "Central Asia (Kazakhstan · Kyrgyzstan · Uzbekistan · Tajikistan · Turkmenistan)" },
-    canada: { lat: 52.0, lng: -97.0, zoom: 4, label: "8 Canadian Provinces & Territories Explored" },
+    canada: { lat: 53.5, lng: -96.5, zoom: 4, label: "8/13 Canadian Provinces & Territories + Disjoint Trans-Canada Drive" },
     "europe-apac": { lat: 34.0, lng: 55.0, zoom: 3, label: "Europe & Asia-Pacific Across 39 Countries Visited" }
   };
 
@@ -336,34 +382,42 @@
   let filteredPlaces = [];
   let activePlaceIndex = 0;
   let activePhotoIndex = 0;
-  let previousPlace = null;
-
-  let showHeatmap = true;
-  let showPins = true;
-  let showArcs = true;
-  let showCanadaDrive = true;
   let autoPlayTimer = null;
 
-  // Initialize Leaflet map
+  // Focused Map Lenses: "photos" | "flights" | "atlas" | "all" | "static"
+  let activeLens = "photos";
+
   const map = L.map(mapContainer, {
     center: [REGION_PRESETS.world.lat, REGION_PRESETS.world.lng],
     zoom: REGION_PRESETS.world.zoom,
     minZoom: 2,
-    maxZoom: 16,
+    maxZoom: 17,
     zoomControl: false,
     attributionControl: false,
     worldCopyJump: true
   });
 
-  // Keyless Esri World Gray Canvas base + reference label tiles (zero API key required, works on any domain)
   let baseTileLayer = null;
-  let labelTileLayer = null;
+  let currentTileUrl = "";
   let countriesLayer = null;
   let statesLayer = null;
+  let canadaProvincesLayer = null;
   const flightArcsLayerGroup = L.layerGroup().addTo(map);
   const canadaDriveLayerGroup = L.layerGroup().addTo(map);
   const pinsLayerGroup = L.layerGroup().addTo(map);
-  const placeMarkers = [];
+
+  function lensShowsPhotos() {
+    return activeLens === "photos" || activeLens === "all";
+  }
+  function lensShowsFlights() {
+    return activeLens === "flights" || activeLens === "all";
+  }
+  function lensShowsCanadaDrive() {
+    return activeLens === "atlas" || activeLens === "all";
+  }
+  function lensIsChoroplethFocus() {
+    return activeLens === "atlas";
+  }
 
   // Compute spherical 3D great-circle points between two (lat, lng) pairs, splitting cleanly across the ±180° antimeridian
   function buildGreatCircleSegments(lat1, lng1, lat2, lng2, steps = 36) {
@@ -417,25 +471,44 @@
 
   function rebuildFlightArcs() {
     flightArcsLayerGroup.clearLayers();
-    if (!showArcs || !flightyData) return;
+    if (!lensShowsFlights() || !flightyData) return;
 
     const dark = isDarkActive();
+    const zoom = map.getZoom();
     const airportByCode = new Map(
       (flightyData.airports || []).map((a) => [a.code, a])
     );
 
-    // 1. Great-circle Flighty routes (thickness & opacity scaled by flight frequency)
-    for (const r of flightyData.routes || []) {
+    const sortedRoutes = (flightyData.routes || []).slice().sort((a, b) => a.count - b.count);
+
+    // 1. Dual-pass glowing great-circle Flighty trajectories
+    for (const r of sortedRoutes) {
       const a1 = airportByCode.get(r.from);
       const a2 = airportByCode.get(r.to);
       if (!a1 || !a2) continue;
-      const segments = buildGreatCircleSegments(a1.lat, a1.lng, a2.lat, a2.lng, 34);
-      const weight = Math.min(3.4, 1.15 + Math.log2(r.count) * 0.65);
-      const opacity = Math.min(0.82, 0.34 + Math.log2(r.count) * 0.16);
-      const stroke = dark ? "#5ec28f" : "#1f6b45";
-      const label = `<strong>✈️ ${r.from} ↔ ${r.to}</strong><br>${a1.city} ↔ ${a2.city}<br>${r.count} ${r.count === 1 ? "flight" : "flights"} · ${formatNumber(r.miles)} mi`;
+      const segments = buildGreatCircleSegments(a1.lat, a1.lng, a2.lat, a2.lng, 38);
+      const weight = Math.min(3.6, 1.3 + Math.log2(r.count) * 0.72);
+      const opacity = Math.min(0.92, 0.46 + Math.log2(r.count) * 0.16);
+      const isTrunk = r.count >= 6;
+      const stroke = isTrunk
+        ? (dark ? "#46e5a0" : "#136840")
+        : r.count >= 2
+          ? (dark ? "#68ca98" : "#1f6b45")
+          : (dark ? "#e8a85a" : "#b85d27");
+      const glowColor = isTrunk
+        ? (dark ? "#3dd68c" : "#1f6b45")
+        : (dark ? "#5ec28f" : "#2f855a");
+      const label = `<strong>✈️ ${escMapHtml(r.from)} ↔ ${escMapHtml(r.to)}</strong><br>${escMapHtml(a1.city)} ↔ ${escMapHtml(a2.city)}<br>${r.count} ${r.count === 1 ? "flight" : "flights"} · ${formatNumber(r.miles)} mi`;
 
       for (const seg of segments) {
+        L.polyline(seg, {
+          color: glowColor,
+          weight: weight + 4,
+          opacity: dark ? 0.16 : 0.12,
+          interactive: false,
+          smoothFactor: 1.2
+        }).addTo(flightArcsLayerGroup);
+
         const line = L.polyline(seg, {
           color: stroke,
           weight,
@@ -447,20 +520,34 @@
       }
     }
 
-    // 2. Subtle airport hub nodes across all 83 airports
+    // 2. Airport hub nodes + IATA code badges on top hubs
     for (const ap of flightyData.airports || []) {
+      const isMajorHub = ap.visits >= 10 || (zoom >= 4 && ap.visits >= 5);
       const dot = L.circleMarker([ap.lat, ap.lng], {
-        radius: Math.min(5.5, 2.2 + Math.log2(ap.visits + 1) * 0.55),
-        color: dark ? "#111110" : "#faf8f5",
-        weight: 0.9,
-        fillColor: dark ? "#5ec28f" : "#1f6b45",
-        fillOpacity: 0.85
+        radius: Math.min(6.2, 2.5 + Math.log2(ap.visits + 1) * 0.62),
+        color: dark ? "#111110" : "#ffffff",
+        weight: 1.25,
+        fillColor: ap.visits >= 6 ? (dark ? "#46e5a0" : "#136840") : (dark ? "#e8a85a" : "#b85d27"),
+        fillOpacity: 0.95
       });
       dot.bindTooltip(
-        `<strong>${ap.code}</strong> · ${ap.city}<br>${ap.visits} ${ap.visits === 1 ? "flight leg" : "flight legs"}`,
+        `<strong>✈️ ${escMapHtml(ap.code)}</strong> · ${escMapHtml(ap.city)}<br>${ap.visits} ${ap.visits === 1 ? "flight leg" : "flight legs"}`,
         { direction: "top" }
       );
       dot.addTo(flightArcsLayerGroup);
+
+      if (isMajorHub && activeLens === "flights") {
+        const badge = L.marker([ap.lat, ap.lng], {
+          interactive: false,
+          icon: L.divIcon({
+            className: "hub-label-wrapper",
+            html: `<span class="airport-hub-tag">${escMapHtml(ap.code)}</span>`,
+            iconSize: [34, 16],
+            iconAnchor: [-6, 8]
+          })
+        });
+        badge.addTo(flightArcsLayerGroup);
+      }
     }
   }
 
@@ -540,20 +627,29 @@
 
   function rebuildCanadaDrive() {
     canadaDriveLayerGroup.clearLayers();
-    if (!showCanadaDrive) return;
+    if (!lensShowsCanadaDrive()) return;
     const dark = isDarkActive();
-    const drivenColor = dark ? "#6ea8fe" : "#2457c5";
-    const gapColor = dark ? "#7c8899" : "#6c788a";
+    const drivenColor = dark ? "#6ea8fe" : "#1d4ed8";
+    const gapColor = dark ? "#9aa5b5" : "#5b6778";
 
     for (const seg of CANADA_DRIVE_SEGMENTS) {
+      if (seg.driven) {
+        L.polyline(seg.coords, {
+          color: drivenColor,
+          weight: 7,
+          opacity: 0.18,
+          interactive: false,
+          smoothFactor: 1.1
+        }).addTo(canadaDriveLayerGroup);
+      }
       const poly = L.polyline(seg.coords, {
         color: seg.driven ? drivenColor : gapColor,
-        weight: seg.driven ? 3.4 : 1.8,
-        opacity: seg.driven ? 0.92 : 0.55,
+        weight: seg.driven ? 3.6 : 2.0,
+        opacity: seg.driven ? 0.95 : 0.65,
         dashArray: seg.driven ? null : "5,6",
         smoothFactor: 1.1
       });
-      poly.bindTooltip(`<strong>${seg.title}</strong><br>${seg.note}`, {
+      poly.bindTooltip(`<strong>${escMapHtml(seg.title)}</strong><br>${escMapHtml(seg.note)}`, {
         sticky: true,
         direction: "top"
       });
@@ -569,13 +665,13 @@
     ];
     for (const ep of endpoints) {
       const dot = L.circleMarker([ep.lat, ep.lng], {
-        radius: 4.5,
+        radius: 4.8,
         color: dark ? "#111110" : "#ffffff",
-        weight: 1.5,
+        weight: 1.6,
         fillColor: drivenColor,
-        fillOpacity: 0.95
+        fillOpacity: 0.96
       });
-      dot.bindTooltip(`<strong>🚗 ${ep.name}</strong>`, { direction: "top" });
+      dot.bindTooltip(`<strong>🚗 ${escMapHtml(ep.name)}</strong>`, { direction: "top" });
       dot.addTo(canadaDriveLayerGroup);
     }
   }
@@ -618,215 +714,348 @@
 
   function getCountryStyle(feature) {
     const dark = isDarkActive();
-    const visited = feature?.properties?.visited;
+    const visited = Boolean(feature?.properties?.visited);
+    const name = feature?.properties?.name || "";
+    // Let US & Canada sub-national layers handle detailed province/state coloring in Atlas mode
+    const isSubnationalHost = name === "United States of America" || name === "United States" || name === "Canada";
+    if (lensIsChoroplethFocus()) {
+      if (isSubnationalHost) {
+        return {
+          fillColor: "transparent",
+          fillOpacity: 0,
+          color: dark ? "#6e5a4b" : "#9e3b24",
+          weight: 1.1
+        };
+      }
+      return {
+        fillColor: visited ? (dark ? "#e88264" : "#cf5636") : "transparent",
+        fillOpacity: visited ? (dark ? 0.36 : 0.38) : 0,
+        color: visited ? (dark ? "#f29d82" : "#9e3b24") : (dark ? "#2e2c28" : "#d8d2c7"),
+        weight: visited ? 1.25 : 0.45
+      };
+    }
+    const subtleAlpha = activeLens === "flights" ? 0.07 : 0.14;
     return {
-      fillColor: visited
-        ? (dark ? "#2c251f" : "#e7ddd0")
-        : (dark ? "#1d1c1a" : "#ece8e0"),
-      fillOpacity: 0.78,
-      color: visited
-        ? (dark ? "#5e4c3e" : "#b5a490")
-        : (dark ? "#33312d" : "#cfc9be"),
-      weight: visited ? 1.1 : 0.7
+      fillColor: visited && !isSubnationalHost ? (dark ? "#e88264" : "#c85a38") : "transparent",
+      fillOpacity: visited && !isSubnationalHost ? subtleAlpha : 0,
+      color: visited ? (dark ? "#58463a" : "#b99984") : "transparent",
+      weight: visited ? 0.8 : 0
     };
   }
 
   function getStateStyle() {
     const dark = isDarkActive();
+    if (lensIsChoroplethFocus()) {
+      return {
+        fillColor: dark ? "#e88264" : "#cf5636",
+        fillOpacity: dark ? 0.35 : 0.36,
+        color: dark ? "#f29d82" : "#9e3b24",
+        weight: 0.95
+      };
+    }
+    const subtleAlpha = activeLens === "flights" ? 0.05 : 0.11;
     return {
-      fillColor: dark ? "#2e2620" : "#e5dacb",
-      fillOpacity: 0.45,
-      color: dark ? "#5c4b3e" : "#b8a793",
-      weight: 0.75,
+      fillColor: dark ? "#e88264" : "#c85a38",
+      fillOpacity: subtleAlpha,
+      color: dark ? "#4a3d33" : "#c4ab99",
+      weight: 0.55,
       dashArray: "2,2"
+    };
+  }
+
+  function getCanadaProvinceStyle(feature) {
+    const dark = isDarkActive();
+    const visited = Boolean(feature?.properties?.visited);
+    if (lensIsChoroplethFocus()) {
+      return {
+        fillColor: visited ? (dark ? "#f0ad4e" : "#d9822b") : (dark ? "#252422" : "#eae4da"),
+        fillOpacity: visited ? (dark ? 0.42 : 0.44) : 0.18,
+        color: visited ? (dark ? "#f6c173" : "#9a5412") : (dark ? "#55514a" : "#9f988c"),
+        weight: visited ? 1.2 : 0.85,
+        dashArray: visited ? null : "4,4"
+      };
+    }
+    const subtleAlpha = activeLens === "flights" ? 0.05 : 0.12;
+    return {
+      fillColor: visited ? (dark ? "#f0ad4e" : "#d9822b") : "transparent",
+      fillOpacity: visited ? subtleAlpha : 0,
+      color: visited ? (dark ? "#5c4d38" : "#bfa382") : "transparent",
+      weight: visited ? 0.65 : 0
     };
   }
 
   function updateTileLayer() {
     const dark = isDarkActive();
-    const baseUrl = dark
-      ? "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}"
-      : "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}";
-    const labelUrl = dark
-      ? "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Reference/MapServer/tile/{z}/{y}/{x}"
-      : "https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Reference/MapServer/tile/{z}/{y}/{x}";
+    const cleanEditorialLight = activeLens === "flights" || activeLens === "atlas";
+    const desiredUrl = dark
+      ? "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+      : cleanEditorialLight
+        ? "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        : "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png";
+    const desiredOpacity = dark ? 0.94 : cleanEditorialLight ? 0.9 : 0.94;
 
     if (baseTileLayer) {
-      baseTileLayer.setUrl(baseUrl);
+      if (currentTileUrl !== desiredUrl) {
+        baseTileLayer.setUrl(desiredUrl);
+        currentTileUrl = desiredUrl;
+      }
+      baseTileLayer.setOpacity(desiredOpacity);
     } else {
-      baseTileLayer = L.tileLayer(baseUrl, {
-        maxZoom: 16,
-        opacity: 0.55
+      currentTileUrl = desiredUrl;
+      baseTileLayer = L.tileLayer(desiredUrl, {
+        subdomains: "abcd",
+        maxZoom: 19,
+        opacity: desiredOpacity
       }).addTo(map);
+      baseTileLayer.bringToBack();
     }
+  }
 
-    if (labelTileLayer) {
-      labelTileLayer.setUrl(labelUrl);
+  function updateLegendForLens() {
+    const legendEl = document.getElementById("map-legend");
+    if (!legendEl) return;
+    legendEl.hidden = activeLens === "static";
+    if (activeLens === "photos") {
+      legendEl.innerHTML = [
+        `<span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Slideshow Pin</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> Photo Stack (Click to Zoom In)</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> Visited Footprint</span>`
+      ].join("");
+    } else if (activeLens === "flights") {
+      legendEl.innerHTML = [
+        `<span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Trunk Flight Corridors (6+ legs)</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> Regional &amp; Long-Haul Routes (314,804 mi · 83 Airports)</span>`
+      ].join("");
+    } else if (activeLens === "atlas") {
+      legendEl.innerHTML = [
+        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> 39 Countries &amp; All 50 US States</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 8/13 Canadian Provinces &amp; Territories</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-drive" aria-hidden="true"></span> Disjoint Trans-Canada Drive</span>`
+      ].join("");
     } else {
-      labelTileLayer = L.tileLayer(labelUrl, {
-        maxZoom: 16,
-        opacity: 0.85
-      }).addTo(map);
+      legendEl.innerHTML = [
+        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> Photo Stacks</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> 173 Flights (315k mi)</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 39 Countries · 50 States · 8/13 Canada</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-drive" aria-hidden="true"></span> Canada Drive</span>`
+      ].join("");
     }
   }
 
   function syncMapTheme() {
     const dark = isDarkActive();
-    mapContainer.style.backgroundColor = dark ? "#121211" : "#f2efe9";
+    mapContainer.style.backgroundColor = dark ? "#121211" : "#eae6df";
+    updateTileLayer();
     if (countriesLayer) countriesLayer.setStyle(getCountryStyle);
     if (statesLayer) statesLayer.setStyle(getStateStyle);
-    updateTileLayer();
+    if (canadaProvincesLayer) canadaProvincesLayer.setStyle(getCanadaProvinceStyle);
     rebuildFlightArcs();
     rebuildCanadaDrive();
     rebuildMarkers();
-    drawHeatmapOverlay();
+    updateLegendForLens();
   }
 
-  // Load crisp local Natural Earth 176 Countries + 50 US States GeoJSON
+  // Load crisp local Natural Earth Countries + 50 US States + 13 Canadian Provinces GeoJSON
   Promise.all([
     fetch("data/world-countries.json").then((r) => r.json()).catch(() => null),
-    fetch("data/us-states.json").then((r) => r.json()).catch(() => null)
-  ]).then(([countriesGeo, statesGeo]) => {
+    fetch("data/us-states.json").then((r) => r.json()).catch(() => null),
+    fetch("data/canada-provinces.json").then((r) => r.json()).catch(() => null)
+  ]).then(([countriesGeo, statesGeo, canadaGeo]) => {
     if (countriesGeo) {
       countriesLayer = L.geoJSON(countriesGeo, {
         style: getCountryStyle,
         onEachFeature: (feature, layer) => {
-          if (feature.properties && feature.properties.name) {
-            const tag = feature.properties.visited ? " · Visited & Photographed" : "";
-            layer.bindTooltip(`${feature.properties.name}${tag}`, {
+          const nm = feature.properties?.name;
+          if (nm && nm !== "United States of America" && nm !== "Canada") {
+            const status = feature.properties.visited
+              ? "✓ Visited &amp; Photographed (39/199 Quest)"
+              : "Not yet visited";
+            layer.bindTooltip(`<strong>${escMapHtml(nm)}</strong><br>${status}`, {
               sticky: true,
               direction: "top"
             });
           }
         }
       }).addTo(map);
-      countriesLayer.bringToBack();
     }
     if (statesGeo) {
       statesLayer = L.geoJSON(statesGeo, {
         style: getStateStyle,
         onEachFeature: (feature, layer) => {
-          if (feature.properties && feature.properties.name) {
-            layer.bindTooltip(`${feature.properties.name} (All 50 US States Visited)`, {
-              sticky: true,
-              direction: "top"
-            });
+          if (feature.properties?.name) {
+            layer.bindTooltip(
+              `<strong>${escMapHtml(feature.properties.name)}</strong><br>✓ All 50 US States Visited`,
+              { sticky: true, direction: "top" }
+            );
           }
         }
       }).addTo(map);
     }
-    updateTileLayer();
-    rebuildFlightArcs();
-    rebuildCanadaDrive();
-    rebuildMarkers();
-    drawHeatmapOverlay();
+    if (canadaGeo) {
+      canadaProvincesLayer = L.geoJSON(canadaGeo, {
+        style: getCanadaProvinceStyle,
+        onEachFeature: (feature, layer) => {
+          if (feature.properties?.name) {
+            const code = feature.properties.code ? ` (${feature.properties.code})` : "";
+            const status = feature.properties.visited
+              ? "✓ Visited (8/13 Canadian Provinces &amp; Territories)"
+              : "○ Remaining Quest Target (5 left for 13/13)";
+            layer.bindTooltip(
+              `<strong>${escMapHtml(feature.properties.name + code)}</strong><br>${status}`,
+              { sticky: true, direction: "top" }
+            );
+          }
+        }
+      }).addTo(map);
+    }
+    syncMapTheme();
   });
 
-  function resizeOverlayCanvas() {
-    const rect = mapContainer.getBoundingClientRect();
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.max(300, Math.round(rect.width * dpr));
-    canvas.height = Math.max(200, Math.round(rect.height * dpr));
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    drawHeatmapOverlay();
+  function thumbUrlForPlace(pl) {
+    const raw = pl?.photos?.[0] || "";
+    return raw ? raw.replace("=w1000-h750-p-k-no", "=w240-h180-p-k-no") : "";
   }
 
-  window.addEventListener("resize", resizeOverlayCanvas);
+  function createSinglePhotoMarker(pl, idx, isActive) {
+    const thumb = thumbUrlForPlace(pl);
+    const activePhotoRaw = isActive
+      ? (pl.photos?.[activePhotoIndex] || pl.photos?.[0] || "").replace("=w1000-h750-p-k-no", "=w240-h180-p-k-no")
+      : thumb;
+    const size = isActive ? 50 : 38;
+    const html = `<div class="map-photo-card${isActive ? " is-active" : ""}">
+      ${activePhotoRaw ? `<img src="${escMapHtml(activePhotoRaw)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}
+    </div>`;
 
-  function drawHeatmapOverlay() {
-    const rect = mapContainer.getBoundingClientRect();
-    const width = rect.width;
-    const height = rect.height;
-    ctx.clearRect(0, 0, width, height);
-    if (!mapsData) return;
+    const marker = L.marker([pl.lat, pl.lng], {
+      zIndexOffset: isActive ? 1200 : 200,
+      icon: L.divIcon({
+        className: "photo-marker-wrapper",
+        html,
+        iconSize: [size, size],
+        iconAnchor: [Math.round(size / 2), size + 4]
+      })
+    });
 
-    const dark = isDarkActive();
-    const zoom = map.getZoom();
-
-    // 1. Draw Radial Thermal Photo Heatmap over exact Leaflet lat/lng container coordinates
-    if (showHeatmap && Array.isArray(mapsData.heatmapClusters)) {
-      ctx.save();
-      for (const c of mapsData.heatmapClusters) {
-        const pt = map.latLngToContainerPoint([c.lat, c.lng]);
-        if (pt.x < -90 || pt.x > width + 90 || pt.y < -90 || pt.y > height + 90) continue;
-        const weight = c.weight || 0.75;
-        const radius = Math.max(16, Math.min(62, (11 + zoom * 4.5) * weight));
-        const grad = ctx.createRadialGradient(pt.x, pt.y, 2, pt.x, pt.y, radius);
-        if (dark) {
-          grad.addColorStop(0, `rgba(255, 165, 95, ${0.62 * weight})`);
-          grad.addColorStop(0.45, `rgba(232, 108, 64, ${0.32 * weight})`);
-          grad.addColorStop(1, "rgba(232, 108, 64, 0)");
-        } else {
-          grad.addColorStop(0, `rgba(185, 50, 22, ${0.52 * weight})`);
-          grad.addColorStop(0.5, `rgba(228, 120, 45, ${0.25 * weight})`);
-          grad.addColorStop(1, "rgba(228, 120, 45, 0)");
-        }
-        ctx.fillStyle = grad;
-        ctx.beginPath();
-        ctx.arc(pt.x, pt.y, radius, 0, Math.PI * 2);
-        ctx.fill();
-      }
-      ctx.restore();
-    }
+    const metric = pl.views
+      ? ` · ${formatNumber(pl.views)} views`
+      : pl.rating
+        ? ` · ${"★".repeat(pl.rating)}`
+        : "";
+    marker.bindTooltip(
+      `<strong>${escMapHtml(pl.name)}</strong><br>${escMapHtml(pl.location)}${escMapHtml(metric)}`,
+      { direction: "top", offset: [0, -(size + 2)] }
+    );
+    marker.on("click", () => {
+      selectPlace(idx, true);
+    });
+    return marker;
   }
-
-  map.on("move zoom viewreset moveend zoomend", drawHeatmapOverlay);
 
   function rebuildMarkers() {
     pinsLayerGroup.clearLayers();
-    placeMarkers.length = 0;
-    if (!showPins || !mapsData) return;
+    if (!lensShowsPhotos() || !mapsData || !filteredPlaces.length) return;
 
-    const dark = isDarkActive();
+    const zoom = map.getZoom();
+    const activePlace = filteredPlaces[activePlaceIndex];
 
-    // 1. Background cluster pins (all 50 states, Central Asia cities, Canadian provinces, Europe, China, Australia)
-    if (Array.isArray(mapsData.heatmapClusters)) {
-      for (const c of mapsData.heatmapClusters) {
-        const label = c.label || c.name || "Visited Cluster";
-        const cm = L.circleMarker([c.lat, c.lng], {
-          radius: 3.5,
-          color: dark ? "#111110" : "#faf8f5",
-          weight: 1,
-          fillColor: dark ? "#e8993a" : "#c45a28",
-          fillOpacity: 0.78
-        });
-        cm.bindTooltip(label, { direction: "top" });
-        cm.on("click", () => {
-          map.flyTo([c.lat, c.lng], Math.max(map.getZoom(), 6), { duration: 0.9 });
-          if (statusLineEl) statusLineEl.textContent = `Exploring: ${label}`;
-        });
-        cm.addTo(pinsLayerGroup);
-      }
+    // Always render the active slideshow place on top as a dedicated hero photo card
+    if (activePlace && typeof activePlace.lat === "number" && typeof activePlace.lng === "number") {
+      createSinglePhotoMarker(activePlace, activePlaceIndex, true).addTo(pinsLayerGroup);
     }
 
-    // 2. Featured Photo Slideshow Dispatch Markers
+    // At street/neighborhood zoom (>= 11), show individual photo cards without clustering
+    if (zoom >= 11) {
+      filteredPlaces.forEach((pl, idx) => {
+        if (idx === activePlaceIndex) return;
+        createSinglePhotoMarker(pl, idx, false).addTo(pinsLayerGroup);
+      });
+      return;
+    }
+
+    // Spatial viewport grid clustering for crisp Apple/Google Photos–style photo stacks
+    const cellPx = zoom <= 3 ? 68 : zoom <= 6 ? 60 : 52;
+    const buckets = new Map();
+
     filteredPlaces.forEach((pl, idx) => {
-      const isActive = idx === activePlaceIndex;
-      const marker = L.circleMarker([pl.lat, pl.lng], {
-        radius: isActive ? 8.5 : 6,
-        color: dark ? "#111110" : "#ffffff",
-        weight: 2,
-        fillColor: isActive
-          ? (dark ? "#5ec28f" : "#1f6b45")
-          : (dark ? "#e88264" : "#9e3b24"),
-        fillOpacity: 1
-      });
-      const metric = pl.views
-        ? ` · ${formatNumber(pl.views)} views`
-        : pl.rating
-          ? ` · ${"★".repeat(pl.rating)}`
-          : "";
-      marker.bindTooltip(`<strong>${pl.name}</strong><br>${pl.location}${metric}`, {
-        direction: "top"
-      });
-      marker.on("click", () => {
-        selectPlace(idx, true);
-      });
-      marker.addTo(pinsLayerGroup);
-      placeMarkers.push(marker);
-      if (isActive) marker.bringToFront();
+      if (idx === activePlaceIndex) return;
+      const pt = map.latLngToContainerPoint([pl.lat, pl.lng]);
+      const key = `${Math.floor(pt.x / cellPx)}:${Math.floor(pt.y / cellPx)}`;
+      let b = buckets.get(key);
+      if (!b) {
+        b = { items: [], sumLat: 0, sumLng: 0 };
+        buckets.set(key, b);
+      }
+      b.items.push({ pl, idx });
+      b.sumLat += pl.lat;
+      b.sumLng += pl.lng;
     });
+
+    for (const bucket of buckets.values()) {
+      if (bucket.items.length === 1) {
+        const { pl, idx } = bucket.items[0];
+        createSinglePhotoMarker(pl, idx, false).addTo(pinsLayerGroup);
+        continue;
+      }
+
+      // Pick highest-viewed (or reviewed) lead photo for the stack cover
+      bucket.items.sort((a, b) => (b.pl.views || 0) - (a.pl.views || 0));
+      const lead = bucket.items[0];
+      const count = bucket.items.length;
+      const centerLat = bucket.sumLat / count;
+      const centerLng = bucket.sumLng / count;
+      const coverThumb = thumbUrlForPlace(lead.pl);
+
+      const html = `<div class="map-photo-card is-cluster">
+        ${coverThumb ? `<img src="${escMapHtml(coverThumb)}" alt="" loading="lazy" referrerpolicy="no-referrer">` : ""}
+        <span class="cluster-count-badge">${count}</span>
+      </div>`;
+
+      const clusterMarker = L.marker([centerLat, centerLng], {
+        zIndexOffset: 400 + Math.min(300, count),
+        icon: L.divIcon({
+          className: "photo-marker-wrapper",
+          html,
+          iconSize: [44, 44],
+          iconAnchor: [22, 48]
+        })
+      });
+
+      const sampleNames = bucket.items
+        .slice(0, 3)
+        .map((x) => escMapHtml(x.pl.name))
+        .join(" · ");
+      clusterMarker.bindTooltip(
+        `<strong>📸 ${count} Photo Dispatches</strong><br>${sampleNames}${count > 3 ? " …" : ""}<br><em>Click to zoom into cluster</em>`,
+        { direction: "top", offset: [0, -46] }
+      );
+
+      clusterMarker.on("click", () => {
+        const bounds = L.latLngBounds(bucket.items.map((x) => [x.pl.lat, x.pl.lng]));
+        const latSpan = Math.abs(bounds.getNorth() - bounds.getSouth());
+        const lngSpan = Math.abs(bounds.getEast() - bounds.getWest());
+        if (latSpan < 0.01 && lngSpan < 0.01) {
+          selectPlace(lead.idx, false);
+          map.flyTo([lead.pl.lat, lead.pl.lng], Math.max(zoom + 2, 13), { duration: 0.85 });
+        } else {
+          map.flyToBounds(bounds, {
+            padding: [52, 52],
+            maxZoom: Math.min(13, zoom + 3),
+            duration: 0.85
+          });
+          if (statusLineEl) {
+            statusLineEl.textContent = `Zoomed into ${count} photo dispatches around ${lead.pl.location}`;
+          }
+        }
+      });
+
+      clusterMarker.addTo(pinsLayerGroup);
+    }
   }
+
+  map.on("zoomend", () => {
+    rebuildMarkers();
+    if (lensShowsFlights()) rebuildFlightArcs();
+  });
 
   function formatNumber(n) {
     return typeof n === "number" ? n.toLocaleString("en-US") : String(n);
@@ -907,22 +1136,21 @@
       }
     }
 
-    rebuildMarkers();
-
     if (shouldFly) {
-      const targetZoom = Math.max(map.getZoom(), 5);
-      map.flyTo([place.lat, place.lng], targetZoom, { duration: 0.9 });
+      if (!lensShowsPhotos()) {
+        setMapLens("photos");
+      }
+      const targetZoom = Math.max(map.getZoom(), 6);
+      map.flyTo([place.lat, place.lng], targetZoom, { duration: 0.85 });
       if (statusLineEl) {
         statusLineEl.textContent = `${place.name} · ${place.location}`;
       }
-    } else {
-      drawHeatmapOverlay();
     }
+    rebuildMarkers();
   }
 
   function selectPlace(index, shouldFly = true, randomizePhoto = false) {
     if (!filteredPlaces.length) return;
-    previousPlace = filteredPlaces[activePlaceIndex] || null;
     activePlaceIndex = (index + filteredPlaces.length) % filteredPlaces.length;
     const photos = filteredPlaces[activePlaceIndex]?.photos || [];
     activePhotoIndex = randomizePhoto && photos.length > 1
@@ -958,13 +1186,14 @@
       flyBtn.className = "table-fly-btn";
       flyBtn.textContent = "Fly to Pin";
       flyBtn.addEventListener("click", () => {
+        if (!lensShowsPhotos()) setMapLens("photos");
         const matchIdx = filteredPlaces.findIndex(
           (p) => p.name.toLowerCase().includes(item.name.split(" ")[0].toLowerCase())
         );
         if (matchIdx !== -1) {
           selectPlace(matchIdx, false);
         }
-        map.flyTo([item.lat, item.lng], 10, { duration: 1.0 });
+        map.flyTo([item.lat, item.lng], 12, { duration: 1.0 });
         if (statusLineEl) {
           statusLineEl.textContent = `Centered on ${item.name} (${item.location}) — ${formatNumber(item.views)} views`;
         }
@@ -988,7 +1217,6 @@
     "europe-apac": { fx: 0.64, fy: 0.36, scale: 1.85 }
   };
 
-  let mapViewMode = "interactive";
   let smScale = 1;
   let smTx = 0;
   let smTy = 0;
@@ -1000,10 +1228,13 @@
       document.querySelectorAll("[data-region-preset]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
       });
-      if (mapViewMode === "static") {
+      if (activeLens === "static") {
         focusStaticPreset(key);
       } else {
-        map.flyTo([preset.lat, preset.lng], preset.zoom, { duration: 1.0 });
+        if (key === "canada" && activeLens === "photos") {
+          setMapLens("atlas");
+        }
+        map.flyTo([preset.lat, preset.lng], preset.zoom, { duration: 0.95 });
       }
       if (statusLineEl) statusLineEl.textContent = preset.label;
     });
@@ -1016,6 +1247,7 @@
       document.querySelectorAll("[data-slide-filter]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
       });
+      if (!lensShowsPhotos()) setMapLens("photos");
       filteredPlaces =
         filter === "all"
           ? buildBalancedDeck(mapsData.places)
@@ -1027,20 +1259,14 @@
     });
   });
 
-  const heatBtn = document.getElementById("toggle-heatmap-btn");
-  const pinsBtn = document.getElementById("toggle-pins-btn");
-  const arcsBtn = document.getElementById("toggle-arcs-btn");
+  const lensFlightsBtn = document.getElementById("lens-flights-btn");
   const zoomInBtn = document.getElementById("map-zoom-in");
   const zoomOutBtn = document.getElementById("map-zoom-out");
   const resetBtn = document.getElementById("map-reset-btn");
-  const viewInteractiveBtn = document.getElementById("view-interactive-map-btn");
-  const viewStaticBtn = document.getElementById("view-static-map-btn");
   const mapCanvasWrap = document.getElementById("map-canvas-wrap");
   const staticMapWrap = document.getElementById("static-countries-map-wrap");
   const staticViewport = document.getElementById("static-map-viewport");
   const staticImg = document.getElementById("static-countries-img");
-  const mapDataToggles = document.getElementById("map-data-toggles");
-  const mapLegend = document.querySelector(".map-legend");
 
   function clampStaticTransform() {
     if (!staticViewport) return;
@@ -1168,34 +1394,41 @@
     });
   }
 
-  function setMapViewMode(mode) {
-    mapViewMode = mode;
-    const isStatic = mode === "static";
-    if (viewInteractiveBtn) viewInteractiveBtn.setAttribute("aria-pressed", String(!isStatic));
-    if (viewStaticBtn) viewStaticBtn.setAttribute("aria-pressed", String(isStatic));
+  const LENS_DESCRIPTIONS = {
+    photos: "Click any photo stack to zoom in, or click a photo pin to view its dispatch",
+    flights: "Flighty log: 173 completed flights · 314,804 miles (12.6× Earth) across 83 airports",
+    atlas: "Visited Atlas: 39/199 countries · 50/50 US states · 8/13 Canadian provinces + overland drive",
+    all: "All layers active: Photo stacks, 173 Flighty routes, visited choropleth & Trans-Canada drive",
+    static: "MapChart reference export · Scroll or use + / − to zoom, drag to pan"
+  };
+
+  function setMapLens(lens) {
+    activeLens = lens;
+    const isStatic = lens === "static";
+    document.querySelectorAll("[data-map-lens]").forEach((btn) => {
+      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-map-lens") === lens));
+    });
     if (mapCanvasWrap) mapCanvasWrap.hidden = isStatic;
     if (staticMapWrap) staticMapWrap.hidden = !isStatic;
-    if (mapDataToggles) mapDataToggles.hidden = isStatic;
-    if (mapLegend) mapLegend.hidden = isStatic;
     if (isStatic) {
       applyStaticTransform(false);
+      updateLegendForLens();
     } else {
       map.invalidateSize();
-      resizeOverlayCanvas();
+      syncMapTheme();
     }
     if (statusLineEl) {
-      statusLineEl.textContent = isStatic
-        ? "39-Country & 50-State Map · Scroll or use + / − to zoom, drag to pan, or click Fly To presets"
-        : "Drag to pan · Scroll or use buttons to zoom · Click any glowing pin to view photos";
+      statusLineEl.textContent = LENS_DESCRIPTIONS[lens] || LENS_DESCRIPTIONS.photos;
     }
   }
 
-  if (viewInteractiveBtn) {
-    viewInteractiveBtn.addEventListener("click", () => setMapViewMode("interactive"));
-  }
-  if (viewStaticBtn) {
-    viewStaticBtn.addEventListener("click", () => setMapViewMode("static"));
-  }
+  document.querySelectorAll("[data-map-lens]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const nextLens = btn.getAttribute("data-map-lens") || "photos";
+      setMapLens(nextLens);
+    });
+  });
+
   const shuffleBtn = document.getElementById("slide-shuffle-btn");
   const prevBtn = document.getElementById("slide-prev-btn");
   const nextBtn = document.getElementById("slide-next-btn");
@@ -1205,6 +1438,7 @@
   if (shuffleBtn) {
     shuffleBtn.addEventListener("click", () => {
       if (filteredPlaces.length <= 1) return;
+      if (!lensShowsPhotos()) setMapLens("photos");
       let nextIdx = activePlaceIndex;
       while (nextIdx === activePlaceIndex) {
         nextIdx = Math.floor(Math.random() * filteredPlaces.length);
@@ -1213,47 +1447,22 @@
     });
   }
 
-  if (heatBtn) {
-    heatBtn.addEventListener("click", () => {
-      showHeatmap = !showHeatmap;
-      heatBtn.setAttribute("aria-pressed", String(showHeatmap));
-      drawHeatmapOverlay();
-    });
-  }
-  if (pinsBtn) {
-    pinsBtn.addEventListener("click", () => {
-      showPins = !showPins;
-      pinsBtn.setAttribute("aria-pressed", String(showPins));
-      rebuildMarkers();
-    });
-  }
-  if (arcsBtn) {
-    arcsBtn.addEventListener("click", () => {
-      showArcs = !showArcs;
-      arcsBtn.setAttribute("aria-pressed", String(showArcs));
-      rebuildFlightArcs();
-    });
-  }
-  const canadaDriveBtn = document.getElementById("toggle-canada-drive-btn");
-  if (canadaDriveBtn) {
-    canadaDriveBtn.addEventListener("click", () => {
-      showCanadaDrive = !showCanadaDrive;
-      canadaDriveBtn.setAttribute("aria-pressed", String(showCanadaDrive));
-      rebuildCanadaDrive();
-    });
-  }
   const goalCountriesBtn = document.getElementById("goal-countries-btn");
   if (goalCountriesBtn) {
     goalCountriesBtn.addEventListener("click", () => {
-      setMapViewMode("static");
-      focusStaticPreset("world");
-      staticMapWrap?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      setMapLens("atlas");
+      const p = REGION_PRESETS.world;
+      map.flyTo([p.lat, p.lng], p.zoom, { duration: 0.95 });
+      if (statusLineEl) {
+        statusLineEl.textContent = "Goal 01: 39 / 199 Countries Visited — Hover any country to inspect";
+      }
+      mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   }
   const goalStatesBtn = document.getElementById("goal-states-btn");
   if (goalStatesBtn) {
     goalStatesBtn.addEventListener("click", () => {
-      setMapViewMode("interactive");
+      setMapLens("atlas");
       const p = REGION_PRESETS.us50;
       map.flyTo([p.lat, p.lng], p.zoom, { duration: 1.0 });
       if (statusLineEl) statusLineEl.textContent = "Goal 02 ✓ Complete: All 50 US States Visited";
@@ -1263,21 +1472,18 @@
   const goalCanadaDriveBtn = document.getElementById("goal-canada-drive-btn");
   if (goalCanadaDriveBtn) {
     goalCanadaDriveBtn.addEventListener("click", () => {
-      setMapViewMode("interactive");
-      showCanadaDrive = true;
-      if (canadaDriveBtn) canadaDriveBtn.setAttribute("aria-pressed", "true");
-      rebuildCanadaDrive();
-      map.flyTo([50.8, -90.5], 4, { duration: 1.1 });
+      setMapLens("atlas");
+      map.flyTo([53.5, -96.5], 4, { duration: 1.05 });
       if (statusLineEl) {
         statusLineEl.textContent =
-          "Goal 03: 8/13 Canadian Provinces & Territories · Disjoint Trans-Canada Drive (Halifax → Thunder Bay + Calgary/Edmonton/Jasper)";
+          "Goal 03: 8/13 Canadian Provinces & Territories + Disjoint Trans-Canada Drive (Halifax → Thunder Bay & Alberta Rockies)";
       }
       mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
   }
   if (zoomInBtn) {
     zoomInBtn.addEventListener("click", () => {
-      if (mapViewMode === "static" && staticViewport) {
+      if (activeLens === "static" && staticViewport) {
         zoomStaticAt(1.45, staticViewport.clientWidth / 2, staticViewport.clientHeight / 2, true);
       } else {
         map.zoomIn();
@@ -1286,7 +1492,7 @@
   }
   if (zoomOutBtn) {
     zoomOutBtn.addEventListener("click", () => {
-      if (mapViewMode === "static" && staticViewport) {
+      if (activeLens === "static" && staticViewport) {
         zoomStaticAt(1 / 1.45, staticViewport.clientWidth / 2, staticViewport.clientHeight / 2, true);
       } else {
         map.zoomOut();
@@ -1296,7 +1502,7 @@
   if (resetBtn) {
     resetBtn.addEventListener("click", () => {
       const p = REGION_PRESETS.world;
-      if (mapViewMode === "static") {
+      if (activeLens === "static") {
         focusStaticPreset("world");
       } else {
         map.flyTo([p.lat, p.lng], p.zoom, { duration: 0.9 });
@@ -1312,8 +1518,9 @@
   }
   if (flyBtn) {
     flyBtn.addEventListener("click", () => {
+      if (!lensShowsPhotos()) setMapLens("photos");
       const place = filteredPlaces[activePlaceIndex];
-      if (place) map.flyTo([place.lat, place.lng], 11, { duration: 0.9 });
+      if (place) map.flyTo([place.lat, place.lng], 12, { duration: 0.9 });
     });
   }
   if (autoBtn) {
@@ -1345,8 +1552,8 @@
         if (flEl) {
           flEl.textContent = `${formatNumber(s.totalFlights)} · ${Math.round(s.totalMiles / 1000)}k mi (${s.earthOrbits}× 🌍)`;
         }
-        if (arcsBtn) {
-          arcsBtn.textContent = `✈️ Flights (${s.totalFlights})`;
+        if (lensFlightsBtn) {
+          lensFlightsBtn.textContent = `✈️ Flights (${s.totalFlights})`;
         }
       }
       rebuildFlightArcs();
@@ -1354,7 +1561,6 @@
     .catch(() => {});
 
   // Load lightweight Google Maps index JSON with randomized deck order on every visit
-  resizeOverlayCanvas();
   fetch("data/maps-index.json")
     .then((r) => r.json())
     .then((data) => {
@@ -1397,7 +1603,6 @@
           .catch(() => {});
       }
       renderActiveSlide(false);
-      resizeOverlayCanvas();
     });
 
   function initHostedMapsReviews(reviewsList) {
