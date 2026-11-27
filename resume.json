@@ -221,7 +221,7 @@
     {
       "name": "Eat Brand Bite",
       "url": "https://eatbrandbite.com",
-      "description": "Fast-food & limited-edition snack tracker covering 101+ brands across 16 automated live feeds with original taste-test reviews, built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI sightings API, paired with live Bluesky/Instagram/Threads channels and The Weekly Bite newsletter."
+      "description": "Fast-food & limited-edition snack publication covering 122+ brands across 19 live feeds with a weekly rotating Specials On Now board (Crumbl, PopUp Bagels, Insomnia Cookies & more), built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI API (sightings, live reactions & Google-verified comments), paired with automated Bluesky/Instagram/Threads publishing, The Weekly Bite newsletter, and llms.txt agent feeds."
     }
   ]
 }
