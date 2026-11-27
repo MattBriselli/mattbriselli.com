@@ -128,7 +128,6 @@
   let labelTileLayer = null;
   let countriesLayer = null;
   let statesLayer = null;
-  let radarPreviewMarker = null;
   const flightArcsLayerGroup = L.layerGroup().addTo(map);
   const pinsLayerGroup = L.layerGroup().addTo(map);
   const placeMarkers = [];
@@ -990,151 +989,9 @@
         if (rEl) rEl.textContent = formatNumber(data.profile.totalReviews);
       }
       populateTopViewsTable(data.topViewedLedger || []);
-      populateNextTravelChips(data.nextDestinations || []);
       renderActiveSlide(false);
       resizeOverlayCanvas();
     });
-
-  function populateNextTravelChips(destinations) {
-    const wrap = document.getElementById("next-travel-chips");
-    if (!wrap || !Array.isArray(destinations)) return;
-    wrap.innerHTML = "";
-    destinations.forEach((dest) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "filter-chip";
-      btn.setAttribute("aria-pressed", "false");
-      btn.textContent = `🧭 ${dest.name}`;
-      btn.addEventListener("click", () => {
-        wrap.querySelectorAll(".filter-chip").forEach((b) => {
-          b.setAttribute("aria-pressed", String(b === btn));
-        });
-        if (radarPreviewMarker) {
-          map.removeLayer(radarPreviewMarker);
-        }
-        const dark = isDarkActive();
-        radarPreviewMarker = L.circleMarker([dest.lat, dest.lng], {
-          radius: 10,
-          color: dark ? "#5ec28f" : "#1f6b45",
-          weight: 2.5,
-          dashArray: "4,3",
-          fillColor: dark ? "#5ec28f" : "#1f6b45",
-          fillOpacity: 0.22
-        })
-          .addTo(map)
-          .bindTooltip(`<strong>Next Up? ${dest.name}</strong><br>${dest.note}`, {
-            direction: "top",
-            permanent: true
-          })
-          .openTooltip();
-
-        map.flyTo([dest.lat, dest.lng], dest.zoom || 5, { duration: 1.1 });
-        if (statusLineEl) {
-          statusLineEl.textContent = `Scouting Next Stop: ${dest.name} — ${dest.note}`;
-        }
-        mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
-      });
-      wrap.appendChild(btn);
-    });
-  }
-
-  // Wire "Where Will Matt Travel Next?" direct email submission form
-  const pitchForm = document.getElementById("travel-pitch-form");
-  const destInput = document.getElementById("pitch-destination");
-  const emailInput = document.getElementById("pitch-email");
-  const destErr = document.getElementById("pitch-dest-error");
-  const emailErr = document.getElementById("pitch-email-error");
-  const pitchSubmitBtn = document.getElementById("pitch-submit-btn");
-  const pitchStatus = document.getElementById("pitch-status");
-
-  function validateDestField() {
-    if (!destInput) return true;
-    const valid = destInput.value.trim().length >= 2;
-    destInput.setAttribute("aria-invalid", String(!valid));
-    if (destErr) destErr.hidden = valid;
-    return valid;
-  }
-
-  function validateEmailField() {
-    if (!emailInput) return true;
-    const val = emailInput.value.trim();
-    const valid = !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val);
-    emailInput.setAttribute("aria-invalid", String(!valid));
-    if (emailErr) emailErr.hidden = valid;
-    return valid;
-  }
-
-  if (destInput) {
-    let destTouched = false;
-    destInput.addEventListener("blur", () => {
-      if (destInput.value.length > 0 || destTouched) {
-        destTouched = true;
-        validateDestField();
-      }
-    });
-    destInput.addEventListener("input", () => {
-      if (destInput.getAttribute("aria-invalid") === "true") validateDestField();
-    });
-  }
-
-  if (emailInput) {
-    emailInput.addEventListener("blur", () => {
-      if (emailInput.value.length > 0) validateEmailField();
-    });
-    emailInput.addEventListener("input", () => {
-      if (emailInput.getAttribute("aria-invalid") === "true") validateEmailField();
-    });
-  }
-
-  if (pitchForm) {
-    pitchForm.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const destOk = validateDestField();
-      const emailOk = validateEmailField();
-      if (!destOk) {
-        destInput?.focus();
-        return;
-      }
-      if (!emailOk) {
-        emailInput?.focus();
-        return;
-      }
-
-      if (pitchSubmitBtn) pitchSubmitBtn.disabled = true;
-      if (pitchStatus) pitchStatus.textContent = "Sending suggestion…";
-
-      const payload = {
-        destination: destInput?.value.trim() || "",
-        name: document.getElementById("pitch-name")?.value.trim() || "",
-        email: emailInput?.value.trim() || "",
-        website: document.getElementById("pitch-website")?.value || ""
-      };
-
-      try {
-        const res = await fetch("/api/travel-pitch", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-        const data = await res.json().catch(() => ({}));
-        if (!res.ok || !data.ok) {
-          throw new Error(data.error || "Could not send suggestion right now.");
-        }
-        pitchForm.reset();
-        destInput?.removeAttribute("aria-invalid");
-        emailInput?.removeAttribute("aria-invalid");
-        if (pitchStatus) {
-          pitchStatus.textContent = "✓ Sent to Matt! Thanks for the tip.";
-        }
-      } catch (err) {
-        if (pitchStatus) {
-          pitchStatus.textContent = err.message || "Could not send right now—email shout@mattbriselli.com directly.";
-        }
-      } finally {
-        if (pitchSubmitBtn) pitchSubmitBtn.disabled = false;
-      }
-    });
-  }
 
   /* ==========================================================================
      Direct "Get in Touch" Contact Form (/api/contact)
