@@ -1171,7 +1171,7 @@
     const quoteHtml = snippet
       ? `<div class="pin-popup-quote">“${escMapHtml(snippet)}${snippet.length >= 158 ? "…" : ""}”</div>`
       : "";
-    L.popup({ closeButton: true, maxWidth: 260, className: "pin-popup", offset: [0, -6] })
+    L.popup({ closeButton: true, maxWidth: 270, minWidth: 220, className: "pin-popup", offset: [0, -6] })
       .setLatLng([lat, lng])
       .setContent(
         `<div class="pin-label">${buildPinLabelHtml({
@@ -1218,7 +1218,7 @@
       const thumbHtml = thumbUrl
         ? `<img class="pin-popup-thumb" src="${escMapHtml(thumbUrl)}" alt="${escMapHtml(pl.name)}" width="220" height="165" referrerpolicy="no-referrer">`
         : "";
-      const pop = L.popup({ closeButton: true, maxWidth: 255, className: "pin-popup", offset: [0, -6] })
+      const pop = L.popup({ closeButton: true, maxWidth: 255, minWidth: 220, className: "pin-popup", offset: [0, -6] })
         .setLatLng([pl.lat, pl.lng])
         .setContent(
           thumbHtml +
