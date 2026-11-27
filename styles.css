@@ -245,7 +245,7 @@
     outline-offset: 3px;
   }
 
-  :where(section, footer)[tabindex="-1"]:focus {
+  :where(section, footer, #letterboxd, #film-reviews, #film-lists)[tabindex="-1"]:focus {
     outline: none;
   }
 
@@ -1845,6 +1845,32 @@
     }
   }
 
+  .pin-popup-thumb {
+    display: block;
+    inline-size: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    border-radius: 0.3rem;
+    border: 1px solid var(--border-subtle);
+    margin-block-end: 0.45rem;
+    background-color: var(--bg-surface);
+  }
+
+  .pin-popup-jump-btn {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
   .map-legend {
     display: flex;
     flex-wrap: wrap;
@@ -2466,6 +2492,85 @@
     }
   }
 
+  .section-anchor-link {
+    text-decoration: none;
+    color: inherit;
+
+    @media (hover: hover) {
+      &:hover {
+        color: var(--color-accent);
+      }
+
+      &:hover::after {
+        content: "\00a0#";
+        font-family: var(--font-mono);
+        font-size: 0.8em;
+        color: var(--text-muted);
+      }
+    }
+  }
+
+  .letterboxd-header-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .copy-link-wrap {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .copy-link-btn {
+    & .copy-icon-check {
+      display: none;
+    }
+
+    &[data-copied] {
+      border-color: var(--color-status-ok);
+      color: var(--color-status-ok);
+    }
+
+    &[data-copied] .copy-icon-link {
+      display: none;
+    }
+
+    &[data-copied] .copy-icon-check {
+      display: inline-block;
+    }
+  }
+
+  .copy-link-tip {
+    position: absolute;
+    inset-block-end: calc(100% + 0.38rem);
+    inset-inline-start: 50%;
+    transform: translateX(-50%);
+    padding: 0.22rem 0.58rem;
+    border-radius: 0.35rem;
+    border: 1px solid var(--border-strong);
+    background-color: var(--bg-surface-elevated);
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    pointer-events: none;
+    opacity: 0;
+    z-index: 20;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition: opacity 0.16s ease;
+    }
+  }
+
+  .copy-link-btn[data-copied] + .copy-link-tip,
+  .copy-link-btn[data-failed] + .copy-link-tip {
+    opacity: 1;
+  }
+
   .lb-subtitle {
     font-size: 0.9rem;
     color: var(--text-muted);
@@ -2559,11 +2664,11 @@
     display: block;
   }
 
-  /* Curated Letterboxd Lists Shelf (Overlapping 2:3 5-Poster Stacks + Native Modal Gallery) */
+  /* Curated Letterboxd Lists Shelf (Below Hosted Reviews & Instant Search) */
   .lb-lists-showcase {
-    margin-block-end: 2rem;
-    padding-block-end: 1.85rem;
-    border-block-end: 1px dashed var(--border-subtle);
+    margin-block-start: 2.35rem;
+    padding-block-start: 1.95rem;
+    border-block-start: 1px dashed var(--border-subtle);
   }
 
   .lb-lists-head {
@@ -2917,9 +3022,31 @@
     margin-block-end: 1.35rem;
   }
 
+  .lb-controls-prominent {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.85rem;
+  }
+
   .lb-search-wrap {
     flex: 1 1 15rem;
     max-inline-size: 21rem;
+  }
+
+  .lb-search-hero {
+    position: relative;
+    flex: none;
+    inline-size: 100%;
+    max-inline-size: 100%;
+  }
+
+  .lb-search-icon {
+    position: absolute;
+    inset-inline-start: 1rem;
+    inset-block-start: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+    pointer-events: none;
   }
 
   .lb-search-input {
@@ -2933,6 +3060,20 @@
     border-radius: 999px;
     background-color: var(--bg-surface-elevated);
     color: var(--text-primary);
+  }
+
+  .lb-search-input-hero {
+    min-block-size: 2.95rem;
+    padding: 0.55rem 1.1rem 0.55rem 2.7rem;
+    border-width: 1.5px;
+    border-color: color-mix(in oklab, var(--color-accent) 42%, var(--border-strong));
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+    &:focus-visible {
+      outline: 2px solid var(--color-accent);
+      outline-offset: 2px;
+      border-color: var(--color-accent);
+    }
   }
 
   .letterboxd-grid {

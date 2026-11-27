@@ -83,7 +83,9 @@
   /* ==========================================================================
      Scrollspy + Non-Sticky URL Hash Sync & Reload Section Persistence
      ========================================================================== */
-  const TRACKED_SECTION_IDS = ["explorer", "coder", "eclectic", "contact"];
+  const TRACKED_SECTION_IDS = ["explorer", "coder", "eclectic", "letterboxd", "contact"];
+  const MOVIE_HASH_ALIASES = new Set(["#movies", "#films", "#film-reviews", "#reviews"]);
+  const LISTS_HASH_ALIASES = new Set(["#film-lists", "#lists", "#lb-lists-showcase"]);
   const SCROLL_STATE_KEY = "mlb_section_scroll_v1";
   const supportsScrollTargetGroup =
     typeof CSS !== "undefined" && typeof CSS.supports === "function" && CSS.supports("scroll-target-group: auto");
@@ -91,6 +93,31 @@
   const siteBrandLink = document.querySelector(".site-brand");
   const navEntry = performance.getEntriesByType?.("navigation")?.[0];
   const isPageReload = navEntry?.type === "reload";
+
+  const initialRawHash = window.location.hash;
+  const initialUrlParams = new URLSearchParams(window.location.search);
+  const hasInitialMovieParams =
+    initialUrlParams.has("film") ||
+    initialUrlParams.has("movie") ||
+    initialUrlParams.has("filter") ||
+    initialUrlParams.has("list");
+
+  function normalizeDeepHash(rawHash) {
+    if (!rawHash) return "";
+    const lower = rawHash.toLowerCase();
+    if (MOVIE_HASH_ALIASES.has(lower)) return "#letterboxd";
+    if (LISTS_HASH_ALIASES.has(lower)) return "#film-lists";
+    return rawHash;
+  }
+
+  if (initialRawHash) {
+    const normalized = normalizeDeepHash(initialRawHash);
+    if (normalized !== initialRawHash) {
+      try {
+        history.replaceState(null, "", `${window.location.pathname}${window.location.search}${normalized}`);
+      } catch {}
+    }
+  }
 
   let savedScrollState = null;
   try {
@@ -131,6 +158,17 @@
         current = id;
       }
     }
+    if (current === "letterboxd") {
+      const listsEl = document.getElementById("film-lists");
+      if (
+        listsEl &&
+        window.location.hash === "#film-lists" &&
+        listsEl.getBoundingClientRect().top <= window.innerHeight * 0.65 &&
+        listsEl.getBoundingClientRect().bottom > getHeaderOffset()
+      ) {
+        return "film-lists";
+      }
+    }
     return current;
   }
 
@@ -150,15 +188,17 @@
   }
 
   function syncNavAndHash(sectionId, updateHistoryHash) {
+    const navTargetId =
+      sectionId === "letterboxd" || sectionId === "film-lists" ? "eclectic" : sectionId;
     const nativeCurrentLink = supportsScrollTargetGroup
       ? document.querySelector(".site-header .nav-list a:target-current")
       : null;
 
     for (const link of navLinks) {
       const isMatch =
-        supportsScrollTargetGroup && nativeCurrentLink && sectionId
+        supportsScrollTargetGroup && nativeCurrentLink && navTargetId
           ? link === nativeCurrentLink
-          : Boolean(sectionId) && link.getAttribute("href") === `#${sectionId}`;
+          : Boolean(navTargetId) && link.getAttribute("href") === `#${navTargetId}`;
       if (!supportsScrollTargetGroup) {
         link.classList.toggle("target-current", isMatch);
       }
@@ -400,7 +440,22 @@
     attributionControl: false,
     worldCopyJump: true
   });
-  const pinsCanvasRenderer = L.canvas({ padding: 0.5 });
+
+  // Explicit Leaflet z-index panes so SVG country/state polygons never block Canvas dot clicks!
+  const choroplethPane = map.createPane("choroplethPane");
+  choroplethPane.style.zIndex = "350";
+  const routesPane = map.createPane("routesPane");
+  routesPane.style.zIndex = "420";
+  const pinsPane = map.createPane("pinsPane");
+  pinsPane.style.zIndex = "550";
+
+  const isCoarseMapPointer =
+    typeof window.matchMedia === "function" && window.matchMedia("(pointer: coarse)").matches;
+  const pinsCanvasRenderer = L.canvas({
+    pane: "pinsPane",
+    padding: 0.5,
+    tolerance: isCoarseMapPointer ? 13 : 6
+  });
 
   let baseTileLayer = null;
   let labelTileLayer = null;
@@ -509,6 +564,7 @@
 
       for (const seg of segments) {
         L.polyline(seg, {
+          pane: "routesPane",
           color: glowColor,
           weight: weight + 4,
           opacity: dark ? 0.16 : 0.12,
@@ -517,6 +573,7 @@
         }).addTo(flightArcsLayerGroup);
 
         const line = L.polyline(seg, {
+          pane: "routesPane",
           color: stroke,
           weight,
           opacity,
@@ -531,6 +588,7 @@
     for (const ap of flightyData.airports || []) {
       const isMajorHub = ap.visits >= 10 || (zoom >= 4 && ap.visits >= 5);
       const dot = L.circleMarker([ap.lat, ap.lng], {
+        pane: "routesPane",
         radius: Math.min(6.2, 2.5 + Math.log2(ap.visits + 1) * 0.62),
         color: dark ? "#111110" : "#ffffff",
         weight: 1.25,
@@ -642,6 +700,7 @@
     for (const seg of CANADA_DRIVE_SEGMENTS) {
       if (seg.driven) {
         L.polyline(seg.coords, {
+          pane: "routesPane",
           color: drivenColor,
           weight: 7,
           opacity: 0.18,
@@ -650,6 +709,7 @@
         }).addTo(canadaDriveLayerGroup);
       }
       const poly = L.polyline(seg.coords, {
+        pane: "routesPane",
         color: seg.driven ? drivenColor : gapColor,
         weight: seg.driven ? 3.6 : 2.0,
         opacity: seg.driven ? 0.95 : 0.65,
@@ -672,6 +732,7 @@
     ];
     for (const ep of endpoints) {
       const dot = L.circleMarker([ep.lat, ep.lng], {
+        pane: "routesPane",
         radius: 4.8,
         color: dark ? "#111110" : "#ffffff",
         weight: 1.6,
@@ -935,13 +996,149 @@
     });
   }
 
-  map.on("click", () => {
+  function syncPanePointerEvents() {
+    const showPins = lensShowsPhotos();
+    const showRoutes = lensShowsFlights() || lensShowsCanadaDrive();
+    const showChoropleth = activeLens === "atlas";
+    pinsPane.style.pointerEvents = showPins ? "auto" : "none";
+    if (pinsCanvasRenderer._container) {
+      pinsCanvasRenderer._container.style.pointerEvents = showPins ? "auto" : "none";
+    }
+    routesPane.style.pointerEvents = showRoutes ? "auto" : "none";
+    choroplethPane.style.pointerEvents = showChoropleth ? "auto" : "none";
+  }
+
+  function openPlaceOnlyPopup(item) {
+    const [lat, lng, name, loc, rating, snippet] = item;
+    const stars = rating ? ` · ${"★".repeat(rating)}` : "";
+    const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} ${loc || ""}`)}`;
+    const quoteHtml = snippet
+      ? `<div class="pin-popup-quote">“${escMapHtml(snippet)}${snippet.length >= 158 ? "…" : ""}”</div>`
+      : "";
+    L.popup({ closeButton: true, maxWidth: 260 })
+      .setLatLng([lat, lng])
+      .setContent(
+        `<strong>${escMapHtml(name)}</strong>${escMapHtml(stars)}` +
+          `<div class="pin-popup-loc">${escMapHtml(loc || "Visited Place")}</div>` +
+          quoteHtml +
+          `<a class="pin-popup-link" href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Open on Google Maps ↗</a>`
+      )
+      .openOn(map);
+    if (statusLineEl) statusLineEl.textContent = `${name}${loc ? ` · ${loc}` : ""}`;
+  }
+
+  function openPhotoPinSelection(idx) {
+    const pl = filteredPlaces[idx];
+    if (!pl) return;
+    stopAutoPlay();
+    const shouldZoomIn = map.getZoom() < 5;
+    const stackedLayout =
+      typeof window.matchMedia === "function" && window.matchMedia("(max-width: 57.99rem)").matches;
+    if (!stackedLayout) {
+      map.closePopup();
+    }
+    selectPlace(idx, shouldZoomIn);
+    if (statusLineEl) {
+      statusLineEl.textContent = `📍 ${pl.name} · ${pl.location}`;
+    }
+    if (stackedLayout) {
+      const thumbUrl = (pl.photos?.[0] || "").replace(/=w\d+-h\d+-p-k-no$/, "=w320-h240-p-k-no");
+      const stars = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
+      const thumbHtml = thumbUrl
+        ? `<img class="pin-popup-thumb" src="${escMapHtml(thumbUrl)}" alt="${escMapHtml(pl.name)}" width="220" height="165" referrerpolicy="no-referrer">`
+        : "";
+      const pop = L.popup({ closeButton: true, maxWidth: 245 })
+        .setLatLng([pl.lat, pl.lng])
+        .setContent(
+          thumbHtml +
+            `<strong>${escMapHtml(pl.name)}</strong>${escMapHtml(stars)}` +
+            `<div class="pin-popup-loc">${escMapHtml(pl.location)}</div>` +
+            `<button type="button" class="pin-popup-jump-btn" data-jump-slideshow="1">View Full Photo Below ↓</button>`
+        )
+        .openOn(map);
+      requestAnimationFrame(() => {
+        const el = pop.getElement()?.querySelector("[data-jump-slideshow]");
+        if (el) {
+          el.addEventListener("click", () => {
+            document
+              .querySelector(".slideshow-stage-card")
+              ?.scrollIntoView({ behavior: "smooth", block: "start" });
+          });
+        }
+      });
+    }
+  }
+
+  function activateClosestPinAt(containerPoint, origEvent = null) {
+    if (!lensShowsPhotos() || !mapsData || !containerPoint) return false;
+    if (origEvent && origEvent._mlbPinHandled) return true;
+    const maxHitPx = isCoarseMapPointer ? 22 : 14;
+    let best = null;
+    let bestScore = maxHitPx;
+
+    for (let idx = 0; idx < filteredPlaces.length; idx++) {
+      const pl = filteredPlaces[idx];
+      const pt = map.latLngToContainerPoint([pl.lat, pl.lng]);
+      const d = Math.hypot(pt.x - containerPoint.x, pt.y - containerPoint.y);
+      // Slight 3px priority for rich photo dispatches when directly overlapping a plain pin
+      const score = Math.max(0, d - 3);
+      if (d <= maxHitPx && score <= bestScore) {
+        bestScore = score;
+        best = { kind: "photo", idx };
+      }
+    }
+
+    if (currentSlideFilter === "all" && mapOnlyPins.length) {
+      for (let i = 0; i < mapOnlyPins.length; i++) {
+        const item = mapOnlyPins[i];
+        const pt = map.latLngToContainerPoint([item[0], item[1]]);
+        const d = Math.hypot(pt.x - containerPoint.x, pt.y - containerPoint.y);
+        if (d <= maxHitPx && d < bestScore) {
+          bestScore = d;
+          best = { kind: "place", item };
+        }
+      }
+    }
+
+    if (!best && Array.isArray(mapsData.heatmapClusters)) {
+      for (const c of mapsData.heatmapClusters) {
+        const pt = map.latLngToContainerPoint([c.lat, c.lng]);
+        const d = Math.hypot(pt.x - containerPoint.x, pt.y - containerPoint.y);
+        if (d <= maxHitPx && d < bestScore) {
+          bestScore = d;
+          best = { kind: "cluster", cluster: c };
+        }
+      }
+    }
+
+    if (!best) return false;
+    if (origEvent) origEvent._mlbPinHandled = true;
+
+    if (best.kind === "photo") {
+      openPhotoPinSelection(best.idx);
+    } else if (best.kind === "place") {
+      stopAutoPlay();
+      openPlaceOnlyPopup(best.item);
+    } else if (best.kind === "cluster") {
+      stopAutoPlay();
+      const label = best.cluster.label || best.cluster.name || "Visited Cluster";
+      map.flyTo([best.cluster.lat, best.cluster.lng], Math.max(map.getZoom(), 6), { duration: 0.85 });
+      if (statusLineEl) statusLineEl.textContent = `Exploring: ${label}`;
+    }
+    return true;
+  }
+
+  map.on("click", (ev) => {
+    if (lensShowsPhotos() && activateClosestPinAt(ev.containerPoint, ev.originalEvent)) {
+      return;
+    }
     clearSelectedGeoShape();
   });
 
   function syncMapTheme() {
     const dark = isDarkActive();
     mapContainer.style.backgroundColor = dark ? "#121211" : "#eae6df";
+    syncPanePointerEvents();
     updateTileLayer();
     if (countriesLayer) countriesLayer.setStyle(getCountryStyle);
     if (statesLayer) statesLayer.setStyle(getStateStyle);
@@ -963,6 +1160,7 @@
   ]).then(([countriesGeo, statesGeo, canadaGeo]) => {
     if (countriesGeo) {
       countriesLayer = L.geoJSON(countriesGeo, {
+        pane: "choroplethPane",
         style: getCountryStyle,
         onEachFeature: (feature, layer) => {
           const nm = feature.properties?.name;
@@ -992,6 +1190,7 @@
     }
     if (statesGeo) {
       statesLayer = L.geoJSON(statesGeo, {
+        pane: "choroplethPane",
         style: getStateStyle,
         onEachFeature: (feature, layer) => {
           const nm = feature.properties?.name;
@@ -1012,6 +1211,7 @@
     }
     if (canadaGeo) {
       canadaProvincesLayer = L.geoJSON(canadaGeo, {
+        pane: "choroplethPane",
         style: getCanadaProvinceStyle,
         onEachFeature: (feature, layer) => {
           const nm = feature.properties?.name;
@@ -1228,7 +1428,8 @@
           fillOpacity: 0.82
         });
         cm.bindTooltip(`<strong>${escMapHtml(label)}</strong>`, { direction: "top" });
-        cm.on("click", () => {
+        cm.on("click", (ev) => {
+          if (activateClosestPinAt(ev.containerPoint, ev.originalEvent)) return;
           stopAutoPlay();
           map.flyTo([c.lat, c.lng], Math.max(map.getZoom(), 6), { duration: 0.85 });
           if (statusLineEl) statusLineEl.textContent = `Exploring: ${label}`;
@@ -1237,11 +1438,11 @@
       }
     }
 
-    // 1b. Additional geocoded Google Maps reviewed/photographed place pins (bringing map past 1,200+ pins)
+    // 1b. Additional geocoded Google Maps & Swarm visited/reviewed place pins
     if (currentSlideFilter === "all" && mapOnlyPins.length) {
       const subRadius = zoom >= 11 ? 4.8 : zoom >= 7 ? 4.0 : zoom >= 4 ? 3.4 : 2.9;
       for (const item of mapOnlyPins) {
-        const [lat, lng, name, loc, rating, snippet] = item;
+        const [lat, lng, name, loc, rating] = item;
         const stars = rating ? ` · ${"★".repeat(rating)}` : "";
         const mPin = L.circleMarker([lat, lng], {
           renderer: pinsCanvasRenderer,
@@ -1255,28 +1456,16 @@
           `<strong>${escMapHtml(name)}</strong><br>${escMapHtml(loc)}${escMapHtml(stars)}`,
           { direction: "top" }
         );
-        mPin.on("click", () => {
+        mPin.on("click", (ev) => {
+          if (activateClosestPinAt(ev.containerPoint, ev.originalEvent)) return;
           stopAutoPlay();
-          const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} ${loc}`)}`;
-          const quoteHtml = snippet
-            ? `<div class="pin-popup-quote">“${escMapHtml(snippet)}${snippet.length >= 158 ? "…" : ""}”</div>`
-            : "";
-          L.popup({ closeButton: true, maxWidth: 260 })
-            .setLatLng([lat, lng])
-            .setContent(
-              `<strong>${escMapHtml(name)}</strong>${escMapHtml(stars)}` +
-                `<div class="pin-popup-loc">${escMapHtml(loc)}</div>` +
-                quoteHtml +
-                `<a class="pin-popup-link" href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Open on Google Maps ↗</a>`
-            )
-            .openOn(map);
-          if (statusLineEl) statusLineEl.textContent = `${name} · ${loc}`;
+          openPlaceOnlyPopup(item);
         });
         mPin.addTo(pinsLayerGroup);
       }
     }
 
-    // 2. All 1,000+ individual photo dispatch dots on shared HTML5 Canvas
+    // 2. All photo dispatch dots on shared HTML5 Canvas (pinsPane above choropleth)
     let activeEntry = null;
     const pinRadius = zoom >= 11 ? 6.0 : zoom >= 7 ? 5.1 : zoom >= 4 ? 4.4 : 3.9;
     filteredPlaces.forEach((pl, idx) => {
@@ -1297,11 +1486,9 @@
         `<strong>${escMapHtml(pl.name)}</strong><br>${escMapHtml(pl.location)}${escMapHtml(metric)}`,
         { direction: "top" }
       );
-      marker.on("click", () => {
-        stopAutoPlay();
-        // Keep current neighborhood viewport if already zoomed in; gently zoom in only from world view
-        const shouldZoomIn = map.getZoom() < 5;
-        selectPlace(idx, shouldZoomIn);
+      marker.on("click", (ev) => {
+        if (activateClosestPinAt(ev.containerPoint, ev.originalEvent)) return;
+        openPhotoPinSelection(idx);
       });
       marker.addTo(pinsLayerGroup);
     });
@@ -1333,13 +1520,15 @@
         `<strong>📍 ${escMapHtml(pl.name)}</strong><br>${escMapHtml(pl.location)}${escMapHtml(metric)}`,
         { direction: "top" }
       );
-      hero.on("click", () => {
+      hero.on("click", (ev) => {
+        if (ev.originalEvent) ev.originalEvent._mlbPinHandled = true;
         stopAutoPlay();
         selectPlace(idx, true);
       });
       hero.addTo(pinsLayerGroup);
       hero.bringToFront();
     }
+    syncPanePointerEvents();
   }
 
   map.on("zoomend", () => {
@@ -1757,9 +1946,13 @@
         revealLensButtonInBar(activeBtn);
       }
     }
+    if (!lensShowsPhotos()) {
+      map.closePopup();
+    }
     if (mapCanvasWrap) mapCanvasWrap.hidden = isStatic;
     if (staticMapWrap) staticMapWrap.hidden = !isStatic;
     if (isStatic) {
+      syncPanePointerEvents();
       applyStaticTransform(false);
       updateLegendForLens();
     } else {
@@ -2369,16 +2562,21 @@
     });
   }
 
+  function isMovieDeepLinkActive() {
+    const h = normalizeDeepHash(window.location.hash);
+    return (
+      h === "#letterboxd" ||
+      h === "#film-lists" ||
+      h === "#eclectic" ||
+      hasInitialMovieParams ||
+      savedScrollState?.sectionId === "eclectic" ||
+      savedScrollState?.sectionId === "letterboxd"
+    );
+  }
+
   function runWhenNearLetterboxd(taskFn) {
     const targetEl = document.getElementById("letterboxd") || document.getElementById("eclectic");
-    const hash = window.location.hash;
-    if (
-      !targetEl ||
-      typeof IntersectionObserver === "undefined" ||
-      hash === "#letterboxd" ||
-      hash === "#eclectic" ||
-      savedScrollState?.sectionId === "eclectic"
-    ) {
+    if (!targetEl || typeof IntersectionObserver === "undefined" || isMovieDeepLinkActive()) {
       taskFn();
       return;
     }
@@ -2396,6 +2594,9 @@
       { rootMargin: "700px 0px" }
     );
     obs.observe(targetEl);
+    window.addEventListener("hashchange", () => {
+      if (isMovieDeepLinkActive()) trigger();
+    });
   }
 
   /* ==========================================================================
@@ -2411,11 +2612,125 @@
   const lbFavList = document.getElementById("lb-favorites-list");
 
   const INITIAL_LB_REV_COUNT = 3;
+  const VALID_LB_FILTERS = new Set(["latest", "five", "favorites", "liked", "theatres"]);
   let allLbReviews = [];
-  let activeLbFilter = "latest";
-  let lbSearchQuery = "";
+  const initFilmQuery = (initialUrlParams.get("film") || initialUrlParams.get("movie") || "").trim();
+  const initFilterParam = (initialUrlParams.get("filter") || "").trim().toLowerCase();
+  let activeLbFilter = VALID_LB_FILTERS.has(initFilterParam) ? initFilterParam : "latest";
+  let lbSearchQuery = initFilmQuery;
   let lbVisibleCount = INITIAL_LB_REV_COUNT;
   let lbShuffledOrder = null;
+  let lbUrlSyncTimer = null;
+
+  if (lbSearchInput && lbSearchQuery) {
+    lbSearchInput.value = lbSearchQuery;
+  }
+  if (activeLbFilter !== "latest") {
+    document.querySelectorAll("[data-lb-filter]").forEach((b) => {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-lb-filter") === activeLbFilter));
+    });
+  }
+
+  function buildShareableMoviesUrl() {
+    const url = new URL(window.location.href);
+    url.searchParams.delete("movie");
+    if (lbSearchQuery) {
+      url.searchParams.set("film", lbSearchQuery);
+    } else {
+      url.searchParams.delete("film");
+    }
+    if (activeLbFilter && activeLbFilter !== "latest") {
+      url.searchParams.set("filter", activeLbFilter);
+    } else {
+      url.searchParams.delete("filter");
+    }
+    url.hash = "letterboxd";
+    return url.toString();
+  }
+
+  function syncMovieUrlParams() {
+    const copyLabelEl = document.getElementById("copy-movies-link-label");
+    if (copyLabelEl) {
+      copyLabelEl.textContent = lbSearchQuery ? "Copy Search Link" : "Copy Direct Link";
+    }
+    const url = new URL(window.location.href);
+    url.searchParams.delete("movie");
+    if (lbSearchQuery) {
+      url.searchParams.set("film", lbSearchQuery);
+    } else {
+      url.searchParams.delete("film");
+    }
+    if (activeLbFilter && activeLbFilter !== "latest") {
+      url.searchParams.set("filter", activeLbFilter);
+    } else {
+      url.searchParams.delete("filter");
+    }
+    if (lbSearchQuery || activeLbFilter !== "latest") {
+      url.hash = "letterboxd";
+    }
+    try {
+      history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+    } catch {}
+  }
+
+  if (lbSearchQuery) {
+    const copyLabelEl = document.getElementById("copy-movies-link-label");
+    if (copyLabelEl) copyLabelEl.textContent = "Copy Search Link";
+  }
+
+  // Copy Direct Link button (Invoker Commands + click fallback + VoiceOver repeat-announcement fix)
+  const copyTimers = new WeakMap();
+  let lastCopyAnnouncement = "";
+
+  function reportCopyStatus(button, ok) {
+    const tip = button.nextElementSibling;
+    clearTimeout(copyTimers.get(button));
+    button.removeAttribute("data-copied");
+    button.removeAttribute("data-failed");
+    let message = ok ? "Link copied!" : "Copy failed";
+    if (message === lastCopyAnnouncement) message += "\u00A0";
+    lastCopyAnnouncement = message;
+    if (tip) tip.textContent = "";
+    void button.offsetWidth;
+    button.setAttribute(ok ? "data-copied" : "data-failed", "");
+    if (tip) requestAnimationFrame(() => (tip.textContent = message));
+    copyTimers.set(
+      button,
+      setTimeout(() => {
+        button.removeAttribute("data-copied");
+        button.removeAttribute("data-failed");
+        if (tip) tip.textContent = "";
+      }, 2200)
+    );
+  }
+
+  async function copyMoviesShareLink(button) {
+    const shareUrl = buildShareableMoviesUrl();
+    try {
+      await navigator.clipboard.writeText(shareUrl);
+      reportCopyStatus(button, true);
+    } catch {
+      reportCopyStatus(button, false);
+    }
+  }
+
+  if ("CommandEvent" in window) {
+    document.addEventListener(
+      "command",
+      (ev) => {
+        if (ev.command === "--copy-movies-link" && ev.source) {
+          copyMoviesShareLink(ev.source);
+        }
+      },
+      true
+    );
+  } else {
+    document.addEventListener("click", (ev) => {
+      if (ev.defaultPrevented) return;
+      const btn = ev.target instanceof Element ? ev.target.closest('button[command="--copy-movies-link"]') : null;
+      if (btn) copyMoviesShareLink(btn);
+    });
+  }
 
   const posterCache = new Map();
   try {
@@ -2735,6 +3050,7 @@
           b.setAttribute("aria-pressed", String(b === btn));
         });
         btn.scrollIntoView({ block: "nearest", inline: "nearest", container: "nearest" });
+        syncMovieUrlParams();
         renderLbReviews();
       });
     });
@@ -2751,6 +3067,8 @@
       lbSearchInput.addEventListener("input", () => {
         lbSearchQuery = lbSearchInput.value.trim();
         lbVisibleCount = INITIAL_LB_REV_COUNT;
+        if (lbUrlSyncTimer) clearTimeout(lbUrlSyncTimer);
+        lbUrlSyncTimer = setTimeout(syncMovieUrlParams, 220);
         renderLbReviews();
       });
     }
@@ -2801,6 +3119,28 @@
       renderLbReviews();
     }
 
+    function alignInitialMovieDeepLink() {
+      if (isPageReload || userInteractedSinceLoad) return;
+      const normHash = normalizeDeepHash(initialRawHash);
+      const targetId =
+        normHash === "#film-lists"
+          ? "film-lists"
+          : normHash === "#letterboxd" || hasInitialMovieParams
+            ? "letterboxd"
+            : "";
+      if (!targetId) return;
+      const targetEl = document.getElementById(targetId);
+      if (!targetEl) return;
+      navScrollLockUntil = performance.now() + 900;
+      activeTrackedSection = targetId;
+      syncNavAndHash(targetId, true);
+      const topY = targetEl.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+      window.scrollTo({ top: Math.max(0, topY), behavior: "instant" });
+      if (hasInitialMovieParams && initFilmQuery && lbSearchInput) {
+        lbSearchInput.focus({ preventScroll: true });
+      }
+    }
+
     async function loadLetterboxdWithCache() {
       let renderedFromCache = false;
       if ("caches" in window) {
@@ -2811,6 +3151,7 @@
             const cachedData = await cachedRes.json();
             applyLbArchiveData(cachedData);
             restoreReloadSectionPosition();
+            alignInitialMovieDeepLink();
             renderedFromCache = true;
           }
         } catch {}
@@ -2824,7 +3165,10 @@
           const freshData = await netRes.json();
           if (!renderedFromCache || freshData?.updatedAt) {
             applyLbArchiveData(freshData);
-            if (!renderedFromCache) restoreReloadSectionPosition();
+            if (!renderedFromCache) {
+              restoreReloadSectionPosition();
+              alignInitialMovieDeepLink();
+            }
           }
           if ("caches" in window) {
             caches
@@ -3153,8 +3497,32 @@
             statEl.textContent = `${allLists.length}+`;
           }
           renderListsShelf();
+          const listParam = (initialUrlParams.get("list") || "").trim().toLowerCase();
+          if (listParam) {
+            const matchedList = allLists.find(
+              (l) =>
+                String(l.slug || "").toLowerCase() === listParam ||
+                String(l.title || "").toLowerCase().includes(listParam)
+            );
+            if (matchedList) openListModal(matchedList);
+          }
         })
         .catch(() => {});
     });
+
+  window.addEventListener("hashchange", () => {
+    const norm = normalizeDeepHash(window.location.hash);
+    if (norm !== window.location.hash) {
+      try {
+        history.replaceState(null, "", `${window.location.pathname}${window.location.search}${norm}`);
+      } catch {}
+      const id = norm.replace(/^#/, "");
+      const el = id ? document.getElementById(id) : null;
+      if (el) {
+        const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        el.scrollIntoView({ behavior: reduced ? "instant" : "smooth", block: "start" });
+      }
+    }
+  });
   }
 })();

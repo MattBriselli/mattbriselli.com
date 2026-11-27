@@ -309,6 +309,15 @@
           </a>
         </li>
         <li>
+          <a href="#letterboxd" class="pill-link">
+            <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Search 1,422 Film Reviews</span>
+          </a>
+        </li>
+        <li>
           <a href="https://letterboxd.com/brslli/" class="pill-link" target="_blank" rel="noopener noreferrer">
             <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
               <rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect>
@@ -963,18 +972,41 @@
         <button type="button" class="action-btn" id="eclectic-more-btn" aria-expanded="false" aria-controls="eclectic-extra-panel">Show All 6 Side Quests (+3 more)</button>
       </div>
 
-      <!-- Hosted Letterboxd Film Log, Curated Lists & Reviews (@brslli) -->
-      <div id="letterboxd" class="letterboxd-section">
+      <!-- Hosted Letterboxd Film Reviews, Instant Search & Curated Lists (@brslli) -->
+      <div id="letterboxd" class="letterboxd-section" tabindex="-1">
         <div class="letterboxd-header">
           <div>
-            <span class="badge">Hosted Film Archive · 1,422 Reviews · Curated Lists + Auto-Synced RSS</span>
-            <h3 id="letterboxd-heading">Screening Log, Curated Lists &amp; Reviews</h3>
-            <p class="lb-subtitle">“a movie a day or so i say” — curated film lists and full Letterboxd review archive hosted here, synced automatically.</p>
+            <span class="badge">Hosted Film Archive · 1,422 Searchable Reviews · Curated Lists + Live RSS</span>
+            <h3 id="letterboxd-heading">
+              <a href="#letterboxd" class="section-anchor-link">Film Reviews, Search &amp; Curated Lists</a>
+            </h3>
+            <p class="lb-subtitle">“a movie a day or so i say” — search all 1,422 hosted reviews instantly, share direct links, or explore curated lists below.</p>
           </div>
-          <a href="https://letterboxd.com/brslli/" class="action-link follow-cta-link" target="_blank" rel="noopener noreferrer">
-            <span>Follow @brslli on Letterboxd</span>
-            <span class="arrow" aria-hidden="true">↗</span>
-          </a>
+          <div class="letterboxd-header-actions">
+            <span class="copy-link-wrap">
+              <button
+                type="button"
+                class="action-btn copy-link-btn"
+                id="copy-movies-link-btn"
+                command="--copy-movies-link"
+                commandfor="letterboxd"
+              >
+                <svg class="copy-icon copy-icon-link" aria-hidden="true" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                  <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+                </svg>
+                <svg class="copy-icon copy-icon-check" aria-hidden="true" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+                <span id="copy-movies-link-label">Copy Direct Link</span>
+              </button>
+              <span class="copy-link-tip" role="status"></span>
+            </span>
+            <a href="https://letterboxd.com/brslli/" class="action-link follow-cta-link" target="_blank" rel="noopener noreferrer">
+              <span>Follow @brslli on Letterboxd</span>
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </div>
         </div>
 
         <div class="lb-overview-bar">
@@ -1007,12 +1039,54 @@
           </div>
         </div>
 
-        <!-- Curated Letterboxd Lists Shelf (Overlapping 5-Poster 2:3 Art Stacks + Interactive Gallery Modal) -->
-        <div class="lb-lists-showcase" id="lb-lists-showcase" aria-labelledby="lb-lists-heading">
+        <!-- 1. Instant Search & Hosted Film Reviews (Top of Movie Section) -->
+        <div id="film-reviews" class="lb-reviews-showcase" tabindex="-1">
+          <div class="letterboxd-controls lb-controls-prominent">
+            <search class="lb-search-wrap lb-search-hero">
+              <label for="lb-search-input" class="visually-hidden">Search 1,422 film reviews</label>
+              <svg class="lb-search-icon" aria-hidden="true" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              </svg>
+              <input
+                type="search"
+                id="lb-search-input"
+                name="film"
+                class="lb-search-input lb-search-input-hero"
+                placeholder="Search 1,422 film reviews by movie title, quote, or year…"
+                autocorrect="off"
+                autocapitalize="none"
+                spellcheck="false"
+              >
+            </search>
+
+            <div class="toolbar-group" role="group" aria-label="Filter film reviews">
+              <button type="button" class="filter-chip" data-lb-filter="latest" aria-pressed="true">Latest (1,422)</button>
+              <button type="button" class="filter-chip" data-lb-filter="five" aria-pressed="false">★★★★★ (16)</button>
+              <button type="button" class="filter-chip" data-lb-filter="favorites" aria-pressed="false">★★★★+ (255)</button>
+              <button type="button" class="filter-chip" data-lb-filter="liked" aria-pressed="false">♥ Liked (212)</button>
+              <button type="button" class="filter-chip" data-lb-filter="theatres" aria-pressed="false">🎟️ In Theatres (331)</button>
+              <button type="button" class="filter-chip" id="lb-shuffle-btn">🎲 Shuffle</button>
+            </div>
+          </div>
+
+          <ul class="letterboxd-grid" id="letterboxd-grid" role="list" aria-live="polite"></ul>
+
+          <div class="letterboxd-more-row">
+            <button type="button" class="action-btn" id="lb-more-btn" hidden>Show More Reviews</button>
+            <button type="button" class="action-btn action-btn-subtle" id="lb-less-btn" hidden>Show Fewer</button>
+            <span class="lb-count-label" id="lb-count-label"></span>
+          </div>
+        </div>
+
+        <!-- 2. Curated Letterboxd Lists Shelf (Overlapping 5-Poster 2:3 Art Stacks + Interactive Gallery Modal) -->
+        <div class="lb-lists-showcase" id="film-lists" tabindex="-1" aria-labelledby="lb-lists-heading">
           <div class="lb-lists-head">
             <div>
               <span class="badge">Curated Collections · Click Any List to Browse Films</span>
-              <h4 id="lb-lists-heading">Letterboxd Lists &amp; Cinema Rabbit Holes</h4>
+              <h4 id="lb-lists-heading">
+                <a href="#film-lists" class="section-anchor-link">Letterboxd Lists &amp; Cinema Rabbit Holes</a>
+              </h4>
             </div>
             <a href="https://letterboxd.com/brslli/lists/" class="action-link" target="_blank" rel="noopener noreferrer">
               <span>All Lists on Letterboxd</span>
@@ -1033,38 +1107,6 @@
             <button type="button" class="action-btn" id="lb-lists-more-btn">Show All 12 Curated Lists</button>
             <button type="button" class="action-btn action-btn-subtle" id="lb-lists-less-btn" hidden>Show Fewer Lists</button>
           </div>
-        </div>
-
-        <div class="letterboxd-controls">
-          <div class="toolbar-group" role="group" aria-label="Filter film reviews">
-            <button type="button" class="filter-chip" data-lb-filter="latest" aria-pressed="true">Latest (1,422)</button>
-            <button type="button" class="filter-chip" data-lb-filter="five" aria-pressed="false">★★★★★ (16)</button>
-            <button type="button" class="filter-chip" data-lb-filter="favorites" aria-pressed="false">★★★★+ (255)</button>
-            <button type="button" class="filter-chip" data-lb-filter="liked" aria-pressed="false">♥ Liked (212)</button>
-            <button type="button" class="filter-chip" data-lb-filter="theatres" aria-pressed="false">🎟️ In Theatres (331)</button>
-            <button type="button" class="filter-chip" id="lb-shuffle-btn">🎲 Shuffle</button>
-          </div>
-          <search class="lb-search-wrap">
-            <label for="lb-search-input" class="visually-hidden">Search 1,422 film reviews</label>
-            <input
-              type="search"
-              id="lb-search-input"
-              name="q"
-              class="lb-search-input"
-              placeholder="Search 1,422 reviews, films, or years…"
-              autocorrect="off"
-              autocapitalize="none"
-              spellcheck="false"
-            >
-          </search>
-        </div>
-
-        <ul class="letterboxd-grid" id="letterboxd-grid" role="list" aria-live="polite"></ul>
-
-        <div class="letterboxd-more-row">
-          <button type="button" class="action-btn" id="lb-more-btn" hidden>Show More Reviews</button>
-          <button type="button" class="action-btn action-btn-subtle" id="lb-less-btn" hidden>Show Fewer</button>
-          <span class="lb-count-label" id="lb-count-label"></span>
         </div>
       </div>
     </section>
