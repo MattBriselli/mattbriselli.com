@@ -82,7 +82,7 @@ pins.extraPins = sanitizePlaceList(pins.extraPins || []);
 
 const cleanTuples = [];
 for (const t of pins.mapOnlyPins || []) {
-  const [lat, lng, name, loc, rating, snippet, visitDate, category] = t;
+  const [lat, lng, name, loc, rating, snippet, visitDate, category, visitCount, firstDate] = t;
   const matchedZone = findMatchingZone(lat, lng, config.zones, `${name || ""} ${loc || ""}`);
   const safe = filterAndBlurPlace(
     {
@@ -111,11 +111,14 @@ for (const t of pins.mapOnlyPins || []) {
       ? ""
       : snippet;
   const nextTuple = [safe.lat, safe.lng, cleanName, safe.location];
-  if (rating || cleanSnip || visitDate || category) {
+  if (rating || cleanSnip || visitDate || category || visitCount || firstDate) {
     nextTuple.push(rating || 0, cleanSnip || "");
-    if (visitDate || category) {
-      nextTuple.push(visitDate || "");
-      if (category) nextTuple.push(category);
+    if (visitDate || category || visitCount || firstDate) {
+      nextTuple.push(visitDate || "", category || "");
+      if (Number(visitCount) > 1) {
+        nextTuple.push(Number(visitCount));
+        if (firstDate && firstDate !== visitDate) nextTuple.push(firstDate);
+      }
     }
   }
   cleanTuples.push(nextTuple);

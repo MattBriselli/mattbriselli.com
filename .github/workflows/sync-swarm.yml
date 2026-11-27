@@ -36,11 +36,11 @@ jobs:
 
       - name: Commit and push if new or enriched venues arrived
         run: |
-          if [[ -n "$(git status --porcelain data/maps-pins.json index.html)" ]]; then
+          if [[ -n "$(git status --porcelain data/maps-index.json data/maps-pins.json index.html)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add data/maps-pins.json index.html
-            git commit -m "chore(map): sync matured Swarm travel venues & dates"
+            git add data/maps-index.json data/maps-pins.json index.html
+            git commit -m "chore(map): sync matured Swarm visit counts & first/latest dates"
             git pull --rebase origin main
             git push
           else

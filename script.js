@@ -1037,13 +1037,73 @@
     return m[3] ? `${monthLabel} ${Number(m[3])}, ${m[1]}` : `${monthLabel} ${m[1]}`;
   }
 
+  const CATEGORY_ICON_RULES = [
+    [/coffee|tea\b|espresso|matcha|boba|bubble tea|cafe|café/i, "☕"],
+    [/bakery|bagel|donut|doughnut|pastry|patisserie|croissant|crepe/i, "🥐"],
+    [/ice cream|gelato|dessert|frozen yogurt|cupcake|chocolate|candy|pie\b/i, "🍦"],
+    [/ramen|noodle|pho|udon|soba|dumpling|dim sum|hotpot|chinese/i, "🍜"],
+    [/sushi|japanese|izakaya|omisoka|poke|seafood|oyster|fish/i, "🍣"],
+    [/pizza|pizzeria|italian|pasta|trattoria/i, "🍕"],
+    [/taco|mexican|burrito|taqueria|latin|cuban|peruvian|tapas/i, "🌮"],
+    [/burger|sandwich|deli\b|diner|bbq|barbecue|steak|fried chicken|hot dog|wings|breakfast|brunch/i, "🍔"],
+    [/cocktail|speakeasy|wine|whisky|whiskey|sake|lounge|nightclub|karaoke/i, "🍸"],
+    [/brewery|beer|biergarten|pub\b|dive bar|sports bar|\bbar\b|tavern|cidery/i, "🍺"],
+    [/restaurant|bistro|brasserie|food|gastropub|kitchen|eatery|dining|korean|thai|indian|vietnamese|french|mediterranean|greek/i, "🍽️"],
+    [/movie|cinema|multiplex|film/i, "🎬"],
+    [/theater|theatre|performing arts|opera|symphony|concert|music venue|jazz|comedy|broadway/i, "🎭"],
+    [/museum|art gallery|exhibit|planetarium|aquarium|zoo\b/i, "🏛️"],
+    [/bookstore|bookshop|library/i, "📚"],
+    [/national park|state park|trail|hiking|mountain|forest|botanical|garden|campground|nature|lookout|scenic/i, "🌲"],
+    [/beach|island|harbor|marina|pier|boardwalk|surf|ocean|bay\b|lake|waterfall|hotspring/i, "🏖️"],
+    [/airport|airfield|heliport|terminal/i, "✈️"],
+    [/metro|subway|train|rail|station|tram|streetcar|cable car|ferry|boat|pier/i, "🚇"],
+    [/hotel|resort|motel|hostel|inn\b|lodging/i, "🏨"],
+    [/bridge|monument|landmark|historic|castle|palace|shrine|temple|church|cathedral|mosque|synagogue|plaza|square|fountain|tower/i, "🌉"],
+    [/stadium|arena|ballpark|baseball|basketball|football|soccer|hockey|tennis|golf|bowling|rink/i, "🏟️"],
+    [/gym|fitness|yoga|climbing|trapeze|circus|pool|spa\b/i, "🤸"],
+    [/university|college|campus|school|institute/i, "🎓"],
+    [/store|shop|market|mall|boutique|grocery|record|vintage|bookstore/i, "🛍️"]
+  ];
+
+  function getCategoryIcon(category = "", fallback = "📍") {
+    if (!category) return fallback;
+    for (const [re, icon] of CATEGORY_ICON_RULES) {
+      if (re.test(category)) return icon;
+    }
+    return fallback;
+  }
+
+  function formatVisitSpan(lastDate, firstDate, visitCount = 1) {
+    const count = Number(visitCount) > 1 ? Number(visitCount) : 1;
+    const latestFmt = formatVisitDate(lastDate);
+    const firstFmt = formatVisitDate(firstDate);
+    const parts = [];
+    if (count > 1) parts.push(`${formatNumber(count)}×`);
+    if (firstFmt && latestFmt && firstDate !== lastDate) {
+      parts.push(`First ${firstFmt} · Latest ${latestFmt}`);
+    } else if (latestFmt) {
+      parts.push(`Visited ${latestFmt}`);
+    } else if (firstFmt) {
+      parts.push(`Visited ${firstFmt}`);
+    }
+    return parts.join(" · ");
+  }
+
+  function getVisitRadiusBoost(visitCount, zoom) {
+    const c = Number(visitCount) || 1;
+    if (c <= 1) return 0;
+    const scale = zoom >= 11 ? 1.25 : zoom >= 7 ? 1.05 : zoom >= 4 ? 0.88 : 0.75;
+    return Math.min(5.0, Math.log2(c) * scale);
+  }
+
   function openPlaceOnlyPopup(item) {
-    const [lat, lng, name, loc, rating, snippet, visitDate, category] = item;
+    const [lat, lng, name, loc, rating, snippet, lastDate, category, visitCount, firstDate] = item;
+    const icon = getCategoryIcon(category, "📍");
     const stars = rating ? ` · ${"★".repeat(rating)}` : "";
-    const formattedDate = formatVisitDate(visitDate);
+    const spanStr = formatVisitSpan(lastDate, firstDate, visitCount);
     const metaParts = [];
-    if (category) metaParts.push(category);
-    if (formattedDate) metaParts.push(`Visited ${formattedDate}`);
+    if (category) metaParts.push(`${icon} ${category}`);
+    if (spanStr) metaParts.push(spanStr);
     const metaHtml = metaParts.length
       ? `<div class="pin-popup-meta">${escMapHtml(metaParts.join(" · "))}</div>`
       : "";
@@ -1051,17 +1111,17 @@
     const quoteHtml = snippet
       ? `<div class="pin-popup-quote">“${escMapHtml(snippet)}${snippet.length >= 158 ? "…" : ""}”</div>`
       : "";
-    L.popup({ closeButton: true, maxWidth: 265 })
+    L.popup({ closeButton: true, maxWidth: 280 })
       .setLatLng([lat, lng])
       .setContent(
-        `<strong>${escMapHtml(name)}</strong>${escMapHtml(stars)}` +
+        `<strong>${escMapHtml(icon)} ${escMapHtml(name)}</strong>${escMapHtml(stars)}` +
           `<div class="pin-popup-loc">${escMapHtml(loc || "Place Matt Visited")}</div>` +
           metaHtml +
           quoteHtml +
           `<a class="pin-popup-link" href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Open on Google Maps ↗</a>`
       )
       .openOn(map);
-    const statusBits = [name, loc, formattedDate].filter(Boolean);
+    const statusBits = [`${icon} ${name}`, loc, spanStr].filter(Boolean);
     if (statusLineEl) statusLineEl.textContent = statusBits.join(" · ");
   }
 
@@ -1076,12 +1136,12 @@
       map.closePopup();
     }
     selectPlace(idx, shouldZoomIn);
-    const formattedDate = formatVisitDate(pl.date);
+    const spanStr = formatVisitSpan(pl.date, pl.firstDate, pl.visitCount);
     if (statusLineEl) {
       statusLineEl.textContent = [
         `📍 ${pl.name}`,
         pl.location,
-        formattedDate
+        spanStr
       ]
         .filter(Boolean)
         .join(" · ");
@@ -1092,10 +1152,10 @@
       const thumbHtml = thumbUrl
         ? `<img class="pin-popup-thumb" src="${escMapHtml(thumbUrl)}" alt="${escMapHtml(pl.name)}" width="220" height="165" referrerpolicy="no-referrer">`
         : "";
-      const dateHtml = formattedDate
-        ? `<div class="pin-popup-meta">${escMapHtml(formattedDate)}</div>`
+      const dateHtml = spanStr
+        ? `<div class="pin-popup-meta">${escMapHtml(spanStr)}</div>`
         : "";
-      const pop = L.popup({ closeButton: true, maxWidth: 245 })
+      const pop = L.popup({ closeButton: true, maxWidth: 255 })
         .setLatLng([pl.lat, pl.lng])
         .setContent(
           thumbHtml +
@@ -1138,12 +1198,15 @@
     }
 
     if (currentSlideFilter === "all" && mapOnlyPins.length) {
+      const zoomNow = map.getZoom();
       for (let i = 0; i < mapOnlyPins.length; i++) {
         const item = mapOnlyPins[i];
         const pt = map.latLngToContainerPoint([item[0], item[1]]);
         const d = Math.hypot(pt.x - containerPoint.x, pt.y - containerPoint.y);
-        if (d <= maxHitPx && d < bestScore) {
-          bestScore = d;
+        const boost = getVisitRadiusBoost(item[8], zoomNow) * 0.5;
+        const score = Math.max(0, d - boost);
+        if (d <= maxHitPx + boost && score < bestScore) {
+          bestScore = score;
           best = { kind: "place", item };
         }
       }
@@ -1487,24 +1550,34 @@
       }
     }
 
-    // 1b. Places Matt Visited (Swarm check-ins & Google Maps reviewed places)
+    // 1b. Places Matt Visited (sized logarithmically by repeat visitCount; 1x drawn first, favorites on top)
     if (currentSlideFilter === "all" && mapOnlyPins.length) {
-      const subRadius = zoom >= 11 ? 4.8 : zoom >= 7 ? 4.0 : zoom >= 4 ? 3.4 : 2.9;
-      for (const item of mapOnlyPins) {
-        const [lat, lng, name, loc, rating, , visitDate, category] = item;
+      const baseSubRadius = zoom >= 12 ? 4.3 : zoom >= 8 ? 3.5 : zoom >= 5 ? 2.9 : 2.4;
+      const orderedPins = mapOnlyPins
+        .slice()
+        .sort((a, b) => (Number(a[8]) || 1) - (Number(b[8]) || 1));
+
+      for (const item of orderedPins) {
+        const [lat, lng, name, loc, rating, , lastDate, category, visitCount, firstDate] = item;
+        const count = Number(visitCount) || 1;
+        const radius = baseSubRadius + getVisitRadiusBoost(count, zoom);
+        const icon = getCategoryIcon(category, "📍");
         const stars = rating ? ` · ${"★".repeat(rating)}` : "";
-        const formattedDate = formatVisitDate(visitDate);
-        const subMeta = [loc, category, formattedDate].filter(Boolean).join(" · ");
+        const spanStr = formatVisitSpan(lastDate, firstDate, count);
+        const subMeta = [loc, category, spanStr].filter(Boolean).join(" · ");
+        const isFrequent = count >= 5;
         const mPin = L.circleMarker([lat, lng], {
           renderer: pinsCanvasRenderer,
-          radius: subRadius,
+          radius,
           color: dark ? "#141312" : "#ffffff",
-          weight: 0.9,
-          fillColor: dark ? "#f0ad4e" : "#d97724",
-          fillOpacity: 0.84
+          weight: isFrequent ? 1.25 : 0.85,
+          fillColor: isFrequent
+            ? (dark ? "#ffbe5c" : "#c96214")
+            : (dark ? "#f0ad4e" : "#d97724"),
+          fillOpacity: count >= 3 ? 0.92 : 0.8
         });
         mPin.bindTooltip(
-          `<strong>${escMapHtml(name)}</strong>${escMapHtml(stars)}<br>${escMapHtml(subMeta)}`,
+          `<strong>${escMapHtml(icon)} ${escMapHtml(name)}</strong>${escMapHtml(stars)}<br>${escMapHtml(subMeta)}`,
           { direction: "top" }
         );
         mPin.on("click", (ev) => {
@@ -1518,25 +1591,27 @@
 
     // 2. All photo dispatch dots on shared HTML5 Canvas (pinsPane above choropleth)
     let activeEntry = null;
-    const pinRadius = zoom >= 11 ? 6.0 : zoom >= 7 ? 5.1 : zoom >= 4 ? 4.4 : 3.9;
+    const basePinRadius = zoom >= 11 ? 5.8 : zoom >= 7 ? 4.9 : zoom >= 4 ? 4.2 : 3.7;
     filteredPlaces.forEach((pl, idx) => {
       if (idx === activePlaceIndex) {
         activeEntry = { pl, idx };
         return;
       }
+      const pRadius = basePinRadius + getVisitRadiusBoost(pl.visitCount || 1, zoom) * 0.7;
       const marker = L.circleMarker([pl.lat, pl.lng], {
         renderer: pinsCanvasRenderer,
-        radius: pinRadius,
+        radius: pRadius,
         color: dark ? "#141312" : "#ffffff",
         weight: zoom >= 6 ? 1.25 : 1.0,
         fillColor: dark ? "#e88264" : "#9e3b24",
         fillOpacity: 0.94
       });
       const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
-      const plDate = formatVisitDate(pl.date);
-      const plSub = [pl.location, plDate].filter(Boolean).join(" · ");
+      const plIcon = getCategoryIcon(pl.category, "📸");
+      const plSpan = formatVisitSpan(pl.date, pl.firstDate, pl.visitCount);
+      const plSub = [pl.location, plSpan].filter(Boolean).join(" · ");
       marker.bindTooltip(
-        `<strong>${escMapHtml(pl.name)}</strong>${escMapHtml(metric)}<br>${escMapHtml(plSub)}`,
+        `<strong>${escMapHtml(plIcon)} ${escMapHtml(pl.name)}</strong>${escMapHtml(metric)}<br>${escMapHtml(plSub)}`,
         { direction: "top" }
       );
       marker.on("click", (ev) => {
@@ -1569,8 +1644,8 @@
         fillOpacity: 1
       });
       const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
-      const heroDate = formatVisitDate(pl.date);
-      const heroSub = [pl.location, heroDate].filter(Boolean).join(" · ");
+      const heroSpan = formatVisitSpan(pl.date, pl.firstDate, pl.visitCount);
+      const heroSub = [pl.location, heroSpan].filter(Boolean).join(" · ");
       hero.bindTooltip(
         `<strong>📍 ${escMapHtml(pl.name)}</strong>${escMapHtml(metric)}<br>${escMapHtml(heroSub)}`,
         { direction: "top" }
@@ -1645,11 +1720,16 @@
         metricEl.textContent = "📍 Google Maps Dispatch";
       }
     }
-    if (catEl) catEl.textContent = place.category || "Field Dispatch";
+    if (catEl) {
+      const catIcon = getCategoryIcon(place.category, "");
+      catEl.textContent = place.category
+        ? `${catIcon ? `${catIcon} ` : ""}${place.category}`
+        : "Field Dispatch";
+    }
     if (coordsEl) {
-      const slideDate = formatVisitDate(place.date);
-      coordsEl.textContent = slideDate
-        ? `${slideDate} · ${formatCoords(place.lat, place.lng)}`
+      const slideSpan = formatVisitSpan(place.date, place.firstDate, place.visitCount);
+      coordsEl.textContent = slideSpan
+        ? `${slideSpan} · ${formatCoords(place.lat, place.lng)}`
         : formatCoords(place.lat, place.lng);
     }
     if (titleEl) titleEl.textContent = place.name;

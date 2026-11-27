@@ -78,15 +78,14 @@ async function main() {
   const mapsIndex = JSON.parse(fs.readFileSync(mapsIndexPath, "utf8"));
   const mapsPins = JSON.parse(fs.readFileSync(mapsPinsPath, "utf8"));
 
-  const photoKeys = new Set();
+  const photoByKey = new Map();
   for (const p of mapsIndex.places || []) {
-    photoKeys.add(`${p.name.toLowerCase().slice(0, 14)}|${p.lat.toFixed(2)},${p.lng.toFixed(2)}`);
+    const k = `${p.name.toLowerCase().slice(0, 14)}|${p.lat.toFixed(2)},${p.lng.toFixed(2)}`;
+    photoByKey.set(k, { obj: p, inIndex: true });
   }
-  const extraPinByKey = new Map();
   for (const p of mapsPins.extraPins || []) {
     const k = `${p.name.toLowerCase().slice(0, 14)}|${p.lat.toFixed(2)},${p.lng.toFixed(2)}`;
-    photoKeys.add(k);
-    extraPinByKey.set(k, p);
+    if (!photoByKey.has(k)) photoByKey.set(k, { obj: p, inIndex: false });
   }
 
   const existingPinIdxByKey = new Map();
@@ -95,9 +94,8 @@ async function main() {
     if (!existingPinIdxByKey.has(k)) existingPinIdxByKey.set(k, idx);
   });
 
-  const added = [];
-  let enrichedExisting = 0;
-
+  // Aggregate check-ins per public venue (visitCount, firstDate, lastDate, category)
+  const venueAgg = new Map();
   for (const ci of items) {
     const createdTs = Number(ci?.createdAt || 0);
     if (!createdTs || createdTs > beforeUnix) continue;
@@ -138,47 +136,144 @@ async function main() {
     if (!safe) continue;
 
     const dedupeKey = `${name.toLowerCase().slice(0, 14)}|${safe.lat.toFixed(2)},${safe.lng.toFixed(2)}`;
+    let rec = venueAgg.get(dedupeKey);
+    if (!rec) {
+      rec = {
+        lat: safe.lat,
+        lng: safe.lng,
+        name,
+        location: safe.location,
+        dates: visitDate ? [visitDate] : [],
+        firstDate: visitDate || "",
+        lastDate: visitDate || "",
+        category: primaryCat
+      };
+      venueAgg.set(dedupeKey, rec);
+    } else {
+      if (visitDate) {
+        rec.dates.push(visitDate);
+        if (!rec.firstDate || visitDate < rec.firstDate) rec.firstDate = visitDate;
+        if (!rec.lastDate || visitDate > rec.lastDate) rec.lastDate = visitDate;
+      }
+      if (!rec.category && primaryCat) rec.category = primaryCat;
+    }
+  }
 
-    if (photoKeys.has(dedupeKey)) {
-      const extraPin = extraPinByKey.get(dedupeKey);
-      if (extraPin && !extraPin.date && visitDate) {
-        extraPin.date = visitDate;
+  function buildCompactTuple(lat, lng, name, loc, rating, snippet, lastDate, cat, count, firstDate) {
+    const out = [lat, lng, name, loc, rating || 0, snippet || "", lastDate || "", cat || ""];
+    if (count > 1) {
+      out.push(count);
+      if (firstDate && firstDate !== lastDate) {
+        out.push(firstDate);
+      }
+    }
+    return out;
+  }
+
+  const added = [];
+  let enrichedExisting = 0;
+  let indexDirty = false;
+
+  for (const [dedupeKey, rec] of venueAgg.entries()) {
+    const totalFetchedVisits = Math.max(1, rec.dates.length);
+
+    if (photoByKey.has(dedupeKey)) {
+      const { obj: p, inIndex } = photoByKey.get(dedupeKey);
+      let pChanged = false;
+      if (!p.date && rec.lastDate) {
+        p.date = rec.lastDate;
+        pChanged = true;
+      }
+      if (isBackfill && totalFetchedVisits > 1 && p.visitCount !== totalFetchedVisits) {
+        p.visitCount = totalFetchedVisits;
+        pChanged = true;
+      }
+      if (rec.firstDate && rec.firstDate !== (p.date || rec.lastDate) && p.firstDate !== rec.firstDate) {
+        p.firstDate = rec.firstDate;
+        pChanged = true;
+      }
+      if (pChanged) {
         enrichedExisting++;
+        if (inIndex) indexDirty = true;
       }
       continue;
     }
 
     if (existingPinIdxByKey.has(dedupeKey)) {
       const existIdx = existingPinIdxByKey.get(dedupeKey);
-      if (existIdx >= 0) {
-        const tuple = mapsPins.mapOnlyPins[existIdx];
-        let changed = false;
-        // check-ins arrive newest-first, so the first match is the most recent (>7d) visit date!
-        if (!tuple[6] && visitDate) {
-          tuple[4] = tuple[4] || 0;
-          tuple[5] = tuple[5] || "";
-          tuple[6] = visitDate;
-          changed = true;
+      const prev = mapsPins.mapOnlyPins[existIdx];
+      const prevLast = prev[6] || "";
+      const prevCat = prev[7] || "";
+      const prevCount = Number(prev[8]) || 1;
+      const prevFirst = prev[9] || prevLast;
+
+      let nextLast = prevLast;
+      let nextFirst = prevFirst;
+      let nextCount = prevCount;
+      const nextCat = prevCat || rec.category;
+
+      if (isBackfill) {
+        nextCount = totalFetchedVisits;
+        nextLast = rec.lastDate || prevLast;
+        nextFirst = rec.firstDate || prevFirst;
+      } else {
+        const newerVisits = prevLast ? rec.dates.filter((d) => d > prevLast).length : 0;
+        if (!prevLast && rec.lastDate) {
+          nextLast = rec.lastDate;
+          nextFirst = rec.firstDate || rec.lastDate;
+          nextCount = Math.max(prevCount, totalFetchedVisits);
+        } else if (newerVisits > 0) {
+          nextCount = prevCount + newerVisits;
+          nextLast = rec.lastDate;
+          if (rec.firstDate && (!nextFirst || rec.firstDate < nextFirst)) nextFirst = rec.firstDate;
         }
-        if (!tuple[7] && primaryCat) {
-          tuple[4] = tuple[4] || 0;
-          tuple[5] = tuple[5] || "";
-          tuple[6] = tuple[6] || visitDate || "";
-          tuple[7] = primaryCat;
-          changed = true;
-        }
-        if (changed) enrichedExisting++;
+      }
+
+      const rebuilt = buildCompactTuple(
+        prev[0],
+        prev[1],
+        prev[2],
+        prev[3],
+        prev[4],
+        prev[5],
+        nextLast,
+        nextCat,
+        nextCount,
+        nextFirst
+      );
+      if (JSON.stringify(rebuilt) !== JSON.stringify(prev)) {
+        mapsPins.mapOnlyPins[existIdx] = rebuilt;
+        enrichedExisting++;
       }
       continue;
     }
 
-    existingPinIdxByKey.set(dedupeKey, -1);
-    added.push([safe.lat, safe.lng, name, safe.location, 0, "", visitDate, primaryCat]);
+    added.push(
+      buildCompactTuple(
+        rec.lat,
+        rec.lng,
+        rec.name,
+        rec.location,
+        0,
+        "",
+        rec.lastDate,
+        rec.category,
+        totalFetchedVisits,
+        rec.firstDate
+      )
+    );
   }
 
   if (!added.length && !enrichedExisting) {
     console.log(`Scanned ${items.length} matured (>7d) Swarm check-ins; 0 new or enriched public venues.`);
     return;
+  }
+
+  if (indexDirty) {
+    const nextIndexStr = JSON.stringify(mapsIndex) + "\n";
+    if (Buffer.byteLength(nextIndexStr, "utf8") < 260000) {
+      fs.writeFileSync(mapsIndexPath, nextIndexStr, "utf8");
+    }
   }
 
   mapsPins.mapOnlyPins = [...added, ...(mapsPins.mapOnlyPins || [])];

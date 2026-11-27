@@ -122,7 +122,16 @@ for (const ci of rawItems) {
   }
 
   const venueId = String(v?.id || `${name.toLowerCase()}|${safe.lat.toFixed(3)},${safe.lng.toFixed(3)}`);
-  if (acceptedByVenue.has(venueId)) continue;
+  const existingRec = acceptedByVenue.get(venueId);
+  if (existingRec) {
+    existingRec.count += 1;
+    if (visitDate) {
+      if (!existingRec.firstDate || visitDate < existingRec.firstDate) existingRec.firstDate = visitDate;
+      if (!existingRec.lastDate || visitDate > existingRec.lastDate) existingRec.lastDate = visitDate;
+    }
+    if (!existingRec.category && primaryCat) existingRec.category = primaryCat;
+    continue;
+  }
 
   const dedupeKey = `${name.toLowerCase().slice(0, 14)}|${safe.lat.toFixed(2)},${safe.lng.toFixed(2)}`;
   if (existingGridKeys.has(dedupeKey)) {
@@ -131,19 +140,26 @@ for (const ci of rawItems) {
   }
   existingGridKeys.add(dedupeKey);
 
-  acceptedByVenue.set(venueId, [
-    safe.lat,
-    safe.lng,
+  acceptedByVenue.set(venueId, {
+    lat: safe.lat,
+    lng: safe.lng,
     name,
-    safe.location,
-    0,
-    "",
-    visitDate,
-    primaryCat
-  ]);
+    location: safe.location,
+    firstDate: visitDate,
+    lastDate: visitDate,
+    category: primaryCat,
+    count: 1
+  });
 }
 
-const newTuples = [...acceptedByVenue.values()];
+const newTuples = [...acceptedByVenue.values()].map((r) => {
+  const t = [r.lat, r.lng, r.name, r.location, 0, "", r.lastDate || "", r.category || ""];
+  if (r.count > 1) {
+    t.push(r.count);
+    if (r.firstDate && r.firstDate !== r.lastDate) t.push(r.firstDate);
+  }
+  return t;
+});
 console.log({
   rawCheckinsScanned: rawItems.length,
   heldBackBy7DayDelay: delayedRecent7d,
