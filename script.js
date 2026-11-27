@@ -1492,6 +1492,7 @@
       document.querySelectorAll("[data-region-preset]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
       });
+      btn.scrollIntoView({ block: "nearest", inline: "nearest", container: "nearest" });
       if (activeLens === "static") {
         focusStaticPreset(key);
       } else {
@@ -1527,6 +1528,7 @@
       document.querySelectorAll("[data-slide-filter]").forEach((other) => {
         other.setAttribute("aria-pressed", String(other === btn));
       });
+      btn.scrollIntoView({ block: "nearest", inline: "nearest", container: "nearest" });
       if (!lensShowsPhotos()) setMapLens("photos");
       filteredPlaces =
         filter === "all"
@@ -1695,29 +1697,30 @@
 
   const mapLensToolbar = document.getElementById("map-lens-toolbar");
   if (
-    mapLensToolbar &&
     typeof IntersectionObserver !== "undefined" &&
     !(typeof CSS !== "undefined" && CSS.supports && CSS.supports("animation-timeline", "scroll(self inline)"))
   ) {
-    const [firstLensBtn, lastLensBtn] = [
-      mapLensToolbar.firstElementChild,
-      mapLensToolbar.lastElementChild
-    ];
-    if (firstLensBtn && lastLensBtn) {
-      const fadeObserver = new IntersectionObserver(
-        (entries) => {
-          for (const { target, intersectionRatio } of entries) {
-            mapLensToolbar.classList.toggle(
-              target === firstLensBtn ? "more-start" : "more-end",
-              intersectionRatio < 1
-            );
-          }
-        },
-        { root: mapLensToolbar, threshold: 1, rootMargin: "1px" }
-      );
-      fadeObserver.observe(firstLensBtn);
-      fadeObserver.observe(lastLensBtn);
-    }
+    document
+      .querySelectorAll(
+        "#map-lens-toolbar, .atlas-toolbar .toolbar-group, .slideshow-nav-btns, .lb-lists-toolbar, .letterboxd-controls .toolbar-group"
+      )
+      .forEach((scroller) => {
+        const [firstItem, lastItem] = [scroller.firstElementChild, scroller.lastElementChild];
+        if (!firstItem || !lastItem) return;
+        const fadeObserver = new IntersectionObserver(
+          (entries) => {
+            for (const { target, intersectionRatio } of entries) {
+              scroller.classList.toggle(
+                target === firstItem ? "more-start" : "more-end",
+                intersectionRatio < 1
+              );
+            }
+          },
+          { root: scroller, threshold: 1, rootMargin: "1px" }
+        );
+        fadeObserver.observe(firstItem);
+        fadeObserver.observe(lastItem);
+      });
   }
 
   function revealLensButtonInBar(btn) {
@@ -2195,6 +2198,7 @@
         document.querySelectorAll("[data-gmap-filter]").forEach((b) => {
           b.setAttribute("aria-pressed", String(b === btn));
         });
+        btn.scrollIntoView({ block: "nearest", inline: "nearest", container: "nearest" });
         renderGrid();
       });
     });
@@ -2335,38 +2339,63 @@
   /* ==========================================================================
      Progressive Disclosure for Eclectic Side Quests (hidden="until-found")
      ========================================================================== */
-  const eclecticGrid = document.getElementById("eclectic-grid");
+  const eclecticExtraPanel = document.getElementById("eclectic-extra-panel");
   const eclecticMoreBtn = document.getElementById("eclectic-more-btn");
-  const eclecticExtraItems = Array.from(document.querySelectorAll("[data-eclectic-extra]"));
 
-  if (eclecticGrid && eclecticMoreBtn && eclecticExtraItems.length) {
+  if (eclecticExtraPanel && eclecticMoreBtn) {
     let eclecticExpanded = false;
 
     const setEclecticExpanded = (expand) => {
       eclecticExpanded = expand;
-      for (const el of eclecticExtraItems) {
-        if (expand) {
-          el.removeAttribute("hidden");
-        } else if ("onbeforematch" in HTMLElement.prototype) {
-          el.setAttribute("hidden", "until-found");
-        } else {
-          el.hidden = true;
-        }
+      if (expand) {
+        eclecticExtraPanel.removeAttribute("hidden");
+      } else if ("onbeforematch" in HTMLElement.prototype) {
+        eclecticExtraPanel.setAttribute("hidden", "until-found");
+      } else {
+        eclecticExtraPanel.hidden = true;
       }
       eclecticMoreBtn.setAttribute("aria-expanded", String(expand));
       eclecticMoreBtn.textContent = expand
         ? "Show Fewer Side Quests"
-        : `Show All ${3 + eclecticExtraItems.length} Side Quests (+${eclecticExtraItems.length} more)`;
+        : "Show All 6 Side Quests (+3 more)";
     };
 
-    // Fallback from search-hidden-content guide: if browser lacks beforematch, reveal on click cleanly
-    eclecticGrid.addEventListener("beforematch", () => {
+    eclecticExtraPanel.addEventListener("beforematch", () => {
       setEclecticExpanded(true);
     });
 
     eclecticMoreBtn.addEventListener("click", () => {
       setEclecticExpanded(!eclecticExpanded);
     });
+  }
+
+  function runWhenNearLetterboxd(taskFn) {
+    const targetEl = document.getElementById("letterboxd") || document.getElementById("eclectic");
+    const hash = window.location.hash;
+    if (
+      !targetEl ||
+      typeof IntersectionObserver === "undefined" ||
+      hash === "#letterboxd" ||
+      hash === "#eclectic" ||
+      savedScrollState?.sectionId === "eclectic"
+    ) {
+      taskFn();
+      return;
+    }
+    let started = false;
+    const trigger = () => {
+      if (started) return;
+      started = true;
+      obs.disconnect();
+      taskFn();
+    };
+    const obs = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) trigger();
+      },
+      { rootMargin: "700px 0px" }
+    );
+    obs.observe(targetEl);
   }
 
   /* ==========================================================================
@@ -2705,6 +2734,7 @@
         document.querySelectorAll("[data-lb-filter]").forEach((b) => {
           b.setAttribute("aria-pressed", String(b === btn));
         });
+        btn.scrollIntoView({ block: "nearest", inline: "nearest", container: "nearest" });
         renderLbReviews();
       });
     });
@@ -2820,7 +2850,7 @@
       } catch {}
     }
 
-    loadLetterboxdWithCache();
+    runWhenNearLetterboxd(loadLetterboxdWithCache);
   }
 
   /* ==========================================================================
@@ -3093,6 +3123,7 @@
         document.querySelectorAll("[data-lb-list-filter]").forEach((b) => {
           b.setAttribute("aria-pressed", String(b === btn));
         });
+        btn.scrollIntoView({ block: "nearest", inline: "nearest", container: "nearest" });
         renderListsShelf();
       });
     });
@@ -3111,17 +3142,19 @@
       });
     }
 
-    fetch("data/letterboxd-lists.json")
-      .then((r) => (r.ok ? r.json() : null))
-      .then((payload) => {
-        if (!payload || !Array.isArray(payload.lists)) return;
-        allLists = payload.lists;
-        const statEl = document.getElementById("lb-stat-lists");
-        if (statEl && allLists.length) {
-          statEl.textContent = `${allLists.length}+`;
-        }
-        renderListsShelf();
-      })
-      .catch(() => {});
+    runWhenNearLetterboxd(() => {
+      fetch("data/letterboxd-lists.json")
+        .then((r) => (r.ok ? r.json() : null))
+        .then((payload) => {
+          if (!payload || !Array.isArray(payload.lists)) return;
+          allLists = payload.lists;
+          const statEl = document.getElementById("lb-stat-lists");
+          if (statEl && allLists.length) {
+            statEl.textContent = `${allLists.length}+`;
+          }
+          renderListsShelf();
+        })
+        .catch(() => {});
+    });
   }
 })();

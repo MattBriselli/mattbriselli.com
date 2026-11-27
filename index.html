@@ -44,6 +44,10 @@
   <link rel="alternate" type="text/markdown" title="Matt L. Briselli — LLM &amp; AI Agent Overview (llms.txt)" href="/llms.txt">
   <link rel="alternate" type="application/json" title="Matt L. Briselli — Structured JSON Resume &amp; Agent Feed" href="/resume.json">
 
+  <!-- Early TLS/DNS Handshakes for Above-the-Fold Map Tiles & Slideshow Photo -->
+  <link rel="preconnect" href="https://lh3.googleusercontent.com" crossorigin>
+  <link rel="preconnect" href="https://a.basemaps.cartocdn.com" crossorigin>
+
   <link rel="stylesheet" href="vendor/leaflet.css">
   <link rel="stylesheet" href="styles.css">
   <script src="vendor/leaflet.js" defer></script>
@@ -797,33 +801,12 @@
             </a>
           </h4>
           <p>
-            Full-stack and static web platform built and maintained for my mom, violist Carol Briselli, and her Greater Philadelphia ensemble—with a 700+ piece interactive repertoire explorer, Schema.org graph, and <code>llms.txt</code> feeds.
+            Full-stack and static web platform built and maintained for my mom, violist Carol Briselli, and her Greater Philadelphia ensemble—with a 700+ piece interactive repertoire explorer, live availability inquiry pipeline, Schema.org graph, and <code>llms.txt</code> feeds.
           </p>
           <ul class="tag-list" role="list" aria-label="Arioso String Quartet stack">
             <li>Node &amp; Express</li>
             <li>Cloudflare / Firebase</li>
             <li>SEO &amp; llms.txt</li>
-          </ul>
-        </li>
-
-        <li class="directory-card">
-          <div class="card-meta">
-            <span class="badge">iOS &amp; Android Game</span>
-            <span class="card-year">React Native · TypeScript</span>
-          </div>
-          <h4>
-            <a href="https://github.com/MattBriselli/GamerBoy" class="card-title-link" target="_blank" rel="noopener noreferrer">
-              GamerBoy Solitaire
-              <span class="arrow" aria-hidden="true">↗</span>
-            </a>
-          </h4>
-          <p>
-            Mobile Klondike Solitaire built with React Native and Expo featuring a custom heuristic deal solver that guarantees 100%-solvable winning hands and deterministic daily challenges.
-          </p>
-          <ul class="tag-list" role="list" aria-label="GamerBoy Solitaire stack">
-            <li>React Native &amp; Expo</li>
-            <li>Heuristic Solver</li>
-            <li>TypeScript</li>
           </ul>
         </li>
 
@@ -839,12 +822,54 @@
             </a>
           </h4>
           <p>
-            Fast-food &amp; limited-edition snack publication covering 122+ brands across 19 live feeds, a weekly rotating <em>Specials On Now</em> board (Crumbl, PopUp Bagels, Insomnia Cookies &amp; more) with live D1 reactions and Google-verified comments, built with Next.js 15, React 19, and Tailwind CSS v4 on Cloudflare Workers + D1 + Workers AI—paired with automated Buffer social publishing, <em>The Weekly Bite</em> Kit newsletter, and <code>llms.txt</code> agent feeds.
+            Fast-food &amp; limited-edition CPG snack publication covering 136+ brands across 19 live feeds and a rotating <em>Specials On Now</em> board (Crumbl, PopUp Bagels, Insomnia Cookies, Krispy Kreme, Jeni’s &amp; more) with countdown badges, live D1 reactions, and Google-verified comments—built with Next.js 15, React 19, and Tailwind CSS v4 on Cloudflare Workers + D1 + Workers AI, paired with Buffer social publishing, <em>The Weekly Bite</em> newsletter, and <code>llms.txt</code> feeds.
           </p>
           <ul class="tag-list" role="list" aria-label="Eat Brand Bite stack">
             <li>Next.js 15 &amp; React 19</li>
             <li>Cloudflare D1 &amp; AI</li>
-            <li>19 Live Feeds &amp; Specials</li>
+            <li>136+ Brands &amp; Live Wire</li>
+          </ul>
+        </li>
+
+        <li class="directory-card">
+          <div class="card-meta">
+            <span class="badge">iOS &amp; Android Game</span>
+            <span class="card-year">React Native · TypeScript</span>
+          </div>
+          <h4>
+            <a href="https://github.com/MattBriselli/GamerBoy" class="card-title-link" target="_blank" rel="noopener noreferrer">
+              GamerBoy Solitaire
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </h4>
+          <p>
+            Mobile Klondike Solitaire built with React Native (Fabric) and Expo featuring a custom heuristic deal solver guaranteeing 100%-solvable winning hands, deterministic daily challenges, and a 52-card persistent animation engine with concurrent flight arcs, 3D flips, and spring snap-back.
+          </p>
+          <ul class="tag-list" role="list" aria-label="GamerBoy Solitaire stack">
+            <li>React Native &amp; Expo</li>
+            <li>Heuristic Solver</li>
+            <li>60fps Card Physics</li>
+          </ul>
+        </li>
+
+        <li class="directory-card">
+          <div class="card-meta">
+            <span class="badge">Open-Source Atlas &amp; Archive</span>
+            <span class="card-year">mattbriselli.com</span>
+          </div>
+          <h4>
+            <a href="https://github.com/MattBriselli/mattbriselli.com" class="card-title-link" target="_blank" rel="noopener noreferrer">
+              Personal Atlas &amp; Film Archive
+              <span class="arrow" aria-hidden="true">↗</span>
+            </a>
+          </h4>
+          <p>
+            Zero-framework site on Cloudflare Workers Static Assets rendering 6,623 privacy-geofenced travel &amp; photo pins on shared HTML5 Canvas (automated 7-day embargo across Google Maps, Flighty &amp; Swarm), 1,422 cached Letterboxd reviews + 12 curated <code>2:3</code> poster lists, and machine-readable <code>llms.txt</code> / <code>resume.json</code> feeds.
+          </p>
+          <ul class="tag-list" role="list" aria-label="Personal Atlas stack">
+            <li>Vanilla HTML/CSS/JS</li>
+            <li>Cloudflare Workers</li>
+            <li>HTML5 Canvas &amp; CI Sync</li>
           </ul>
         </li>
       </ul>
@@ -895,9 +920,11 @@
             Production Stage Manager, Director, and Actor across 25+ plays and musicals (<em>Spelling Bee</em>, <em>Urinetown</em>, <em>Little Shop</em>, <em>Bat Boy</em>, <em>Assassins</em>, <em>Rocky Horror</em> shadow cast), plus <strong>Greek Sing Chair</strong> raising <strong>$200,000+</strong> for Pittsburgh charities.
           </p>
         </li>
+      </ul>
 
-        <li class="eclectic-extra-item" data-eclectic-extra hidden="until-found">
-          <div class="eclectic-card">
+      <div id="eclectic-extra-panel" class="eclectic-extra-panel" hidden="until-found">
+        <ul class="eclectic-grid eclectic-extra-grid" role="list">
+          <li class="eclectic-card">
             <div class="card-meta">
               <span class="badge">Mandarin Immersion</span>
               <span class="card-year">Shanghai · SISU</span>
@@ -906,11 +933,9 @@
             <p>
               Spent a summer living and studying in China at <strong>Shanghai International Studies University</strong> (<em>Mandarin Chinese for Oral Communication</em> &amp; <em>The Structure of Chinese</em>), paired with Chinese studies at CMU.
             </p>
-          </div>
-        </li>
+          </li>
 
-        <li class="eclectic-extra-item" data-eclectic-extra hidden="until-found">
-          <div class="eclectic-card">
+          <li class="eclectic-card">
             <div class="card-meta">
               <span class="badge">Horticulture</span>
               <span class="card-year">Hands in the Soil</span>
@@ -919,11 +944,9 @@
             <p>
               Trading keyboards and camera viewfinders for soil and pruning shears—planting and tending autumn <strong>chrysanthemums</strong> and seasonal blooms whenever there’s a patch of dirt within reach.
             </p>
-          </div>
-        </li>
+          </li>
 
-        <li class="eclectic-extra-item" data-eclectic-extra hidden="until-found">
-          <div class="eclectic-card">
+          <li class="eclectic-card">
             <div class="card-meta">
               <span class="badge">Cinema &amp; Community</span>
               <span class="card-year">CMU · Google SF</span>
@@ -932,12 +955,12 @@
             <p>
               Projected $1 auditorium films with CMU AB Films—spearheading the purchase of a <strong>$30,000 theatre-grade projector</strong>—and later served as <strong>Google San Francisco Culture Lead</strong> managing a $160k event and community grant budget.
             </p>
-          </div>
-        </li>
-      </ul>
+          </li>
+        </ul>
+      </div>
 
       <div class="letterboxd-more-row eclectic-more-row">
-        <button type="button" class="action-btn" id="eclectic-more-btn" aria-expanded="false">Show All 6 Side Quests (+3 more)</button>
+        <button type="button" class="action-btn" id="eclectic-more-btn" aria-expanded="false" aria-controls="eclectic-extra-panel">Show All 6 Side Quests (+3 more)</button>
       </div>
 
       <!-- Hosted Letterboxd Film Log, Curated Lists & Reviews (@brslli) -->

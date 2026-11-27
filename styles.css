@@ -151,6 +151,7 @@
     line-height: 1.6;
     text-align: start;
     scroll-behavior: smooth;
+    scroll-padding-block-start: 4.75rem;
   }
 
   html[data-reloading="1"] {
@@ -220,6 +221,10 @@
   code {
     font-family: var(--font-mono);
     font-size: 0.875em;
+  }
+
+  :where(a, code) {
+    overflow-wrap: anywhere;
   }
 
   a {
@@ -653,8 +658,12 @@
   /* Directory Grid & Cards */
   .directory-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 19.5rem), 1fr));
+    grid-template-columns: 1fr;
     gap: 1.5rem;
+
+    @media (min-width: 44rem) {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   .directory-card {
@@ -860,9 +869,8 @@
     }
   }
 
-  .eclectic-extra-item > .eclectic-card {
-    block-size: 100%;
-    box-sizing: border-box;
+  .eclectic-extra-grid {
+    margin-block-start: 1.25rem;
   }
 
   .eclectic-more-row {
@@ -1216,8 +1224,68 @@
   .toolbar-group {
     display: flex;
     flex-wrap: wrap;
-    align-items: center;
+    align-items: safe center;
     gap: 0.45rem;
+  }
+
+  @media (max-width: 46rem) {
+    .atlas-toolbar .toolbar-group,
+    .slideshow-nav-btns,
+    .lb-lists-toolbar,
+    .letterboxd-controls .toolbar-group {
+      --scrollbar-thumb: var(--border-strong);
+      --scrollbar-track: transparent;
+      --fade-size: 1.85rem;
+      --fade-dir: right;
+      --fade-start-pos: 0;
+      --fade-end-pos: 100%;
+
+      flex-wrap: nowrap;
+      inline-size: 100%;
+      max-inline-size: 100%;
+      min-inline-size: 0;
+      box-sizing: border-box;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scroll-snap-type: inline proximity;
+      scroll-padding-inline: var(--fade-size);
+      scrollbar-width: thin;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+      padding-block: 0.15rem 0.3rem;
+      padding-inline: 0.15rem;
+      mask:
+        linear-gradient(black, black) no-clip subtract,
+        linear-gradient(to var(--fade-dir), black, transparent) var(--fade-start-pos) 0 / var(--fade-start) 100% no-repeat no-clip,
+        linear-gradient(to var(--fade-dir), transparent, black) var(--fade-end-pos) 0 / var(--fade-end) 100% no-repeat no-clip;
+
+      &:dir(rtl) {
+        --fade-dir: left;
+        --fade-start-pos: 100%;
+        --fade-end-pos: 0;
+      }
+
+      @supports (animation-timeline: scroll(self inline)) {
+        animation: reveal-fade-start linear both, hide-fade-end linear both;
+        animation-timeline: scroll(self inline);
+        animation-range: 0 var(--fade-size), calc(100% - var(--fade-size)) 100%;
+      }
+
+      @supports not (animation-timeline: scroll(self inline)) {
+        &.more-start {
+          --fade-start: var(--fade-size);
+        }
+
+        &.more-end {
+          --fade-end: var(--fade-size);
+        }
+      }
+
+      & > * {
+        flex: none;
+        white-space: nowrap;
+        scroll-snap-align: start;
+      }
+    }
   }
 
   .toolbar-label {
@@ -1349,6 +1417,29 @@
 
     .map-lens-toolbar::-webkit-scrollbar-track {
       background: var(--scrollbar-track);
+    }
+
+    @media (max-width: 46rem) {
+      .atlas-toolbar .toolbar-group,
+      .slideshow-nav-btns,
+      .lb-lists-toolbar,
+      .letterboxd-controls .toolbar-group {
+        scrollbar-width: auto;
+      }
+
+      :is(.atlas-toolbar .toolbar-group, .slideshow-nav-btns, .lb-lists-toolbar, .letterboxd-controls .toolbar-group)::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+
+      :is(.atlas-toolbar .toolbar-group, .slideshow-nav-btns, .lb-lists-toolbar, .letterboxd-controls .toolbar-group)::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 999px;
+      }
+
+      :is(.atlas-toolbar .toolbar-group, .slideshow-nav-btns, .lb-lists-toolbar, .letterboxd-controls .toolbar-group)::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+      }
     }
   }
 
@@ -2720,6 +2811,11 @@
     padding: 0;
     margin: 0;
     list-style: none;
+
+    @media (max-width: 36rem) {
+      grid-template-columns: repeat(auto-fill, minmax(5.5rem, 1fr));
+      gap: 0.8rem 0.6rem;
+    }
   }
 
   .lb-dialog-film {
@@ -3082,7 +3178,10 @@
     .pill-link,
     .action-btn,
     .action-link,
-    .filter-chip {
+    .filter-chip,
+    .table-fly-btn,
+    .goal-action-btn,
+    .slide-thumb-btn {
       min-block-size: 44px;
       min-inline-size: 44px;
     }

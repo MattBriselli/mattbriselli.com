@@ -70,6 +70,7 @@
       "countriesVisited": 39,
       "usStatesVisited": 50,
       "canadianProvincesAndTerritoriesVisited": 8,
+      "interactiveMapPins": 6623,
       "flightsLogged": 173,
       "milesFlown": 314804,
       "uniqueAirports": 83,
@@ -212,16 +213,22 @@
     {
       "name": "Arioso String Quartet (Mom's Site)",
       "url": "https://ariosoquartet.com",
-      "description": "Full-stack Node.js/Express and static web platform maintained for violist Carol Briselli, featuring a 700+ song repertoire explorer, Schema.org JSON-LD graph, and llms.txt agent feeds."
-    },
-    {
-      "name": "GamerBoy Solitaire",
-      "description": "React Native + Expo (TypeScript) iOS & Android Klondike Solitaire game with a built-in heuristic solver guaranteeing 100% solvable winning deals and daily challenges."
+      "description": "Full-stack Node.js/Express and static web platform maintained for violist Carol Briselli, featuring a 700+ song repertoire explorer, live availability inquiry pipeline, Schema.org JSON-LD graph, and llms.txt agent feeds."
     },
     {
       "name": "Eat Brand Bite",
       "url": "https://eatbrandbite.com",
-      "description": "Fast-food & limited-edition snack publication covering 122+ brands across 19 live feeds with a weekly rotating Specials On Now board (Crumbl, PopUp Bagels, Insomnia Cookies & more), built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI API (sightings, live reactions & Google-verified comments), paired with automated Bluesky/Instagram/Threads publishing, The Weekly Bite newsletter, and llms.txt agent feeds."
+      "description": "Fast-food & limited-edition CPG snack publication covering 136+ brands across 19 live feeds with a weekly rotating Specials On Now board (Crumbl, PopUp Bagels, Insomnia Cookies, Krispy Kreme, Jeni's & more) and countdown badges, built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI API (sightings, live reactions & Google-verified comments), paired with automated Bluesky/Instagram/Threads publishing, The Weekly Bite newsletter, and llms.txt agent feeds."
+    },
+    {
+      "name": "GamerBoy Solitaire",
+      "url": "https://github.com/MattBriselli/GamerBoy",
+      "description": "React Native (Fabric) + Expo (TypeScript) iOS & Android Klondike Solitaire game with a built-in heuristic solver guaranteeing 100%-solvable winning deals, deterministic daily challenges, and a 52-card persistent animation engine (concurrent flight arcs, 3D flips, and spring snap-back)."
+    },
+    {
+      "name": "Personal Atlas & Film Archive (mattbriselli.com)",
+      "url": "https://github.com/MattBriselli/mattbriselli.com",
+      "description": "Zero-framework personal website on Cloudflare Workers Static Assets featuring a 6,623-pin privacy-geofenced HTML5 Canvas world atlas (Google Maps, Flighty & Swarm with automated 7-day embargo), 1,422 cached Letterboxd reviews, 12 curated 2:3 poster lists, and llms.txt / resume.json agent feeds."
     }
   ]
 }
