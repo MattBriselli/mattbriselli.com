@@ -1,5 +1,17 @@
 @layer base, theme, layout, components, utilities;
 
+@property --fade-start {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+@property --fade-end {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
 @layer theme {
   :root {
     /* Tier 1: Raw Light & Dark Palette Tokens (Warm Editorial Paper & Deep Ink) */
@@ -1231,10 +1243,12 @@
 
   .map-stage-card,
   .slideshow-stage-card {
+    min-inline-size: 0;
     border: 1px solid var(--border-strong);
     border-radius: 0.5rem;
     background-color: var(--bg-surface-elevated);
     overflow: hidden;
+    overflow: clip;
   }
 
   .map-stage-header,
@@ -1251,25 +1265,102 @@
 
   .map-stage-header {
     flex-direction: column;
+    flex-wrap: nowrap;
     align-items: stretch;
+    min-inline-size: 0;
   }
 
   .map-lens-toolbar {
+    --scrollbar-thumb: var(--border-strong);
+    --scrollbar-track: transparent;
+    --fade-size: 2.25rem;
+    --fade-dir: right;
+    --fade-start-pos: 0;
+    --fade-end-pos: 100%;
+
     display: flex;
     flex-wrap: nowrap;
-    align-items: center;
+    align-items: safe center;
     gap: 0.4rem;
+    inline-size: 100%;
+    max-inline-size: 100%;
+    min-inline-size: 0;
+    box-sizing: border-box;
     overflow-x: auto;
-    scrollbar-width: none;
-    padding-block-end: 0.05rem;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: inline proximity;
+    scroll-padding-inline: var(--fade-size);
+    scrollbar-width: thin;
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    padding-block: 0.2rem 0.35rem;
+    padding-inline: 0.2rem;
+    mask:
+      linear-gradient(black, black) no-clip subtract,
+      linear-gradient(to var(--fade-dir), black, transparent) var(--fade-start-pos) 0 / var(--fade-start) 100% no-repeat no-clip,
+      linear-gradient(to var(--fade-dir), transparent, black) var(--fade-end-pos) 0 / var(--fade-end) 100% no-repeat no-clip;
 
-    &::-webkit-scrollbar {
-      display: none;
+    &:dir(rtl) {
+      --fade-dir: left;
+      --fade-start-pos: 100%;
+      --fade-end-pos: 0;
+    }
+
+    @supports (animation-timeline: scroll(self inline)) {
+      animation: reveal-fade-start linear both, hide-fade-end linear both;
+      animation-timeline: scroll(self inline);
+      animation-range: 0 var(--fade-size), calc(100% - var(--fade-size)) 100%;
+    }
+
+    @supports not (animation-timeline: scroll(self inline)) {
+      @media (prefers-reduced-motion: no-preference) {
+        transition: --fade-start 0.2s, --fade-end 0.2s;
+      }
+
+      &.more-start {
+        --fade-start: var(--fade-size);
+      }
+
+      &.more-end {
+        --fade-end: var(--fade-size);
+      }
     }
 
     & .map-ctrl-btn {
-      flex: 0 0 auto;
+      flex: none;
       white-space: nowrap;
+      scroll-snap-align: start;
+    }
+  }
+
+  @supports not (scrollbar-color: auto) {
+    .map-lens-toolbar {
+      scrollbar-width: auto;
+    }
+
+    .map-lens-toolbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+
+    .map-lens-toolbar::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border-radius: 999px;
+    }
+
+    .map-lens-toolbar::-webkit-scrollbar-track {
+      background: var(--scrollbar-track);
+    }
+  }
+
+  @keyframes reveal-fade-start {
+    to {
+      --fade-start: var(--fade-size);
+    }
+  }
+
+  @keyframes hide-fade-end {
+    from {
+      --fade-end: var(--fade-size);
     }
   }
 

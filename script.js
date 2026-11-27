@@ -1693,12 +1693,67 @@
     static: "MapChart reference export · Scroll or use + / − to zoom, drag to pan"
   };
 
-  function setMapLens(lens) {
+  const mapLensToolbar = document.getElementById("map-lens-toolbar");
+  if (
+    mapLensToolbar &&
+    typeof IntersectionObserver !== "undefined" &&
+    !(typeof CSS !== "undefined" && CSS.supports && CSS.supports("animation-timeline", "scroll(self inline)"))
+  ) {
+    const [firstLensBtn, lastLensBtn] = [
+      mapLensToolbar.firstElementChild,
+      mapLensToolbar.lastElementChild
+    ];
+    if (firstLensBtn && lastLensBtn) {
+      const fadeObserver = new IntersectionObserver(
+        (entries) => {
+          for (const { target, intersectionRatio } of entries) {
+            mapLensToolbar.classList.toggle(
+              target === firstLensBtn ? "more-start" : "more-end",
+              intersectionRatio < 1
+            );
+          }
+        },
+        { root: mapLensToolbar, threshold: 1, rootMargin: "1px" }
+      );
+      fadeObserver.observe(firstLensBtn);
+      fadeObserver.observe(lastLensBtn);
+    }
+  }
+
+  function revealLensButtonInBar(btn) {
+    if (!btn || !mapLensToolbar || mapLensToolbar.scrollWidth <= mapLensToolbar.clientWidth) return;
+    const barRect = mapLensToolbar.getBoundingClientRect();
+    const btnRect = btn.getBoundingClientRect();
+    const pad = 36;
+    if (btnRect.left < barRect.left + pad) {
+      mapLensToolbar.scrollBy({
+        left: btnRect.left - barRect.left - pad,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"
+      });
+    } else if (btnRect.right > barRect.right - pad) {
+      mapLensToolbar.scrollBy({
+        left: btnRect.right - barRect.right + pad,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth"
+      });
+    }
+  }
+
+  function setMapLens(lens, fromToolbarClick = false) {
     activeLens = lens;
     const isStatic = lens === "static";
+    let activeBtn = null;
     document.querySelectorAll("[data-map-lens]").forEach((btn) => {
-      btn.setAttribute("aria-pressed", String(btn.getAttribute("data-map-lens") === lens));
+      const isMatch = btn.getAttribute("data-map-lens") === lens;
+      btn.setAttribute("aria-pressed", String(isMatch));
+      if (isMatch) activeBtn = btn;
     });
+    if (activeBtn) {
+      if (fromToolbarClick) {
+        activeBtn.scrollIntoView({ block: "nearest", inline: "nearest", container: "nearest" });
+      } else {
+        revealLensButtonInBar(activeBtn);
+      }
+    }
     if (mapCanvasWrap) mapCanvasWrap.hidden = isStatic;
     if (staticMapWrap) staticMapWrap.hidden = !isStatic;
     if (isStatic) {
@@ -1717,7 +1772,7 @@
     btn.addEventListener("click", () => {
       stopAutoPlay();
       const nextLens = btn.getAttribute("data-map-lens") || "photos";
-      setMapLens(nextLens);
+      setMapLens(nextLens, true);
     });
   });
 
