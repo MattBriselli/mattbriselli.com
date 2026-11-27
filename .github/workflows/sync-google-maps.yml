@@ -21,7 +21,15 @@ jobs:
         with:
           node-version: "22"
 
+      - name: Setup Chrome for Testing
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: stable
+
       - name: Crawl latest Google Maps reviews, photos & live telemetry
+        env:
+          CHROME_PATH: ${{ steps.setup-chrome.outputs.chrome-path }}
         run: node scripts/crawl-google-maps.mjs --weekly
 
       - name: Commit & push if new dispatches or telemetry updated

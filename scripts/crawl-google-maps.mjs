@@ -106,25 +106,34 @@ class CdpSession {
 async function launchChrome(port = 9241) {
   const userDataDir = fs.mkdtempSync(path.join(os.tmpdir(), "maps-cdp-"));
   const chromeBin = findChromeBinary();
+  let stderrBuf = "";
   const proc = spawn(
     chromeBin,
     [
       "--headless=new",
       "--no-sandbox",
+      "--disable-setuid-sandbox",
       "--disable-gpu",
+      "--disable-software-rasterizer",
       "--disable-dev-shm-usage",
+      "--no-first-run",
+      "--no-default-browser-check",
       "--window-size=1440,960",
       "--lang=en-US",
+      "--remote-debugging-address=127.0.0.1",
       `--remote-debugging-port=${port}`,
       `--user-data-dir=${userDataDir}`,
       "about:blank"
     ],
-    { stdio: "ignore" }
+    { stdio: ["ignore", "ignore", "pipe"] }
   );
+  proc.stderr?.on("data", (chunk) => {
+    if (stderrBuf.length < 2000) stderrBuf += String(chunk);
+  });
 
   let targets = null;
-  for (let i = 0; i < 40; i++) {
-    await sleep(200);
+  for (let i = 0; i < 60; i++) {
+    await sleep(250);
     try {
       const res = await fetch(`http://127.0.0.1:${port}/json/list`);
       if (res.ok) {
@@ -137,7 +146,7 @@ async function launchChrome(port = 9241) {
   }
   if (!targets || !targets.length) {
     proc.kill("SIGKILL");
-    throw new Error("Chrome DevTools endpoint failed to start.");
+    throw new Error(`Chrome DevTools endpoint failed to start (${chromeBin}): ${stderrBuf.trim()}`);
   }
 
   const pageTarget = targets.find((t) => t.type === "page") || targets[0];
