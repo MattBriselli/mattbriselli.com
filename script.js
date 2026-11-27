@@ -1113,11 +1113,13 @@
     const whereBits = [loc, category].filter(Boolean).map((t) => `<span class="pin-tip-chunk">${escMapHtml(t)}</span>`);
     const whenBits = dates.map((t) => `<span class="pin-tip-chunk">${escMapHtml(t)}</span>`);
     const countHtml = count > 1 ? `<span class="pin-tip-count">${formatNumber(count)} visits</span>` : "";
+    // First + Latest always stack on their own lines: predictable width, no dangling separators
+    const isSpan = dates.length > 1;
     return (
       `<span class="pin-tip-title">${icon ? `${escMapHtml(icon)} ` : ""}${escMapHtml(name)}${stars}</span>` +
       (whereBits.length ? `<span class="pin-tip-line pin-tip-where">${whereBits.join('<span class="pin-tip-sep" aria-hidden="true"> · </span>')}</span>` : "") +
       (countHtml || whenBits.length
-        ? `<span class="pin-tip-line pin-tip-when">${countHtml}${whenBits.join('<span class="pin-tip-sep" aria-hidden="true"> · </span>')}</span>`
+        ? `<span class="pin-tip-line pin-tip-when${isSpan ? " pin-tip-stack" : ""}">${countHtml}${whenBits.join("")}</span>`
         : "")
     );
   }

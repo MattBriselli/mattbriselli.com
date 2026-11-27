@@ -3445,6 +3445,11 @@
     color: var(--text-primary);
     margin-inline-end: 0.4em;
   }
+
+  .pin-tip-stack > * {
+    display: block;
+    margin-inline-end: 0;
+  }
 }
 
 .pin-popup .leaflet-popup-content {
