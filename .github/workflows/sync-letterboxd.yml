@@ -1,0 +1,47 @@
+name: Weekly Letterboxd Archive Sync
+
+on:
+  schedule:
+    # Every Monday at 09:17 UTC (~4:17am / 5:17am ET) — well within Letterboxd's ~50-85 item RSS window
+    - cron: "17 9 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync-letterboxd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+
+      - name: Fetch & archive latest Letterboxd RSS entries
+        run: node scripts/sync-letterboxd-rss.mjs
+
+      - name: Commit & push if new reviews arrived
+        id: commit_step
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add data/letterboxd-reviews.json index.html llms.txt
+            git commit -m "chore(letterboxd): weekly RSS archive sync"
+            git pull --rebase origin main
+            git push origin main
+            echo "pushed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "pushed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Trigger Cloudflare Workers Build
+        if: steps.commit_step.outputs.pushed == 'true' && env.CLOUDFLARE_DEPLOY_HOOK_URL != ''
+        env:
+          CLOUDFLARE_DEPLOY_HOOK_URL: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}
+        run: |
+          curl -fsSL -X POST "$CLOUDFLARE_DEPLOY_HOOK_URL"
