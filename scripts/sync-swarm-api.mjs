@@ -27,12 +27,18 @@ if (!privacyConfig.zones.length) {
   process.exit(1);
 }
 
-const isBackfill = process.argv.includes("--backfill");
+const isBackfill =
+  process.argv.includes("--backfill") || process.env.SWARM_BACKFILL === "true";
 const beforeUnix = Math.floor(getEmbargoCutoffMs(privacyConfig.embargoDays) / 1000);
 const mapsIndexPath = path.resolve("data/maps-index.json");
 const mapsPinsPath = path.resolve("data/maps-pins.json");
 const htmlPath = path.resolve("index.html");
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function toVenueLocalDate(createdTs, timeZoneOffsetMin) {
+  const offsetSec = Number.isFinite(Number(timeZoneOffsetMin)) ? Number(timeZoneOffsetMin) * 60 : 0;
+  return new Date((createdTs + offsetSec) * 1000).toISOString().slice(0, 10);
+}
 
 async function fetchCheckinPage(offset = 0) {
   const apiUrl = new URL("https://api.foursquare.com/v2/users/self/checkins");
@@ -54,7 +60,7 @@ async function fetchCheckinPage(offset = 0) {
 }
 
 async function main() {
-  const maxPages = isBackfill ? 80 : 1; // up to 20,000 historical check-ins on backfill!
+  const maxPages = isBackfill ? 160 : 2; // up to 40,000 lifetime check-ins on backfill!
   const items = [];
   let offset = 0;
   for (let page = 0; page < maxPages; page++) {
@@ -66,21 +72,32 @@ async function main() {
     );
     if (batch.items.length < 250) break;
     offset += 250;
-    await sleep(220);
+    await sleep(180);
   }
 
   const mapsIndex = JSON.parse(fs.readFileSync(mapsIndexPath, "utf8"));
   const mapsPins = JSON.parse(fs.readFileSync(mapsPinsPath, "utf8"));
 
-  const existingGridKeys = new Set();
-  for (const p of [...(mapsIndex.places || []), ...(mapsPins.extraPins || [])]) {
-    existingGridKeys.add(`${p.name.toLowerCase().slice(0, 14)}|${p.lat.toFixed(2)},${p.lng.toFixed(2)}`);
+  const photoKeys = new Set();
+  for (const p of mapsIndex.places || []) {
+    photoKeys.add(`${p.name.toLowerCase().slice(0, 14)}|${p.lat.toFixed(2)},${p.lng.toFixed(2)}`);
   }
-  for (const t of mapsPins.mapOnlyPins || []) {
-    existingGridKeys.add(`${String(t[2]).toLowerCase().slice(0, 14)}|${Number(t[0]).toFixed(2)},${Number(t[1]).toFixed(2)}`);
+  const extraPinByKey = new Map();
+  for (const p of mapsPins.extraPins || []) {
+    const k = `${p.name.toLowerCase().slice(0, 14)}|${p.lat.toFixed(2)},${p.lng.toFixed(2)}`;
+    photoKeys.add(k);
+    extraPinByKey.set(k, p);
   }
 
+  const existingPinIdxByKey = new Map();
+  (mapsPins.mapOnlyPins || []).forEach((t, idx) => {
+    const k = `${String(t[2]).toLowerCase().slice(0, 14)}|${Number(t[0]).toFixed(2)},${Number(t[1]).toFixed(2)}`;
+    if (!existingPinIdxByKey.has(k)) existingPinIdxByKey.set(k, idx);
+  });
+
   const added = [];
+  let enrichedExisting = 0;
+
   for (const ci of items) {
     const createdTs = Number(ci?.createdAt || 0);
     if (!createdTs || createdTs > beforeUnix) continue;
@@ -93,7 +110,11 @@ async function main() {
     const lng = Number(loc.lng);
     if (!name || !Number.isFinite(lat) || !Number.isFinite(lng)) continue;
 
-    const catNames = (v.categories || []).map((c) => c?.name || c?.shortName || "").join(" ");
+    const catList = v.categories || [];
+    const catNames = catList.map((c) => c?.name || c?.shortName || "").join(" ");
+    const primaryCat = String(catList[0]?.shortName || catList[0]?.name || "").trim();
+    const visitDate = toVenueLocalDate(createdTs, ci?.timeZoneOffset);
+
     const locLabel = [
       loc.city || "",
       loc.state || "",
@@ -117,14 +138,46 @@ async function main() {
     if (!safe) continue;
 
     const dedupeKey = `${name.toLowerCase().slice(0, 14)}|${safe.lat.toFixed(2)},${safe.lng.toFixed(2)}`;
-    if (existingGridKeys.has(dedupeKey)) continue;
-    existingGridKeys.add(dedupeKey);
 
-    added.push([safe.lat, safe.lng, name, safe.location]);
+    if (photoKeys.has(dedupeKey)) {
+      const extraPin = extraPinByKey.get(dedupeKey);
+      if (extraPin && !extraPin.date && visitDate) {
+        extraPin.date = visitDate;
+        enrichedExisting++;
+      }
+      continue;
+    }
+
+    if (existingPinIdxByKey.has(dedupeKey)) {
+      const existIdx = existingPinIdxByKey.get(dedupeKey);
+      if (existIdx >= 0) {
+        const tuple = mapsPins.mapOnlyPins[existIdx];
+        let changed = false;
+        // check-ins arrive newest-first, so the first match is the most recent (>7d) visit date!
+        if (!tuple[6] && visitDate) {
+          tuple[4] = tuple[4] || 0;
+          tuple[5] = tuple[5] || "";
+          tuple[6] = visitDate;
+          changed = true;
+        }
+        if (!tuple[7] && primaryCat) {
+          tuple[4] = tuple[4] || 0;
+          tuple[5] = tuple[5] || "";
+          tuple[6] = tuple[6] || visitDate || "";
+          tuple[7] = primaryCat;
+          changed = true;
+        }
+        if (changed) enrichedExisting++;
+      }
+      continue;
+    }
+
+    existingPinIdxByKey.set(dedupeKey, -1);
+    added.push([safe.lat, safe.lng, name, safe.location, 0, "", visitDate, primaryCat]);
   }
 
-  if (!added.length) {
-    console.log(`Scanned ${items.length} matured (>7d) Swarm check-ins; 0 new public venues to add.`);
+  if (!added.length && !enrichedExisting) {
+    console.log(`Scanned ${items.length} matured (>7d) Swarm check-ins; 0 new or enriched public venues.`);
     return;
   }
 
@@ -140,13 +193,15 @@ async function main() {
   if (fs.existsSync(htmlPath)) {
     let html = fs.readFileSync(htmlPath, "utf8");
     html = html.replace(
-      /[\d,]+ Additional Place Pins \([\d,]+ Total\)/,
-      `${extraDots.toLocaleString("en-US")} Additional Place Pins (${totalDots.toLocaleString("en-US")} Total)`
+      /[\d,]+ (?:Additional Place Pins|Places Matt Visited) \([\d,]+ Total\)/,
+      `${extraDots.toLocaleString("en-US")} Places Matt Visited (${totalDots.toLocaleString("en-US")} Total)`
     );
     fs.writeFileSync(htmlPath, html, "utf8");
   }
 
-  console.log(`Added +${added.length} matured (>7d) Swarm venues (totalPins=${totalDots}).`);
+  console.log(
+    `Added +${added.length} new & enriched ${enrichedExisting} existing Swarm venues (totalPins=${totalDots}).`
+  );
 }
 
 main().catch((err) => {

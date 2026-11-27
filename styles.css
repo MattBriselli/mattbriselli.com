@@ -1830,7 +1830,14 @@
   .pin-popup-loc {
     color: var(--text-muted);
     font-size: 0.74rem;
-    margin-block: 0.15rem 0.35rem;
+    margin-block: 0.15rem 0.25rem;
+  }
+
+  .pin-popup-meta {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    color: var(--text-secondary);
+    margin-block-end: 0.35rem;
   }
 
   .pin-popup-quote {

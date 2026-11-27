@@ -82,16 +82,16 @@ pins.extraPins = sanitizePlaceList(pins.extraPins || []);
 
 const cleanTuples = [];
 for (const t of pins.mapOnlyPins || []) {
-  const [lat, lng, name, loc, rating, snippet] = t;
+  const [lat, lng, name, loc, rating, snippet, visitDate, category] = t;
   const matchedZone = findMatchingZone(lat, lng, config.zones, `${name || ""} ${loc || ""}`);
   const safe = filterAndBlurPlace(
     {
       name,
       location: loc,
-      category: "",
+      category: category || "",
       lat,
       lng,
-      dateOrTs: "",
+      dateOrTs: visitDate || "",
       source: "maps"
     },
     config
@@ -111,9 +111,12 @@ for (const t of pins.mapOnlyPins || []) {
       ? ""
       : snippet;
   const nextTuple = [safe.lat, safe.lng, cleanName, safe.location];
-  if (rating || cleanSnip) {
-    nextTuple.push(rating || 0);
-    if (cleanSnip) nextTuple.push(cleanSnip);
+  if (rating || cleanSnip || visitDate || category) {
+    nextTuple.push(rating || 0, cleanSnip || "");
+    if (visitDate || category) {
+      nextTuple.push(visitDate || "");
+      if (category) nextTuple.push(category);
+    }
   }
   cleanTuples.push(nextTuple);
 }
@@ -175,7 +178,7 @@ if (fs.existsSync(htmlPath)) {
     .replace(/(data-slide-filter="nyc"[^>]*>)NYC &amp; Broadway \([\d,]+\)(<\/button>)/, `$1NYC &amp; Broadway (${tags.nyc.toLocaleString("en-US")})$2`)
     .replace(/(id="slide-counter">)Dispatch 1 of [\d,]+(<\/span>)/, `$1Dispatch 1 of ${tags.all.toLocaleString("en-US")}$2`)
     .replace(/[\d,]+ Photo Pins/, `${tags.all.toLocaleString("en-US")} Photo Pins`)
-    .replace(/[\d,]+ Additional Place Pins \([\d,]+ Total\)/, `${extraDots.toLocaleString("en-US")} Additional Place Pins (${totalDots.toLocaleString("en-US")} Total)`)
+    .replace(/[\d,]+ (?:Additional Place Pins|Places Matt Visited) \([\d,]+ Total\)/, `${extraDots.toLocaleString("en-US")} Places Matt Visited (${totalDots.toLocaleString("en-US")} Total)`)
     .replace(/(id="gmap-rev-summary-count">)[\d,]+(<\/span>)/, `$1${cleanReviews.length.toLocaleString("en-US")}$2`);
   fs.writeFileSync(htmlPath, html, "utf8");
 }

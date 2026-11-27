@@ -922,7 +922,7 @@
       legendEl.innerHTML = [
         `<span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> Active Slideshow Pin</span>`,
         `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> ${formatNumber(totalDispatches)} Photo Pins</span>`,
-        `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> ${formatNumber(extraReviewedDots)} Additional Place Pins (${formatNumber(totalDots)} Total)</span>`
+        `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> ${formatNumber(extraReviewedDots)} Places Matt Visited (${formatNumber(totalDots)} Total)</span>`
       ].join("");
     } else if (activeLens === "flights") {
       legendEl.innerHTML = [
@@ -937,7 +937,7 @@
       ].join("");
     } else {
       legendEl.innerHTML = [
-        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> ${formatNumber(totalDots)} Photo &amp; Region Dots</span>`,
+        `<span class="legend-item"><span class="legend-swatch swatch-hot" aria-hidden="true"></span> ${formatNumber(totalDots)} Photos &amp; Places Matt Visited</span>`,
         `<span class="legend-item"><span class="legend-swatch swatch-pin" aria-hidden="true"></span> 173 Flights (315k mi)</span>`,
         `<span class="legend-item"><span class="legend-swatch swatch-warm" aria-hidden="true"></span> 39 Countries · 50 States · 8/13 Canada</span>`,
         `<span class="legend-item"><span class="legend-swatch swatch-drive" aria-hidden="true"></span> Canada Drive</span>`
@@ -1014,23 +1014,55 @@
     choroplethPane.style.pointerEvents = showChoropleth ? "auto" : "none";
   }
 
+  const MONTH_SHORT = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+  ];
+
+  function formatVisitDate(isoStr) {
+    if (!isoStr || typeof isoStr !== "string") return "";
+    const trimmed = isoStr.trim();
+    const m = trimmed.match(/^(\d{4})-(\d{2})(?:-(\d{2}))?$/);
+    if (!m) return trimmed;
+    if (typeof Temporal !== "undefined" && m[3]) {
+      try {
+        return Temporal.PlainDate.from(trimmed).toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        });
+      } catch {}
+    }
+    const monthLabel = MONTH_SHORT[Number(m[2]) - 1] || m[2];
+    return m[3] ? `${monthLabel} ${Number(m[3])}, ${m[1]}` : `${monthLabel} ${m[1]}`;
+  }
+
   function openPlaceOnlyPopup(item) {
-    const [lat, lng, name, loc, rating, snippet] = item;
+    const [lat, lng, name, loc, rating, snippet, visitDate, category] = item;
     const stars = rating ? ` · ${"★".repeat(rating)}` : "";
+    const formattedDate = formatVisitDate(visitDate);
+    const metaParts = [];
+    if (category) metaParts.push(category);
+    if (formattedDate) metaParts.push(`Visited ${formattedDate}`);
+    const metaHtml = metaParts.length
+      ? `<div class="pin-popup-meta">${escMapHtml(metaParts.join(" · "))}</div>`
+      : "";
     const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${name} ${loc || ""}`)}`;
     const quoteHtml = snippet
       ? `<div class="pin-popup-quote">“${escMapHtml(snippet)}${snippet.length >= 158 ? "…" : ""}”</div>`
       : "";
-    L.popup({ closeButton: true, maxWidth: 260 })
+    L.popup({ closeButton: true, maxWidth: 265 })
       .setLatLng([lat, lng])
       .setContent(
         `<strong>${escMapHtml(name)}</strong>${escMapHtml(stars)}` +
-          `<div class="pin-popup-loc">${escMapHtml(loc || "Visited Place")}</div>` +
+          `<div class="pin-popup-loc">${escMapHtml(loc || "Place Matt Visited")}</div>` +
+          metaHtml +
           quoteHtml +
           `<a class="pin-popup-link" href="${mapsUrl}" target="_blank" rel="noopener noreferrer">Open on Google Maps ↗</a>`
       )
       .openOn(map);
-    if (statusLineEl) statusLineEl.textContent = `${name}${loc ? ` · ${loc}` : ""}`;
+    const statusBits = [name, loc, formattedDate].filter(Boolean);
+    if (statusLineEl) statusLineEl.textContent = statusBits.join(" · ");
   }
 
   function openPhotoPinSelection(idx) {
@@ -1044,8 +1076,15 @@
       map.closePopup();
     }
     selectPlace(idx, shouldZoomIn);
+    const formattedDate = formatVisitDate(pl.date);
     if (statusLineEl) {
-      statusLineEl.textContent = `📍 ${pl.name} · ${pl.location}`;
+      statusLineEl.textContent = [
+        `📍 ${pl.name}`,
+        pl.location,
+        formattedDate
+      ]
+        .filter(Boolean)
+        .join(" · ");
     }
     if (stackedLayout) {
       const thumbUrl = (pl.photos?.[0] || "").replace(/=w\d+-h\d+-p-k-no$/, "=w320-h240-p-k-no");
@@ -1053,12 +1092,16 @@
       const thumbHtml = thumbUrl
         ? `<img class="pin-popup-thumb" src="${escMapHtml(thumbUrl)}" alt="${escMapHtml(pl.name)}" width="220" height="165" referrerpolicy="no-referrer">`
         : "";
+      const dateHtml = formattedDate
+        ? `<div class="pin-popup-meta">${escMapHtml(formattedDate)}</div>`
+        : "";
       const pop = L.popup({ closeButton: true, maxWidth: 245 })
         .setLatLng([pl.lat, pl.lng])
         .setContent(
           thumbHtml +
             `<strong>${escMapHtml(pl.name)}</strong>${escMapHtml(stars)}` +
             `<div class="pin-popup-loc">${escMapHtml(pl.location)}</div>` +
+            dateHtml +
             `<button type="button" class="pin-popup-jump-btn" data-jump-slideshow="1">View Full Photo Below ↓</button>`
         )
         .openOn(map);
@@ -1444,12 +1487,14 @@
       }
     }
 
-    // 1b. Additional geocoded Google Maps & Swarm visited/reviewed place pins
+    // 1b. Places Matt Visited (Swarm check-ins & Google Maps reviewed places)
     if (currentSlideFilter === "all" && mapOnlyPins.length) {
       const subRadius = zoom >= 11 ? 4.8 : zoom >= 7 ? 4.0 : zoom >= 4 ? 3.4 : 2.9;
       for (const item of mapOnlyPins) {
-        const [lat, lng, name, loc, rating] = item;
+        const [lat, lng, name, loc, rating, , visitDate, category] = item;
         const stars = rating ? ` · ${"★".repeat(rating)}` : "";
+        const formattedDate = formatVisitDate(visitDate);
+        const subMeta = [loc, category, formattedDate].filter(Boolean).join(" · ");
         const mPin = L.circleMarker([lat, lng], {
           renderer: pinsCanvasRenderer,
           radius: subRadius,
@@ -1459,7 +1504,7 @@
           fillOpacity: 0.84
         });
         mPin.bindTooltip(
-          `<strong>${escMapHtml(name)}</strong><br>${escMapHtml(loc)}${escMapHtml(stars)}`,
+          `<strong>${escMapHtml(name)}</strong>${escMapHtml(stars)}<br>${escMapHtml(subMeta)}`,
           { direction: "top" }
         );
         mPin.on("click", (ev) => {
@@ -1488,8 +1533,10 @@
         fillOpacity: 0.94
       });
       const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
+      const plDate = formatVisitDate(pl.date);
+      const plSub = [pl.location, plDate].filter(Boolean).join(" · ");
       marker.bindTooltip(
-        `<strong>${escMapHtml(pl.name)}</strong><br>${escMapHtml(pl.location)}${escMapHtml(metric)}`,
+        `<strong>${escMapHtml(pl.name)}</strong>${escMapHtml(metric)}<br>${escMapHtml(plSub)}`,
         { direction: "top" }
       );
       marker.on("click", (ev) => {
@@ -1522,8 +1569,10 @@
         fillOpacity: 1
       });
       const metric = pl.rating ? ` · ${"★".repeat(pl.rating)}` : "";
+      const heroDate = formatVisitDate(pl.date);
+      const heroSub = [pl.location, heroDate].filter(Boolean).join(" · ");
       hero.bindTooltip(
-        `<strong>📍 ${escMapHtml(pl.name)}</strong><br>${escMapHtml(pl.location)}${escMapHtml(metric)}`,
+        `<strong>📍 ${escMapHtml(pl.name)}</strong>${escMapHtml(metric)}<br>${escMapHtml(heroSub)}`,
         { direction: "top" }
       );
       hero.on("click", (ev) => {
@@ -1597,7 +1646,12 @@
       }
     }
     if (catEl) catEl.textContent = place.category || "Field Dispatch";
-    if (coordsEl) coordsEl.textContent = formatCoords(place.lat, place.lng);
+    if (coordsEl) {
+      const slideDate = formatVisitDate(place.date);
+      coordsEl.textContent = slideDate
+        ? `${slideDate} · ${formatCoords(place.lat, place.lng)}`
+        : formatCoords(place.lat, place.lng);
+    }
     if (titleEl) titleEl.textContent = place.name;
     if (locEl) locEl.textContent = place.location;
     if (descEl) descEl.textContent = place.caption || "";

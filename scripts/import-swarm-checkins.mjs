@@ -86,7 +86,16 @@ for (const ci of rawItems) {
     continue;
   }
 
-  const catNames = (v?.categories || []).map((c) => c?.name || c?.shortName || "").join(" ");
+  const catList = v?.categories || [];
+  const catNames = catList.map((c) => c?.name || c?.shortName || "").join(" ");
+  const primaryCat = String(catList[0]?.shortName || catList[0]?.name || "").trim();
+  let visitDate = "";
+  if (typeof createdTs === "number" && createdTs > 0) {
+    const offsetSec = Number.isFinite(Number(ci?.timeZoneOffset)) ? Number(ci.timeZoneOffset) * 60 : 0;
+    visitDate = new Date((createdTs + offsetSec) * 1000).toISOString().slice(0, 10);
+  } else if (typeof createdTs === "string" && /^\d{4}-\d{2}-\d{2}/.test(createdTs.trim())) {
+    visitDate = createdTs.trim().slice(0, 10);
+  }
   const city = loc.city || "";
   const state = loc.state || "";
   const country = loc.country || loc.cc || "";
@@ -122,7 +131,16 @@ for (const ci of rawItems) {
   }
   existingGridKeys.add(dedupeKey);
 
-  acceptedByVenue.set(venueId, [safe.lat, safe.lng, name, safe.location]);
+  acceptedByVenue.set(venueId, [
+    safe.lat,
+    safe.lng,
+    name,
+    safe.location,
+    0,
+    "",
+    visitDate,
+    primaryCat
+  ]);
 }
 
 const newTuples = [...acceptedByVenue.values()];

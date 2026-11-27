@@ -5,6 +5,12 @@ on:
     # Twice weekly (Wednesdays & Sundays at 09:30 UTC) — strictly >7d delayed
     - cron: "30 9 * * 0,3"
   workflow_dispatch:
+    inputs:
+      backfill:
+        description: "Backfill & enrich full historical Swarm check-ins (>7d)"
+        required: false
+        default: false
+        type: boolean
 
 permissions:
   contents: write
@@ -25,15 +31,17 @@ jobs:
         env:
           SWARM_OAUTH_TOKEN: ${{ secrets.SWARM_OAUTH_TOKEN }}
           PRIVACY_GEOFENCE_JSON: ${{ secrets.PRIVACY_GEOFENCE_JSON }}
+          SWARM_BACKFILL: ${{ inputs.backfill && 'true' || 'false' }}
         run: node scripts/sync-swarm-api.mjs
 
-      - name: Commit and push if new matured venues arrived
+      - name: Commit and push if new or enriched venues arrived
         run: |
           if [[ -n "$(git status --porcelain data/maps-pins.json index.html)" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
             git add data/maps-pins.json index.html
-            git commit -m "chore(map): sync matured Swarm travel venues"
+            git commit -m "chore(map): sync matured Swarm travel venues & dates"
+            git pull --rebase origin main
             git push
           else
             echo "No map pin changes to commit."
