@@ -218,7 +218,7 @@
     {
       "name": "Eat Brand Bite",
       "url": "https://eatbrandbite.com",
-      "description": "Fast-food & limited-edition CPG snack publication covering 165+ brands across 20 live feeds with a dedicated /live wire & RSS feed, a real-time Trending engine blending cross-source buzz with D1 card-click tracking, and a weekly rotating Specials On Now board (Crumbl, PopUp Bagels, Insomnia Cookies, Krispy Kreme, Trader Joe's & more), built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI + Cron Triggers stack (live reactions, click tracking & Google-verified comments), monitored by 5-minute synthetic endpoint probes and automated feed-freshness watchdogs alongside automated Bluesky/Instagram/Threads publishing, The Weekly Bite newsletter, and llms.txt agent feeds."
+      "description": "Fast-food & limited-edition CPG snack publication covering 165+ brands across 28 live feeds with a dedicated /live wire & RSS feed, a real-time Trending engine blending cross-source buzz with D1 card-click tracking, and a weekly rotating Specials On Now board (Crumbl, PopUp Bagels, Insomnia Cookies, Krispy Kreme, Trader Joe's & more), built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI + Cron Triggers stack (live reactions, click tracking & Google-verified comments), monitored by 5-minute synthetic endpoint probes and automated feed-freshness watchdogs alongside automated Bluesky/Instagram/Threads publishing, The Weekly Bite newsletter, and llms.txt agent feeds."
     },
     {
       "name": "GamerBoy Solitaire",
