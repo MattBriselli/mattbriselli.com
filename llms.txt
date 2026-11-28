@@ -85,4 +85,4 @@
 - **Regions Explored & Three Active Travel Goals**:
   1. **Every Country in the World (`39 / 199`)**: 39 countries visited across Europe, Asia, North America, and Oceania (strictly excluding airport-only layovers).
   2. **All 50 US States (`50 / 50` — Complete)**: Visited and photographed every US state including Alaska and Hawaii.
-  3. **Every Canadian Province & Territory (`8 / 13`) + Disjoint Cross-Canada Road Drive**: Visited BC, AB, NT, ON, QC, NB, NS, and PE (remaining: YT, NU, SK, MB, NL); driven **Halifax, NS → Thunder Bay, ON** and the **Calgary ↔ Edmonton ↔ Jasper** Alberta Rockies loop.
+  3. **Every Canadian Province & Territory (`8 / 13`) + Disjoint Cross-Canada Road Drive**: Visited BC, AB, NT, ON, QC, NB, NS, and PE (remaining: YT, NU, SK, MB, NL); driven **Halifax, NS → Thunder Bay, ON**, the **Calgary ↔ Edmonton ↔ Jasper** Alberta Rockies loop, and **Lake Louise ↔ Kamloops, BC** along Trans-Canada Hwy 1 (remaining: BC coast → Kamloops and Thunder Bay → Prairies → Calgary).

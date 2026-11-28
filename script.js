@@ -2707,7 +2707,7 @@
       map.flyTo([53.5, -96.5], 4, { duration: 1.05 });
       if (statusLineEl) {
         statusLineEl.textContent =
-          "Goal 03: 8/13 Canadian Provinces & Territories + Disjoint Trans-Canada Drive (Halifax → Thunder Bay & Alberta Rockies)";
+          "Goal 03: 8/13 Canadian Provinces & Territories + Disjoint Trans-Canada Drive (Halifax → Thunder Bay & Alberta/BC Rockies to Kamloops)";
       }
       mapContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
     });
