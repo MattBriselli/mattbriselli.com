@@ -17,6 +17,7 @@ const rootFiles = [
   "resume.json",
   "robots.txt",
   "sitemap.xml",
+  "favicon.ico",
   "favicon.svg",
   "favicon-32.png",
   "apple-touch-icon.png",
