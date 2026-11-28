@@ -83,7 +83,8 @@
   /* ==========================================================================
      Scrollspy + Non-Sticky URL Hash Sync & Reload Section Persistence
      ========================================================================== */
-  const TRACKED_SECTION_IDS = ["explorer", "coder", "eclectic", "letterboxd", "contact"];
+  const TRACKED_SECTION_IDS = ["map", "coder", "eclectic", "letterboxd", "contact"];
+  const MAP_HASH_ALIASES = new Set(["#explorer"]);
   const MOVIE_HASH_ALIASES = new Set(["#movies", "#films", "#film-reviews", "#reviews"]);
   const LISTS_HASH_ALIASES = new Set(["#film-lists", "#lists", "#lb-lists-showcase"]);
   const SCROLL_STATE_KEY = "mlb_section_scroll_v1";
@@ -105,18 +106,17 @@
   function normalizeDeepHash(rawHash) {
     if (!rawHash) return "";
     const lower = rawHash.toLowerCase();
+    if (MAP_HASH_ALIASES.has(lower)) return "#map";
     if (MOVIE_HASH_ALIASES.has(lower)) return "#letterboxd";
     if (LISTS_HASH_ALIASES.has(lower)) return "#film-lists";
     return rawHash;
   }
 
-  if (initialRawHash) {
-    const normalized = normalizeDeepHash(initialRawHash);
-    if (normalized !== initialRawHash) {
-      try {
-        history.replaceState(null, "", `${window.location.pathname}${window.location.search}${normalized}`);
-      } catch {}
-    }
+  const initialNormalizedHash = normalizeDeepHash(initialRawHash);
+  if (initialRawHash && initialNormalizedHash !== initialRawHash) {
+    try {
+      history.replaceState(null, "", `${window.location.pathname}${window.location.search}${initialNormalizedHash}`);
+    } catch {}
   }
 
   let savedScrollState = null;
@@ -188,7 +188,7 @@
 
   function resolveNavParentId(sectionId) {
     if (!sectionId) return "";
-    if (["explorer", "coder", "eclectic", "contact"].includes(sectionId)) return sectionId;
+    if (["map", "coder", "eclectic", "contact"].includes(sectionId)) return sectionId;
     const el = document.getElementById(sectionId);
     const parentSec = el?.closest("section[id], footer[id]");
     return parentSec?.id || sectionId;
@@ -225,7 +225,8 @@
   function restoreReloadSectionPosition() {
     if (!isPageReload || !savedScrollState || userInteractedSinceLoad) return;
     if (performance.now() > initialRestoreWindowUntil) return;
-    const { sectionId, offsetInSection, scrollY } = savedScrollState;
+    const { sectionId: rawSectionId, offsetInSection, scrollY } = savedScrollState;
+    const sectionId = rawSectionId === "explorer" ? "map" : rawSectionId;
     isRestoringScroll = true;
     if (!sectionId) {
       window.scrollTo({ top: Math.max(0, scrollY || 0), behavior: "instant" });
@@ -250,6 +251,15 @@
       if ("scrollRestoration" in history) history.scrollRestoration = "manual";
     } catch {}
     restoreReloadSectionPosition();
+  } else if (initialNormalizedHash === "#map" && initialNormalizedHash !== initialRawHash) {
+    const mapEl = document.getElementById("map");
+    if (mapEl) {
+      navScrollLockUntil = performance.now() + 900;
+      activeTrackedSection = "map";
+      syncNavAndHash("map", false);
+      const topY = mapEl.getBoundingClientRect().top + window.scrollY - getHeaderOffset();
+      window.scrollTo({ top: Math.max(0, topY), behavior: "instant" });
+    }
   } else {
     activeTrackedSection = computeActiveSectionId();
     syncNavAndHash(activeTrackedSection, false);
@@ -2634,7 +2644,7 @@
     }
     if (target === staticViewport && smScale > 1) return;
 
-    const explorerSec = document.getElementById("explorer");
+    const explorerSec = document.getElementById("map");
     const atlasEl = document.getElementById("atlas");
     if (!explorerSec || !atlasEl || !filteredPlaces.length) return;
 

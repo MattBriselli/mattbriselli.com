@@ -1,4 +1,4 @@
-# Matt L. Briselli — Personal Website (`mattbriselli.com`)
+# Matt Briselli — Personal Website (`mattbriselli.com`)
 
 A minimalist, editorial personal website, interactive world photo heatmap, and stitched résumé built with semantic HTML, layered modern CSS, vanilla JavaScript, and machine-readable SEO / AI Agent feeds—zero build steps required.
 

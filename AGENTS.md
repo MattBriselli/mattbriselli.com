@@ -1,7 +1,7 @@
 # Personal Website — Agent & Cross-Project Guidelines
 
 ## Overview
-This repository (`/Users/M/Dev/Personal Website`) hosts **Matt L. Briselli's** personal website, stitched curriculum vitae (Tech, Science, and Theatre), travel ledger, and machine-readable SEO/Agent feeds (`llms.txt`, `resume.json`, Schema.org JSON-LD).
+This repository (`/Users/M/Dev/Personal Website`) hosts **Matt Briselli's** personal website, stitched curriculum vitae (Tech, Science, and Theatre), travel ledger, and machine-readable SEO/Agent feeds (`llms.txt`, `resume.json`, Schema.org JSON-LD).
 
 ## Keeping Recent Work Synchronized
 Whenever significant milestones, launches, or new projects are completed across `/Users/M/Dev/` (such as updates to `Mom` / Arioso String Quartet, `GamerBoy`, `Brand Eating`, or new repositories):
