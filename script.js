@@ -3368,49 +3368,6 @@
     scheduleToastAutoDismiss();
   }
 
-  function slugifyHeading(text) {
-    return String(text || "")
-      .toLowerCase()
-      .replace(/&/g, "and")
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/^-+|-+$/g, "")
-      .slice(0, 48);
-  }
-
-  // Upgrade static section, role, goal, and side-quest headings so ANY header is clickable to copy its link
-  const usedHeadingIds = new Set(
-    Array.from(document.querySelectorAll("[id]")).map((el) => el.id)
-  );
-
-  document.querySelectorAll("main :is(h1, h2, h3, h4), footer :is(h2, h3)").forEach((heading) => {
-    if (heading.id === "slide-title" || heading.closest("dialog")) return;
-    if (heading.querySelector("a[href]")) return;
-    let targetId = heading.id;
-    const parentCard = heading.closest("section[id], footer[id], div[id]");
-    if (!targetId) {
-      if (parentCard && parentCard.firstElementChild?.contains(heading)) {
-        targetId = parentCard.id;
-      } else {
-        const baseSlug = slugifyHeading(heading.textContent) || "section";
-        let candidate = baseSlug;
-        let n = 2;
-        while (usedHeadingIds.has(candidate)) {
-          candidate = `${baseSlug}-${n++}`;
-        }
-        heading.id = candidate;
-        usedHeadingIds.add(candidate);
-        targetId = candidate;
-      }
-    }
-    const anchor = document.createElement("a");
-    anchor.href = `#${targetId}`;
-    anchor.className = "section-anchor-link";
-    while (heading.firstChild) {
-      anchor.appendChild(heading.firstChild);
-    }
-    heading.appendChild(anchor);
-  });
-
   // Expand collapsed side quests automatically if initial URL points directly to one of them
   if (initialRawHash && eclecticExtraPanel) {
     const rawTarget = document.getElementById(initialRawHash.replace(/^#/, ""));
