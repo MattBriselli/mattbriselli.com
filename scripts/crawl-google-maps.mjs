@@ -13,7 +13,7 @@
  *
  * Usage:
  *   node scripts/crawl-google-maps.mjs --login                    # Sign into Google once in .maps-chrome-profile/
- *   node scripts/crawl-google-maps.mjs --batches=50 --max-pins=3000  # Resume from last cursor & crawl 50 older batches
+ *   node scripts/crawl-google-maps.mjs --batches=50               # Resume from last cursor & crawl 50 older batches
  *   node scripts/crawl-google-maps.mjs --mode=views --batches=40  # Crawl Sort-by-Views progressively
  *   node scripts/crawl-google-maps.mjs --reset-cursor             # Reset saved cursor and start from top
  *   node scripts/crawl-google-maps.mjs --weekly                   # Lightweight weekly CI sync
@@ -48,7 +48,7 @@ const getArgVal = (prefix) => {
 };
 const maxScrolls = Number(getArgVal("--max-scrolls=")) || (isWeekly ? 5 : 40);
 const maxBatches = Number(getArgVal("--batches=")) || (isWeekly ? 3 : 60);
-const maxPins = Number(getArgVal("--max-pins=")) || 3000;
+const maxPins = Number(getArgVal("--max-pins=")) || Infinity;
 const crawlMode = (getArgVal("--mode=") || (isWeekly ? "weekly" : "both")).toLowerCase();
 const cursorPath = path.resolve(getArgVal("--cursor-file=") || defaultCursorPath);
 const explicitProfileDir = getArgVal("--profile-dir=");
@@ -871,7 +871,7 @@ async function main() {
 
   // Finalize places with coordinates:
   // - Core 348 places in data/maps-index.json (< 256 KB ceiling, globally balanced NYC cap <= 45)
-  // - Extended archive in data/maps-pins.json (up to maxPins total across all cities/countries!)
+  // - Extended archive in data/maps-pins.json (uncapped by default across all cities/countries)
   const privacyConfig = loadPrivacyConfig();
   const allCandidates = [];
   const seenDedupe = new Set();
