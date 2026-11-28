@@ -3641,11 +3641,7 @@
       const titleRow = document.createElement("div");
       titleRow.className = "lb-title-row";
       const h4 = document.createElement("h4");
-      const revTitleLink = document.createElement("a");
-      revTitleLink.className = "section-anchor-link";
-      revTitleLink.href = `?film=${encodeURIComponent(rev.filmTitle)}#letterboxd`;
-      revTitleLink.textContent = rev.filmTitle;
-      h4.appendChild(revTitleLink);
+      h4.textContent = rev.filmTitle;
       const yearSpan = document.createElement("span");
       yearSpan.className = "lb-year";
       yearSpan.textContent = rev.filmYear || "";
@@ -4159,11 +4155,7 @@
 
         const h4 = document.createElement("h4");
         h4.className = "lb-list-title";
-        const listTitleLink = document.createElement("a");
-        listTitleLink.className = "section-anchor-link";
-        listTitleLink.href = `?list=${encodeURIComponent(listObj.slug || listObj.title)}#film-lists`;
-        listTitleLink.textContent = listObj.title;
-        h4.appendChild(listTitleLink);
+        h4.textContent = listObj.title;
 
         const desc = document.createElement("p");
         desc.className = "lb-list-desc";
