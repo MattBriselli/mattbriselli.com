@@ -3180,6 +3180,17 @@
     });
   }
 
+  const theatreCreditsDrawer = document.querySelector(".theatre-credits-drawer");
+  const theatreCard = theatreCreditsDrawer?.closest(".eclectic-card");
+  if (theatreCreditsDrawer && theatreCard) {
+    document.addEventListener("click", (ev) => {
+      if (!theatreCreditsDrawer.open) return;
+      if (ev.target instanceof Node && !theatreCard.contains(ev.target)) {
+        theatreCreditsDrawer.open = false;
+      }
+    });
+  }
+
   function isMovieDeepLinkActive() {
     const h = normalizeDeepHash(window.location.hash);
     return (
