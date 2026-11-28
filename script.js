@@ -2343,6 +2343,7 @@
   const lensFlightsBtn = document.getElementById("lens-flights-btn");
   const zoomInBtn = document.getElementById("map-zoom-in");
   const zoomOutBtn = document.getElementById("map-zoom-out");
+  const locateBtn = document.getElementById("map-locate-btn");
   const resetBtn = document.getElementById("map-reset-btn");
   const mapCanvasWrap = document.getElementById("map-canvas-wrap");
   const staticMapWrap = document.getElementById("static-countries-map-wrap");
@@ -2740,6 +2741,81 @@
       } else {
         map.zoomOut();
       }
+    });
+  }
+  if (locateBtn) {
+    let userLocLayer = null;
+    let isLocating = false;
+
+    locateBtn.addEventListener("click", () => {
+      stopAutoPlay();
+      if (isLocating) return;
+      if (!("geolocation" in navigator)) {
+        if (statusLineEl) statusLineEl.textContent = "Current location is unavailable in this browser.";
+        return;
+      }
+
+      if (activeLens === "static") {
+        setMapLens("photos");
+      }
+
+      isLocating = true;
+      locateBtn.setAttribute("aria-busy", "true");
+      locateBtn.classList.add("is-locating");
+      if (statusLineEl) statusLineEl.textContent = "Locating your current position…";
+
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          isLocating = false;
+          locateBtn.removeAttribute("aria-busy");
+          locateBtn.classList.remove("is-locating");
+
+          const { latitude, longitude, accuracy } = pos.coords;
+          if (!userLocLayer) {
+            userLocLayer = L.layerGroup().addTo(map);
+          } else {
+            userLocLayer.clearLayers();
+          }
+
+          if (Number.isFinite(accuracy) && accuracy > 0 && accuracy <= 5000) {
+            L.circle([latitude, longitude], {
+              radius: accuracy,
+              color: "#2563eb",
+              weight: 1,
+              opacity: 0.4,
+              fillColor: "#3b82f6",
+              fillOpacity: 0.12,
+              interactive: false
+            }).addTo(userLocLayer);
+          }
+
+          L.circleMarker([latitude, longitude], {
+            radius: 7,
+            color: "#ffffff",
+            weight: 2.5,
+            fillColor: "#2563eb",
+            fillOpacity: 1
+          })
+            .bindTooltip("Your current location", { direction: "top", offset: [0, -8] })
+            .addTo(userLocLayer);
+
+          map.flyTo([latitude, longitude], Math.max(map.getZoom(), 12), { duration: 1.0 });
+          if (statusLineEl) statusLineEl.textContent = "Centered on your current location";
+        },
+        (err) => {
+          isLocating = false;
+          locateBtn.removeAttribute("aria-busy");
+          locateBtn.classList.remove("is-locating");
+
+          if (statusLineEl) {
+            statusLineEl.textContent =
+              err && err.code === 1
+                ? "Location permission denied — enable location access to jump here."
+                : "Unable to determine your current location right now.";
+          }
+        },
+        { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+      );
     });
   }
   if (resetBtn) {

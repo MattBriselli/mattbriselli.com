@@ -487,10 +487,16 @@
               </figcaption>
             </figure>
 
-            <div class="map-zoom-toolbar" id="map-zoom-toolbar" role="toolbar" aria-orientation="vertical" focusgroup="toolbar wrap block" aria-label="Map zoom controls">
+            <div class="map-zoom-toolbar" id="map-zoom-toolbar" role="toolbar" aria-orientation="vertical" focusgroup="toolbar wrap block" aria-label="Map zoom and location controls">
               <button type="button" class="map-zoom-btn" id="map-zoom-in" aria-label="Zoom in" title="Zoom in">+</button>
               <button type="button" class="map-zoom-btn" id="map-zoom-out" aria-label="Zoom out" title="Zoom out">−</button>
               <span class="map-zoom-sep" role="separator" aria-orientation="horizontal"></span>
+              <button type="button" class="map-zoom-btn" id="map-locate-btn" aria-label="Jump to current location" title="Jump to current location">
+                <svg class="map-zoom-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="4"></circle>
+                  <path d="M12 2v3M12 19v3M2 12h3M19 12h3"></path>
+                </svg>
+              </button>
               <button type="button" class="map-zoom-btn" id="map-reset-btn" aria-label="Reset world view" title="Reset world view">⟲</button>
             </div>
           </div>
