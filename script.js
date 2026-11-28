@@ -916,17 +916,15 @@
     },
     {
       driven: true,
-      title: "✓ Driven: Lake Louise ↔ Golden ↔ Revelstoke ↔ Kamloops ↔ Jasper",
-      note: "BC Rockies Trans-Canada Hwy 1 (Rogers Pass, Salmon Arm) & Yellowhead Hwy 5 / Mount Robson loop",
+      title: "✓ Driven: Lake Louise ↔ Golden ↔ Revelstoke ↔ Kamloops",
+      note: "BC Rockies Trans-Canada Hwy 1 via Rogers Pass & Salmon Arm",
       coords: [
         [51.4254, -116.1773], // Lake Louise, AB
         [51.2969, -116.9631], // Golden, BC
         [51.3005, -117.5200], // Rogers Pass, BC
         [50.9981, -118.1957], // Revelstoke, BC
         [50.7001, -119.2838], // Salmon Arm, BC
-        [50.6745, -120.3273], // Kamloops, BC
-        [53.0260, -119.2314], // Mount Robson, BC
-        [52.8737, -118.0814]  // Jasper, AB
+        [50.6745, -120.3273]  // Kamloops, BC
       ]
     },
     {
