@@ -915,6 +915,21 @@
       ]
     },
     {
+      driven: true,
+      title: "✓ Driven: Lake Louise ↔ Golden ↔ Revelstoke ↔ Kamloops ↔ Jasper",
+      note: "BC Rockies Trans-Canada Hwy 1 (Rogers Pass, Salmon Arm) & Yellowhead Hwy 5 / Mount Robson loop",
+      coords: [
+        [51.4254, -116.1773], // Lake Louise, AB
+        [51.2969, -116.9631], // Golden, BC
+        [51.3005, -117.5200], // Rogers Pass, BC
+        [50.9981, -118.1957], // Revelstoke, BC
+        [50.7001, -119.2838], // Salmon Arm, BC
+        [50.6745, -120.3273], // Kamloops, BC
+        [53.0260, -119.2314], // Mount Robson, BC
+        [52.8737, -118.0814]  // Jasper, AB
+      ]
+    },
+    {
       driven: false,
       title: "○ Future Link: Thunder Bay, ON → Winnipeg → Regina → Calgary",
       note: "Prairies Trans-Canada gap across Manitoba & Saskatchewan",
@@ -929,10 +944,9 @@
     },
     {
       driven: false,
-      title: "○ Future Link: Jasper, AB → Kamloops → Vancouver / Victoria, BC",
-      note: "Yellowhead / Trans-Canada Rockies-to-Pacific gap",
+      title: "○ Future Link: Kamloops → Vancouver / Victoria, BC",
+      note: "Coquihalla / Fraser Canyon final link to the Pacific",
       coords: [
-        [52.8737, -118.0814], // Jasper, AB
         [50.6745, -120.3273], // Kamloops, BC
         [49.2827, -123.1207], // Vancouver, BC
         [48.4284, -123.3656]  // Victoria, BC
@@ -978,7 +992,8 @@
       { name: "Thunder Bay, ON (Driven West Terminus)", lat: 48.3809, lng: -89.2477 },
       { name: "Calgary, AB", lat: 51.0447, lng: -114.0719 },
       { name: "Edmonton, AB", lat: 53.5461, lng: -113.4938 },
-      { name: "Jasper, AB", lat: 52.8737, lng: -118.0814 }
+      { name: "Jasper, AB", lat: 52.8737, lng: -118.0814 },
+      { name: "Kamloops, BC (Driven West Terminus)", lat: 50.6745, lng: -120.3273 }
     ];
     for (const ep of endpoints) {
       const dot = L.circleMarker([ep.lat, ep.lng], {
