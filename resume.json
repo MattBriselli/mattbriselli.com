@@ -213,12 +213,12 @@
     {
       "name": "Arioso String Quartet (Mom's Site)",
       "url": "https://ariosoquartet.com",
-      "description": "Full-stack Node.js/Express and static web platform maintained for violist Carol Briselli, featuring a 700+ song repertoire explorer, live availability inquiry pipeline, Schema.org JSON-LD graph, and llms.txt agent feeds."
+      "description": "Full-stack Node.js/Express and static Cloudflare Workers web platform maintained for violist Carol Briselli, featuring a 700+ song repertoire explorer, live availability inquiry pipeline, Schema.org JSON-LD graph, llms.txt agent feeds, continuous 5-minute synthetic uptime/SSL/domain-expiry monitoring, and Cloudflare edge WAF protection."
     },
     {
       "name": "Eat Brand Bite",
       "url": "https://eatbrandbite.com",
-      "description": "Fast-food & limited-edition CPG snack publication covering 165+ brands across 20 live feeds with a dedicated /live wire & RSS feed, a real-time Trending engine blending cross-source buzz with D1 card-click tracking, and a weekly rotating Specials On Now board (Crumbl, PopUp Bagels, Insomnia Cookies, Krispy Kreme, Trader Joe's & more), built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI + Cron Triggers stack (live reactions, click tracking & Google-verified comments), paired with automated Bluesky/Instagram/Threads publishing, The Weekly Bite newsletter, and llms.txt agent feeds."
+      "description": "Fast-food & limited-edition CPG snack publication covering 165+ brands across 20 live feeds with a dedicated /live wire & RSS feed, a real-time Trending engine blending cross-source buzz with D1 card-click tracking, and a weekly rotating Specials On Now board (Crumbl, PopUp Bagels, Insomnia Cookies, Krispy Kreme, Trader Joe's & more), built with Next.js 15, React 19, Tailwind CSS v4, and a Cloudflare Workers + D1 + Workers AI + Cron Triggers stack (live reactions, click tracking & Google-verified comments), monitored by 5-minute synthetic endpoint probes and automated feed-freshness watchdogs alongside automated Bluesky/Instagram/Threads publishing, The Weekly Bite newsletter, and llms.txt agent feeds."
     },
     {
       "name": "GamerBoy Solitaire",
@@ -228,7 +228,7 @@
     {
       "name": "Personal Atlas & Film Archive (mattbriselli.com)",
       "url": "https://github.com/MattBriselli/mattbriselli.com",
-      "description": "Zero-framework personal website on Cloudflare Workers Static Assets featuring a 10,796-pin privacy-geofenced HTML5 Canvas world atlas (Google Maps, Flighty & Swarm with automated 7-day embargo), 1,422 cached Letterboxd reviews, 12 curated 2:3 poster lists, and llms.txt / resume.json agent feeds."
+      "description": "Zero-framework personal website on Cloudflare Workers Static Assets featuring a 10,796-pin privacy-geofenced HTML5 Canvas world atlas (Google Maps, Flighty & Swarm with automated 7-day embargo), 1,422 cached Letterboxd reviews, 12 curated 2:3 poster lists, llms.txt / resume.json agent feeds, Cloudflare edge WAF rules, synthetic uptime/latency probes, and real-user web analytics."
     }
   ]
 }
