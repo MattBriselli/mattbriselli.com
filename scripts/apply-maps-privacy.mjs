@@ -11,7 +11,8 @@ import {
   findMatchingZone,
   isTooRecent,
   loadPrivacyConfig,
-  PRIVATE_VENUE_RE
+  PRIVATE_VENUE_RE,
+  thinHomeZones
 } from "./privacy-geofence.mjs";
 
 const config = loadPrivacyConfig();
@@ -95,8 +96,11 @@ function sanitizePlaceList(list) {
       continue;
     }
     const copy = { ...p, name: cleanName, lat: safe.lat, lng: safe.lng, location: safe.location };
-    if (safe.blurred) {
+    if (safe.inZone || safe.blurred) {
       blurredPlaces++;
+      // Strip repeat-visit signals inside home zones so local routines never stand out
+      delete copy.visitCount;
+      delete copy.firstDate;
       if (!copy.caption || !copy.caption.startsWith("“")) {
         delete copy.caption;
       } else if (matchedZone?.matchRegex && new RegExp(matchedZone.matchRegex, "i").test(copy.caption)) {
@@ -136,25 +140,68 @@ for (const t of pins.mapOnlyPins || []) {
     droppedRecentOrErrand++;
     continue;
   }
-  if (safe.blurred) blurredPlaces++;
+  if (safe.inZone || safe.blurred) blurredPlaces++;
   const cleanSnip =
     matchedZone?.matchRegex && snippet && new RegExp(matchedZone.matchRegex, "i").test(snippet)
       ? ""
       : snippet;
+  const keepVisitCount = safe.inZone ? 1 : Number(visitCount) || 1;
+  const keepFirstDate = safe.inZone ? "" : firstDate;
   const nextTuple = [safe.lat, safe.lng, cleanName, safe.location];
-  if (rating || cleanSnip || visitDate || category || visitCount || firstDate) {
+  if (rating || cleanSnip || visitDate || category || keepVisitCount > 1 || keepFirstDate) {
     nextTuple.push(rating || 0, cleanSnip || "");
-    if (visitDate || category || visitCount || firstDate) {
+    if (visitDate || category || keepVisitCount > 1 || keepFirstDate) {
       nextTuple.push(visitDate || "", category || "");
-      if (Number(visitCount) > 1) {
-        nextTuple.push(Number(visitCount));
-        if (firstDate && firstDate !== visitDate) nextTuple.push(firstDate);
+      if (keepVisitCount > 1) {
+        nextTuple.push(keepVisitCount);
+        if (keepFirstDate && keepFirstDate !== visitDate) nextTuple.push(keepFirstDate);
       }
     }
   }
   cleanTuples.push(nextTuple);
 }
 pins.mapOnlyPins = cleanTuples;
+
+// Density-matched thinning across all pins so home zones blend into surrounding ring density
+const combinedForThinning = [
+  ...idx.places.map((p, i) => ({
+    bucket: "index",
+    idx: i,
+    lat: p.lat,
+    lng: p.lng,
+    key: `idx|${p.name}|${p.lat}|${p.lng}`,
+    priority: 2
+  })),
+  ...pins.extraPins.map((p, i) => ({
+    bucket: "extra",
+    idx: i,
+    lat: p.lat,
+    lng: p.lng,
+    key: `extra|${p.name}|${p.lat}|${p.lng}`,
+    priority: 1
+  })),
+  ...pins.mapOnlyPins.map((t, i) => ({
+    bucket: "mapOnly",
+    idx: i,
+    lat: Number(t[0]),
+    lng: Number(t[1]),
+    key: `swarm|${t[2]}|${t[0]}|${t[1]}`,
+    priority: 0
+  }))
+];
+const { keptIndices, stats: zoneThinStats } = thinHomeZones(combinedForThinning, config);
+const keepIdxSet = new Set();
+const keepExtraSet = new Set();
+const keepMapOnlySet = new Set();
+for (const i of keptIndices) {
+  const entry = combinedForThinning[i];
+  if (entry.bucket === "index") keepIdxSet.add(entry.idx);
+  else if (entry.bucket === "extra") keepExtraSet.add(entry.idx);
+  else keepMapOnlySet.add(entry.idx);
+}
+idx.places = idx.places.filter((_, i) => keepIdxSet.has(i));
+pins.extraPins = pins.extraPins.filter((_, i) => keepExtraSet.has(i));
+pins.mapOnlyPins = pins.mapOnlyPins.filter((_, i) => keepMapOnlySet.has(i));
 
 // Scrub written reviews: enforce 7-day delay + blur/drop home-zone addresses & tokens
 const cleanReviews = [];
@@ -217,9 +264,10 @@ if (fs.existsSync(htmlPath)) {
   fs.writeFileSync(htmlPath, html, "utf8");
 }
 
-console.log("Applied 7-day embargo + home-zone blur!", {
+console.log("Applied 7-day embargo + density-matched home-zone privacy!", {
   droppedRecentOrErrand,
-  blurredPlaces,
+  sanitizedInZone: blurredPlaces,
+  zoneThinStats,
   photoPins: allPhotoPlaces.length,
   extraDots,
   totalDots,

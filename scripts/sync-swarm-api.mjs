@@ -10,7 +10,12 @@
  */
 import fs from "node:fs";
 import path from "node:path";
-import { filterAndBlurPlace, getEmbargoCutoffMs, loadPrivacyConfig } from "./privacy-geofence.mjs";
+import {
+  filterAndBlurPlace,
+  getEmbargoCutoffMs,
+  loadPrivacyConfig,
+  thinHomeZones
+} from "./privacy-geofence.mjs";
 
 const token = (process.env.SWARM_OAUTH_TOKEN || "").trim();
 if (!token) {
@@ -143,6 +148,7 @@ async function main() {
         lng: safe.lng,
         name,
         location: safe.location,
+        inZone: Boolean(safe.inZone),
         dates: visitDate ? [visitDate] : [],
         firstDate: visitDate || "",
         lastDate: visitDate || "",
@@ -175,7 +181,9 @@ async function main() {
   let indexDirty = false;
 
   for (const [dedupeKey, rec] of venueAgg.entries()) {
-    const totalFetchedVisits = Math.max(1, rec.dates.length);
+    // Strip repeat visit-frequency signals inside home zones so local routines never stand out.
+    const totalFetchedVisits = rec.inZone ? 1 : Math.max(1, rec.dates.length);
+    const effectiveFirstDate = rec.inZone ? "" : rec.firstDate;
 
     if (photoByKey.has(dedupeKey)) {
       const { obj: p, inIndex } = photoByKey.get(dedupeKey);
@@ -184,13 +192,24 @@ async function main() {
         p.date = rec.lastDate;
         pChanged = true;
       }
-      if (isBackfill && totalFetchedVisits > 1 && p.visitCount !== totalFetchedVisits) {
-        p.visitCount = totalFetchedVisits;
-        pChanged = true;
-      }
-      if (rec.firstDate && rec.firstDate !== (p.date || rec.lastDate) && p.firstDate !== rec.firstDate) {
-        p.firstDate = rec.firstDate;
-        pChanged = true;
+      if (rec.inZone) {
+        if (p.visitCount !== undefined) {
+          delete p.visitCount;
+          pChanged = true;
+        }
+        if (p.firstDate !== undefined) {
+          delete p.firstDate;
+          pChanged = true;
+        }
+      } else {
+        if (isBackfill && totalFetchedVisits > 1 && p.visitCount !== totalFetchedVisits) {
+          p.visitCount = totalFetchedVisits;
+          pChanged = true;
+        }
+        if (effectiveFirstDate && effectiveFirstDate !== (p.date || rec.lastDate) && p.firstDate !== effectiveFirstDate) {
+          p.firstDate = effectiveFirstDate;
+          pChanged = true;
+        }
       }
       if (pChanged) {
         enrichedExisting++;
@@ -212,20 +231,24 @@ async function main() {
       let nextCount = prevCount;
       const nextCat = prevCat || rec.category;
 
-      if (isBackfill) {
+      if (rec.inZone) {
+        nextCount = 1;
+        nextLast = rec.lastDate || prevLast;
+        nextFirst = "";
+      } else if (isBackfill) {
         nextCount = totalFetchedVisits;
         nextLast = rec.lastDate || prevLast;
-        nextFirst = rec.firstDate || prevFirst;
+        nextFirst = effectiveFirstDate || prevFirst;
       } else {
         const newerVisits = prevLast ? rec.dates.filter((d) => d > prevLast).length : 0;
         if (!prevLast && rec.lastDate) {
           nextLast = rec.lastDate;
-          nextFirst = rec.firstDate || rec.lastDate;
+          nextFirst = effectiveFirstDate || rec.lastDate;
           nextCount = Math.max(prevCount, totalFetchedVisits);
         } else if (newerVisits > 0) {
           nextCount = prevCount + newerVisits;
           nextLast = rec.lastDate;
-          if (rec.firstDate && (!nextFirst || rec.firstDate < nextFirst)) nextFirst = rec.firstDate;
+          if (effectiveFirstDate && (!nextFirst || effectiveFirstDate < nextFirst)) nextFirst = effectiveFirstDate;
         }
       }
 
@@ -259,7 +282,7 @@ async function main() {
         rec.lastDate,
         rec.category,
         totalFetchedVisits,
-        rec.firstDate
+        effectiveFirstDate
       )
     );
   }
@@ -269,6 +292,51 @@ async function main() {
     return;
   }
 
+  mapsPins.mapOnlyPins = [...added, ...(mapsPins.mapOnlyPins || [])];
+
+  // Density-match home zones to their surrounding ring (R..2R) deterministically
+  const combinedForThinning = [
+    ...(mapsIndex.places || []).map((p, i) => ({
+      bucket: "index",
+      idx: i,
+      lat: p.lat,
+      lng: p.lng,
+      key: `idx|${p.name}|${p.lat}|${p.lng}`,
+      priority: 2
+    })),
+    ...(mapsPins.extraPins || []).map((p, i) => ({
+      bucket: "extra",
+      idx: i,
+      lat: p.lat,
+      lng: p.lng,
+      key: `extra|${p.name}|${p.lat}|${p.lng}`,
+      priority: 1
+    })),
+    ...(mapsPins.mapOnlyPins || []).map((t, i) => ({
+      bucket: "mapOnly",
+      idx: i,
+      lat: Number(t[0]),
+      lng: Number(t[1]),
+      key: `swarm|${t[2]}|${t[0]}|${t[1]}`,
+      priority: 0
+    }))
+  ];
+  const { keptIndices, stats: zoneThinStats } = thinHomeZones(combinedForThinning, privacyConfig);
+  const keepIdxSet = new Set();
+  const keepExtraSet = new Set();
+  const keepMapOnlySet = new Set();
+  for (const i of keptIndices) {
+    const entry = combinedForThinning[i];
+    if (entry.bucket === "index") keepIdxSet.add(entry.idx);
+    else if (entry.bucket === "extra") keepExtraSet.add(entry.idx);
+    else keepMapOnlySet.add(entry.idx);
+  }
+  const prevIdxLen = (mapsIndex.places || []).length;
+  mapsIndex.places = (mapsIndex.places || []).filter((_, i) => keepIdxSet.has(i));
+  if (mapsIndex.places.length !== prevIdxLen) indexDirty = true;
+  mapsPins.extraPins = (mapsPins.extraPins || []).filter((_, i) => keepExtraSet.has(i));
+  mapsPins.mapOnlyPins = (mapsPins.mapOnlyPins || []).filter((_, i) => keepMapOnlySet.has(i));
+
   if (indexDirty) {
     const nextIndexStr = JSON.stringify(mapsIndex) + "\n";
     if (Buffer.byteLength(nextIndexStr, "utf8") < 260000) {
@@ -276,7 +344,6 @@ async function main() {
     }
   }
 
-  mapsPins.mapOnlyPins = [...added, ...(mapsPins.mapOnlyPins || [])];
   const photoCount = (mapsIndex.places?.length || 0) + (mapsPins.extraPins?.length || 0);
   const extraDots = mapsPins.mapOnlyPins.length + (mapsIndex.heatmapClusters?.length || 0);
   const totalDots = photoCount + extraDots;
@@ -295,7 +362,8 @@ async function main() {
   }
 
   console.log(
-    `Added +${added.length} new & enriched ${enrichedExisting} existing Swarm venues (totalPins=${totalDots}).`
+    `Added +${added.length} candidate & enriched ${enrichedExisting} existing Swarm venues (totalPins=${totalDots}).`,
+    { zoneThinStats }
   );
 }
 
