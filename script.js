@@ -1496,11 +1496,13 @@
     if (!lensShowsPhotos() || !mapsData || !containerPoint) return false;
     if (origEvent && origEvent._mlbPinHandled) return true;
     const maxHitPx = isCoarseMapPointer ? 22 : 14;
+    const hitBounds = map.getBounds().pad(0.08);
     let best = null;
     let bestScore = maxHitPx;
 
     for (let idx = 0; idx < filteredPlaces.length; idx++) {
       const pl = filteredPlaces[idx];
+      if (!hitBounds.contains([pl.lat, pl.lng])) continue;
       const pt = map.latLngToContainerPoint([pl.lat, pl.lng]);
       const d = Math.hypot(pt.x - containerPoint.x, pt.y - containerPoint.y);
       // Slight 3px priority for rich photo dispatches when directly overlapping a plain pin
@@ -1515,6 +1517,7 @@
       const zoomNow = map.getZoom();
       for (let i = 0; i < mapOnlyPins.length; i++) {
         const item = mapOnlyPins[i];
+        if (!hitBounds.contains([item[0], item[1]])) continue;
         const pt = map.latLngToContainerPoint([item[0], item[1]]);
         const d = Math.hypot(pt.x - containerPoint.x, pt.y - containerPoint.y);
         const boost = getVisitRadiusBoost(item[8], zoomNow) * 0.5;
@@ -1528,6 +1531,7 @@
 
     if (!best && Array.isArray(mapsData.heatmapClusters)) {
       for (const c of mapsData.heatmapClusters) {
+        if (!hitBounds.contains([c.lat, c.lng])) continue;
         const pt = map.latLngToContainerPoint([c.lat, c.lng]);
         const d = Math.hypot(pt.x - containerPoint.x, pt.y - containerPoint.y);
         if (d <= maxHitPx && d < bestScore) {
@@ -1873,14 +1877,37 @@
     }, 120);
   }
 
+  let activeDotMarkers = [];
+  let activeMarkersAreGlyphs = false;
+
+  function updateDotRadiiInPlace(zoom) {
+    lastMarkerZoomTier = getMarkerZoomTier(zoom);
+    const clusterR = zoom >= 6 ? 4.2 : 3.4;
+    const baseSubRadius = zoom >= 12 ? 4.3 : zoom >= 8 ? 3.5 : zoom >= 5 ? 2.9 : 2.4;
+    const basePinRadius = zoom >= 11 ? 5.8 : zoom >= 7 ? 4.9 : zoom >= 4 ? 4.2 : 3.7;
+    for (let i = 0; i < activeDotMarkers.length; i++) {
+      const rec = activeDotMarkers[i];
+      if (rec.kind === "cluster") {
+        rec.marker.setRadius(clusterR);
+      } else if (rec.kind === "place") {
+        rec.marker.setRadius(baseSubRadius + getVisitRadiusBoost(rec.count, zoom));
+      } else if (rec.kind === "photo") {
+        rec.marker.setRadius(basePinRadius + getVisitRadiusBoost(rec.count, zoom) * 0.7);
+      }
+    }
+  }
+
   function rebuildMarkers() {
     pinsLayerGroup.clearLayers();
+    activeDotMarkers = [];
     if (!lensShowsPhotos() || !mapsData) return;
 
     const dark = isDarkActive();
     const zoom = map.getZoom();
     lastMarkerZoomTier = getMarkerZoomTier(zoom);
     const bindHoverTooltips = !isCoarseMapPointer;
+    const showGlyphs = zoom >= GLYPH_MIN_ZOOM;
+    activeMarkersAreGlyphs = showGlyphs;
 
     // 1. Regional footprint dots across all 50 US states, Central Asia, Canada, Europe & Asia-Pacific
     if (Array.isArray(mapsData.heatmapClusters)) {
@@ -1894,7 +1921,9 @@
           fillColor: dark ? "#f0ad4e" : "#d97724",
           fillOpacity: 0.82
         });
-        cm.bindTooltip(`<strong>${escMapHtml(label)}</strong>`, { direction: "top" });
+        if (bindHoverTooltips) {
+          cm.bindTooltip(() => `<strong>${escMapHtml(label)}</strong>`, { direction: "top" });
+        }
         cm.on("click", (ev) => {
           if (activateClosestPinAt(ev.containerPoint, ev.originalEvent)) return;
           stopAutoPlay();
@@ -1902,19 +1931,17 @@
           if (statusLineEl) statusLineEl.textContent = `Exploring: ${label}`;
         });
         cm.addTo(pinsLayerGroup);
+        if (!showGlyphs) activeDotMarkers.push({ marker: cm, kind: "cluster", count: 1 });
       }
     }
 
-    // 1b. Places Matt Visited (sized logarithmically by repeat visitCount; 1x drawn first, favorites on top)
-    const showGlyphs = zoom >= GLYPH_MIN_ZOOM;
+    // 1b. Places Matt Visited (pre-sorted ascending by repeat visitCount; 1x drawn first, favorites on top)
     const glyphBaseRadius = zoom >= 15 ? 9.5 : 8.2;
     if (currentSlideFilter === "all" && mapOnlyPins.length) {
       const baseSubRadius = zoom >= 12 ? 4.3 : zoom >= 8 ? 3.5 : zoom >= 5 ? 2.9 : 2.4;
-      const orderedPins = mapOnlyPins
-        .slice()
-        .sort((a, b) => (Number(a[8]) || 1) - (Number(b[8]) || 1));
 
-      for (const item of orderedPins) {
+      for (let i = 0; i < mapOnlyPins.length; i++) {
+        const item = mapOnlyPins[i];
         const [lat, lng, name, loc, rating, , lastDate, category, visitCount, firstDate] = item;
         const count = Number(visitCount) || 1;
         const isFrequent = count >= 5;
@@ -1939,16 +1966,17 @@
             });
         if (bindHoverTooltips) {
           mPin.bindTooltip(
-            buildPinLabelHtml({
-              icon: getCategoryIcon(category, "📍"),
-              name,
-              rating,
-              loc,
-              category,
-              lastDate,
-              firstDate,
-              visitCount: count
-            }),
+            () =>
+              buildPinLabelHtml({
+                icon: getCategoryIcon(category, "📍"),
+                name,
+                rating,
+                loc,
+                category,
+                lastDate,
+                firstDate,
+                visitCount: count
+              }),
             { direction: "top", className: "pin-tip", offset: [0, -4] }
           );
         }
@@ -1958,6 +1986,7 @@
           openPlaceOnlyPopup(item);
         });
         mPin.addTo(pinsLayerGroup);
+        if (!showGlyphs) activeDotMarkers.push({ marker: mPin, kind: "place", count });
       }
     }
 
@@ -1969,12 +1998,13 @@
         activeEntry = { pl, idx };
         return;
       }
-      const pRadius = basePinRadius + getVisitRadiusBoost(pl.visitCount || 1, zoom) * 0.7;
+      const pCount = pl.visitCount || 1;
+      const pRadius = basePinRadius + getVisitRadiusBoost(pCount, zoom) * 0.7;
       const photoGlyph = showGlyphs ? getCategoryIcon(pl.category, "") : "";
       const marker = photoGlyph
         ? new GlyphCircleMarker([pl.lat, pl.lng], {
             renderer: pinsCanvasRenderer,
-            radius: glyphBaseRadius + 1 + getVisitRadiusBoost(pl.visitCount || 1, zoom) * 0.4,
+            radius: glyphBaseRadius + 1 + getVisitRadiusBoost(pCount, zoom) * 0.4,
             glyph: photoGlyph,
             color: dark ? "#e88264" : "#9e3b24",
             weight: 2.4,
@@ -1989,23 +2019,27 @@
             fillColor: dark ? "#e88264" : "#9e3b24",
             fillOpacity: 0.94
           });
-      marker.bindTooltip(
-        buildPinLabelHtml({
-          icon: getCategoryIcon(pl.category, "📸"),
-          name: pl.name,
-          rating: pl.rating,
-          loc: pl.location,
-          lastDate: pl.date,
-          firstDate: pl.firstDate,
-          visitCount: pl.visitCount
-        }),
-        { direction: "top", className: "pin-tip", offset: [0, -4] }
-      );
+      if (bindHoverTooltips) {
+        marker.bindTooltip(
+          () =>
+            buildPinLabelHtml({
+              icon: getCategoryIcon(pl.category, "📸"),
+              name: pl.name,
+              rating: pl.rating,
+              loc: pl.location,
+              lastDate: pl.date,
+              firstDate: pl.firstDate,
+              visitCount: pl.visitCount
+            }),
+          { direction: "top", className: "pin-tip", offset: [0, -4] }
+        );
+      }
       marker.on("click", (ev) => {
         if (activateClosestPinAt(ev.containerPoint, ev.originalEvent)) return;
         openPhotoPinSelection(idx);
       });
       marker.addTo(pinsLayerGroup);
+      if (!showGlyphs) activeDotMarkers.push({ marker, kind: "photo", count: pCount });
     });
 
     // 3. Active slideshow hero beacon (glowing outer ring + emerald core dot painted last on top)
@@ -2030,18 +2064,21 @@
         fillColor: dark ? "#46e5a0" : "#15803d",
         fillOpacity: 1
       });
-      hero.bindTooltip(
-        buildPinLabelHtml({
-          icon: getCategoryIcon(pl.category, "📍"),
-          name: pl.name,
-          rating: pl.rating,
-          loc: pl.location,
-          lastDate: pl.date,
-          firstDate: pl.firstDate,
-          visitCount: pl.visitCount
-        }),
-        { direction: "top", className: "pin-tip", offset: [0, -6] }
-      );
+      if (bindHoverTooltips) {
+        hero.bindTooltip(
+          () =>
+            buildPinLabelHtml({
+              icon: getCategoryIcon(pl.category, "📍"),
+              name: pl.name,
+              rating: pl.rating,
+              loc: pl.location,
+              lastDate: pl.date,
+              firstDate: pl.firstDate,
+              visitCount: pl.visitCount
+            }),
+          { direction: "top", className: "pin-tip", offset: [0, -6] }
+        );
+      }
       hero.on("click", (ev) => {
         if (ev.originalEvent) ev.originalEvent._mlbPinHandled = true;
         stopAutoPlay();
@@ -2055,13 +2092,19 @@
 
   map.on("zoomend", () => {
     if (isOneHandZooming) return;
-    const nextTier = getMarkerZoomTier(map.getZoom());
+    const z = map.getZoom();
+    const nextTier = getMarkerZoomTier(z);
     if (nextTier !== lastMarkerZoomTier) {
-      if (markerRebuildTimer) clearTimeout(markerRebuildTimer);
-      markerRebuildTimer = setTimeout(() => {
-        markerRebuildTimer = null;
-        rebuildMarkers();
-      }, 90);
+      const wantsGlyphs = z >= GLYPH_MIN_ZOOM;
+      if (!wantsGlyphs && !activeMarkersAreGlyphs && activeDotMarkers.length) {
+        updateDotRadiiInPlace(z);
+      } else {
+        if (markerRebuildTimer) clearTimeout(markerRebuildTimer);
+        markerRebuildTimer = setTimeout(() => {
+          markerRebuildTimer = null;
+          rebuildMarkers();
+        }, 90);
+      }
     }
     if (lensShowsFlights()) rebuildFlightArcs();
     scheduleViewportSync();
@@ -2134,7 +2177,13 @@
     }
     if (titleEl) titleEl.textContent = place.name;
     if (locEl) locEl.textContent = place.location;
-    if (descEl) descEl.textContent = place.caption || "";
+    if (descEl) {
+      descEl.textContent =
+        place.caption ||
+        (place.date
+          ? `Photographed in ${place.location || place.name} (${place.date}).`
+          : `Photographed on Google Maps in ${place.location || place.name}.`);
+    }
     if (mapsLinkEl) {
       const q = encodeURIComponent(`${place.name} ${place.location}`);
       mapsLinkEl.href = `https://www.google.com/maps/search/?api=1&query=${q}`;
@@ -2749,12 +2798,29 @@
     })
     .catch(() => {});
 
+  function expandPhotoUrl(u) {
+    if (typeof u !== "string" || !u) return "";
+    if (!u.startsWith("lh3:")) return u;
+    const body = u.slice(4);
+    const hasSize = /=[^=/]+$/.test(body);
+    return `https://lh3.googleusercontent.com/${body}${hasSize ? "" : "=w1000-h750-p-k-no"}`;
+  }
+
+  function hydratePlace(p) {
+    if (!p) return p;
+    if (Array.isArray(p.photos) && p.photos.length) {
+      p.photos = p.photos.map(expandPhotoUrl);
+    }
+    if (!p.countryIso) p.countryIso = "US";
+    return p;
+  }
+
   // Load lightweight Google Maps index JSON (<256 KB) first, then stream 1,000+ extended pins
   fetch("data/maps-index.json")
     .then((r) => r.json())
     .then((data) => {
       mapsData = data;
-      allRawPlaces = Array.isArray(data.places) ? data.places.slice() : [];
+      allRawPlaces = Array.isArray(data.places) ? data.places.map(hydratePlace) : [];
       filteredPlaces = buildBalancedDeck(allRawPlaces);
       const firstPhotos = filteredPlaces[0]?.photos || [];
       activePhotoIndex = firstPhotos.length > 1 ? Math.floor(Math.random() * firstPhotos.length) : 0;
@@ -2786,9 +2852,11 @@
         .then((r) => (r.ok ? r.json() : null))
         .then((pinsPayload) => {
           if (!pinsPayload) return;
-          const extra = Array.isArray(pinsPayload.extraPins) ? pinsPayload.extraPins : [];
+          const extra = Array.isArray(pinsPayload.extraPins) ? pinsPayload.extraPins.map(hydratePlace) : [];
           if (Array.isArray(pinsPayload.mapOnlyPins)) {
-            mapOnlyPins = pinsPayload.mapOnlyPins;
+            mapOnlyPins = pinsPayload.mapOnlyPins
+              .slice()
+              .sort((a, b) => (Number(a[8]) || 1) - (Number(b[8]) || 1));
           }
           const seenIds = new Set(allRawPlaces.map((p) => p.id));
           const uniqueExtra = [];

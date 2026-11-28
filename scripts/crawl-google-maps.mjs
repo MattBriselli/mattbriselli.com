@@ -249,12 +249,29 @@ async function launchChrome(port = 9241, { headless = true, profileDir = "" } = 
   return { cdp, cleanup };
 }
 
+const LH3_PREFIX = "https://lh3.googleusercontent.com/";
+const LH3_DEFAULT_SUFFIX = "=w1000-h750-p-k-no";
+const BOILERPLATE_CAPTION_RE = /^Photographed (?:in |on Google Maps )/i;
+
+function compactPhotoUrl(u) {
+  if (typeof u !== "string" || !u) return "";
+  if (u.startsWith("lh3:")) return u;
+  if (u.startsWith(LH3_PREFIX)) {
+    let body = u.slice(LH3_PREFIX.length);
+    if (body.endsWith(LH3_DEFAULT_SUFFIX)) body = body.slice(0, -LH3_DEFAULT_SUFFIX.length);
+    return `lh3:${body}`;
+  }
+  return u;
+}
+
 function upgradePhotoUrl(rawUrl) {
-  if (!rawUrl || !rawUrl.includes("googleusercontent.com/")) return "";
+  if (!rawUrl) return "";
+  if (rawUrl.startsWith("lh3:")) return rawUrl;
+  if (!rawUrl.includes("googleusercontent.com/")) return "";
   const url = rawUrl.startsWith("//") ? `https:${rawUrl}` : rawUrl;
   // Ignore user avatar URLs
   if (url.includes("/a-/ALV-") || url.includes("/ogw/")) return "";
-  return url.replace(/=[^=/]+$/, "=w1000-h750-p-k-no");
+  return compactPhotoUrl(url.replace(/=[^=/]+$/, LH3_DEFAULT_SUFFIX));
 }
 
 function classifyPlace({ address = "", countryIso = "", lat = 0, lng = 0 }) {
@@ -904,12 +921,7 @@ async function main() {
       catLabel = `${catLabel} · ${yearStr}`;
     }
 
-    let caption = p.caption;
-    if (!caption) {
-      caption = p.date
-        ? `Photographed in ${p.location || p.name} (${p.date}).`
-        : `Photographed on Google Maps in ${p.location || p.name}.`;
-    }
+    let caption = p.caption && !BOILERPLATE_CAPTION_RE.test(p.caption) ? p.caption : "";
 
     const entry = {
       id: String(Array.isArray(p.id) ? p.id[0] : p.id),
@@ -920,16 +932,16 @@ async function main() {
       lat: p.lat,
       lng: p.lng,
       tag,
-      caption,
-      photos: (p.photos || []).slice(0, 2),
+      photos: (p.photos || []).slice(0, 2).map(compactPhotoUrl),
       _hasPhoto: hasPhoto,
       _hasWrittenReview: hasWrittenReview
     };
+    if (caption) entry.caption = caption;
     if (p.rating) entry.rating = p.rating;
     if (p.date) entry.date = p.date;
     if (p.firstDate && p.firstDate !== p.date) entry.firstDate = p.firstDate;
     if (Number(p.visitCount) > 1) entry.visitCount = Number(p.visitCount);
-    if (p.countryIso) entry.countryIso = p.countryIso;
+    if (p.countryIso && p.countryIso !== "US") entry.countryIso = p.countryIso;
     if (p.mediaKeys?.length) entry.mediaKeys = p.mediaKeys;
 
     allCandidates.push(entry);

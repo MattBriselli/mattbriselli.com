@@ -27,6 +27,37 @@ const rev = JSON.parse(fs.readFileSync(revPath, "utf8"));
 let droppedRecentOrErrand = 0;
 let blurredPlaces = 0;
 
+const LH3_PREFIX = "https://lh3.googleusercontent.com/";
+const LH3_DEFAULT_SUFFIX = "=w1000-h750-p-k-no";
+const BOILERPLATE_CAPTION_RE = /^Photographed (?:in |on Google Maps )/i;
+
+function compactPhotoUrl(u) {
+  if (typeof u !== "string" || !u) return u;
+  if (u.startsWith("lh3:")) return u;
+  if (u.startsWith(LH3_PREFIX)) {
+    let body = u.slice(LH3_PREFIX.length);
+    if (body.endsWith(LH3_DEFAULT_SUFFIX)) {
+      body = body.slice(0, -LH3_DEFAULT_SUFFIX.length);
+    }
+    return `lh3:${body}`;
+  }
+  return u;
+}
+
+function compactPlaceForStorage(p) {
+  const out = { ...p };
+  if (Array.isArray(out.photos) && out.photos.length) {
+    out.photos = out.photos.map(compactPhotoUrl);
+  }
+  if (typeof out.caption === "string" && BOILERPLATE_CAPTION_RE.test(out.caption)) {
+    delete out.caption;
+  }
+  if (out.countryIso === "US") {
+    delete out.countryIso;
+  }
+  return out;
+}
+
 function stripZoneTokens(str, zone) {
   if (!str || !zone?.matchRegex) return str;
   try {
@@ -67,12 +98,12 @@ function sanitizePlaceList(list) {
     if (safe.blurred) {
       blurredPlaces++;
       if (!copy.caption || !copy.caption.startsWith("“")) {
-        copy.caption = `Photographed in ${safe.location}.`;
+        delete copy.caption;
       } else if (matchedZone?.matchRegex && new RegExp(matchedZone.matchRegex, "i").test(copy.caption)) {
-        copy.caption = `Photographed in ${safe.location}.`;
+        delete copy.caption;
       }
     }
-    out.push(copy);
+    out.push(compactPlaceForStorage(copy));
   }
   return out;
 }
