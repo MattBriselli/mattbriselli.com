@@ -33,6 +33,11 @@ jobs:
           PRIVACY_GEOFENCE_JSON: ${{ secrets.PRIVACY_GEOFENCE_JSON }}
         run: node scripts/crawl-google-maps.mjs --weekly
 
+      - name: Enforce 7-day embargo & density-matched home-zone thinning
+        env:
+          PRIVACY_GEOFENCE_JSON: ${{ secrets.PRIVACY_GEOFENCE_JSON }}
+        run: node scripts/apply-maps-privacy.mjs
+
       - name: Commit & push if new dispatches or telemetry updated
         id: commit_step
         run: |
